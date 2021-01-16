@@ -15,7 +15,7 @@ import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.dependencyInjector.gameAction.OnGameSelectAction;
 import org.smallbox.faraway.core.game.Game;
-import org.smallbox.faraway.core.module.world.model.ParcelModel;
+import org.smallbox.faraway.core.module.world.model.Parcel;
 import org.smallbox.faraway.modules.character.CharacterModule;
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 
@@ -70,7 +70,7 @@ public class CharacterInfoController extends AbsInfoLuaController<CharacterModel
     }
 
     @Override
-    public CharacterModel getObjectOnParcel(ParcelModel parcel) {
+    public CharacterModel getObjectOnParcel(Parcel parcel) {
         return characterModule.getCharacter(parcel);
     }
 

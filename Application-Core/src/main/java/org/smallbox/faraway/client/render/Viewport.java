@@ -8,7 +8,7 @@ import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnInit;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameManager;
 import org.smallbox.faraway.core.game.service.applicationConfig.ApplicationConfig;
-import org.smallbox.faraway.core.module.world.model.ParcelModel;
+import org.smallbox.faraway.core.module.world.model.Parcel;
 import org.smallbox.faraway.util.Constant;
 import org.smallbox.faraway.util.log.Log;
 
@@ -176,7 +176,7 @@ public class Viewport {
                 && parcel.y >= _worldY && parcel.y <= _worldY + 50;
     }
 
-    public boolean hasParcel(ParcelModel parcel) {
+    public boolean hasParcel(Parcel parcel) {
         return parcel != null
                 && parcel.z == _floor
                 && parcel.x >= _worldX && parcel.x <= _worldX + 50

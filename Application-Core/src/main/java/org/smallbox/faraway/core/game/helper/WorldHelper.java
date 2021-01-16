@@ -5,7 +5,7 @@ import org.smallbox.faraway.core.GameException;
 import org.smallbox.faraway.core.game.save.GameInfo;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.module.world.model.ConsumableItem;
-import org.smallbox.faraway.core.module.world.model.ParcelModel;
+import org.smallbox.faraway.core.module.world.model.Parcel;
 import org.smallbox.faraway.core.module.world.model.StructureItem;
 import org.smallbox.faraway.modules.plant.model.PlantItem;
 import org.smallbox.faraway.util.Utils;
@@ -17,14 +17,14 @@ import java.util.Optional;
 import java.util.function.Predicate;
 
 public class WorldHelper {
-    private static ParcelModel[][][]    _parcels;
+    private static Parcel[][][]    _parcels;
     private static int                  _currentFloor;
     private static int                  _groundFloor;
     private static int                  _width;
     private static int                  _height;
     private static int                  _floors;
 
-    public static void init(GameInfo gameInfo, ParcelModel[][][]parcels) {
+    public static void init(GameInfo gameInfo, Parcel[][][]parcels) {
         _groundFloor = gameInfo.groundFloor;
         _currentFloor = gameInfo.worldFloors - 1;
         _parcels = parcels;
@@ -50,11 +50,11 @@ public class WorldHelper {
     public static boolean           hasWallOrDoor(int x, int y, int z) { return inMapBounds(x, y, z) && _parcels[x][y][z].hasItem(StructureItem.class) && hasWallOrDoor(_parcels[x][y][z]); }
     public static boolean           hasLiquid(int x, int y, int z) { return inMapBounds(x, y, z) && _parcels[x][y][z].hasLiquid(); }
 
-    public static boolean           hasStructure(ParcelModel parcel) { return parcel.hasItem(StructureItem.class); }
-    public static boolean           hasWallOrDoor(ParcelModel parcel) { return parcel.hasItem(StructureItem.class) && (parcel.getItem(StructureItem.class).getInfo().isWall || parcel.getItem(StructureItem.class).getInfo().isDoor); }
-    public static boolean           hasWall(ParcelModel parcel) { return parcel.hasItem(StructureItem.class) && parcel.getItem(StructureItem.class).getInfo().isWall; }
-    public static boolean           hasDoor(ParcelModel parcel) { return parcel.hasItem(StructureItem.class) && parcel.getItem(StructureItem.class).getInfo().isDoor; }
-    public static boolean           hasFloor(ParcelModel parcel) { return parcel.hasItem(StructureItem.class) && parcel.getItem(StructureItem.class).getInfo().isFloor; }
+    public static boolean           hasStructure(Parcel parcel) { return parcel.hasItem(StructureItem.class); }
+    public static boolean           hasWallOrDoor(Parcel parcel) { return parcel.hasItem(StructureItem.class) && (parcel.getItem(StructureItem.class).getInfo().isWall || parcel.getItem(StructureItem.class).getInfo().isDoor); }
+    public static boolean           hasWall(Parcel parcel) { return parcel.hasItem(StructureItem.class) && parcel.getItem(StructureItem.class).getInfo().isWall; }
+    public static boolean           hasDoor(Parcel parcel) { return parcel.hasItem(StructureItem.class) && parcel.getItem(StructureItem.class).getInfo().isDoor; }
+    public static boolean           hasFloor(Parcel parcel) { return parcel.hasItem(StructureItem.class) && parcel.getItem(StructureItem.class).getInfo().isFloor; }
 
     /**
      * Search for org.smallbox.faraway.core.module.room.model free to receive a ConsumableItem
@@ -63,7 +63,7 @@ public class WorldHelper {
      * @param itemInfo
      * @return nearest free org.smallbox.faraway.core.module.room.model
      */
-    public static ParcelModel getNearestFreeArea(ParcelModel parcel, ItemInfo itemInfo, int quantity) {
+    public static Parcel getNearestFreeArea(Parcel parcel, ItemInfo itemInfo, int quantity) {
         if (parcel != null && itemInfo.isConsumable) {
             int x = parcel.x;
             int y = parcel.y;
@@ -98,7 +98,7 @@ public class WorldHelper {
             return false;
         }
 
-        ParcelModel parcel = _parcels[x][y][z];
+        Parcel parcel = _parcels[x][y][z];
         if (parcel.hasItem(StructureItem.class) && !parcel.getItem(StructureItem.class).isWalkable()) {
             return false;
         }
@@ -138,11 +138,11 @@ public class WorldHelper {
         return !(x < 0 || y < 0 || z < 0 || x >= _width || y >= _height || z >= _floors);
     }
 
-    public static ParcelModel getNearestFreeParcel(int x, int y, int z, boolean acceptInterior, boolean acceptExterior) {
+    public static Parcel getNearestFreeParcel(int x, int y, int z, boolean acceptInterior, boolean acceptExterior) {
         return getNearestFreeParcel(WorldHelper.getParcel(x, y, z), acceptInterior, acceptExterior);
     }
 
-    public static ParcelModel getNearestFreeParcel(ParcelModel parcel, ItemInfo itemInfo, int quantity) {
+    public static Parcel getNearestFreeParcel(Parcel parcel, ItemInfo itemInfo, int quantity) {
         int x = parcel.x;
         int y = parcel.y;
         int z = parcel.z;
@@ -169,7 +169,7 @@ public class WorldHelper {
     }
 
     // TODO: Use spiral pattern
-    public static ParcelModel getNearestFreeParcel(ParcelModel parcel, boolean acceptInterior, boolean acceptExterior) {
+    public static Parcel getNearestFreeParcel(Parcel parcel, boolean acceptInterior, boolean acceptExterior) {
         int x = parcel.x;
         int y = parcel.y;
         int z = parcel.z;
@@ -230,7 +230,7 @@ public class WorldHelper {
         return !_parcels[x][y][z].hasItem(ConsumableItem.class);
     }
 
-    public static ParcelModel getNearestWalkable(ParcelModel parcel, int minDistance, int maxDistance) {
+    public static Parcel getNearestWalkable(Parcel parcel, int minDistance, int maxDistance) {
         int x = parcel.x;
         int y = parcel.y;
         int z = parcel.z;
@@ -260,7 +260,7 @@ public class WorldHelper {
         return WorldHelper.inMapBounds(x, y, z) && _parcels[x][y][z].isWalkable();
     }
 
-    public static ParcelModel getRandomFreeSpace(int floor, boolean acceptInterior, boolean acceptExterior) {
+    public static Parcel getRandomFreeSpace(int floor, boolean acceptInterior, boolean acceptExterior) {
         int startX = MathUtils.random(0, _width - 1);
         int startY = MathUtils.random(0, _height - 1);
         for (int i = 0; i < _width; i++) {
@@ -281,11 +281,11 @@ public class WorldHelper {
     }
 
 
-    public static boolean isSurroundedByBlocked(ParcelModel toParcel) {
+    public static boolean isSurroundedByBlocked(Parcel toParcel) {
         return isSurroundedByBlocked(toParcel.x, toParcel.y, toParcel.z);
     }
 
-    public static boolean isSurrounded(SurroundedPattern surroundedPattern, ParcelModel parcelGoal, ParcelModel parcelCheck) {
+    public static boolean isSurrounded(SurroundedPattern surroundedPattern, Parcel parcelGoal, Parcel parcelCheck) {
 
         // Same parcel
         if (parcelGoal.z == parcelCheck.z && parcelGoal.x == parcelCheck.x && parcelGoal.y == parcelCheck.y) return true;
@@ -316,21 +316,21 @@ public class WorldHelper {
         return !isFreePath(x, y, z - 1);
     }
 
-    public static ParcelModel getParcel(int x, int y, int z) {
+    public static Parcel getParcel(int x, int y, int z) {
         if (inMapBounds(x, y, z)) {
             return _parcels[x][y][z];
         }
         return null;
     }
 
-    public static ParcelModel getParcelOffset(ParcelModel parcel, int offsetX, int offsetY) {
+    public static Parcel getParcelOffset(Parcel parcel, int offsetX, int offsetY) {
         if (inMapBounds(parcel.x + offsetX, parcel.y + offsetY, parcel.z)) {
             return _parcels[parcel.x + offsetX][parcel.y + offsetY][parcel.z];
         }
         return null;
     }
 
-    public static int getApproxDistance(ParcelModel p1, ParcelModel p2) {
+    public static int getApproxDistance(Parcel p1, Parcel p2) {
         if (p1 == null) {
             throw new GameException(WorldHelper.class, "P1 cannot be null");
         }
@@ -342,8 +342,8 @@ public class WorldHelper {
         return Math.abs(p1.x - p2.x) + Math.abs(p1.y - p2.y);
     }
 
-    public static List<ParcelModel> getParcelInRect(int x1, int y1, int x2, int y2, int z) {
-        List<ParcelModel> parcelList = new ArrayList<>();
+    public static List<Parcel> getParcelInRect(int x1, int y1, int x2, int y2, int z) {
+        List<Parcel> parcelList = new ArrayList<>();
 
         int fromMapX = Math.min(x1, x2);
         int fromMapY = Math.min(y1, y2);
@@ -352,7 +352,7 @@ public class WorldHelper {
 
         for (int mapX = fromMapX; mapX <= toMapX; mapX++) {
             for (int mapY = fromMapY; mapY <= toMapY; mapY++) {
-                ParcelModel parcel = WorldHelper.getParcel(mapX, mapY, z);
+                Parcel parcel = WorldHelper.getParcel(mapX, mapY, z);
                 if (parcel != null) {
                     parcelList.add(parcel);
                 }
@@ -363,14 +363,14 @@ public class WorldHelper {
     }
 
     public interface ParcelCallback {
-        void onCallback(ParcelModel parcelModel);
+        void onCallback(Parcel parcel);
     }
 
-    public static void getParcelAround(ParcelModel source, SurroundedPattern surroundedPattern, ParcelCallback callback) {
+    public static void getParcelAround(Parcel source, SurroundedPattern surroundedPattern, ParcelCallback callback) {
         getParcelAround(source, surroundedPattern, parcel -> true, callback);
     }
 
-    public static void getParcelAround(ParcelModel source, SurroundedPattern surroundedPattern, Predicate<ParcelModel> condition, ParcelCallback callback) {
+    public static void getParcelAround(Parcel source, SurroundedPattern surroundedPattern, Predicate<Parcel> condition, ParcelCallback callback) {
 
         // Same parcel
         if (surroundedPattern != SurroundedPattern.X_CROSS && surroundedPattern != SurroundedPattern.X_SQUARE) {
@@ -393,7 +393,7 @@ public class WorldHelper {
 
     }
 
-    public static ParcelModel getRandomParcel(ParcelModel initailParcel, int maxDistance) {
+    public static Parcel getRandomParcel(Parcel initailParcel, int maxDistance) {
         int x = Utils.bound(0, _width - 1, (int)(initailParcel.x + (Math.random() * maxDistance) - maxDistance / 2));
         int y = Utils.bound(0, _height - 1, (int)(initailParcel.y + (Math.random() * maxDistance) - maxDistance / 2));
         return _parcels[x][y][initailParcel.z];
@@ -401,11 +401,11 @@ public class WorldHelper {
 
     public enum SearchStrategy { FREE }
 
-    public static ParcelModel searchAround(ParcelModel originParcel, int maxDistance, SearchStrategy... strategies) {
+    public static Parcel searchAround(Parcel originParcel, int maxDistance, SearchStrategy... strategies) {
         for (int distance = 0; distance <= maxDistance; distance++) {
             for (int x = originParcel.x - distance; x <= originParcel.x + distance; x++) {
                 for (int y = originParcel.y - distance; y <= originParcel.y + distance; y++) {
-                    ParcelModel parcel = getParcel(x, y, originParcel.z);
+                    Parcel parcel = getParcel(x, y, originParcel.z);
                     if (parcel != null && searchAroundMatch(parcel, strategies)) {
                         return parcel;
                     }
@@ -415,7 +415,7 @@ public class WorldHelper {
         return null;
     }
 
-    private static boolean searchAroundMatch(ParcelModel parcel, SearchStrategy... strategies) {
+    private static boolean searchAroundMatch(Parcel parcel, SearchStrategy... strategies) {
         for (SearchStrategy strategy: strategies) {
             if (strategy == SearchStrategy.FREE && !parcel.isWalkable()) {
                 return false;
@@ -425,7 +425,7 @@ public class WorldHelper {
     }
 
     public interface GetParcelCallback {
-        boolean onParcel(ParcelModel parcel);
+        boolean onParcel(Parcel parcel);
     }
 
     /**
@@ -434,7 +434,7 @@ public class WorldHelper {
      * @param parcel    position initiale
      * @param callback  condition d'arret
      */
-    public static ParcelModel move(ParcelModel parcel, GetParcelCallback callback) {
+    public static Parcel move(Parcel parcel, GetParcelCallback callback) {
         return move(parcel.x, parcel.y, parcel.z, callback);
     }
 
@@ -446,7 +446,7 @@ public class WorldHelper {
      * @param z0        position Z initiale
      * @param callback  condition d'arret
      */
-    public static ParcelModel move(int x0, int y0, int z0, GetParcelCallback callback) {
+    public static Parcel move(int x0, int y0, int z0, GetParcelCallback callback) {
         Log.info(WorldHelper.class, "Search parcel (initial: %d x %d x %d)", x0, y0, z0);
 
         // directions possibles: G=(-1,0) H=(0,-1) D=(1,0) B=(0,1)
@@ -473,7 +473,7 @@ public class WorldHelper {
                 for (int j = 0; j < stepToDo; j++) {
 
                     // condition de sortie
-                    ParcelModel parcel = getParcel(x, y, z0);
+                    Parcel parcel = getParcel(x, y, z0);
                     if (parcel != null && callback.onParcel(parcel)) {
                         Log.info(WorldHelper.class, "Search parcel: found (final: %d x %d x %d)", x, y, z0);
                         return parcel;

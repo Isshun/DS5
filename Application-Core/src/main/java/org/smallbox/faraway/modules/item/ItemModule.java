@@ -9,7 +9,7 @@ import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.module.world.model.MapObjectModel;
-import org.smallbox.faraway.core.module.world.model.ParcelModel;
+import org.smallbox.faraway.core.module.world.model.Parcel;
 import org.smallbox.faraway.modules.building.BasicDumpJob;
 import org.smallbox.faraway.modules.building.BuildJobFactory;
 import org.smallbox.faraway.modules.consumable.ConsumableModule;
@@ -87,7 +87,7 @@ public class ItemModule extends SuperGameModule<UsableItem, ItemModuleObserver> 
     }
 
     @Override
-    public void putObject(ParcelModel parcel, ItemInfo itemInfo, int data, boolean complete) {
+    public void putObject(Parcel parcel, ItemInfo itemInfo, int data, boolean complete) {
         if (itemInfo.isUserItem) {
             UsableItem item = new UsableItem(itemInfo, data);
             item.setParcel(parcel);
@@ -108,7 +108,7 @@ public class ItemModule extends SuperGameModule<UsableItem, ItemModuleObserver> 
         }
     }
 
-    public void addPattern(ParcelModel parcel, ItemInfo itemInfo) {
+    public void addPattern(Parcel parcel, ItemInfo itemInfo) {
         Log.info("Add pattern for %s at position %s", itemInfo, parcel);
 
         // Create item
@@ -144,7 +144,7 @@ public class ItemModule extends SuperGameModule<UsableItem, ItemModuleObserver> 
         return addItem(itemInfo, isComplete, WorldHelper.getParcel(x, y, z));
     }
 
-    public UsableItem addItem(ItemInfo itemInfo, boolean isComplete, ParcelModel parcel) {
+    public UsableItem addItem(ItemInfo itemInfo, boolean isComplete, Parcel parcel) {
         UsableItem item = new UsableItem(itemInfo);
         item.setParcel(parcel);
         item.setBuildProgress(isComplete ? itemInfo.build.cost : 0);
@@ -157,7 +157,7 @@ public class ItemModule extends SuperGameModule<UsableItem, ItemModuleObserver> 
         return item;
     }
 
-    public UsableItem getItem(ParcelModel parcel) {
+    public UsableItem getItem(Parcel parcel) {
         for (UsableItem item: getAll()) {
             if (item.getParcel() == parcel) {
                 return item;

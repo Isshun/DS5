@@ -9,20 +9,20 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectMap;
 import org.smallbox.faraway.core.game.helper.SurroundedPattern;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
-import org.smallbox.faraway.core.module.world.model.ParcelModel;
+import org.smallbox.faraway.core.module.world.model.Parcel;
 
 /**
  * This graph contains extra connections for the last parcel to always considerate them as a walkable parcel
  * It's allow to build path to a non-walkable parcel (typically a job's target)
  */
-public class TemporaryGraph implements IndexedGraph<ParcelModel> {
+public class TemporaryGraph implements IndexedGraph<Parcel> {
 
-    private final ObjectMap<ParcelModel, Array<Connection<ParcelModel>>> connections = new ObjectMap<>();
+    private final ObjectMap<Parcel, Array<Connection<Parcel>>> connections = new ObjectMap<>();
     private final ParcelHeuristic parcelHeuristic = new ParcelHeuristic();
     private final ParcelGraph parcelGraph;
     private final boolean minusOne;
 
-    public TemporaryGraph(ParcelGraph parcelGraph, ParcelModel toParcel, boolean minusOne) {
+    public TemporaryGraph(ParcelGraph parcelGraph, Parcel toParcel, boolean minusOne) {
         this.parcelGraph = parcelGraph;
         this.minusOne = minusOne;
 
@@ -38,14 +38,14 @@ public class TemporaryGraph implements IndexedGraph<ParcelModel> {
         }
     }
 
-    public GraphPath<ParcelModel> findPath(ParcelModel startParcel, ParcelModel goalParcel) {
-        GraphPath<ParcelModel> path = new DefaultGraphPath<>();
+    public GraphPath<Parcel> findPath(Parcel startParcel, Parcel goalParcel) {
+        GraphPath<Parcel> path = new DefaultGraphPath<>();
         new IndexedAStarPathFinder<>(this).searchNodePath(startParcel, goalParcel, parcelHeuristic, path);
         return path;
     }
 
     @Override
-    public Array<Connection<ParcelModel>> getConnections(ParcelModel fromNode) {
+    public Array<Connection<Parcel>> getConnections(Parcel fromNode) {
         if (connections.get(fromNode) != null) {
             return connections.get(fromNode);
         }
@@ -53,7 +53,7 @@ public class TemporaryGraph implements IndexedGraph<ParcelModel> {
     }
 
     @Override
-    public int getIndex(ParcelModel node) {
+    public int getIndex(Parcel node) {
         return parcelGraph.getIndex(node);
     }
 

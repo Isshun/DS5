@@ -1,7 +1,7 @@
 package org.smallbox.faraway.modules.character.model;
 
 import org.smallbox.faraway.core.game.modelInfo.CharacterInfo;
-import org.smallbox.faraway.core.module.world.model.ParcelModel;
+import org.smallbox.faraway.core.module.world.model.Parcel;
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 import org.smallbox.faraway.modules.character.model.base.CharacterStatsExtra;
 import org.smallbox.faraway.modules.job.freeTimeJobs.BasicAndroidSelfCheckJob;
@@ -22,7 +22,7 @@ public class AndroidModel extends CharacterModel {
             new String[] {"bt_tool_3",  "tool"}
     };
 
-    public AndroidModel(int id, CharacterInfo characterInfo, ParcelModel parcel) {
+    public AndroidModel(int id, CharacterInfo characterInfo, Parcel parcel) {
         super(id, characterInfo, parcel);
 
         CharacterFreeTimeExtra characterFreeTimeExtra = new CharacterFreeTimeExtra(this);

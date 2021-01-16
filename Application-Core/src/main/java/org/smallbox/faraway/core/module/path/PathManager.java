@@ -13,7 +13,7 @@ import org.smallbox.faraway.core.game.helper.SurroundedPattern;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.module.path.graph.ParcelGraph;
 import org.smallbox.faraway.core.module.path.graph.TemporaryGraph;
-import org.smallbox.faraway.core.module.world.model.ParcelModel;
+import org.smallbox.faraway.core.module.world.model.Parcel;
 import org.smallbox.faraway.modules.character.model.PathModel;
 import org.smallbox.faraway.modules.world.WorldModule;
 import org.smallbox.faraway.util.log.Log;
@@ -35,7 +35,7 @@ public class PathManager extends SuperGameModule {
 
     final private ArrayList<Runnable>           _runnable;
     final private ExecutorService               _threadPool;
-    private IndexedAStarPathFinder<ParcelModel> _finder;
+    private IndexedAStarPathFinder<Parcel> _finder;
     private Map<Long, PathModel>                _cache;
     private ParcelGraph parcelGraph;
 
@@ -62,7 +62,7 @@ public class PathManager extends SuperGameModule {
 //        return getPath(fromParcel, toParcel, horizontalApprox, verticalApprox) != null;
 //    }
 
-    public PathModel getPath(ParcelModel fromParcel, ParcelModel toParcel, boolean horizontalApprox, boolean verticalApprox, boolean minusOne) {
+    public PathModel getPath(Parcel fromParcel, Parcel toParcel, boolean horizontalApprox, boolean verticalApprox, boolean minusOne) {
         return getPath(fromParcel, toParcel, minusOne);
 //        assert fromParcel != null;
 //        assert toParcel != null;
@@ -110,7 +110,7 @@ public class PathManager extends SuperGameModule {
 //        return bestPath;
     }
 
-    private PathModel getPath(ParcelModel fromParcel, ParcelModel toParcel, boolean minusOne) {
+    private PathModel getPath(Parcel fromParcel, Parcel toParcel, boolean minusOne) {
         if (fromParcel == null) {
             throw new GameException(PathManager.class, "fromParcel is null");
         }
@@ -128,7 +128,7 @@ public class PathManager extends SuperGameModule {
 
         // Empty path
         if (fromParcel == toParcel) {
-            DefaultGraphPath<ParcelModel> nodes = new DefaultGraphPath<>();
+            DefaultGraphPath<Parcel> nodes = new DefaultGraphPath<>();
             nodes.add(toParcel);
             return PathModel.create(nodes, minusOne);
         }
@@ -158,7 +158,7 @@ public class PathManager extends SuperGameModule {
         return null;
     }
 
-    public GraphPath<ParcelModel> findPath(ParcelModel fromParcel, ParcelModel toParcel, boolean minusOne) {
+    public GraphPath<Parcel> findPath(Parcel fromParcel, Parcel toParcel, boolean minusOne) {
         assert fromParcel != null;
         assert toParcel != null;
 
@@ -213,7 +213,7 @@ public class PathManager extends SuperGameModule {
 //        return null;
     }
 
-    private long getSum(ParcelModel fromParcel, ParcelModel toParcel) {
+    private long getSum(Parcel fromParcel, Parcel toParcel) {
         assert fromParcel.x < 256;
         assert fromParcel.y < 256;
         assert fromParcel.z < 64;
@@ -233,15 +233,15 @@ public class PathManager extends SuperGameModule {
     }
 
     // TODO
-    public int getDistance(ParcelModel p1, ParcelModel p2) {
+    public int getDistance(Parcel p1, Parcel p2) {
         return Math.abs(p1.x - p2.x) + Math.abs(p1.y - p2.y) + Math.abs(p1.z - p2.z);
     }
 
-    public void refreshConnections(ParcelModel source) {
+    public void refreshConnections(Parcel source) {
         WorldHelper.getParcelAround(source, SurroundedPattern.X_CROSS, parcel -> parcelGraph.refreshConnections(parcel));
     }
 
-    public boolean hasConnection(ParcelModel fromParcel, ParcelModel toParcel) {
+    public boolean hasConnection(Parcel fromParcel, Parcel toParcel) {
         for (Connection<?> connection: parcelGraph.getConnections(fromParcel)) {
             if (connection.getToNode() == toParcel) {
                 return true;
@@ -256,7 +256,7 @@ public class PathManager extends SuperGameModule {
                 WorldHelper.getParcelAround(
                         fromParcel,
                         SurroundedPattern.X_CROSS,
-                        ParcelModel::isWalkable,
+                        Parcel::isWalkable,
                         toParcel -> parcelGraph.createConnection(fromParcel, toParcel)
                 )
         );

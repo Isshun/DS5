@@ -12,7 +12,7 @@ import org.smallbox.faraway.core.game.Data;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.modelInfo.CharacterInfo;
-import org.smallbox.faraway.core.module.world.model.ParcelModel;
+import org.smallbox.faraway.core.module.world.model.Parcel;
 import org.smallbox.faraway.modules.character.model.CharacterInfoAnnotation;
 import org.smallbox.faraway.modules.character.model.CharacterInventoryExtra;
 import org.smallbox.faraway.modules.character.model.HumanModel;
@@ -109,7 +109,7 @@ public class CharacterModule extends SuperGameModule<CharacterModel, CharacterMo
         }
     }
 
-    public CharacterModel getCharacter(ParcelModel parcel) {
+    public CharacterModel getCharacter(Parcel parcel) {
         for (CharacterModel character: modelList) {
             if (character.getParcel() == parcel) {
                 return character;
@@ -124,7 +124,7 @@ public class CharacterModule extends SuperGameModule<CharacterModel, CharacterMo
 
     public CharacterModel addRandom(Class<? extends CharacterModel> cls) {
         try {
-            Constructor<? extends CharacterModel> constructor = cls.getConstructor(int.class, CharacterInfo.class, ParcelModel.class);
+            Constructor<? extends CharacterModel> constructor = cls.getConstructor(int.class, CharacterInfo.class, Parcel.class);
             CharacterInfo characterInfo = data.characters.get(cls.getAnnotation(CharacterInfoAnnotation.class).value());
             CharacterModel character = constructor.newInstance(
                     UUIDUtils.getUUID(),

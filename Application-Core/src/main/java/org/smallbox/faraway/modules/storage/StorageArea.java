@@ -4,7 +4,7 @@ import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.module.world.model.ConsumableItem;
-import org.smallbox.faraway.core.module.world.model.ParcelModel;
+import org.smallbox.faraway.core.module.world.model.Parcel;
 import org.smallbox.faraway.modules.area.AreaModel;
 import org.smallbox.faraway.modules.area.AreaTypeInfo;
 import org.smallbox.faraway.modules.consumable.ConsumableModule;
@@ -70,13 +70,13 @@ public class StorageArea extends AreaModel {
 //        return bestParcel;
 //    }
 
-    public ParcelModel getNearestFreeParcel(ConsumableItem consumable) {
-        for (ParcelModel parcel: _parcels) {
+    public Parcel getNearestFreeParcel(ConsumableItem consumable) {
+        for (Parcel parcel: _parcels) {
             if (parcel.hasItem(ConsumableItem.class) && parcel.accept(consumable.getInfo(), 1)) {
                 return parcel;
             }
         }
-        for (ParcelModel parcel: _parcels) {
+        for (Parcel parcel: _parcels) {
             if (parcel.accept(consumable.getInfo(), 1)) {
                 return parcel;
             }
@@ -107,7 +107,7 @@ public class StorageArea extends AreaModel {
 //    }
 
     @Override
-    public void addParcel(ParcelModel parcel) {
+    public void addParcel(Parcel parcel) {
         super.addParcel(parcel);
     }
 
@@ -129,7 +129,7 @@ public class StorageArea extends AreaModel {
     }
 
     @Override
-    public void onParcelSelected(ParcelModel parcel) {
+    public void onParcelSelected(Parcel parcel) {
         storageModule.addParcel(parcel);
     }
 

@@ -5,7 +5,7 @@ import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
 import org.smallbox.faraway.client.ui.engine.views.View;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
-import org.smallbox.faraway.core.module.world.model.ParcelModel;
+import org.smallbox.faraway.core.module.world.model.Parcel;
 import org.smallbox.faraway.modules.plant.PlantModule;
 import org.smallbox.faraway.modules.plant.model.PlantItem;
 
@@ -66,7 +66,7 @@ public class PlantInfoController extends AbsInfoLuaController<PlantItem> {
         double bestOxygen = 0.5;
         lbOxygen.setText("Oxygen: " + minOxygen + " > " + bestOxygen + " > " + maxOxygen);
 
-        ParcelModel parcel = plant.getParcel();
+        Parcel parcel = plant.getParcel();
         if (parcel != null) {
 
             // Temperature
@@ -108,7 +108,7 @@ public class PlantInfoController extends AbsInfoLuaController<PlantItem> {
     }
 
     @Override
-    public PlantItem getObjectOnParcel(ParcelModel parcel) {
+    public PlantItem getObjectOnParcel(Parcel parcel) {
         return plantModule.getPlant(parcel);
     }
 }

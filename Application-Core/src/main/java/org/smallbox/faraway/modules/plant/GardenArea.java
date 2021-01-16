@@ -5,7 +5,7 @@ import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnInit;
 import org.smallbox.faraway.core.game.Data;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
-import org.smallbox.faraway.core.module.world.model.ParcelModel;
+import org.smallbox.faraway.core.module.world.model.Parcel;
 import org.smallbox.faraway.modules.area.AreaModel;
 import org.smallbox.faraway.modules.area.AreaTypeInfo;
 
@@ -31,7 +31,7 @@ public class GardenArea extends AreaModel {
         _potentialItem.addAll(data.items.stream().filter(item -> item.isPlant).collect(Collectors.toList()));
     }
 
-    public void cleanField(ParcelModel parcel) {
+    public void cleanField(Parcel parcel) {
 //        throw new NotImplementedException("");
 
 //        //  Plan to remove plant
@@ -51,7 +51,7 @@ public class GardenArea extends AreaModel {
 //        }
     }
 
-    public void resetField(ParcelModel parcel) {
+    public void resetField(Parcel parcel) {
 //        throw new NotImplementedException("");
 
 //        // Put new resource on parcel
@@ -63,7 +63,7 @@ public class GardenArea extends AreaModel {
     }
 
     @Override
-    public void addParcel(ParcelModel parcel) {
+    public void addParcel(Parcel parcel) {
         super.addParcel(parcel);
         resetField(parcel);
     }
@@ -97,7 +97,7 @@ public class GardenArea extends AreaModel {
     public Collection<ItemInfo> getPotentials() { return _potentialItem; }
 
     @Override
-    public void onParcelSelected(ParcelModel parcel) {
+    public void onParcelSelected(Parcel parcel) {
         gardenModule.addParcel(parcel);
     }
 }

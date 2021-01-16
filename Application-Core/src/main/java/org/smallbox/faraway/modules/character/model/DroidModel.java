@@ -1,7 +1,7 @@
 package org.smallbox.faraway.modules.character.model;
 
 import org.smallbox.faraway.core.game.modelInfo.CharacterInfo;
-import org.smallbox.faraway.core.module.world.model.ParcelModel;
+import org.smallbox.faraway.core.module.world.model.Parcel;
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 import org.smallbox.faraway.modules.character.model.base.CharacterStatsExtra;
 
@@ -18,7 +18,7 @@ public class DroidModel extends CharacterModel {
             new String[] {"bt_tool_3", "tool"}
     };
 
-    public DroidModel(int id, CharacterInfo characterInfo, ParcelModel parcel) {
+    public DroidModel(int id, CharacterInfo characterInfo, Parcel parcel) {
         super(id, characterInfo, parcel);
 //        _personals.setColor(new Color(0xf1f1f1ff));
     }

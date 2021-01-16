@@ -4,7 +4,7 @@ import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.module.world.model.BuildableMapObject;
 import org.smallbox.faraway.core.module.world.model.ItemFilter;
-import org.smallbox.faraway.core.module.world.model.ParcelModel;
+import org.smallbox.faraway.core.module.world.model.Parcel;
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 import org.smallbox.faraway.modules.itemFactory.ItemFactoryModel;
 import org.smallbox.faraway.modules.job.JobModel;
@@ -63,7 +63,7 @@ public class UsableItem extends BuildableMapObject {
 
     // TODO: this method must only be used by world serializer, createGame pack/unpack method for in-game use
     @Override
-    public void setParcel(ParcelModel parcel) {
+    public void setParcel(Parcel parcel) {
         super.setParcel(parcel);
         initSlots();
 
@@ -197,7 +197,7 @@ public class UsableItem extends BuildableMapObject {
         return true;
     }
 
-    public boolean isStorageParcel(ParcelModel parcel) {
+    public boolean isStorageParcel(Parcel parcel) {
         return _storageSlot != null && _parcel.x + _storageSlot[0] == parcel.x && _parcel.y + _storageSlot[1] == parcel.y;
     }
 

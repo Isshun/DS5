@@ -8,7 +8,7 @@ import org.smallbox.faraway.client.ui.engine.views.widgets.UIList;
 import org.smallbox.faraway.client.ui.engine.views.View;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
-import org.smallbox.faraway.core.module.world.model.ParcelModel;
+import org.smallbox.faraway.core.module.world.model.Parcel;
 import org.smallbox.faraway.core.module.world.model.StructureItem;
 import org.smallbox.faraway.modules.structure.StructureModule;
 
@@ -82,7 +82,7 @@ public class StructureInfoController extends AbsInfoLuaController<StructureItem>
     }
 
     @Override
-    public StructureItem getObjectOnParcel(ParcelModel parcel) {
+    public StructureItem getObjectOnParcel(Parcel parcel) {
         return structureModule.getStructure(parcel);
     }
 }

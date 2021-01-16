@@ -1,7 +1,7 @@
 package org.smallbox.faraway.modules.character.model;
 
 import org.smallbox.faraway.core.game.modelInfo.CharacterInfo;
-import org.smallbox.faraway.core.module.world.model.ParcelModel;
+import org.smallbox.faraway.core.module.world.model.Parcel;
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 import org.smallbox.faraway.modules.character.model.base.CharacterStatsExtra;
 
@@ -21,7 +21,7 @@ public class DebugBotModel extends CharacterModel {
             new String[] {"bt_tool_3",  "tool"}
     };
 
-    public DebugBotModel(int id, CharacterInfo characterInfo, ParcelModel parcel) {
+    public DebugBotModel(int id, CharacterInfo characterInfo, Parcel parcel) {
         super(id, characterInfo, parcel);
 
         _extra.put(CharacterInventoryExtra.class, new CharacterInventoryExtra(this));

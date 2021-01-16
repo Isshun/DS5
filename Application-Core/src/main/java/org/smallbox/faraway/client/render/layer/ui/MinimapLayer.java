@@ -20,7 +20,7 @@ import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameManager;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.service.applicationConfig.ApplicationConfig;
-import org.smallbox.faraway.core.module.world.model.ParcelModel;
+import org.smallbox.faraway.core.module.world.model.Parcel;
 import org.smallbox.faraway.core.module.world.model.StructureItem;
 import org.smallbox.faraway.modules.character.CharacterModule;
 import org.smallbox.faraway.modules.consumable.ConsumableModule;
@@ -30,6 +30,7 @@ import org.smallbox.faraway.modules.world.WorldModule;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
@@ -63,9 +64,9 @@ public class MinimapLayer extends BaseLayer {
     private List<MinimapRule> rules = Arrays.asList(
             new MinimapRule(parcel -> parcel.hasItem(StructureItem.class), parcel -> COLOR_STRUCTURE),
             new MinimapRule(parcel -> plantModule.getPlant(parcel) != null, parcel -> COLOR_PLANT),
-            new MinimapRule(ParcelModel::hasRock, parcel -> COLOR_ROCK),
-            new MinimapRule(ParcelModel::hasGround, parcel -> parcel.getGroundInfo().color2),
-            new MinimapRule(ParcelModel::hasLiquid, parcel -> parcel.getLiquidInfo().color2),
+            new MinimapRule(Parcel::hasRock, parcel -> COLOR_ROCK),
+            new MinimapRule(Parcel::hasGround, parcel -> parcel.getGroundInfo().color2),
+            new MinimapRule(Parcel::hasLiquid, parcel -> parcel.getLiquidInfo().color2),
             new MinimapRule(parcel -> true, parcel -> Color.RED)
     );
 
@@ -85,19 +86,19 @@ public class MinimapLayer extends BaseLayer {
     private float ratioY;
 
     private class MinimapRule {
-        private final Predicate<ParcelModel> predicate;
-        private final Function<ParcelModel, Color> function;
+        private final Predicate<Parcel> predicate;
+        private final Function<Parcel, Color> function;
 
-        public MinimapRule(Predicate<ParcelModel> predicate, Function<ParcelModel, Color> function) {
+        public MinimapRule(Predicate<Parcel> predicate, Function<Parcel, Color> function) {
             this.predicate = predicate;
             this.function = function;
         }
 
-        public boolean matches(ParcelModel parcel) {
+        public boolean matches(Parcel parcel) {
             return predicate.test(parcel);
         }
 
-        public Color getColor(ParcelModel parcel) {
+        public Color getColor(Parcel parcel) {
             return function.apply(parcel);
         }
     }
@@ -129,7 +130,7 @@ public class MinimapLayer extends BaseLayer {
     }
 
     @Override
-    public void onRemoveRock(ParcelModel parcel) {
+    public void onRemoveRock(Parcel parcel) {
         _dirty = true;
     }
 
@@ -184,11 +185,13 @@ public class MinimapLayer extends BaseLayer {
             int displayWidth = (int) (gameWidth * scale);
             int displayHeight = (int) (gameHeight * scale);
 
-            ParcelModel[][][] parcels = worldModule.getParcels();
             for (int x = 0; x < gameWidth; x++) {
                 for (int y = 0; y < gameHeight; y++) {
-                    ParcelModel parcel = parcels[x][y][_floor];
-                    rules.stream().filter(rule -> rule.matches(parcel)).findFirst().ifPresent(rule -> _pixmap.drawPixel(parcel.x, parcel.y, rule.getColor(parcel).toIntBits()));
+                    Optional.ofNullable(worldModule.getParcel(x, y, _floor))
+                            .ifPresent(parcel -> rules.stream()
+                                    .filter(rule -> rule.matches(parcel))
+                                    .findFirst()
+                                    .ifPresent(rule -> _pixmap.drawPixel(parcel.x, parcel.y, rule.getColor(parcel).toIntBits())));
                 }
             }
 

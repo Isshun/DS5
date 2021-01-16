@@ -9,7 +9,7 @@ import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.model.MovableModel;
 import org.smallbox.faraway.core.game.service.applicationConfig.ApplicationConfig;
 import org.smallbox.faraway.core.module.path.PathManager;
-import org.smallbox.faraway.core.module.world.model.ParcelModel;
+import org.smallbox.faraway.core.module.world.model.Parcel;
 import org.smallbox.faraway.modules.character.model.PathModel;
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 import org.smallbox.faraway.util.Constant;
@@ -56,7 +56,7 @@ public class CharacterMoveModule extends SuperGameModule2<CharacterModuleObserve
 //        characterModule.getAll().forEach(this::move);
     }
 
-    public CharacterMoveStatus move(CharacterModel character, ParcelModel parcel, boolean minusOne) {
+    public CharacterMoveStatus move(CharacterModel character, Parcel parcel, boolean minusOne) {
 
         // Character is already moving to this parcel
         if (character.getPath() != null && character.getPath().getLastParcel() == parcel) {
@@ -121,8 +121,8 @@ public class CharacterMoveModule extends SuperGameModule2<CharacterModuleObserve
         if (_path.next()) {
 
             // Set direction to the next parcel
-            ParcelModel fromParcel = character._parcel;
-            ParcelModel toParcel = _path.getCurrentParcel();
+            Parcel fromParcel = character._parcel;
+            Parcel toParcel = _path.getCurrentParcel();
             character._direction = getDirection(fromParcel.x, fromParcel.y, toParcel.x, toParcel.y);
 
             // Set logic position of the character to the next parcel
@@ -168,7 +168,7 @@ public class CharacterMoveModule extends SuperGameModule2<CharacterModuleObserve
                         && WorldHelper.getApproxDistance(character.getParcel(), c.getParcel()) < 4);
     }
 
-    public boolean hasCharacterOnParcel(ParcelModel parcel) {
+    public boolean hasCharacterOnParcel(Parcel parcel) {
         return characterModule.getAll().stream().anyMatch(c -> c.getParcel() == parcel);
     }
 

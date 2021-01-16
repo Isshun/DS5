@@ -10,7 +10,7 @@ import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
-import org.smallbox.faraway.core.module.world.model.ParcelModel;
+import org.smallbox.faraway.core.module.world.model.Parcel;
 
 @GameObject
 public class InterfaceDashboardLayer extends DashboardLayerBase {
@@ -49,7 +49,7 @@ public class InterfaceDashboardLayer extends DashboardLayerBase {
         drawDebug(renderer, "Cursor screen position", gameEventManager.getMouseX() + " x " + gameEventManager.getMouseY());
         drawDebug(renderer, "Cursor world position", layerManager.getViewport().getWorldPosX(gameEventManager.getMouseX()) + " x " + layerManager.getViewport().getWorldPosY(gameEventManager.getMouseY()));
 
-        ParcelModel parcel = WorldHelper.getParcel(
+        Parcel parcel = WorldHelper.getParcel(
                 layerManager.getViewport().getWorldPosX(gameEventManager.getMouseX()),
                 layerManager.getViewport().getWorldPosY(gameEventManager.getMouseY()),
                 layerManager.getViewport().getFloor());

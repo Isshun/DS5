@@ -9,7 +9,7 @@ import org.smallbox.faraway.client.ui.engine.views.widgets.UIList;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.game.Data;
-import org.smallbox.faraway.core.module.world.model.ParcelModel;
+import org.smallbox.faraway.core.module.world.model.Parcel;
 import org.smallbox.faraway.modules.area.AreaModel;
 import org.smallbox.faraway.modules.area.AreaModule;
 import org.smallbox.faraway.modules.plant.GardenArea;
@@ -68,7 +68,7 @@ public class AreaInfoGardenController extends AbsInfoLuaController<AreaModel> {
     }
 
     @Override
-    public AreaModel getObjectOnParcel(ParcelModel parcel) {
+    public AreaModel getObjectOnParcel(Parcel parcel) {
         AreaModel area = areaModule.getArea(parcel);
         return area instanceof GardenArea ? area : null;
     }

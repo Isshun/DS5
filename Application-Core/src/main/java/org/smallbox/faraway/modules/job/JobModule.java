@@ -10,7 +10,7 @@ import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameTime;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.game.service.applicationConfig.ApplicationConfig;
-import org.smallbox.faraway.core.module.world.model.ParcelModel;
+import org.smallbox.faraway.core.module.world.model.Parcel;
 import org.smallbox.faraway.modules.consumable.ConsumableModule;
 import org.smallbox.faraway.modules.job.JobModel.JobAbortReason;
 import org.smallbox.faraway.modules.job.JobModel.JobStatus;
@@ -63,9 +63,9 @@ public class JobModule extends SuperGameModule<JobModel, JobModuleObserver> {
     }
 
     @Deprecated
-    public <T extends JobModel> T createJob(Class<T> cls, ItemInfo.ItemInfoAction itemInfoAction, ParcelModel parcelModel, JobInitCallback<T> jobInitCallback) {
+    public <T extends JobModel> T createJob(Class<T> cls, ItemInfo.ItemInfoAction itemInfoAction, Parcel parcel, JobInitCallback<T> jobInitCallback) {
         try {
-            T job = cls.getConstructor(ItemInfo.ItemInfoAction.class, ParcelModel.class).newInstance(itemInfoAction, parcelModel);
+            T job = cls.getConstructor(ItemInfo.ItemInfoAction.class, Parcel.class).newInstance(itemInfoAction, parcel);
             boolean ret = jobInitCallback.onInit(job);
             job.onNewInit();
             if (!ret) {
@@ -137,7 +137,7 @@ public class JobModule extends SuperGameModule<JobModel, JobModuleObserver> {
 
     // TODO: utile ?
     @Override
-    public void onCancelJobs(ParcelModel parcel, Object object) {
+    public void onCancelJobs(Parcel parcel, Object object) {
         modelList.stream().filter(JobModel::isOpen).forEach(job -> {
             if (object == null && job.getTargetParcel() == parcel) {
                 job.close();

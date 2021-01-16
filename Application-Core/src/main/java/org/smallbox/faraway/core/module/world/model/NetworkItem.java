@@ -9,7 +9,7 @@ public class NetworkItem extends MapObjectModel {
     private final ItemInfo          _info;
     private final NetworkInfo       _networkInfo;
     private boolean                 _isComplete;
-    private ParcelModel             _parcel;
+    private Parcel _parcel;
     private int                     _health;
     private NetworkModel            _network;
     private double                  _quantity;
@@ -27,12 +27,12 @@ public class NetworkItem extends MapObjectModel {
 //    }
 
     public void         setComplete(boolean complete) { _isComplete = complete; }
-    public void         setParcel(ParcelModel parcel) { _parcel = parcel; }
+    public void         setParcel(Parcel parcel) { _parcel = parcel; }
     public void         setNetwork(NetworkModel network) { _network = network; }
     public void         setQuantity(double quantity) { _quantity = quantity; }
 
     public NetworkModel getNetwork() { return _network; }
-    public ParcelModel  getParcel() { return _parcel; }
+    public Parcel getParcel() { return _parcel; }
     public NetworkInfo  getNetworkInfo() { return _networkInfo; }
     public ItemInfo     getInfo() { return _info; }
     public GraphicInfo  getGraphic() { return _info.graphics != null ? _info.graphics.get(0) : null; }

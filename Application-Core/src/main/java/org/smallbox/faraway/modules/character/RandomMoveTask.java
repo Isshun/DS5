@@ -2,7 +2,7 @@ package org.smallbox.faraway.modules.character;
 
 import org.smallbox.faraway.GameTask;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
-import org.smallbox.faraway.core.module.world.model.ParcelModel;
+import org.smallbox.faraway.core.module.world.model.Parcel;
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 
 import static org.smallbox.faraway.util.Utils.second;
@@ -12,8 +12,8 @@ import static org.smallbox.faraway.util.Utils.second;
  */
 public class RandomMoveTask extends GameTask {
 
-    private final ParcelModel initialParcel;
-    private final ParcelModel targetParcel;
+    private final Parcel initialParcel;
+    private final Parcel targetParcel;
     private final CharacterModel character;
 
     public RandomMoveTask(CharacterModel character) {

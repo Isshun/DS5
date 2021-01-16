@@ -1,7 +1,7 @@
 package org.smallbox.faraway.client.render.layer.ground;
 
 import org.smallbox.faraway.core.game.model.MovableModel;
-import org.smallbox.faraway.core.module.world.model.ParcelModel;
+import org.smallbox.faraway.core.module.world.model.Parcel;
 import org.smallbox.faraway.modules.world.WorldModule;
 
 import java.util.stream.Stream;
@@ -27,9 +27,9 @@ public class TileGeneratorRule {
         this.boxedDirections = boxedDirections;
     }
 
-    public boolean check(WorldModule worldModule, ParcelModel parcel) {
+    public boolean check(WorldModule worldModule, Parcel parcel) {
         return Stream.of(boxedDirections).allMatch(box -> box.hasRequired
-                ? worldModule.checkOrNull(parcel, ParcelModel::hasRock, box.direction)
+                ? worldModule.checkOrNull(parcel, Parcel::hasRock, box.direction)
                 : worldModule.check(parcel, p -> !p.hasRock(), box.direction)
         );
     }

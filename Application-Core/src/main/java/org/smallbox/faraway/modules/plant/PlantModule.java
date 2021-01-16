@@ -9,7 +9,7 @@ import org.smallbox.faraway.core.game.Data;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
-import org.smallbox.faraway.core.module.world.model.ParcelModel;
+import org.smallbox.faraway.core.module.world.model.Parcel;
 import org.smallbox.faraway.modules.area.AreaModule;
 import org.smallbox.faraway.modules.consumable.ConsumableModule;
 import org.smallbox.faraway.modules.job.JobModule;
@@ -71,7 +71,7 @@ public class PlantModule extends GenericGameModule<PlantItem> {
 
     public void addPlant(String plantName, int x, int y, int z) { addPlant(data.getItemInfo(plantName), WorldHelper.getParcel(x, y, z)); }
     public void addPlant(ItemInfo item, int x, int y, int z) { addPlant(item, WorldHelper.getParcel(x, y, z)); }
-    public void addPlant(String plantName, ParcelModel parcel) { addPlant(data.getItemInfo(plantName), parcel); }
+    public void addPlant(String plantName, Parcel parcel) { addPlant(data.getItemInfo(plantName), parcel); }
 
     /**
      * Add plant on parcel
@@ -79,7 +79,7 @@ public class PlantModule extends GenericGameModule<PlantItem> {
      * @param item ItemInfo
      * @param parcel ParcelModel
      */
-    public void addPlant(ItemInfo item, ParcelModel parcel) {
+    public void addPlant(ItemInfo item, Parcel parcel) {
 
         // Remove existing plant
         modelList.removeIf(plant -> plant.getParcel() == parcel);
@@ -92,7 +92,7 @@ public class PlantModule extends GenericGameModule<PlantItem> {
     }
 
     private boolean computeGrowingInfo(PlantItem plant) {
-        ParcelModel parcel = plant.getParcel();
+        Parcel parcel = plant.getParcel();
         plant.setGrowingInfo(null);
         double bestValue = -1;
         for (ItemInfo.ItemInfoPlant.GrowingInfo growingInfo: plant.getInfo().plant.states) {
@@ -120,7 +120,7 @@ public class PlantModule extends GenericGameModule<PlantItem> {
         return true;
     }
 
-    public PlantItem getPlant(ParcelModel parcel) {
+    public PlantItem getPlant(Parcel parcel) {
         Optional<PlantItem> optional = modelList.stream().filter(plant -> plant.getParcel() == parcel).findAny();
         return optional.orElse(null);
     }

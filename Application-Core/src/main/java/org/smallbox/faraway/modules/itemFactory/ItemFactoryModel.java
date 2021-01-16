@@ -6,7 +6,7 @@ import org.smallbox.faraway.core.game.Data;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.game.modelInfo.ReceiptGroupInfo;
 import org.smallbox.faraway.core.module.world.model.ConsumableItem;
-import org.smallbox.faraway.core.module.world.model.ParcelModel;
+import org.smallbox.faraway.core.module.world.model.Parcel;
 import org.smallbox.faraway.modules.consumable.ConsumableModule;
 import org.smallbox.faraway.modules.item.UsableItem;
 import org.smallbox.faraway.modules.job.JobModel;
@@ -29,7 +29,7 @@ public class ItemFactoryModel {
     // TODO: file d'attente de sortie
 //    private List<FactoryShoppingItemModel>  _shoppingList;
     private final ItemInfoFactory _factoryInfo;
-    private ParcelModel _storageParcel;
+    private Parcel _storageParcel;
     private String _message;
     private JobModel _craftJob;
     private int _costRemaining;
@@ -185,7 +185,7 @@ public class ItemFactoryModel {
     public ReceiptGroupInfo                 getCurrentReceiptGroup() { return _runningReceipt != null ? _runningReceipt.receiptGroup.receiptGroupInfo : null; }
     public ReceiptGroupInfo.ReceiptInfo     getCurrentReceiptInfo() { return _runningReceipt != null ? _runningReceipt.receiptInfo : null; }
     public FactoryReceiptModel              getRunningReceipt() { return _runningReceipt; }
-    public ParcelModel                      getStorageParcel() { return _storageParcel; }
+    public Parcel getStorageParcel() { return _storageParcel; }
     public String                           getMessage() { return _message; }
 
     public void moveReceipt(ReceiptGroupInfo receiptGroupInfo, int offset) {

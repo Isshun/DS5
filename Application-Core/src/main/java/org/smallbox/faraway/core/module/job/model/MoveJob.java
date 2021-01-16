@@ -1,7 +1,7 @@
 package org.smallbox.faraway.core.module.job.model;
 
 import org.smallbox.faraway.core.game.helper.WorldHelper;
-import org.smallbox.faraway.core.module.world.model.ParcelModel;
+import org.smallbox.faraway.core.module.world.model.Parcel;
 import org.smallbox.faraway.modules.character.model.CharacterSkillExtra;
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 import org.smallbox.faraway.modules.job.JobModel;
@@ -11,7 +11,7 @@ public class MoveJob extends JobModel {
     private int                     _distance;
     private double                     _speedModifier = 1;
 
-    private MoveJob(ParcelModel jobParcel) {
+    private MoveJob(Parcel jobParcel) {
         super(null, jobParcel);
 
         setMainLabel("Move to " + jobParcel.x + "x" + jobParcel.y + " (f" + jobParcel.z + ")");
@@ -20,7 +20,7 @@ public class MoveJob extends JobModel {
 //        super(null, jobParcel, new IconDrawable("data/res/ic_dump.png", 0, 0, 32, 32), new AnimDrawable("data/res/actions.png", 0, 128, 32, 32, 7, 10));
     }
 
-    public static MoveJob create(CharacterModel character, ParcelModel jobParcel) {
+    public static MoveJob create(CharacterModel character, Parcel jobParcel) {
         MoveJob job = new MoveJob(jobParcel);
         job.setCharacterRequire(character);
         return job;
@@ -47,7 +47,7 @@ public class MoveJob extends JobModel {
     }
 
     @Override
-    public ParcelModel getTargetParcel() {
+    public Parcel getTargetParcel() {
         return null;
     }
 

@@ -6,7 +6,7 @@ import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnInit;
 import org.smallbox.faraway.core.game.Data;
-import org.smallbox.faraway.core.module.world.model.ParcelModel;
+import org.smallbox.faraway.core.module.world.model.Parcel;
 import org.smallbox.faraway.modules.world.FastNoise;
 
 import java.util.ArrayList;
@@ -30,7 +30,7 @@ public class CaveGenerator {
         caveMasks.add(assetManager.createPixmapFromTexture("data/worldFactory/cave_mask_2.png"));
     }
 
-    public void addCave(ParcelModel[][][] _parcels, int size, int floors, int offsetX, int offsetY, int offsetZ) {
+    public void addCave(List<Parcel> parcels, int size, int floors, int offsetX, int offsetY, int offsetZ) {
         FastNoise noise = new FastNoise();
         noise.SetSeed(new Random().nextInt());
         noise.SetNoiseType(FastNoise.NoiseType.PerlinFractal);
@@ -62,7 +62,7 @@ public class CaveGenerator {
                     }
 
                     if (value > 0.1) {
-                        ParcelModel parcel = worldFactory.safeParcel(_parcels, offsetX + x, offsetY + y, z);
+                        Parcel parcel = worldFactory.safeParcel(parcels, offsetX + x, offsetY + y, z);
                         if (parcel != null) {
                             parcel.setRockInfo(null);
                             parcel.setGroundInfo(data.getItemInfo("base.ground.rock"));

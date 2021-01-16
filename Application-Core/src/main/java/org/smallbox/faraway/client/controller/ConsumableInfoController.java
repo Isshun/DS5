@@ -9,7 +9,7 @@ import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.dependencyInjector.gameAction.OnGameSelectAction;
 import org.smallbox.faraway.core.module.world.model.ConsumableItem;
-import org.smallbox.faraway.core.module.world.model.ParcelModel;
+import org.smallbox.faraway.core.module.world.model.Parcel;
 import org.smallbox.faraway.modules.consumable.ConsumableModule;
 
 import java.util.Queue;
@@ -60,7 +60,7 @@ public class ConsumableInfoController extends AbsInfoLuaController<ConsumableIte
     }
 
     @Override
-    public ConsumableItem getObjectOnParcel(ParcelModel parcel) {
+    public ConsumableItem getObjectOnParcel(Parcel parcel) {
         return consumableModule.getConsumable(parcel);
     }
 }

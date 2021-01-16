@@ -5,7 +5,7 @@ import org.smallbox.faraway.client.selection.GameSelectionManager;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.module.job.MoveJobFactory;
-import org.smallbox.faraway.core.module.world.model.ParcelModel;
+import org.smallbox.faraway.core.module.world.model.Parcel;
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 import org.smallbox.faraway.modules.job.JobModule;
 
@@ -27,12 +27,12 @@ public class MoveCharacterAction implements GameContextMenuAction {
     }
 
     @Override
-    public boolean check(ParcelModel parcel, int mouseX, int mouseY) {
+    public boolean check(Parcel parcel, int mouseX, int mouseY) {
         return gameSelectionManager.getSelected(CharacterModel.class) != null;
     }
 
     @Override
-    public Runnable getRunnable(ParcelModel parcel, int mouseX, int mouseY) {
+    public Runnable getRunnable(Parcel parcel, int mouseX, int mouseY) {
         CharacterModel character = gameSelectionManager.getSelected(CharacterModel.class);
         return () -> jobModule.add(moveJobFactory.createJob(parcel, character));
     }

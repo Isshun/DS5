@@ -12,7 +12,7 @@ import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.service.applicationConfig.ApplicationConfig;
-import org.smallbox.faraway.core.module.world.model.ParcelModel;
+import org.smallbox.faraway.core.module.world.model.Parcel;
 import org.smallbox.faraway.modules.world.WorldModule;
 
 import java.util.Map;
@@ -26,8 +26,8 @@ public class WorldGroundLayer extends BaseLayer {
     @Inject private ApplicationConfig applicationConfig;
     @Inject private WorldModule worldModule;
 
-    private final Map<ParcelModel, Texture> cachedGrounds = new ConcurrentHashMap<>();
-    private final Map<ParcelModel, Texture> cachedRocks = new ConcurrentHashMap<>();
+    private final Map<Parcel, Texture> cachedGrounds = new ConcurrentHashMap<>();
+    private final Map<Parcel, Texture> cachedRocks = new ConcurrentHashMap<>();
 
     @Override
     public void onGameLongUpdate(Game game) {
@@ -44,7 +44,7 @@ public class WorldGroundLayer extends BaseLayer {
 
         for (int x = fromX; x < toX; x++) {
             for (int y = fromY; y < toY; y++) {
-                ParcelModel parcel = worldModule.getParcel(x, y, viewport.getFloor());
+                Parcel parcel = worldModule.getParcel(x, y, viewport.getFloor());
 
                 if (parcel != null && parcel.hasGround()) {
                     renderer.drawOnMap(cachedGrounds.computeIfAbsent(parcel, p -> groundTileGenerator.getTexture(p)), parcel);

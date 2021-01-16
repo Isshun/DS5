@@ -5,7 +5,7 @@ import org.smallbox.faraway.client.AssetManager;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.game.modelInfo.GraphicInfo;
-import org.smallbox.faraway.core.module.world.model.ParcelModel;
+import org.smallbox.faraway.core.module.world.model.Parcel;
 
 import java.util.Optional;
 
@@ -14,7 +14,7 @@ public class GroundTileGenerator {
 
     @Inject private AssetManager assetManager;
 
-    public Texture getTexture(ParcelModel parcel) {
+    public Texture getTexture(Parcel parcel) {
         return Optional.ofNullable(parcel.getGroundInfo().getGraphicInfo(GraphicInfo.Type.TERRAIN))
                 .map(graphicInfo -> assetManager.lazyLoad("data" + graphicInfo.path, Texture.class))
                 .orElse(null);

@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class ParcelModel extends ParcelCommon {
+public class Parcel extends ParcelCommon {
 //    public final int                        x;
 //    public final int                        y;
 //    public final int                        z;
@@ -36,7 +36,7 @@ public class ParcelModel extends ParcelCommon {
     private final Map<Class<? extends MapObjectModel>, MapObjectModel> _items = new ConcurrentHashMap<>();
     private boolean _connectionDirty;
 
-    public ParcelModel(int index, int x, int y, int z) {
+    public Parcel(int index, int x, int y, int z) {
         this.x = x;
         this.y = y;
         this.z = z;
@@ -85,7 +85,7 @@ public class ParcelModel extends ParcelCommon {
     public double                   getOxygen() { return _room != null ? _room.getOxygen() : -1; }
     public double                   getMoisture() { return 0.5; }
 
-    public void addParcelToConnections(Array<Connection<ParcelModel>> connections, ParcelModel toParcel) {
+    public void addParcelToConnections(Array<Connection<Parcel>> connections, Parcel toParcel) {
         if (toParcel != null) {
             if (isWalkable() && toParcel.isWalkable()) {
                 if (z == toParcel.z

@@ -9,7 +9,7 @@ import org.smallbox.faraway.core.game.Data;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameSerializer;
 import org.smallbox.faraway.core.module.world.SQLManager;
-import org.smallbox.faraway.core.module.world.model.ParcelModel;
+import org.smallbox.faraway.core.module.world.model.Parcel;
 import org.smallbox.faraway.util.Constant;
 
 import java.util.ArrayList;
@@ -17,9 +17,9 @@ import java.util.List;
 
 @GameObject
 public class WorldModuleSerializer extends GameSerializer {
-    @Inject private Game game;
+    @Inject private WorldModule worldModule;
     @Inject private Data data;
-    @Inject private WorldModule module;
+    @Inject private Game game;
 
     @Override
     public int getModulePriority() { return Constant.MODULE_WORLD_PRIORITY; }
@@ -27,11 +27,6 @@ public class WorldModuleSerializer extends GameSerializer {
     @Override
     public void onSave(SQLManager sqlManager) {
         sqlManager.post(db -> {
-            int width = game.getInfo().worldWidth;
-            int height = game.getInfo().worldHeight;
-            int floors = game.getInfo().worldFloors;
-            ParcelModel[][][] parcels = module.getParcels();
-
             try {
                 db.exec("CREATE TABLE WorldModule_parcel (x INTEGER, y INTEGER, z INTEGER, ground TEXT, rock TEXT, plant INTEGER, item INTEGER, structure INTEGER, consumable INTEGER, liquid TEXT, liquid_value REAL)");
 //                db.exec("CREATE TABLE WorldModule_structure (id INTEGER, name TEXT, buildProgress INTEGER)");
@@ -44,19 +39,29 @@ public class WorldModuleSerializer extends GameSerializer {
 //                SQLiteStatement stConsumable = db.prepare("INSERT INTO WorldModule_consumable (id, name, quantity) VALUES (?, ?, ?)");
                 try {
                     db.exec("begin transaction");
-                    for (int x = 0; x < width; x++) {
-                        for (int y = 0; y < height; y++) {
-                            for (int z = 0; z < floors; z++) {
-                                ParcelModel parcel = parcels[x][y][z];
-                                st.bind(1, x);
-                                st.bind(2, y);
-                                st.bind(3, z);
+                    for (Parcel parcel: worldModule.getAll()) {
+                        saveParcel(st, parcel);
+                    }
+                    db.exec("end transaction");
+                } finally {
+                    st.dispose();
+                }
+            } catch (SQLiteException e) {
+                throw new GameException(WorldModuleSerializer.class, "Error during save");
+            }
+        });
+    }
 
-                                // Ground
-                                st.bind(4, parcel.hasGround() ? parcel.getGroundInfo().name : null);
+    private void saveParcel(SQLiteStatement st, Parcel parcel) throws SQLiteException {
+        st.bind(1, parcel.x);
+        st.bind(2, parcel.y);
+        st.bind(3, parcel.z);
 
-                                // Rock
-                                st.bind(5, parcel.hasRock() ? parcel.getRockInfo().name : null);
+        // Ground
+        st.bind(4, parcel.hasGround() ? parcel.getGroundInfo().name : null);
+
+        // Rock
+        st.bind(5, parcel.hasRock() ? parcel.getRockInfo().name : null);
 
 //                                // Plant
 //                                if (parcel.hasPlant()) {
@@ -96,36 +101,23 @@ public class WorldModuleSerializer extends GameSerializer {
 //                                }
 
 
-                                // Liquid
-                                if (parcel.hasLiquid()) {
-                                    st.bind(10, parcel.getLiquidInfo().name);
-                                    st.bind(11, parcel.getLiquidValue());
-                                } else {
-                                    st.bindNull(10);
-                                }
+        // Liquid
+        if (parcel.hasLiquid()) {
+            st.bind(10, parcel.getLiquidInfo().name);
+            st.bind(11, parcel.getLiquidValue());
+        } else {
+            st.bindNull(10);
+        }
 
-                                st.step();
-                                st.reset(false);
-                            }
-                        }
-                    }
-                    db.exec("end transaction");
-                } finally {
-                    st.dispose();
-                }
-            } catch (SQLiteException e) {
-                throw new GameException(WorldModuleSerializer.class, "Error during save");
-            }
-        });
+        st.step();
+        st.reset(false);
     }
 
     public void onLoad(SQLManager sqlManager) {
         sqlManager.post(db -> {
             int width = game.getInfo().worldWidth;
             int height = game.getInfo().worldHeight;
-            int floors = game.getInfo().worldFloors;
-            ParcelModel[][][] parcels = new ParcelModel[width][height][floors];
-            List<ParcelModel> parcelsList = new ArrayList<>();
+            List<Parcel> parcelsList = new ArrayList<>();
 
             try {
                 SQLiteStatement st = db.prepare("SELECT x, y, z, ground, rock, plant, item, structure, consumable, liquid, liquid_value FROM WorldModule_parcel");
@@ -136,9 +128,8 @@ public class WorldModuleSerializer extends GameSerializer {
                         int y = st.columnInt(1);
                         int z = st.columnInt(2);
 
-                        ParcelModel parcel = new ParcelModel(x + (y * width) + (z * width * height), x, y, z);
+                        Parcel parcel = new Parcel(x + (y * width) + (z * width * height), x, y, z);
                         parcelsList.add(parcel);
-                        parcels[x][y][z] = parcel;
 
                         // Ground
                         if (!st.columnNull(3)) {
@@ -177,7 +168,7 @@ public class WorldModuleSerializer extends GameSerializer {
 //                    stStructure.dispose();
                 }
 
-                module.init(parcels, parcelsList);
+                worldModule.init(parcelsList);
             } catch (SQLiteException e) {
                 throw new GameException(WorldModuleSerializer.class, "Error during load");
             }

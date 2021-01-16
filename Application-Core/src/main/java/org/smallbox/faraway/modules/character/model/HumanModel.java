@@ -3,7 +3,7 @@ package org.smallbox.faraway.modules.character.model;
 import org.smallbox.faraway.GameSerializer;
 import org.smallbox.faraway.core.CharacterSerializer;
 import org.smallbox.faraway.core.game.modelInfo.CharacterInfo;
-import org.smallbox.faraway.core.module.world.model.ParcelModel;
+import org.smallbox.faraway.core.module.world.model.Parcel;
 import org.smallbox.faraway.modules.character.CharacterTimetableExtra;
 import org.smallbox.faraway.modules.character.model.base.CharacterName;
 import org.smallbox.faraway.modules.character.model.base.*;
@@ -26,7 +26,7 @@ public class HumanModel extends CharacterModel {
             new String[] {"bt_tool_3", "tool"}
     };
 
-    public HumanModel(int id, CharacterInfo characterInfo, ParcelModel parcel) {
+    public HumanModel(int id, CharacterInfo characterInfo, Parcel parcel) {
         super(id, characterInfo, parcel);
 
         _extra.put(CharacterNeedsExtra.class, new CharacterNeedsExtra(this, _type.needs));

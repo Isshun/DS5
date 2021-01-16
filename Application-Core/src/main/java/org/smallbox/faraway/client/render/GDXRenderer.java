@@ -16,7 +16,7 @@ import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.game.modelInfo.GraphicInfo;
 import org.smallbox.faraway.core.game.service.applicationConfig.ApplicationConfig;
-import org.smallbox.faraway.core.module.world.model.ParcelModel;
+import org.smallbox.faraway.core.module.world.model.Parcel;
 import org.smallbox.faraway.util.Constant;
 import org.smallbox.faraway.util.log.Log;
 
@@ -404,7 +404,7 @@ public class GDXRenderer {
         drawPixel(layerManager.getViewport().getPosX() + (x * Constant.TILE_SIZE), layerManager.getViewport().getPosY() + (y * Constant.TILE_SIZE), Constant.TILE_SIZE, Constant.TILE_SIZE, color);
     }
 
-    public void drawTextOnMap(ParcelModel parcel, String string, int size, Color color) {
+    public void drawTextOnMap(Parcel parcel, String string, int size, Color color) {
         drawTextOnMap(parcel.x, parcel.y, string, size, color, 0, 0);
     }
 
@@ -412,7 +412,7 @@ public class GDXRenderer {
         drawTextOnMap(x, y, string, size, color, 0, 0);
     }
 
-    public void drawTextOnMap(ParcelModel parcel, String string, int size, Color color, int offsetX, int offsetY) {
+    public void drawTextOnMap(Parcel parcel, String string, int size, Color color, int offsetX, int offsetY) {
         drawTextOnMap(parcel.x, parcel.y, string, size, color, offsetX, offsetY);
     }
 
@@ -450,11 +450,11 @@ public class GDXRenderer {
         draw(itemSprite, (parcel.x * Constant.TILE_SIZE) + layerManager.getViewport().getPosX(), (parcel.y * Constant.TILE_SIZE) + layerManager.getViewport().getPosY());
     }
 
-    public void drawOnMap(ParcelModel parcel, Sprite itemSprite) {
+    public void drawOnMap(Parcel parcel, Sprite itemSprite) {
         drawOnMap(parcel, itemSprite, 0, 0);
     }
 
-    public void drawOnMap(ParcelModel parcel, Sprite itemSprite, int offsetX, int offsetY) {
+    public void drawOnMap(Parcel parcel, Sprite itemSprite, int offsetX, int offsetY) {
         draw(itemSprite, (parcel.x * Constant.TILE_SIZE) + layerManager.getViewport().getPosX() + offsetX,
                 (parcel.y * Constant.TILE_SIZE) + layerManager.getViewport().getPosY() + offsetY
         );
@@ -464,14 +464,14 @@ public class GDXRenderer {
         return _camera;
     }
 
-    public void drawOnMap(Texture texture, ParcelModel parcel) {
+    public void drawOnMap(Texture texture, Parcel parcel) {
         draw(texture,
                 viewport.getPosX() + (parcel.x * TILE_SIZE),
                 viewport.getPosY() + (parcel.y * TILE_SIZE),
                 TILE_SIZE, TILE_SIZE);
     }
 
-    public void drawOnMap(GraphicInfo graphicInfo, ParcelModel parcel) {
+    public void drawOnMap(GraphicInfo graphicInfo, Parcel parcel) {
         draw(assetManager.lazyLoad("data" + graphicInfo.path, Texture.class),
                 viewport.getPosX() + (parcel.x * TILE_SIZE),
                 viewport.getPosY() + (parcel.y * TILE_SIZE),

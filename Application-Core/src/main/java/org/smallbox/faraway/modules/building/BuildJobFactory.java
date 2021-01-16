@@ -6,7 +6,7 @@ import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.game.service.applicationConfig.ApplicationConfig;
 import org.smallbox.faraway.core.module.path.PathManager;
 import org.smallbox.faraway.core.module.world.model.BuildableMapObject;
-import org.smallbox.faraway.core.module.world.model.ParcelModel;
+import org.smallbox.faraway.core.module.world.model.Parcel;
 import org.smallbox.faraway.modules.character.model.CharacterSkillExtra;
 import org.smallbox.faraway.modules.item.ItemModule;
 import org.smallbox.faraway.modules.job.JobModel;
@@ -27,7 +27,7 @@ public class BuildJobFactory {
     @Inject
     private ApplicationConfig applicationConfig;
 
-    public JobModel createJob(ItemInfo itemInfo, ParcelModel targetParcel) {
+    public JobModel createJob(ItemInfo itemInfo, Parcel targetParcel) {
         BuildJob job = new BuildJob();
 
         job.setSkillType(CharacterSkillExtra.SkillType.BUILD);

@@ -6,14 +6,14 @@ import org.smallbox.faraway.common.UUIDUtils;
 import org.smallbox.faraway.core.game.helper.SurroundedPattern;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
-import org.smallbox.faraway.core.module.world.model.ParcelModel;
+import org.smallbox.faraway.core.module.world.model.Parcel;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
 public abstract class AreaModel extends ObjectModel implements OnSelectParcelListener {
-    protected final List<ParcelModel>   _parcels = new ArrayList<>();
+    protected final List<Parcel>   _parcels = new ArrayList<>();
     private final int                   _id;
     private int                         _x;
     private int                         _y;
@@ -23,7 +23,7 @@ public abstract class AreaModel extends ObjectModel implements OnSelectParcelLis
         _id = UUIDUtils.getUUID();
     }
 
-    public void addParcel(ParcelModel parcel) {
+    public void addParcel(Parcel parcel) {
         if (!_parcels.contains(parcel)) {
             _parcels.add(parcel);
             parcel.setArea(this);
@@ -35,7 +35,7 @@ public abstract class AreaModel extends ObjectModel implements OnSelectParcelLis
 
     public boolean contains(int x, int y, int z) {
         if (_z == z) {
-            for (ParcelModel parcel : _parcels) {
+            for (Parcel parcel : _parcels) {
                 if (parcel.x == x && parcel.y == y) {
                     return true;
                 }
@@ -44,7 +44,7 @@ public abstract class AreaModel extends ObjectModel implements OnSelectParcelLis
         return false;
     }
 
-    public ParcelModel getBaseParcel() {
+    public Parcel getBaseParcel() {
         return !_parcels.isEmpty() ? _parcels.get(0) : null;
     }
 
@@ -52,7 +52,7 @@ public abstract class AreaModel extends ObjectModel implements OnSelectParcelLis
     public abstract void            setAccept(ItemInfo itemInfo, boolean isAccepted);
     public void                     setFloor(int floor) { _z = floor; }
 
-    public Collection<ParcelModel>  getParcels() { return _parcels; }
+    public Collection<Parcel>  getParcels() { return _parcels; }
     public String                   getName() { return "Area #n"; }
     public int                      getX() { return _x; }
     public int                      getY() { return _y; }
@@ -63,7 +63,7 @@ public abstract class AreaModel extends ObjectModel implements OnSelectParcelLis
     public boolean                  isHome() { return false; }
     public boolean                  isEmpty() { return _parcels.isEmpty(); }
 
-    public void removeParcel(ParcelModel parcel) {
+    public void removeParcel(Parcel parcel) {
         _parcels.remove(parcel);
     }
 
@@ -71,15 +71,15 @@ public abstract class AreaModel extends ObjectModel implements OnSelectParcelLis
         return getClass().getAnnotation(AreaTypeInfo.class);
     }
 
-    public boolean haveParcel(ParcelModel parcel) {
+    public boolean haveParcel(Parcel parcel) {
         return _parcels.contains(parcel);
     }
 
     @Override
-    public void onParcelSelected(ParcelModel parcel) {
+    public void onParcelSelected(Parcel parcel) {
     }
 
-    public boolean haveParcelNextTo(ParcelModel targetParcel) {
+    public boolean haveParcelNextTo(Parcel targetParcel) {
         return _parcels.stream().anyMatch(parcel -> WorldHelper.isSurrounded(SurroundedPattern.CROSS, parcel, targetParcel));
     }
 }

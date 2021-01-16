@@ -9,7 +9,7 @@ import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.module.path.PathManager;
 import org.smallbox.faraway.core.module.world.model.MapObjectModel;
-import org.smallbox.faraway.core.module.world.model.ParcelModel;
+import org.smallbox.faraway.core.module.world.model.Parcel;
 import org.smallbox.faraway.core.module.world.model.StructureItem;
 import org.smallbox.faraway.modules.building.BuildJobFactory;
 import org.smallbox.faraway.modules.consumable.ConsumableModule;
@@ -90,7 +90,7 @@ public class StructureModule extends SuperGameModule<StructureItem, StructureMod
 
     public void removeStructure(StructureItem structure) {
         if (structure != null && structure.getParcel() != null) {
-            ParcelModel parcel = structure.getParcel();
+            Parcel parcel = structure.getParcel();
             moveStructureToParcel(parcel, null);
 
             jobModule.onCancelJobs(structure.getParcel(), structure);
@@ -100,7 +100,7 @@ public class StructureModule extends SuperGameModule<StructureItem, StructureMod
         }
     }
 
-    private void moveStructureToParcel(ParcelModel parcel, StructureItem structure) {
+    private void moveStructureToParcel(Parcel parcel, StructureItem structure) {
         parcel.setItem(structure);
         if (structure != null) {
             structure.setParcel(parcel);
@@ -108,7 +108,7 @@ public class StructureModule extends SuperGameModule<StructureItem, StructureMod
     }
 
     @Override
-    public void onCancelJobs(ParcelModel parcel, Object object) {
+    public void onCancelJobs(Parcel parcel, Object object) {
         StructureItem structure = parcel.getItem(StructureItem.class);
         if (structure != null && !structure.isComplete() && (object == null || object instanceof StructureItem)) {
             parcel.removeItem(structure);
@@ -124,13 +124,13 @@ public class StructureModule extends SuperGameModule<StructureItem, StructureMod
     }
 
     @Override
-    public void putObject(ParcelModel parcel, ItemInfo itemInfo, int data, boolean complete) {
+    public void putObject(Parcel parcel, ItemInfo itemInfo, int data, boolean complete) {
         if (itemInfo.isStructure) {
             putStructure(parcel, itemInfo, data, complete);
         }
     }
 
-    private StructureItem putStructure(ParcelModel parcel, ItemInfo itemInfo, int matterSupply, boolean complete) {
+    private StructureItem putStructure(Parcel parcel, ItemInfo itemInfo, int matterSupply, boolean complete) {
         if (parcel.hasItem(StructureItem.class) || parcel.getItem(StructureItem.class).isFloor()) {
             StructureItem structure = new StructureItem(itemInfo);
             structure.addProgress(complete ? itemInfo.cost : 0);
@@ -162,7 +162,7 @@ public class StructureModule extends SuperGameModule<StructureItem, StructureMod
         throw new NotImplementedException();
     }
 
-    public void addPattern(ParcelModel parcel, ItemInfo itemInfo) {
+    public void addPattern(Parcel parcel, ItemInfo itemInfo) {
         Log.info("Add pattern for %s at position %s", itemInfo, parcel);
 
         // Create structure
@@ -179,7 +179,7 @@ public class StructureModule extends SuperGameModule<StructureItem, StructureMod
     }
 
     public StructureItem addStructure(StructureItem structure, int x, int y, int z) {
-        ParcelModel parcel = worldModule.getParcel(x, y, z);
+        Parcel parcel = worldModule.getParcel(x, y, z);
         if (parcel != null) {
             structure.setParcel(parcel);
             modelList.add(structure);
@@ -187,7 +187,7 @@ public class StructureModule extends SuperGameModule<StructureItem, StructureMod
         return structure;
     }
 
-    public StructureItem getStructure(ParcelModel parcel) {
+    public StructureItem getStructure(Parcel parcel) {
         for (StructureItem structure: modelList) {
             if (structure.getParcel() == parcel) {
                 return structure;

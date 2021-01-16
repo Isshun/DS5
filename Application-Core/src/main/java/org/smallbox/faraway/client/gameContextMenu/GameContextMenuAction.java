@@ -1,9 +1,9 @@
 package org.smallbox.faraway.client.gameContextMenu;
 
-import org.smallbox.faraway.core.module.world.model.ParcelModel;
+import org.smallbox.faraway.core.module.world.model.Parcel;
 
 public interface GameContextMenuAction {
     String getLabel();
-    boolean check(ParcelModel parcel, int mouseX, int mouseY);
-    Runnable getRunnable(ParcelModel parcel, int mouseX, int mouseY);
+    boolean check(Parcel parcel, int mouseX, int mouseY);
+    Runnable getRunnable(Parcel parcel, int mouseX, int mouseY);
 }

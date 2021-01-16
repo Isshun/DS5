@@ -9,7 +9,7 @@ import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnInit;
 import org.smallbox.faraway.core.dependencyInjector.gameAction.OnGameSelectAction;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
-import org.smallbox.faraway.core.module.world.model.ParcelModel;
+import org.smallbox.faraway.core.module.world.model.Parcel;
 import org.smallbox.faraway.modules.consumable.ConsumableModule;
 import org.smallbox.faraway.modules.item.ItemModule;
 
@@ -19,7 +19,7 @@ import java.util.Optional;
 import java.util.Queue;
 
 @GameObject
-public class SelectionInfoController extends AbsInfoLuaController<ParcelModel> {
+public class SelectionInfoController extends AbsInfoLuaController<Parcel> {
 
     @Inject
     protected GameSelectionManager gameSelectionManager;
@@ -52,8 +52,8 @@ public class SelectionInfoController extends AbsInfoLuaController<ParcelModel> {
 //        gameSelectionManager.registerSelectionParcelListener(this);
     }
 
-    @OnGameSelectAction(ParcelModel.class)
-    private void onSelectParcel(ParcelModel parcel) {
+    @OnGameSelectAction(Parcel.class)
+    private void onSelectParcel(Parcel parcel) {
         setVisible(true);
 
         lbParcel.setText(parcel.x + "x" + parcel.y + "x" + parcel.z);
@@ -65,16 +65,16 @@ public class SelectionInfoController extends AbsInfoLuaController<ParcelModel> {
     }
 
     @Override
-    protected void onDisplayUnique(ParcelModel parcel) {
+    protected void onDisplayUnique(Parcel parcel) {
     }
 
-    private void displayGround(ParcelModel parcel) {
+    private void displayGround(Parcel parcel) {
         if (parcel.getGroundInfo() != null) {
             lbGround.setText(parcel.getGroundInfo().label);
         }
     }
 
-    private void displayRock(ParcelModel parcel) {
+    private void displayRock(Parcel parcel) {
         if (parcel.getRockInfo() != null) {
             lbGround.setText(parcel.getRockInfo().label);
 
@@ -86,16 +86,16 @@ public class SelectionInfoController extends AbsInfoLuaController<ParcelModel> {
         }
     }
 
-    private void displayItem(ParcelModel parcel) {
+    private void displayItem(Parcel parcel) {
         Optional.ofNullable(itemModule.getItem(parcel)).ifPresent(item -> lbItem.setText(item.getLabel()));
     }
 
-    private void displayConsumable(ParcelModel parcel) {
+    private void displayConsumable(Parcel parcel) {
         Optional.ofNullable(consumableModule.getConsumable(parcel)).ifPresent(consumable -> lbConsumable.setText(consumable.getLabel()));
     }
 
     @Override
-    protected void onDisplayMultiple(Queue<ParcelModel> objects) {
+    protected void onDisplayMultiple(Queue<Parcel> objects) {
         Map<ItemInfo, Integer> items = new HashMap<>();
         objects.stream()
                 .filter(parcel -> parcel.getRockInfo() != null)
@@ -119,7 +119,7 @@ public class SelectionInfoController extends AbsInfoLuaController<ParcelModel> {
     }
 
     @Override
-    public ParcelModel getObjectOnParcel(ParcelModel parcel) {
+    public Parcel getObjectOnParcel(Parcel parcel) {
         return parcel.getRockInfo() != null ? parcel : null;
     }
 }

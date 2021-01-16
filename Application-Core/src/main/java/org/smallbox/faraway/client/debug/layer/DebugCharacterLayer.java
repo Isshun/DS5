@@ -9,7 +9,7 @@ import org.smallbox.faraway.core.GameLayer;
 import org.smallbox.faraway.core.GameShortcut;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
-import org.smallbox.faraway.core.module.world.model.ParcelModel;
+import org.smallbox.faraway.core.module.world.model.Parcel;
 import org.smallbox.faraway.modules.character.CharacterModule;
 import org.smallbox.faraway.modules.character.model.CharacterInventoryExtra;
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
@@ -50,7 +50,7 @@ public class DebugCharacterLayer extends BaseLayer {
     }
 
     @Override
-    public boolean onClickOnParcel(List<ParcelModel> parcels) {
+    public boolean onClickOnParcel(List<Parcel> parcels) {
         parcels.forEach(parcel -> {
             CharacterModel character = characterModule.getCharacter(parcel);
             if (character != null) {

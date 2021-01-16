@@ -6,7 +6,7 @@ import com.badlogic.gdx.math.Path;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import org.smallbox.faraway.core.module.path.spline.BezierPath;
-import org.smallbox.faraway.core.module.world.model.ParcelModel;
+import org.smallbox.faraway.core.module.world.model.Parcel;
 import org.smallbox.faraway.util.Utils;
 
 import java.util.ArrayList;
@@ -19,7 +19,7 @@ public class PathModel {
 //    public final double[] _spline;
 //    public final double[] _c;
     public final List<Vector3> _curve;
-    private final ParcelModel _lastParcelCharacter;
+    private final Parcel _lastParcelCharacter;
     public Path<Vector2> myCatmull;
     private long _startTime;
     public boolean minusOne;
@@ -32,7 +32,7 @@ public class PathModel {
         return _startTime;
     }
 
-    public ParcelModel getLastParcelCharacter() {
+    public Parcel getLastParcelCharacter() {
         return _lastParcelCharacter;
     }
 
@@ -40,12 +40,12 @@ public class PathModel {
         public final int length;
         public final int dirX;
         public final int dirY;
-        public final ParcelModel p1;
-        public final ParcelModel p2;
+        public final Parcel p1;
+        public final Parcel p2;
         public long startTime;
         public long lastTime;
 
-        public PathSection(ParcelModel p1, ParcelModel p2, int length) {
+        public PathSection(Parcel p1, Parcel p2, int length) {
             this.dirX = Utils.bound(-1, 1, p2.x - p1.x);
             this.dirY = Utils.bound(-1, 1, p2.y - p1.y);
             this.length = length;
@@ -54,15 +54,15 @@ public class PathModel {
         }
     }
 
-    private ParcelModel                 _currentParcel;
-    private final ParcelModel                 _firstParcel;
-    private final ParcelModel                 _lastParcel;
+    private Parcel _currentParcel;
+    private final Parcel _firstParcel;
+    private final Parcel _lastParcel;
     private final int                         _length;
     private int                         _index;
-    public GraphPath<ParcelModel>      _nodes;
+    public GraphPath<Parcel>      _nodes;
     private final Queue<PathSection>    _smooth = new ConcurrentLinkedQueue<>();
 
-    public static PathModel create(GraphPath<ParcelModel> nodes, boolean minusOne) {
+    public static PathModel create(GraphPath<Parcel> nodes, boolean minusOne) {
         if (nodes != null) {
             return new PathModel(nodes, minusOne);
         }
@@ -73,7 +73,7 @@ public class PathModel {
         return _smooth;
     }
 
-    private PathModel(GraphPath<ParcelModel> nodes, boolean minusOne) {
+    private PathModel(GraphPath<Parcel> nodes, boolean minusOne) {
         _nodes = nodes;
         this.minusOne = minusOne;
 
@@ -123,7 +123,7 @@ public class PathModel {
         _length = nodes.getCount();
         _index = 0;
 
-        ParcelModel p1 = nodes.get(0);
+        Parcel p1 = nodes.get(0);
         int lastOffsetX = nodes.get(1).x - nodes.get(0).x;
         int lastOffsetY = nodes.get(1).y - nodes.get(0).y;
         int length = 1;
@@ -172,7 +172,7 @@ public class PathModel {
         return 0;
     }
 
-    private int getDir(ParcelModel p1, ParcelModel p2) {
+    private int getDir(Parcel p1, Parcel p2) {
         if (p1.x < p2.x     &&  p1.y < p2.y)     return 1;
         if (p1.x == p2.x    &&  p1.y < p2.y)    return 2;
         if (p1.x > p2.x     &&  p1.y < p2.y)     return 3;
@@ -185,11 +185,11 @@ public class PathModel {
     }
 
     public int          getLength() { return _length; }
-    public ParcelModel  getLastParcel() { return _lastParcel; }
-    public ParcelModel  getFirstParcel() { return _firstParcel; }
-    public ParcelModel  getCurrentParcel() { return _currentParcel; }
+    public Parcel getLastParcel() { return _lastParcel; }
+    public Parcel getFirstParcel() { return _firstParcel; }
+    public Parcel getCurrentParcel() { return _currentParcel; }
     public int getIndex() { return _index; }
-    public GraphPath<ParcelModel> getNodes() { return _nodes; }
+    public GraphPath<Parcel> getNodes() { return _nodes; }
 
     public boolean next() {
         if (++_index < _length - (minusOne ? 1 : 0)) {
@@ -200,7 +200,7 @@ public class PathModel {
     }
 
     public boolean isValid() {
-        for (ParcelModel parcel: _nodes) {
+        for (Parcel parcel: _nodes) {
             if (!parcel.isWalkable()) {
                 return false;
             }

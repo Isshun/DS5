@@ -6,10 +6,10 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectMap;
 import org.smallbox.faraway.core.game.helper.SurroundedPattern;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
-import org.smallbox.faraway.core.module.world.model.ParcelModel;
+import org.smallbox.faraway.core.module.world.model.Parcel;
 
-public class ParcelGraph implements IndexedGraph<ParcelModel> {
-    private final ObjectMap<ParcelModel, Array<Connection<ParcelModel>>> connections = new ObjectMap<>();
+public class ParcelGraph implements IndexedGraph<Parcel> {
+    private final ObjectMap<Parcel, Array<Connection<Parcel>>> connections = new ObjectMap<>();
     private final int _nodeCount;
 
     public ParcelGraph(int nodeCount) {
@@ -17,7 +17,7 @@ public class ParcelGraph implements IndexedGraph<ParcelModel> {
     }
 
     @Override
-    public Array<Connection<ParcelModel>> getConnections(ParcelModel parcel) {
+    public Array<Connection<Parcel>> getConnections(Parcel parcel) {
         if (!connections.containsKey(parcel)) {
             connections.put(parcel, new Array<>());
         }
@@ -25,7 +25,7 @@ public class ParcelGraph implements IndexedGraph<ParcelModel> {
     }
 
     @Override
-    public int getIndex(ParcelModel node) {
+    public int getIndex(Parcel node) {
         return node.getId();
     }
 
@@ -34,7 +34,7 @@ public class ParcelGraph implements IndexedGraph<ParcelModel> {
         return _nodeCount;
     }
 
-    public void refreshConnections(ParcelModel source) {
+    public void refreshConnections(Parcel source) {
         if (!connections.containsKey(source)) {
             connections.put(source, new Array<>());
         }
@@ -42,11 +42,11 @@ public class ParcelGraph implements IndexedGraph<ParcelModel> {
         connections.get(source).clear();
 
         if (source.isWalkable()) {
-            WorldHelper.getParcelAround(source, SurroundedPattern.X_CROSS, ParcelModel::isWalkable, target -> createConnection(source, target));
+            WorldHelper.getParcelAround(source, SurroundedPattern.X_CROSS, Parcel::isWalkable, target -> createConnection(source, target));
         }
     }
 
-    public void createConnection(ParcelModel fromParcel, ParcelModel toParcel) {
+    public void createConnection(Parcel fromParcel, Parcel toParcel) {
         if (!connections.containsKey(fromParcel)) {
             connections.put(fromParcel, new Array<>());
         }

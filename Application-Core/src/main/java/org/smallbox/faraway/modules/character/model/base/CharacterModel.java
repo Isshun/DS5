@@ -5,7 +5,7 @@ import org.smallbox.faraway.common.CharacterPositionCommon;
 import org.smallbox.faraway.core.GameException;
 import org.smallbox.faraway.core.game.model.MovableModel;
 import org.smallbox.faraway.core.game.modelInfo.CharacterInfo;
-import org.smallbox.faraway.core.module.world.model.ParcelModel;
+import org.smallbox.faraway.core.module.world.model.Parcel;
 import org.smallbox.faraway.modules.character.model.PathModel;
 import org.smallbox.faraway.modules.job.JobModel;
 import org.smallbox.faraway.util.MoveListener;
@@ -27,7 +27,7 @@ public abstract class CharacterModel extends MovableModel {
     public PathModel _path;
     public GameTask _task;
 
-    public CharacterModel(int id, CharacterInfo characterInfo, ParcelModel parcel) {
+    public CharacterModel(int id, CharacterInfo characterInfo, Parcel parcel) {
         super(id, parcel);
 
         Log.info("Character #" + id);
@@ -39,14 +39,14 @@ public abstract class CharacterModel extends MovableModel {
 
     public <T extends CharacterExtra> T getExtra(Class<T> cls) { return (T) _extra.get(cls); }
     public JobModel                     getJob() { return _job; }
-    public ParcelModel                  getParcel() { return _parcel; }
+    public Parcel getParcel() { return _parcel; }
     public CharacterInfo                getType() { return _type; }
     public abstract String              getName();
 
     public abstract void                addBodyStats(CharacterStatsExtra stats);
 
     public void                         setIsDead() { _isAlive = false; }
-    public void                         setParcel(ParcelModel parcel) {
+    public void                         setParcel(Parcel parcel) {
         if (parcel == null) {
             throw new GameException(CharacterModel.class, "setParcel: cannot be null");
         }

@@ -1,7 +1,7 @@
 package org.smallbox.faraway.core.engine.lua;
 
 import org.smallbox.faraway.common.ObjectModel;
-import org.smallbox.faraway.core.module.world.model.ParcelModel;
+import org.smallbox.faraway.core.module.world.model.Parcel;
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 
 public class LuaCharacterModel extends ObjectModel {
@@ -9,7 +9,7 @@ public class LuaCharacterModel extends ObjectModel {
 //    public final String             name;
 //    public final CharacterStatsExtra stats;
     public final CharacterModel     character;
-    public final ParcelModel        parcel;
+    public final Parcel parcel;
     public final String             type;
     public final String             faction;
 

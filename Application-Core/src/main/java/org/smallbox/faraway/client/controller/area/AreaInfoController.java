@@ -7,7 +7,7 @@ import org.smallbox.faraway.client.ui.engine.UIEventManager;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
-import org.smallbox.faraway.core.module.world.model.ParcelModel;
+import org.smallbox.faraway.core.module.world.model.Parcel;
 import org.smallbox.faraway.modules.area.AreaModel;
 import org.smallbox.faraway.modules.area.AreaModule;
 
@@ -57,7 +57,7 @@ public class AreaInfoController extends AbsInfoLuaController<AreaModel> {
     }
 
     @Override
-    public AreaModel getObjectOnParcel(ParcelModel parcel) {
+    public AreaModel getObjectOnParcel(Parcel parcel) {
         return areaModule.getArea(parcel);
     }
 }

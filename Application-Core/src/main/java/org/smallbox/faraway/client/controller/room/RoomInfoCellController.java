@@ -4,7 +4,7 @@ import org.smallbox.faraway.client.controller.AbsInfoLuaController;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.game.Data;
-import org.smallbox.faraway.core.module.world.model.ParcelModel;
+import org.smallbox.faraway.core.module.world.model.Parcel;
 import org.smallbox.faraway.modules.room.RoomModule;
 import org.smallbox.faraway.modules.room.model.CellRoom;
 import org.smallbox.faraway.modules.room.model.RoomModel;
@@ -30,7 +30,7 @@ public class RoomInfoCellController extends AbsInfoLuaController<RoomModel> {
     }
 
     @Override
-    public RoomModel getObjectOnParcel(ParcelModel parcel) {
+    public RoomModel getObjectOnParcel(Parcel parcel) {
         RoomModel room = roomModule.getRoom(parcel);
         return room instanceof CellRoom ? room : null;
     }

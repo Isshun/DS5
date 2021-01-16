@@ -17,7 +17,7 @@ public abstract class MapObjectModel extends ObjectModel {
     private int                 _light;
     protected ItemInfo          _info;
     private String              _label;
-    protected ParcelModel       _parcel;
+    protected Parcel _parcel;
     private Set<JobModel>       _jobs;
     private GraphicInfo         _graphic;
     private final Collection<ConsumableItem>      _inventory = new ConcurrentLinkedQueue<>();
@@ -87,7 +87,7 @@ public abstract class MapObjectModel extends ObjectModel {
 
     // Sets
     public void                 setMode(int mode) { _mode = mode; }
-    public void                 setParcel(ParcelModel parcel) {
+    public void                 setParcel(Parcel parcel) {
         if (_parcel != parcel) {
             _parcel = parcel;
             _parcel.setItem(this);
@@ -101,7 +101,7 @@ public abstract class MapObjectModel extends ObjectModel {
     public int                  getLight() { return _light; }
     public String               getLabel() { return _label; }
     public ItemInfo             getInfo() { return _info; }
-    public ParcelModel          getParcel() { return _parcel; }
+    public Parcel getParcel() { return _parcel; }
     public Collection<JobModel> getJobs() { return _jobs; }
 
     // Boolean

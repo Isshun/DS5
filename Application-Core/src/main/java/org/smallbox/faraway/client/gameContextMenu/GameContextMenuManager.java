@@ -5,7 +5,7 @@ import org.smallbox.faraway.core.dependencyInjector.DependencyManager;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnInit;
-import org.smallbox.faraway.core.module.world.model.ParcelModel;
+import org.smallbox.faraway.core.module.world.model.Parcel;
 
 import java.util.Collection;
 
@@ -23,7 +23,7 @@ public class GameContextMenuManager {
         actions = dependencyManager.getSubTypesOf(GameContextMenuAction.class);
     }
 
-    public void open(ParcelModel parcel, int mouseX, int mouseY) {
+    public void open(Parcel parcel, int mouseX, int mouseY) {
         if (parcel != null) {
             GameContextMenu menu = new GameContextMenu(mouseX, mouseY);
             actions.stream()

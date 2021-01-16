@@ -9,7 +9,7 @@ import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnInit;
 import org.smallbox.faraway.core.dependencyInjector.gameAction.OnGameSelectAction;
 import org.smallbox.faraway.core.game.GameManager;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
-import org.smallbox.faraway.core.module.world.model.ParcelModel;
+import org.smallbox.faraway.core.module.world.model.Parcel;
 import org.smallbox.faraway.modules.area.AreaModel;
 import org.smallbox.faraway.modules.area.AreaModule;
 import org.smallbox.faraway.modules.area.AreaTypeInfo;
@@ -93,13 +93,13 @@ public class GameActionManager extends GameManager {
         return actionLabel;
     }
 
-    public void selectParcels(List<ParcelModel> parcelList) {
+    public void selectParcels(List<Parcel> parcelList) {
         if (areaAction != null) {
             parcelList.forEach(parcel -> areaAction.onParcelSelected(parcel));
         }
     }
 
-    public void selectParcel(ParcelModel parcel) {
+    public void selectParcel(Parcel parcel) {
         if (areaAction != null) {
             areaAction.onParcelSelected(parcel);
         }
@@ -113,7 +113,7 @@ public class GameActionManager extends GameManager {
 //        }
     }
 
-    public void removeArea(ParcelModel parcel) {
+    public void removeArea(Parcel parcel) {
         specializedAreaModules.forEach(specializedAreaModule -> specializedAreaModule.removeArea(parcel));
     }
 

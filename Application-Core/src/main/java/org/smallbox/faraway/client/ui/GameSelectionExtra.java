@@ -3,14 +3,14 @@ package org.smallbox.faraway.client.ui;
 import org.smallbox.faraway.client.GameClientObserver;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
-import org.smallbox.faraway.core.module.world.model.ParcelModel;
+import org.smallbox.faraway.core.module.world.model.Parcel;
 import org.smallbox.faraway.core.module.world.model.StructureItem;
 import org.smallbox.faraway.modules.area.AreaModel;
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 import org.smallbox.faraway.modules.plant.model.PlantItem;
 
 public class GameSelectionExtra {
-    private ParcelModel _lastMoveParcel;
+    private Parcel _lastMoveParcel;
 
     public boolean isClear() {
         return _selectedArea == null
@@ -39,7 +39,7 @@ public class GameSelectionExtra {
     }
 
     public interface SelectStrategy {
-        boolean onSelect(CharacterModel character, ParcelModel parcel, AreaModel area);
+        boolean onSelect(CharacterModel character, Parcel parcel, AreaModel area);
     }
 
     private CharacterModel      _selectedCharacter;
@@ -47,13 +47,13 @@ public class GameSelectionExtra {
     private ItemInfo            _selectedRock;
     private PlantItem _selectedPlant;
     private StructureItem _selectedStructure;
-    private ParcelModel         _selectedParcel;
+    private Parcel _selectedParcel;
     private AreaModel           _selectedArea;
 
     public CharacterModel       getSelectedCharacter() { return _selectedCharacter; }
     public PlantItem getSelectedResource() { return _selectedPlant; }
 //    public UsableItem            getSelectedItem() { return _selectedItem; }
     public StructureItem getSelectedStructure() { return _selectedStructure; }
-    public ParcelModel          getSelectedParcel() { return _selectedParcel; }
+    public Parcel getSelectedParcel() { return _selectedParcel; }
     public AreaModel            getSelectedArea() { return _selectedArea; }
 }

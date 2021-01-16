@@ -1,13 +1,13 @@
 package org.smallbox.faraway.modules.room.model;
 
-import org.smallbox.faraway.core.module.world.model.ParcelModel;
+import org.smallbox.faraway.core.module.world.model.Parcel;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class RoomConnectionModel {
     public final RoomModel          _room;
-    public final List<ParcelModel>  _parcels = new ArrayList<>();
+    public final List<Parcel>  _parcels = new ArrayList<>();
     public double                   _permeability;
 
     public RoomConnectionModel(RoomModel room) {
@@ -18,6 +18,6 @@ public class RoomConnectionModel {
     public RoomModel getRoom() { return _room; }
     public double getPermeability() { return _permeability; }
     public double getBorderSize() { return _parcels.size(); }
-    public void addParcel(ParcelModel parcel) { _parcels.add(parcel); }
-    public List<ParcelModel> getParcels() { return _parcels; }
+    public void addParcel(Parcel parcel) { _parcels.add(parcel); }
+    public List<Parcel> getParcels() { return _parcels; }
 }

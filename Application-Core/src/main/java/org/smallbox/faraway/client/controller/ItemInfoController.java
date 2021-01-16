@@ -11,7 +11,7 @@ import org.smallbox.faraway.client.ui.engine.views.widgets.*;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.dependencyInjector.gameAction.OnGameSelectAction;
-import org.smallbox.faraway.core.module.world.model.ParcelModel;
+import org.smallbox.faraway.core.module.world.model.Parcel;
 import org.smallbox.faraway.modules.item.ItemModule;
 import org.smallbox.faraway.modules.item.UsableItem;
 import org.smallbox.faraway.modules.itemFactory.ItemFactoryModel;
@@ -172,7 +172,7 @@ public class ItemInfoController extends AbsInfoLuaController<UsableItem> {
     }
 
     @Override
-    public UsableItem getObjectOnParcel(ParcelModel parcel) {
+    public UsableItem getObjectOnParcel(Parcel parcel) {
         return itemModule.getItem(parcel);
     }
 

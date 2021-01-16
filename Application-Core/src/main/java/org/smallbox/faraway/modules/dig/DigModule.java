@@ -5,7 +5,7 @@ import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnInit;
 import org.smallbox.faraway.core.game.Game;
-import org.smallbox.faraway.core.module.world.model.ParcelModel;
+import org.smallbox.faraway.core.module.world.model.Parcel;
 import org.smallbox.faraway.modules.area.AreaModule;
 import org.smallbox.faraway.modules.area.AreaModuleBase;
 import org.smallbox.faraway.modules.job.JobModel;
@@ -33,8 +33,8 @@ public class DigModule extends AreaModuleBase<DigArea> {
 
     @Override
     protected void onModuleUpdate(Game game) {
-        List<ParcelModel> parcelInDigArea = areaModule.getParcelsByType(DigArea.class);
-        List<ParcelModel> parcelInDigJob = jobModule.getAll().stream()
+        List<Parcel> parcelInDigArea = areaModule.getParcelsByType(DigArea.class);
+        List<Parcel> parcelInDigJob = jobModule.getAll().stream()
                 .filter(job -> job instanceof DigJob)
                 .map(JobModel::getTargetParcel)
                 .collect(Collectors.toList());

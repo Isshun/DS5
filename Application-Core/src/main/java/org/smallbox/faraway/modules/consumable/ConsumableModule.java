@@ -13,7 +13,7 @@ import org.smallbox.faraway.core.module.path.PathManager;
 import org.smallbox.faraway.core.module.world.model.ConsumableItem;
 import org.smallbox.faraway.core.module.world.model.ItemFilter;
 import org.smallbox.faraway.core.module.world.model.MapObjectModel;
-import org.smallbox.faraway.core.module.world.model.ParcelModel;
+import org.smallbox.faraway.core.module.world.model.Parcel;
 import org.smallbox.faraway.modules.character.model.PathModel;
 import org.smallbox.faraway.modules.job.JobModel;
 import org.smallbox.faraway.modules.job.JobModule;
@@ -54,7 +54,7 @@ public class ConsumableModule extends SuperGameModule<ConsumableItem, Consumable
         addConsumable(data.getItemInfo(itemName), quantity, WorldHelper.getParcel(x, y, z), stack);
     }
 
-    public void addConsumable(String itemName, int quantity, ParcelModel parcel) {
+    public void addConsumable(String itemName, int quantity, Parcel parcel) {
         addConsumable(data.getItemInfo(itemName), quantity, parcel);
     }
 
@@ -62,7 +62,7 @@ public class ConsumableModule extends SuperGameModule<ConsumableItem, Consumable
         addConsumable(itemInfo, Utils.getRandom(quantity), x, y, z);
     }
 
-    public void addConsumable(ItemInfo itemInfo, int[] quantity, ParcelModel parcel) {
+    public void addConsumable(ItemInfo itemInfo, int[] quantity, Parcel parcel) {
         addConsumable(itemInfo, Utils.getRandom(quantity), parcel);
     }
 
@@ -71,17 +71,17 @@ public class ConsumableModule extends SuperGameModule<ConsumableItem, Consumable
     }
 
     // TODO à clean et tester
-    public ConsumableItem addConsumable(ItemInfo itemInfo, int quantity, ParcelModel targetParcel) {
+    public ConsumableItem addConsumable(ItemInfo itemInfo, int quantity, Parcel targetParcel) {
         return addConsumable(itemInfo, quantity, targetParcel, 0);
     }
 
-    public ConsumableItem addConsumable(ItemInfo itemInfo, int quantity, ParcelModel targetParcel, int stack) {
+    public ConsumableItem addConsumable(ItemInfo itemInfo, int quantity, Parcel targetParcel, int stack) {
 
         if (quantity < 0) {
             throw new GameException(ConsumableModule.class, "addConsumable: invalid quantity (%d)", quantity);
         }
 
-        ParcelModel finalParcel = WorldHelper.move(targetParcel, parcel -> {
+        Parcel finalParcel = WorldHelper.move(targetParcel, parcel -> {
             ConsumableItem consumable = getConsumable(parcel, stack);
 
             // La parcel ne contient pas le bon consomable
@@ -147,7 +147,7 @@ public class ConsumableModule extends SuperGameModule<ConsumableItem, Consumable
         _locks.removeIf(lock -> !lock.available);
     }
 
-    public boolean parcelAcceptConsumable(ParcelModel parcel, ConsumableItem consumable) {
+    public boolean parcelAcceptConsumable(Parcel parcel, ConsumableItem consumable) {
         ConsumableItem consumableOnTargetParcel = getConsumable(parcel);
         if (consumableOnTargetParcel == null) {
             return true;
@@ -155,7 +155,7 @@ public class ConsumableModule extends SuperGameModule<ConsumableItem, Consumable
         return consumableOnTargetParcel.getInfo() == consumable.getInfo() && consumableOnTargetParcel.getTotalQuantity() + consumable.getFreeQuantity() < consumable.getInfo().stack;
     }
 
-    public boolean parcelAcceptConsumable(ParcelModel parcel, ItemInfo itemInfo, int quantity) {
+    public boolean parcelAcceptConsumable(Parcel parcel, ItemInfo itemInfo, int quantity) {
         ConsumableItem consumableOnTargetParcel = getConsumable(parcel);
         if (consumableOnTargetParcel == null) {
             return true;
@@ -306,7 +306,7 @@ public class ConsumableModule extends SuperGameModule<ConsumableItem, Consumable
                 .forEach(this::unlock);
     }
 
-    public MapObjectModel getRandomNearest(ItemFilter filter, ParcelModel fromParcel) {
+    public MapObjectModel getRandomNearest(ItemFilter filter, Parcel fromParcel) {
         List<? extends MapObjectModel> list = new ArrayList<>(getAll());
 
         // Get matching items
@@ -395,7 +395,7 @@ public class ConsumableModule extends SuperGameModule<ConsumableItem, Consumable
         Log.debug(ConsumableModule.class, "RemoveConsumable: %s", consumable);
 
         if (consumable != null && consumable.getParcel() != null) {
-            ParcelModel parcel = consumable.getParcel();
+            Parcel parcel = consumable.getParcel();
             remove(consumable);
 
             notifyObservers(observer -> observer.onRemoveConsumable(parcel, consumable));
@@ -403,9 +403,9 @@ public class ConsumableModule extends SuperGameModule<ConsumableItem, Consumable
 
     }
 
-    public ConsumableItem putConsumable(ParcelModel parcel, ConsumableItem consumable) {
+    public ConsumableItem putConsumable(Parcel parcel, ConsumableItem consumable) {
         if (parcel != null) {
-            ParcelModel finalParcel = WorldHelper.getNearestFreeArea(parcel, consumable.getInfo(), consumable.getFreeQuantity());
+            Parcel finalParcel = WorldHelper.getNearestFreeArea(parcel, consumable.getInfo(), consumable.getFreeQuantity());
             if (finalParcel == null) {
                 return null;
             }
@@ -430,7 +430,7 @@ public class ConsumableModule extends SuperGameModule<ConsumableItem, Consumable
         return null;
     }
 
-    private void moveConsumableToParcel(ParcelModel parcel, ConsumableItem consumable) {
+    private void moveConsumableToParcel(Parcel parcel, ConsumableItem consumable) {
         if (consumable != null) {
             if (consumable.getParcel() != null) {
                 consumable.getParcel().setItem(null);
@@ -441,7 +441,7 @@ public class ConsumableModule extends SuperGameModule<ConsumableItem, Consumable
     }
 
     @Override
-    public void putObject(ParcelModel parcel, ItemInfo itemInfo, int data, boolean complete) {
+    public void putObject(Parcel parcel, ItemInfo itemInfo, int data, boolean complete) {
         if (itemInfo.isConsumable) {
             putConsumable(parcel, itemInfo, data);
         }
@@ -454,7 +454,7 @@ public class ConsumableModule extends SuperGameModule<ConsumableItem, Consumable
         }
     }
 
-    public ConsumableItem putConsumable(ParcelModel parcel, ItemInfo itemInfo, int quantity) {
+    public ConsumableItem putConsumable(Parcel parcel, ItemInfo itemInfo, int quantity) {
         throw new RuntimeException("this method is deprecated");
     }
 
@@ -464,7 +464,7 @@ public class ConsumableModule extends SuperGameModule<ConsumableItem, Consumable
                 .findAny().orElse(null);
     }
 
-    public ConsumableItem create(ItemInfo info, int quantity, ParcelModel parcel) {
+    public ConsumableItem create(ItemInfo info, int quantity, Parcel parcel) {
         ConsumableItem consumable = new ConsumableItem(info);
         consumable.setQuantity(quantity);
         consumable.setParcel(parcel);
@@ -475,7 +475,7 @@ public class ConsumableModule extends SuperGameModule<ConsumableItem, Consumable
     }
 
     public void create(ItemInfo itemInfo, int quantity, int x, int y, int z) {
-        ParcelModel parcel = worldModule.getParcel(x, y, z);
+        Parcel parcel = worldModule.getParcel(x, y, z);
         if (parcel != null) {
             create(itemInfo, quantity, parcel);
         }
@@ -493,7 +493,7 @@ public class ConsumableModule extends SuperGameModule<ConsumableItem, Consumable
     }
 
     // TODO
-    public int getTotalAccessible(ItemInfo itemInfo, ParcelModel parcel) {
+    public int getTotalAccessible(ItemInfo itemInfo, Parcel parcel) {
         return getAll().stream()
                 .filter(consumable -> consumable.getInfo() == itemInfo)
                 .mapToInt(ConsumableItem::getFreeQuantity)
@@ -527,11 +527,11 @@ public class ConsumableModule extends SuperGameModule<ConsumableItem, Consumable
 //    }
 
     // TODO: perfs
-    public ConsumableItem getConsumable(ParcelModel parcel) {
+    public ConsumableItem getConsumable(Parcel parcel) {
         return getConsumable(parcel, 0);
     }
 
-    public ConsumableItem getConsumable(ParcelModel parcel, int s) {
+    public ConsumableItem getConsumable(Parcel parcel, int s) {
         return getAll().stream()
                 .filter(consumableItem -> consumableItem.getParcel() == parcel)
                 .filter(consumableItem -> consumableItem.getStack() == s)

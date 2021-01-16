@@ -15,7 +15,7 @@ import org.smallbox.faraway.core.dependencyInjector.gameAction.OnGameSelectActio
 import org.smallbox.faraway.core.game.GameManager;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.module.world.model.ConsumableItem;
-import org.smallbox.faraway.core.module.world.model.ParcelModel;
+import org.smallbox.faraway.core.module.world.model.Parcel;
 import org.smallbox.faraway.core.module.world.model.StructureItem;
 import org.smallbox.faraway.modules.area.AreaModel;
 import org.smallbox.faraway.modules.area.AreaModuleBase;
@@ -98,10 +98,10 @@ public class GameSelectionManager extends GameManager {
     }
 
     public interface OnSelectionListener {
-        boolean onSelection(List<ParcelModel> parcels);
+        boolean onSelection(List<Parcel> parcels);
     }
 
-    private ParcelModel                     _lastParcel;
+    private Parcel _lastParcel;
     private final Queue<AbsInfoLuaController<?>> _lastControllers;
     private LuaController _selectionPreController;
     private OnSelectionListener _selectionListener;
@@ -141,7 +141,7 @@ public class GameSelectionManager extends GameManager {
 
     // Unique parcel
     public void select(int mapX, int mapY) {
-        ParcelModel parcel = WorldHelper.getParcel(mapX, mapY, layerManager.getViewport().getFloor());
+        Parcel parcel = WorldHelper.getParcel(mapX, mapY, layerManager.getViewport().getFloor());
         Log.info("Click on map at parcel: %s", parcel);
         if (parcel != null) {
 
@@ -162,7 +162,7 @@ public class GameSelectionManager extends GameManager {
 
     // Square selection
     public void select(int fromMapX, int fromMapY, int toMapX, int toMapY) {
-        List<ParcelModel> parcelList = WorldHelper.getParcelInRect(fromMapX, fromMapY, toMapX, toMapY, layerManager.getViewport().getFloor());
+        List<Parcel> parcelList = WorldHelper.getParcelInRect(fromMapX, fromMapY, toMapX, toMapY, layerManager.getViewport().getFloor());
         Log.info("Click on map for parcels: %s", parcelList);
 
         gameActionManager.selectParcels(parcelList);
@@ -181,7 +181,7 @@ public class GameSelectionManager extends GameManager {
 //            }
     }
 
-    private void doSelectionUnique(ParcelModel parcel) {
+    private void doSelectionUnique(Parcel parcel) {
         if (_selectionPreController != null) {
             _selectionPreController.setVisible(true);
         }
@@ -210,7 +210,7 @@ public class GameSelectionManager extends GameManager {
 
     }
 
-    private void doSelectionMultiple(List<ParcelModel> parcelList) {
+    private void doSelectionMultiple(List<Parcel> parcelList) {
         if (_selectionPreController != null) {
             _selectionPreController.setVisible(true);
         }
@@ -221,7 +221,7 @@ public class GameSelectionManager extends GameManager {
                 .ifPresent(controller -> displayController(controller, parcelList));
     }
 
-    private void displayController(AbsInfoLuaController<?> controller, Collection<ParcelModel> parcels) {
+    private void displayController(AbsInfoLuaController<?> controller, Collection<Parcel> parcels) {
 
         // Display sub controller
         _infoSubControllers.entrySet().stream()

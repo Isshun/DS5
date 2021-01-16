@@ -8,7 +8,7 @@ import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.game.service.applicationConfig.ApplicationConfig;
 import org.smallbox.faraway.core.module.path.PathManager;
-import org.smallbox.faraway.core.module.world.model.ParcelModel;
+import org.smallbox.faraway.core.module.world.model.Parcel;
 import org.smallbox.faraway.modules.character.model.CharacterSkillExtra;
 import org.smallbox.faraway.modules.consumable.ConsumableModule;
 import org.smallbox.faraway.modules.job.JobTaskReturn;
@@ -25,7 +25,7 @@ public class DigJobFactory {
     @Inject
     private PathManager pathManager;
 
-    public DigJob createJob(ParcelModel digParcel) {
+    public DigJob createJob(Parcel digParcel) {
         if (digParcel.getRockInfo() != null) {
             DigJob job = new DigJob();
 

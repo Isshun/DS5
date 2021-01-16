@@ -8,7 +8,7 @@ import org.smallbox.faraway.core.game.service.applicationConfig.ApplicationConfi
 import org.smallbox.faraway.core.module.path.PathManager;
 import org.smallbox.faraway.core.module.world.model.ItemFilter;
 import org.smallbox.faraway.core.module.world.model.MapObjectModel;
-import org.smallbox.faraway.core.module.world.model.ParcelModel;
+import org.smallbox.faraway.core.module.world.model.Parcel;
 import org.smallbox.faraway.modules.character.model.PathModel;
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 
@@ -69,7 +69,7 @@ public class ItemFinderModule extends SuperGameModule {
         return getRandomNearest(filter, character.getParcel());
     }
 
-    public MapObjectModel getRandomNearest(ItemFilter filter, ParcelModel fromParcel) {
+    public MapObjectModel getRandomNearest(ItemFilter filter, Parcel fromParcel) {
 //        return _items.getItems().stream()
 //                .skip((long) (Math.random() * _items.getItems().size() - 1))
 //                .findFirst()

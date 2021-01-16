@@ -1,7 +1,7 @@
 package org.smallbox.faraway.client.gameAction;
 
-import org.smallbox.faraway.core.module.world.model.ParcelModel;
+import org.smallbox.faraway.core.module.world.model.Parcel;
 
 public interface OnSelectParcelListener {
-     void onParcelSelected(ParcelModel parcel);
+     void onParcelSelected(Parcel parcel);
 }

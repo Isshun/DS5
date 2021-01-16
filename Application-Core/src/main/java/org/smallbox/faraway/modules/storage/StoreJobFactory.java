@@ -6,7 +6,7 @@ import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.module.world.model.ConsumableItem;
-import org.smallbox.faraway.core.module.world.model.ParcelModel;
+import org.smallbox.faraway.core.module.world.model.Parcel;
 import org.smallbox.faraway.modules.character.model.CharacterInventoryExtra;
 import org.smallbox.faraway.modules.character.model.CharacterSkillExtra;
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
@@ -22,7 +22,7 @@ public class StoreJobFactory {
 
     public JobModel createJob(StorageArea storageArea, ConsumableItem consumable) {
         ItemInfo consumableInfo = consumable.getInfo();
-        ParcelModel targetParcel = storageArea.getParcels().stream()
+        Parcel targetParcel = storageArea.getParcels().stream()
                 .filter(parcel -> consumableModule.parcelAcceptConsumable(parcel, consumable))
                 .findFirst()
                 .orElse(null);

@@ -10,7 +10,7 @@ import org.smallbox.faraway.client.render.layer.BaseLayer;
 import org.smallbox.faraway.core.GameLayer;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
-import org.smallbox.faraway.core.module.world.model.ParcelModel;
+import org.smallbox.faraway.core.module.world.model.Parcel;
 import org.smallbox.faraway.modules.item.ItemModule;
 import org.smallbox.faraway.modules.item.UsableItem;
 
@@ -28,7 +28,7 @@ public class ItemLayer extends BaseLayer {
         itemModule.getAll().stream()
                 .filter(item -> viewport.hasParcel(item.getParcel()))
                 .forEach(item -> {
-                    ParcelModel parcel = item.getParcel();
+                    Parcel parcel = item.getParcel();
                     renderer.drawOnMap(item.getParcel(), getItemSprite(item));
 
                     if (item.getFactory() != null && item.getFactory().getCraftJob() != null) {

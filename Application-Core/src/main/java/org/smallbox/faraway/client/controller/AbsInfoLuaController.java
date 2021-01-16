@@ -5,7 +5,7 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.smallbox.faraway.client.selection.GameSelectionManager;
 import org.smallbox.faraway.common.ObjectModel;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
-import org.smallbox.faraway.core.module.world.model.ParcelModel;
+import org.smallbox.faraway.core.module.world.model.Parcel;
 
 import java.util.Collection;
 import java.util.List;
@@ -30,7 +30,7 @@ public abstract class AbsInfoLuaController<T extends ObjectModel> extends LuaCon
     }
 
     // TODO: verifier que la liste des parcel contient au moins un item affichable
-    public void displayToto(Collection<ParcelModel> parcelList) {
+    public void displayToto(Collection<Parcel> parcelList) {
         setVisible(true);
         listSelected.clear();
         parcelList.forEach(parcel -> {
@@ -53,7 +53,7 @@ public abstract class AbsInfoLuaController<T extends ObjectModel> extends LuaCon
     }
 
     @Override
-    public boolean onClickOnParcel(List<ParcelModel> parcels) {
+    public boolean onClickOnParcel(List<Parcel> parcels) {
 //        list = parcels.stream()
 //                .map(this::getObjectOnParcel)
 //                .filter(Objects::nonNull)
@@ -99,6 +99,6 @@ public abstract class AbsInfoLuaController<T extends ObjectModel> extends LuaCon
 
     protected abstract void onDisplayMultiple(Queue<T> objects);
 
-    public abstract T getObjectOnParcel(ParcelModel parcel);
+    public abstract T getObjectOnParcel(Parcel parcel);
 
 }

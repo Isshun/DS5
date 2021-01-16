@@ -9,7 +9,7 @@ import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnGameStop;
 import org.smallbox.faraway.core.game.model.MovableModel;
-import org.smallbox.faraway.core.module.world.model.ParcelModel;
+import org.smallbox.faraway.core.module.world.model.Parcel;
 import org.smallbox.faraway.modules.world.WorldModule;
 
 import java.util.*;
@@ -54,7 +54,7 @@ public class RockTileGenerator {
 
     private final Map<Integer, Texture> cachedTextures = new HashMap<>();
 
-    public Texture getTexture(ParcelModel parcel) {
+    public Texture getTexture(Parcel parcel) {
         int neighborhood = computeNeighborhood(parcel);
 
         if (!cachedTextures.containsKey(neighborhood)) {
@@ -68,7 +68,7 @@ public class RockTileGenerator {
         return cachedTextures.get(neighborhood);
     }
 
-    private Texture buildTexture(Pixmap pixmapIn, ParcelModel parcel) {
+    private Texture buildTexture(Pixmap pixmapIn, Parcel parcel) {
         return assetManager.createTextureFromPixmap(TILE_SIZE, TILE_SIZE, RGBA8888, pixmap -> {
             rules.stream().filter(rule -> rule.position == 0).filter(rule -> rule.check(worldModule, parcel)).findFirst().ifPresent(rule -> draw(rule, pixmap, pixmapIn, parcel));
             rules.stream().filter(rule -> rule.position == 1).filter(rule -> rule.check(worldModule, parcel)).findFirst().ifPresent(rule -> draw(rule, pixmap, pixmapIn, parcel));
@@ -82,21 +82,21 @@ public class RockTileGenerator {
         cachedTextures.values().forEach(Texture::dispose);
     }
 
-    private int computeNeighborhood(ParcelModel parcel) {
+    private int computeNeighborhood(Parcel parcel) {
         int neighborhood = 0;
-        neighborhood |= worldModule.checkOrNull(parcel, ParcelModel::hasRock, MovableModel.Direction.TOP_LEFT) ? 0b100000000 : 0b000000000;
-        neighborhood |= worldModule.checkOrNull(parcel, ParcelModel::hasRock, MovableModel.Direction.TOP) ? 0b010000000 : 0b000000000;
-        neighborhood |= worldModule.checkOrNull(parcel, ParcelModel::hasRock, MovableModel.Direction.TOP_RIGHT) ? 0b001000000 : 0b000000000;
-        neighborhood |= worldModule.checkOrNull(parcel, ParcelModel::hasRock, MovableModel.Direction.LEFT) ? 0b000100000 : 0b000000000;
-        neighborhood |= worldModule.checkOrNull(parcel, ParcelModel::hasRock, MovableModel.Direction.NONE) ? 0b000010000 : 0b000000000;
-        neighborhood |= worldModule.checkOrNull(parcel, ParcelModel::hasRock, MovableModel.Direction.RIGHT) ? 0b000001000 : 0b000000000;
-        neighborhood |= worldModule.checkOrNull(parcel, ParcelModel::hasRock, MovableModel.Direction.BOTTOM_LEFT) ? 0b000000100 : 0b000000000;
-        neighborhood |= worldModule.checkOrNull(parcel, ParcelModel::hasRock, MovableModel.Direction.BOTTOM) ? 0b000000010 : 0b000000000;
-        neighborhood |= worldModule.checkOrNull(parcel, ParcelModel::hasRock, MovableModel.Direction.BOTTOM_RIGHT) ? 0b000000001 : 0b000000000;
+        neighborhood |= worldModule.checkOrNull(parcel, Parcel::hasRock, MovableModel.Direction.TOP_LEFT) ? 0b100000000 : 0b000000000;
+        neighborhood |= worldModule.checkOrNull(parcel, Parcel::hasRock, MovableModel.Direction.TOP) ? 0b010000000 : 0b000000000;
+        neighborhood |= worldModule.checkOrNull(parcel, Parcel::hasRock, MovableModel.Direction.TOP_RIGHT) ? 0b001000000 : 0b000000000;
+        neighborhood |= worldModule.checkOrNull(parcel, Parcel::hasRock, MovableModel.Direction.LEFT) ? 0b000100000 : 0b000000000;
+        neighborhood |= worldModule.checkOrNull(parcel, Parcel::hasRock, MovableModel.Direction.NONE) ? 0b000010000 : 0b000000000;
+        neighborhood |= worldModule.checkOrNull(parcel, Parcel::hasRock, MovableModel.Direction.RIGHT) ? 0b000001000 : 0b000000000;
+        neighborhood |= worldModule.checkOrNull(parcel, Parcel::hasRock, MovableModel.Direction.BOTTOM_LEFT) ? 0b000000100 : 0b000000000;
+        neighborhood |= worldModule.checkOrNull(parcel, Parcel::hasRock, MovableModel.Direction.BOTTOM) ? 0b000000010 : 0b000000000;
+        neighborhood |= worldModule.checkOrNull(parcel, Parcel::hasRock, MovableModel.Direction.BOTTOM_RIGHT) ? 0b000000001 : 0b000000000;
         return neighborhood;
     }
 
-    private void draw(TileGeneratorRule rule, Pixmap pixmapOut, Pixmap pixmapIn, ParcelModel parcel) {
+    private void draw(TileGeneratorRule rule, Pixmap pixmapOut, Pixmap pixmapIn, Parcel parcel) {
         int outX = rule.position == 1 || rule.position == 3 ? HALF_TILE_SIZE : 0;
         int outY = rule.position == 2 || rule.position == 3 ? HALF_TILE_SIZE : 0;
         terrainManager.generate(pixmapOut, pixmapIn, rule.key, rule.position, outX, outY);

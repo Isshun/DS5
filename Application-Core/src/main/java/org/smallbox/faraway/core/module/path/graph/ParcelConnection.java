@@ -1,13 +1,13 @@
 package org.smallbox.faraway.core.module.path.graph;
 
 import com.badlogic.gdx.ai.pfa.Connection;
-import org.smallbox.faraway.core.module.world.model.ParcelModel;
+import org.smallbox.faraway.core.module.world.model.Parcel;
 
-public class ParcelConnection implements Connection<ParcelModel> {
-    private final ParcelModel   _fromParcel;
-    private final ParcelModel   _toParcel;
+public class ParcelConnection implements Connection<Parcel> {
+    private final Parcel _fromParcel;
+    private final Parcel _toParcel;
 
-    public ParcelConnection(ParcelModel fromParcel, ParcelModel toParcel) {
+    public ParcelConnection(Parcel fromParcel, Parcel toParcel) {
         _fromParcel = fromParcel;
         _toParcel = toParcel;
     }
@@ -26,12 +26,12 @@ public class ParcelConnection implements Connection<ParcelModel> {
     }
 
     @Override
-    public ParcelModel getFromNode() {
+    public Parcel getFromNode() {
         return _fromParcel;
     }
 
     @Override
-    public ParcelModel getToNode() {
+    public Parcel getToNode() {
         return _toParcel;
     }
 

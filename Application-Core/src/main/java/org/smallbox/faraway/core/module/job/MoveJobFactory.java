@@ -2,7 +2,7 @@ package org.smallbox.faraway.core.module.job;
 
 import com.badlogic.gdx.graphics.Color;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
-import org.smallbox.faraway.core.module.world.model.ParcelModel;
+import org.smallbox.faraway.core.module.world.model.Parcel;
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 import org.smallbox.faraway.modules.dig.DigJob;
 import org.smallbox.faraway.modules.job.JobModel;
@@ -10,7 +10,7 @@ import org.smallbox.faraway.modules.job.JobModel;
 @GameObject
 public class MoveJobFactory {
 
-    public JobModel createJob(ParcelModel targetParcel, CharacterModel character) {
+    public JobModel createJob(Parcel targetParcel, CharacterModel character) {
 
         JobModel job = new DigJob();
 

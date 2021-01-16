@@ -5,7 +5,7 @@ import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.engine.module.SuperGameModule;
 import org.smallbox.faraway.core.game.Game;
-import org.smallbox.faraway.core.module.world.model.ParcelModel;
+import org.smallbox.faraway.core.module.world.model.Parcel;
 import org.smallbox.faraway.modules.room.model.*;
 import org.smallbox.faraway.modules.weather.WeatherModule;
 import org.smallbox.faraway.modules.world.WorldModule;
@@ -34,7 +34,7 @@ public class RoomModule extends SuperGameModule {
     private boolean                                             _needRefresh;
     private AsyncTask<List<RoomModel>>                          _task;
     private boolean[]                                           _refresh;
-    private final HashSet<ParcelModel>                                _closeList = new HashSet<>();
+    private final HashSet<Parcel>                                _closeList = new HashSet<>();
 
     public boolean runOnMainThread() { return false; }
 
@@ -105,7 +105,7 @@ public class RoomModule extends SuperGameModule {
 //        }
     }
 
-    public <T extends RoomModel> T addRoom(Class<T> cls, Collection<ParcelModel> parcels) {
+    public <T extends RoomModel> T addRoom(Class<T> cls, Collection<Parcel> parcels) {
         T existingArea = _rooms.stream()
                 .filter(cls::isInstance)
                 .filter(area -> area.getParcels().stream().anyMatch(parcels::contains))
@@ -129,12 +129,12 @@ public class RoomModule extends SuperGameModule {
         }
     }
 
-    public void removeArea(List<ParcelModel> parcels) {
+    public void removeArea(List<Parcel> parcels) {
         _rooms.forEach(room -> parcels.forEach(room::removeParcel));
         _rooms.removeIf(area -> area.getParcels().isEmpty());
     }
 
-    public RoomModel getRoom(ParcelModel parcel) {
+    public RoomModel getRoom(Parcel parcel) {
         return _rooms.stream().filter(room -> room.hasParcel(parcel)).findFirst().orElse(null);
     }
 

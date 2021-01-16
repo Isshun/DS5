@@ -6,7 +6,7 @@ import org.smallbox.faraway.common.ObjectModel;
 import org.smallbox.faraway.core.engine.ColorUtils;
 import org.smallbox.faraway.core.module.world.model.ItemFilter;
 import org.smallbox.faraway.core.module.world.model.MapObjectModel;
-import org.smallbox.faraway.core.module.world.model.ParcelModel;
+import org.smallbox.faraway.core.module.world.model.Parcel;
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 
 import java.util.*;
@@ -23,7 +23,7 @@ public class RoomModel extends ObjectModel {
     private int                         _maxX;
     private boolean                     _isCommon;
     private Set<CharacterModel>         _occupants;
-    protected Set<ParcelModel>          _parcels;
+    protected Set<Parcel>          _parcels;
     private boolean                     _isExterior;
     private double                      _lightValue;
     private double                      _permeability;
@@ -32,12 +32,12 @@ public class RoomModel extends ObjectModel {
     private String                      _autoName;
     private String                      _name;
     private double                      _oxygen;
-    private final ParcelModel           _baseParcel;
+    private final Parcel _baseParcel;
     private int                         _floor;
     private double                      _targetOxygen;
     private double                      _pressure;
 
-    public boolean hasParcel(ParcelModel parcel) {
+    public boolean hasParcel(Parcel parcel) {
         return _parcels.contains(parcel);
     }
 
@@ -57,7 +57,7 @@ public class RoomModel extends ObjectModel {
         GARDEN
     }
 
-    public RoomModel(RoomType type, int floor, ParcelModel baseParcel) {
+    public RoomModel(RoomType type, int floor, Parcel baseParcel) {
         _baseParcel = baseParcel;
         init(type, floor);
     }
@@ -80,7 +80,7 @@ public class RoomModel extends ObjectModel {
         _autoName = "Room " + _id;
     }
 
-    public void removeParcel(ParcelModel parcel) {
+    public void removeParcel(Parcel parcel) {
         _parcels.remove(parcel);
     }
 
@@ -89,7 +89,7 @@ public class RoomModel extends ObjectModel {
     }
 
     public double                       getOxygen() { return _oxygen; }
-    public ParcelModel                  getBaseParcel() { return _baseParcel; }
+    public Parcel getBaseParcel() { return _baseParcel; }
     public double                       getTemperature() { return _temperatureInfo.temperature; }
     public int                          getFloor() { return _floor; }
     public double                       getTargetOxygen() { return _targetOxygen; }
@@ -110,12 +110,12 @@ public class RoomModel extends ObjectModel {
     public Set<CharacterModel>          getOccupants() { return _occupants; }
     public RoomTemperatureModel         getTemperatureInfo() { return _temperatureInfo; }
     public List<RoomConnectionModel>    getConnections() { return _connections; }
-    public Set<ParcelModel>             getParcels() { return _parcels; }
+    public Set<Parcel>             getParcels() { return _parcels; }
     public String                       getName() { return _name != null ? _name : _autoName; }
 
     public void                         addOxygen(double oxygen) { _oxygen = Math.max(0, Math.min(1, _oxygen + oxygen / _parcels.size())); }
-    public void                         addParcels(Collection<ParcelModel> parcels) { parcels.forEach(parcel -> parcel.setRoom(this)); _parcels.addAll(parcels); }
-    public void                         addParcel(ParcelModel area) { _parcels.add(area); }
+    public void                         addParcels(Collection<Parcel> parcels) { parcels.forEach(parcel -> parcel.setRoom(this)); _parcels.addAll(parcels); }
+    public void                         addParcel(Parcel area) { _parcels.add(area); }
     public void                         setAutoName(String autoName) { _autoName = autoName; }
     public void                         setMaxX(int x) { _maxX = x; }
     public void                         setMinX(int x) { _minX = x; }
@@ -136,7 +136,7 @@ public class RoomModel extends ObjectModel {
     public boolean                      hasNeighbors() { return !_connections.isEmpty(); }
 
     public boolean containsParcel(int x, int y) {
-        for (ParcelModel parcel: _parcels) {
+        for (Parcel parcel: _parcels) {
             if (parcel.x == x && parcel.y == y) {
                 return true;
             }
@@ -206,12 +206,12 @@ public class RoomModel extends ObjectModel {
 //        return null;
     }
 
-    public void removeArea(ParcelModel area) {
+    public void removeArea(Parcel area) {
         _parcels.remove(area);
     }
 
     public void removeArea(int x, int y) {
-        for (ParcelModel parcel: _parcels) {
+        for (Parcel parcel: _parcels) {
             if (parcel.x == x && parcel.y == y) {
                 removeArea(parcel);
                 return;
@@ -223,7 +223,7 @@ public class RoomModel extends ObjectModel {
         _x = Integer.MAX_VALUE;
         _y = Integer.MAX_VALUE;
 
-        for (ParcelModel parcel: _parcels) {
+        for (Parcel parcel: _parcels) {
             if (parcel.x <= _x  && parcel.y <= _y) {
                 _x = parcel.x;
                 _y = parcel.y;

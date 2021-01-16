@@ -3,7 +3,7 @@ package org.smallbox.faraway.modules.area;
 import org.smallbox.faraway.core.NotImplementedException;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.engine.module.SuperGameModule;
-import org.smallbox.faraway.core.module.world.model.ParcelModel;
+import org.smallbox.faraway.core.module.world.model.Parcel;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
@@ -29,14 +29,14 @@ public class AreaModule extends SuperGameModule {
                 .map(cls::cast);
     }
 
-    public Stream<ParcelModel> getAreasParcels(Class<? extends AreaModel> cls) {
+    public Stream<Parcel> getAreasParcels(Class<? extends AreaModel> cls) {
         return _areas.stream()
                 .filter(cls::isInstance)
                 .map(cls::cast)
                 .flatMap(area -> area.getParcels().stream());
     }
 
-    public List<ParcelModel> getParcelsByType(Class<? extends AreaModel> cls) {
+    public List<Parcel> getParcelsByType(Class<? extends AreaModel> cls) {
         return _areas.stream()
                 .filter(cls::isInstance)
                 .flatMap(area -> area.getParcels().stream())
@@ -54,7 +54,7 @@ public class AreaModule extends SuperGameModule {
         _areaClasses.add(cls);
     }
 
-    public <T extends AreaModel> T addArea(Class<T> cls, Collection<ParcelModel> parcels) {
+    public <T extends AreaModel> T addArea(Class<T> cls, Collection<Parcel> parcels) {
         T existingArea = _areas.stream()
                 .filter(cls::isInstance)
                 .filter(area -> area.getParcels().stream().anyMatch(parcels::contains))
@@ -84,7 +84,7 @@ public class AreaModule extends SuperGameModule {
         return _areaClasses;
     }
 
-    public AreaModel getArea(ParcelModel parcel) {
+    public AreaModel getArea(Parcel parcel) {
         throw new NotImplementedException();
     }
 
@@ -94,12 +94,12 @@ public class AreaModule extends SuperGameModule {
                 .map(cls::cast);
     }
 
-    public <T extends AreaModel> T getArea(Class<T> cls, ParcelModel parcel) {
+    public <T extends AreaModel> T getArea(Class<T> cls, Parcel parcel) {
         AreaModel area = getArea(parcel);
         return cls.isInstance(area) ? cls.cast(area) : null;
     }
 
-    public void removeArea(List<ParcelModel> parcels) {
+    public void removeArea(List<Parcel> parcels) {
         _areas.forEach(area -> parcels.forEach(area::removeParcel));
         _areas.removeIf(area -> area.getParcels().isEmpty());
     }

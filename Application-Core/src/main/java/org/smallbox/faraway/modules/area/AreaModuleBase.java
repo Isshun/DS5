@@ -2,7 +2,7 @@ package org.smallbox.faraway.modules.area;
 
 import org.smallbox.faraway.client.gameAction.GameActionAreaListener;
 import org.smallbox.faraway.core.engine.module.SuperGameModule;
-import org.smallbox.faraway.core.module.world.model.ParcelModel;
+import org.smallbox.faraway.core.module.world.model.Parcel;
 
 import java.util.List;
 import java.util.Queue;
@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 public abstract class AreaModuleBase<T_AREA extends AreaModel> extends SuperGameModule implements GameActionAreaListener {
     protected Queue<T_AREA> areas = new ConcurrentLinkedQueue<>();
 
-    public void addParcel(ParcelModel parcel) {
+    public void addParcel(Parcel parcel) {
         List<T_AREA> matchingAreas = this.areas.stream().filter(areaModel -> areaModel.haveParcelNextTo(parcel)).collect(Collectors.toList());
 
         // Only one storage area exists, add new parcel to them
@@ -25,7 +25,7 @@ public abstract class AreaModuleBase<T_AREA extends AreaModel> extends SuperGame
             T_AREA area = onNewArea();
             area.addParcel(parcel);
             for (T_AREA matchingArea: matchingAreas) {
-                for (ParcelModel matchingStorageAreaParcel: matchingArea.getParcels()) {
+                for (Parcel matchingStorageAreaParcel: matchingArea.getParcels()) {
                     area.addParcel(matchingStorageAreaParcel);
                 }
             }
@@ -49,18 +49,18 @@ public abstract class AreaModuleBase<T_AREA extends AreaModel> extends SuperGame
     public abstract T_AREA onNewArea();
 
     @Override
-    public void removeArea(ParcelModel parcel) {
+    public void removeArea(Parcel parcel) {
         areas.forEach(storageArea -> storageArea.removeParcel(parcel));
         areas.removeIf(
                 AreaModel::isEmpty);
     }
 
     @Override
-    public boolean hasArea(ParcelModel parcel) {
+    public boolean hasArea(Parcel parcel) {
         return areas.stream().anyMatch(area -> area.getParcels().contains(parcel));
     }
 
-    public AreaModel getArea(ParcelModel parcel) {
+    public AreaModel getArea(Parcel parcel) {
         return areas.stream().filter(area -> area.getParcels().contains(parcel)).findFirst().orElse(null);
     }
 

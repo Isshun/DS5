@@ -8,7 +8,7 @@ import org.smallbox.faraway.core.dependencyInjector.DependencyManager;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo.ItemInfoAction;
 import org.smallbox.faraway.core.module.world.model.ItemFilter;
-import org.smallbox.faraway.core.module.world.model.ParcelModel;
+import org.smallbox.faraway.core.module.world.model.Parcel;
 import org.smallbox.faraway.modules.building.BuildJob;
 import org.smallbox.faraway.modules.character.model.CharacterSkillExtra;
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
@@ -118,7 +118,7 @@ public class JobModel extends ObjectModel {
     protected String            _label;
     protected JobStatus         _status = JobStatus.JOB_INITIALIZED;
     protected String            _message;
-    public ParcelModel       _targetParcel;
+    public Parcel _targetParcel;
     protected boolean           _isEntertainment;
     protected boolean           _isAuto;
     protected String            _mainLabel = "";
@@ -127,7 +127,7 @@ public class JobModel extends ObjectModel {
     protected JobTaskReturn     _lastTaskReturn;
     private CharacterSkillExtra.SkillType skillType;
 
-    public JobModel(ItemInfo.ItemInfoAction actionInfo, ParcelModel targetParcel) {
+    public JobModel(ItemInfo.ItemInfoAction actionInfo, Parcel targetParcel) {
         init();
         _targetParcel = targetParcel;
         if (actionInfo != null) {
@@ -165,7 +165,7 @@ public class JobModel extends ObjectModel {
     public double                   getProgress() { return Math.min(_progress, 1); }
     public JobStatus                getStatus() { return _status; }
     public double                   getSpeedModifier() { return 1; }
-    public ParcelModel              getTargetParcel() { return _targetParcel; }
+    public Parcel getTargetParcel() { return _targetParcel; }
     public ItemInfo.ItemInfoAction  getAction() { return _actionInfo; }
     public Object                   getData() { return _data; }
     public JobTaskReturn            getLastReturn() { return _lastTaskReturn; }
@@ -338,7 +338,7 @@ public class JobModel extends ObjectModel {
     }
 
     public interface ParcelCallback {
-        ParcelModel getParcel();
+        Parcel getParcel();
     }
 
     public void addMoveTask(String label, ParcelCallback parcelCallback) {

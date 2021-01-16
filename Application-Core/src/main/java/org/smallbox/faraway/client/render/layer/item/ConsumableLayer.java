@@ -12,7 +12,7 @@ import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.module.world.model.ConsumableItem;
-import org.smallbox.faraway.core.module.world.model.ParcelModel;
+import org.smallbox.faraway.core.module.world.model.Parcel;
 import org.smallbox.faraway.modules.consumable.ConsumableModule;
 import org.smallbox.faraway.modules.consumable.ConsumableModuleObserver;
 import org.smallbox.faraway.util.Constant;
@@ -44,18 +44,18 @@ public class ConsumableLayer extends BaseLayer {
     public void onGameStart(Game game) {
         consumableModule.addObserver(new ConsumableModuleObserver() {
             @Override
-            public void onAddConsumable(ParcelModel parcel, ConsumableItem consumable) {
+            public void onAddConsumable(Parcel parcel, ConsumableItem consumable) {
                 addTag("+" + consumable.getFreeQuantity(), consumable.getParcel());
             }
 
             @Override
-            public void onUpdateQuantity(ParcelModel parcel, ConsumableItem consumable, int quantityBefore, int quantityAfter) {
+            public void onUpdateQuantity(Parcel parcel, ConsumableItem consumable, int quantityBefore, int quantityAfter) {
                 addTag("+" + (quantityAfter - quantityBefore), consumable.getParcel());
             }
         });
     }
 
-    private void addTag(String text, ParcelModel parcel) {
+    private void addTag(String text, Parcel parcel) {
         tags.add(new TagDraw() {
             @Override
             public void onTagDraw(GDXRenderer renderer, Viewport viewport) {
