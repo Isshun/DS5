@@ -28,16 +28,21 @@ import org.smallbox.faraway.modules.item.ItemModule;
 import org.smallbox.faraway.modules.plant.PlantModule;
 import org.smallbox.faraway.modules.world.WorldModule;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.function.Function;
+import java.util.function.Predicate;
+
 import static org.smallbox.faraway.util.Constant.TILE_SIZE;
 
 @GameObject
 @GameLayer(level = LayerManager.MINI_MAP_LEVEL, visible = true)
 public class MinimapLayer extends BaseLayer {
     //    private static final int    COLOR_background = 0xfffff9bdff;
-    private static final int COLOR_ROCK = 0x60442dff;
-    private static final int COLOR_ROCK_GROUND = 0x80644dff;
-    private static final int COLOR_PLANT = 0x9bcd4dff;
-    private static final int COLOR_STRUCTURE = 0x333333ff;
+    private static final Color COLOR_ROCK = new Color(0x60442dff);
+    private static final Color COLOR_ROCK_GROUND = new Color(0x80644dff);
+    private static final Color COLOR_PLANT = new Color(0x9bcd4dff);
+    private static final Color COLOR_STRUCTURE = new Color(0x333333ff);
     private static final Color COLOR_ITEM = new Color(0xff3333ff);
     private static final Color COLOR_CHARACTER = new Color(0x3c59ffff);
     private static final Color COLOR_VIEWPORT = Colors.BLUE_LIGHT_5;
@@ -55,6 +60,15 @@ public class MinimapLayer extends BaseLayer {
     @Inject private GameManager gameManager;
     @Inject private AssetManager assetManager;
 
+    private List<MinimapRule> rules = Arrays.asList(
+            new MinimapRule(parcel -> parcel.hasItem(StructureItem.class), parcel -> COLOR_STRUCTURE),
+            new MinimapRule(parcel -> plantModule.getPlant(parcel) != null, parcel -> COLOR_PLANT),
+            new MinimapRule(ParcelModel::hasRock, parcel -> COLOR_ROCK),
+            new MinimapRule(ParcelModel::hasGround, parcel -> parcel.getGroundInfo().color2),
+            new MinimapRule(ParcelModel::hasLiquid, parcel -> parcel.getLiquidInfo().color2),
+            new MinimapRule(parcel -> true, parcel -> Color.RED)
+    );
+
     private int _mainPosX;
     private int _mainPosY;
     private int _floor;
@@ -69,6 +83,24 @@ public class MinimapLayer extends BaseLayer {
     private int miniMapHeight;
     private float ratioX;
     private float ratioY;
+
+    private class MinimapRule {
+        private final Predicate<ParcelModel> predicate;
+        private final Function<ParcelModel, Color> function;
+
+        public MinimapRule(Predicate<ParcelModel> predicate, Function<ParcelModel, Color> function) {
+            this.predicate = predicate;
+            this.function = function;
+        }
+
+        public boolean matches(ParcelModel parcel) {
+            return predicate.test(parcel);
+        }
+
+        public Color getColor(ParcelModel parcel) {
+            return function.apply(parcel);
+        }
+    }
 
     @Override
     public void onGameStart(Game game) {
@@ -155,19 +187,8 @@ public class MinimapLayer extends BaseLayer {
             ParcelModel[][][] parcels = worldModule.getParcels();
             for (int x = 0; x < gameWidth; x++) {
                 for (int y = 0; y < gameHeight; y++) {
-                    if (parcels[x][y][_floor].hasItem(StructureItem.class)) {
-                        _pixmap.drawPixel(x, y, COLOR_STRUCTURE);
-                    } else if (plantModule.getPlant(parcels[x][y][_floor]) != null) {
-                        _pixmap.drawPixel(x, y, COLOR_PLANT);
-                    } else if (parcels[x][y][_floor].hasRock()) {
-                        _pixmap.drawPixel(x, y, COLOR_ROCK);
-                    } else if (parcels[x][y][_floor].hasGround()) {
-                        _pixmap.drawPixel(x, y, parcels[x][y][_floor].getGroundInfo().color);
-                    } else if (parcels[x][y][_floor].hasLiquid()) {
-                        _pixmap.drawPixel(x, y, parcels[x][y][_floor].getLiquidInfo().color);
-                    } else {
-                        _pixmap.drawPixel(x, y, 0x000000ff);
-                    }
+                    ParcelModel parcel = parcels[x][y][_floor];
+                    rules.stream().filter(rule -> rule.matches(parcel)).findFirst().ifPresent(rule -> _pixmap.drawPixel(parcel.x, parcel.y, rule.getColor(parcel).toIntBits()));
                 }
             }
 

@@ -17,15 +17,9 @@ import java.util.List;
 
 @GameObject
 public class WorldModuleSerializer extends GameSerializer {
-
-    @Inject
-    private Game game;
-
-    @Inject
-    private Data data;
-
-    @Inject
-    private WorldModule module;
+    @Inject private Game game;
+    @Inject private Data data;
+    @Inject private WorldModule module;
 
     @Override
     public int getModulePriority() { return Constant.MODULE_WORLD_PRIORITY; }

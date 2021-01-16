@@ -1,5 +1,6 @@
 package org.smallbox.faraway.core.game.modelInfo;
 
+import com.badlogic.gdx.graphics.Color;
 import org.apache.commons.lang3.StringUtils;
 import org.smallbox.faraway.core.module.world.model.ItemFilter;
 
@@ -262,6 +263,7 @@ public class ItemInfo extends ObjectInfo {
     public boolean                      isLinkDown;
     public boolean                      isWall = false;
     public int                          color;
+    public Color color2;
 
     public GraphicInfo getGraphicInfo(GraphicInfo.Type type) {
         return graphics.stream().filter(graphicInfo -> graphicInfo.type == type).findFirst().orElse(null);

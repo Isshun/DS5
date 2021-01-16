@@ -1,5 +1,6 @@
 package org.smallbox.faraway.core.engine.module.lua.data.extend;
 
+import com.badlogic.gdx.graphics.Color;
 import org.luaj.vm2.Globals;
 import org.luaj.vm2.LuaValue;
 import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject;
@@ -114,6 +115,7 @@ public class LuaItemExtend extends LuaExtend {
         itemInfo.isWall = getBoolean(value, "is_wall", itemInfo.isWall);
         itemInfo.isDoor = getBoolean(value, "door", itemInfo.isDoor);
         itemInfo.color = getInt(value, "color", 0x000000ff);
+        itemInfo.color2 = new Color(getInt(value, "color", 0x000000ff));
 
         itemInfo.permeability = getDouble(value, "permeability", 1);
 
