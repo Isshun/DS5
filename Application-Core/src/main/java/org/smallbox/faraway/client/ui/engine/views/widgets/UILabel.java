@@ -23,6 +23,7 @@ public class UILabel extends View {
     private int _textSize = 14;
     private Color _textColor = Color.BLACK;
     private int _maxLength;
+    private boolean outlined;
 
     public UILabel(ModuleBase module) {
         super(module);
@@ -30,6 +31,10 @@ public class UILabel extends View {
 
     public void setMaxLength(int maxLength) {
         _maxLength = maxLength;
+    }
+
+    public int getTextSize() {
+        return _textSize;
     }
 
     public View setSize(int width, int height) {
@@ -283,7 +288,7 @@ public class UILabel extends View {
                     font.setColor(_textColor);
                     font.draw(batch, _text, finalX, finalY);
                 }
-            }, _textSize);
+            }, _textSize, outlined);
         }
     }
 
@@ -341,4 +346,7 @@ public class UILabel extends View {
         return this;
     }
 
+    public void setOutlined(boolean outlined) {
+        this.outlined = outlined;
+    }
 }

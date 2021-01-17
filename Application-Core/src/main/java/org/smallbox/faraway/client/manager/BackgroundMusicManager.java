@@ -6,13 +6,14 @@ import org.smallbox.faraway.client.AssetManager;
 import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnInit;
+import org.smallbox.faraway.core.game.service.applicationConfig.ApplicationConfig;
 
 import java.util.Arrays;
 import java.util.List;
 
 @ApplicationObject
 public class BackgroundMusicManager {
-
+    @Inject private ApplicationConfig applicationConfig;
     @Inject private AssetManager assetManager;
 
     private List<String> randoms = Arrays.asList(
@@ -38,7 +39,7 @@ public class BackgroundMusicManager {
 
         music = assetManager.lazyLoad(path.replace("[base]", "data"), Music.class);
         music.setLooping(true);
-        music.setVolume(0.5f);
+        music.setVolume(applicationConfig.musicVolume);
 
         if (autostart) {
             music.play();

@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.luaj.vm2.LuaValue;
 import org.smallbox.faraway.client.ClientLuaModuleManager;
 import org.smallbox.faraway.client.controller.LuaController;
@@ -21,6 +22,7 @@ import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
 import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.dependencyInjector.annotationEvent.AfterApplicationLayerInit;
+import org.smallbox.faraway.core.dependencyInjector.annotationEvent.AfterGameLayerInit;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
@@ -95,9 +97,18 @@ public class UIManager {
     public void refresh(LuaController controller, String fileName) {
         _menuViews.remove(controller.getRootView().getId());
         _rootViews.removeIf(rootView -> rootView.getView() == controller.getRootView());
+        _subViews.keySet().stream().filter(view -> StringUtils.equals(view.getId(), controller.getRootView().getId())).findFirst().ifPresent(_subViews::remove);
         clientLuaModuleManager.loadLuaFile(fileName);
         luaControllerManager.initController(controller);
         Arrays.stream(controller.getClass().getDeclaredMethods()).filter(method -> method.isAnnotationPresent(AfterApplicationLayerInit.class)).forEach(method -> {
+            try {
+                method.setAccessible(true);
+                method.invoke(controller);
+            } catch (IllegalAccessException | InvocationTargetException e) {
+                e.printStackTrace();
+            }
+        });
+        Arrays.stream(controller.getClass().getDeclaredMethods()).filter(method -> method.isAnnotationPresent(AfterGameLayerInit.class)).forEach(method -> {
             try {
                 method.setAccessible(true);
                 method.invoke(controller);

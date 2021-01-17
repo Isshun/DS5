@@ -230,19 +230,19 @@ public class GDXRenderer {
         _batch.end();
     }
 
-    public void drawFontUI(DrawFontCallback callback, int fontSize) {
-        drawFont(callback, fontSize, _cameraUI);
+    public void drawFontUI(DrawFontCallback callback, int fontSize, boolean outlined) {
+        drawFont(callback, fontSize, _cameraUI, outlined);
     }
 
-    public void drawFont(DrawFontCallback callback, int fontSize) {
-        drawFont(callback, fontSize, _camera);
+    public void drawFont(DrawFontCallback callback, int fontSize, boolean outlined) {
+        drawFont(callback, fontSize, _camera, outlined);
     }
 
-    private void drawFont(DrawFontCallback callback, int fontSize, OrthographicCamera camera) {
+    private void drawFont(DrawFontCallback callback, int fontSize, OrthographicCamera camera, boolean outlined) {
         _batch.begin();
         _batch.setProjectionMatrix(camera.combined);
         fontSize *= getUiScale();
-        callback.onDraw(_batch, fontManager.getFont(fontSize));
+        callback.onDraw(_batch, outlined ? fontManager.getOutlinedFont(fontSize) : fontManager.getFont(fontSize));
         _batch.end();
     }
 
@@ -309,7 +309,7 @@ public class GDXRenderer {
     private void drawPixel(int x, int y, int width, int height, Color color, OrthographicCamera camera) {
         if (color != null) {
             _batch.begin();
-            //Gdx.gl.glEnable(GL20.GL_BLEND);
+            Gdx.gl.glEnable(GL20.GL_BLEND);
             _drawPixelShapeLayer.setProjectionMatrix(camera.combined);
             _drawPixelShapeLayer.begin(ShapeRenderer.ShapeType.Filled);
             _drawPixelShapeLayer.setColor(color);

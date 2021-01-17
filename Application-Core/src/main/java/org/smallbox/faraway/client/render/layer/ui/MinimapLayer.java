@@ -40,14 +40,14 @@ import static org.smallbox.faraway.util.Constant.TILE_SIZE;
 @GameLayer(level = LayerManager.MINI_MAP_LEVEL, visible = true)
 public class MinimapLayer extends BaseLayer {
     //    private static final int    COLOR_background = 0xfffff9bdff;
-    private static final Color COLOR_ROCK = new Color(0x60442dff);
-    private static final Color COLOR_ROCK_GROUND = new Color(0x80644dff);
-    private static final Color COLOR_PLANT = new Color(0x9bcd4dff);
-    private static final Color COLOR_STRUCTURE = new Color(0x333333ff);
-    private static final Color COLOR_ITEM = new Color(0xff3333ff);
+    private static final int COLOR_ROCK = 0x60442dff;
+    private static final int COLOR_ROCK_GROUND = 0x80644dff;
+    private static final int COLOR_PLANT = 0x9bcd4dff;
+    private static final int COLOR_STRUCTURE = 0x333333ff;
+    private static final int COLOR_ITEM = 0xff3333ff;
     private static final Color COLOR_CHARACTER = new Color(0x3c59ffff);
-    private static final Color COLOR_VIEWPORT = Colors.BLUE_LIGHT_5;
-    private static final Color COLOR_WATER = new Color(0x006d7c1d);
+    private static final Color COLOR_VIEWPORT = Colors.BLUE_LIGHT_3;
+    private static final int COLOR_WATER = 0x006d7c1d;
 
     @Inject private PlantModule plantModule;
     @Inject private WorldModule worldModule;
@@ -65,9 +65,9 @@ public class MinimapLayer extends BaseLayer {
             new MinimapRule(parcel -> parcel.hasItem(StructureItem.class), parcel -> COLOR_STRUCTURE),
             new MinimapRule(parcel -> plantModule.getPlant(parcel) != null, parcel -> COLOR_PLANT),
             new MinimapRule(Parcel::hasRock, parcel -> COLOR_ROCK),
-            new MinimapRule(Parcel::hasGround, parcel -> parcel.getGroundInfo().color2),
-            new MinimapRule(Parcel::hasLiquid, parcel -> parcel.getLiquidInfo().color2),
-            new MinimapRule(parcel -> true, parcel -> Color.RED)
+            new MinimapRule(Parcel::hasGround, parcel -> parcel.getGroundInfo().color),
+            new MinimapRule(Parcel::hasLiquid, parcel -> parcel.getLiquidInfo().color),
+            new MinimapRule(parcel -> true, parcel -> 0xff0000ff)
     );
 
     private int _mainPosX;
@@ -87,9 +87,9 @@ public class MinimapLayer extends BaseLayer {
 
     private class MinimapRule {
         private final Predicate<Parcel> predicate;
-        private final Function<Parcel, Color> function;
+        private final Function<Parcel, Integer> function;
 
-        public MinimapRule(Predicate<Parcel> predicate, Function<Parcel, Color> function) {
+        public MinimapRule(Predicate<Parcel> predicate, Function<Parcel, Integer> function) {
             this.predicate = predicate;
             this.function = function;
         }
@@ -98,7 +98,7 @@ public class MinimapLayer extends BaseLayer {
             return predicate.test(parcel);
         }
 
-        public Color getColor(Parcel parcel) {
+        public int getColor(Parcel parcel) {
             return function.apply(parcel);
         }
     }
@@ -191,7 +191,7 @@ public class MinimapLayer extends BaseLayer {
                             .ifPresent(parcel -> rules.stream()
                                     .filter(rule -> rule.matches(parcel))
                                     .findFirst()
-                                    .ifPresent(rule -> _pixmap.drawPixel(parcel.x, parcel.y, rule.getColor(parcel).toIntBits())));
+                                    .ifPresent(rule -> _pixmap.drawPixel(parcel.x, parcel.y, rule.getColor(parcel))));
                 }
             }
 

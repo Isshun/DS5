@@ -58,5 +58,7 @@
   },
   "launchGui": true,
   "uiScale": 1,
-  "lang": "en"
+  "lang": "en",
+  "musicVolume": 0.4,
+  "soundVolume": 0.6
 }

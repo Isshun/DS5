@@ -61,6 +61,8 @@ public class ApplicationConfig {
     public boolean              launchGui;
     public double               uiScale;
     public String               lang;
+    public float musicVolume;
+    public float soundVolume;
 
     public int getResolutionWidth() {
         return screen.resolution[0];

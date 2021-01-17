@@ -68,6 +68,7 @@ public class InputManager implements InputProcessor {
     private int _touchDownY;
     private int _touchDragX;
     private int _touchDragY;
+    private int _touchButton;
     private boolean _touchDrag;
 
     @Override
@@ -159,8 +160,10 @@ public class InputManager implements InputProcessor {
 
     @Override
     public boolean touchDown(int x, int y, int pointer, int button) {
-        _touchDownX = _touchDragX = x;
-        _touchDownY = _touchDragY = y;
+        _touchDrag = false;
+        _touchButton = button;
+        _touchDragX = _touchDownX = x;
+        _touchDragY = _touchDownY = y;
 
         if (button == Buttons.LEFT) {
 
@@ -189,46 +192,54 @@ public class InputManager implements InputProcessor {
 
     @Override
     public boolean touchUp(int x, int y, int pointer, int button) {
+
         if (debugService.isDebugMode()) {
             debugService.click(x, y);
             return false;
         }
 
-        _touchDrag = false;
-
-        if (!gameActionManager.hasAction() && button == Buttons.RIGHT) {
+        else if (!moveMoved(x, y) && !gameActionManager.hasAction() && button == Buttons.RIGHT) {
             gameContextMenuManager.open(WorldHelper.getParcel(viewport.getWorldPosX(x), viewport.getWorldPosY(y), viewport.getFloor()), x, y);
             return true;
         }
 
-        if (gameContextMenuManager.getMenu() != null && button == Buttons.LEFT) {
+        else if (!moveMoved(x, y) && gameContextMenuManager.getMenu() != null && button == Buttons.LEFT) {
             gameContextMenuManager.click(x, y);
             return true;
         }
 
         // Passe l'evenement à l'ui event manager
-        if (uiEventManager.onMouseRelease(x, y, button)) {
+        else if (uiEventManager.onMouseRelease(x, y, button)) {
             return false;
         }
 
         // Passe l'evenement au game event manager
-        if (gameEventManager.onMouseRelease(x, y, button)) {
+        else if (gameEventManager.onMouseRelease(x, y, button)) {
             return false;
         }
 
         return false;
     }
 
+    private boolean moveMoved(int x, int y) {
+        return Math.abs(_touchDownX - x) + Math.abs(_touchDownY - y) > 5;
+    }
+
     @Override
     public boolean touchDragged(int x, int y, int pointer) {
-        _touchDragX = x;
-        _touchDragY = y;
-        _touchDrag = true;
+
+        if (_touchButton == Buttons.RIGHT) {
+            viewport.move((x - _touchDragX) * 3, (y - _touchDragY) * 3);
+        }
 
         // Passe l'evenement au game event manager
         if (gameEventManager.onMouseMove(x, y, true)) {
             return false;
         }
+
+        _touchDragX = x;
+        _touchDragY = y;
+        _touchDrag = true;
 
         return false;
     }
@@ -305,10 +316,6 @@ public class InputManager implements InputProcessor {
 
     public int getTouchDragY() {
         return _touchDragY;
-    }
-
-    public boolean getTouchDrag() {
-        return _touchDrag;
     }
 
 }

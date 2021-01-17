@@ -14,21 +14,11 @@ import org.smallbox.faraway.core.module.world.model.Parcel;
 
 @GameObject
 public class InterfaceDashboardLayer extends DashboardLayerBase {
-
-    @Inject
-    private Game game;
-
-    @Inject
-    private GameSelectionManager gameSelectionManager;
-
-    @Inject
-    private LayerManager layerManager;
-
-    @Inject
-    private GameEventManager gameEventManager;
-
-    @Inject
-    private UIManager uiManager;
+    @Inject private GameSelectionManager gameSelectionManager;
+    @Inject private LayerManager layerManager;
+    @Inject private GameEventManager gameEventManager;
+    @Inject private UIManager uiManager;
+    @Inject private Game game;
 
     @Override
     protected void onDraw(GDXRenderer renderer, int frame) {

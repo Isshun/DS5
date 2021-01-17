@@ -1,6 +1,5 @@
 package org.smallbox.faraway.client.debug.dashboard;
 
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import org.smallbox.faraway.client.debug.dashboard.content.*;
 import org.smallbox.faraway.client.debug.layer.*;
@@ -9,7 +8,6 @@ import org.smallbox.faraway.client.render.Viewport;
 import org.smallbox.faraway.client.render.layer.BaseLayer;
 import org.smallbox.faraway.client.selection.GameSelectionManager;
 import org.smallbox.faraway.core.GameLayer;
-import org.smallbox.faraway.core.GameShortcut;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnInit;
@@ -107,9 +105,11 @@ public class DashboardLayer extends BaseLayer {
 
     @Override
     public void onDraw(GDXRenderer renderer, Viewport viewport, double animProgress, int frame) {
-        drawHeaders(renderer);
-        drawDebugLayer(renderer);
-        Optional.ofNullable(currentDashboard()).ifPresent(dashboardLayer -> dashboardLayer.draw(renderer, frame));
+        if (isVisible()) {
+            drawHeaders(renderer);
+            drawDebugLayer(renderer);
+            Optional.ofNullable(currentDashboard()).ifPresent(dashboardLayer -> dashboardLayer.draw(renderer, frame));
+        }
     }
 
     private DashboardLayerBase currentDashboard() {

@@ -14,7 +14,7 @@ public class OutlinedFontLoaderParameter implements FontLoaderParameterInterface
         parameter.fontParameters.size = fontSize;
         parameter.fontParameters.flip = true;
         parameter.fontParameters.borderColor = Color.BLACK;
-        parameter.fontParameters.borderWidth = fontSize / 12f;
+        parameter.fontParameters.borderWidth = fontSize / 16f;
         return parameter;
     }
 

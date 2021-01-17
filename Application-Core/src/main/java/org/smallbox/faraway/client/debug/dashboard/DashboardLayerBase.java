@@ -21,11 +21,14 @@ public abstract class DashboardLayerBase {
 
     public void draw(GDXRenderer renderer, int frame) {
         index = 0;
+
         onDraw(renderer, frame);
 
-        renderer.drawTextUI(12, 112, 18, Color.BLACK, page + "/" + max / ITEM_PER_PAGE);
-        renderer.drawTextUI(11, 111, 18, Color.BLACK, page + "/" + max / ITEM_PER_PAGE);
-        renderer.drawTextUI(10, 110, 18, Color.WHITE, page + "/" + max / ITEM_PER_PAGE);
+        if (index > 0) {
+            renderer.drawTextUI(12, 112, 18, Color.BLACK, page + "/" + max / ITEM_PER_PAGE);
+            renderer.drawTextUI(11, 111, 18, Color.BLACK, page + "/" + max / ITEM_PER_PAGE);
+            renderer.drawTextUI(10, 110, 18, Color.WHITE, page + "/" + max / ITEM_PER_PAGE);
+        }
     }
 
     protected abstract void onDraw(GDXRenderer renderer, int frame);
