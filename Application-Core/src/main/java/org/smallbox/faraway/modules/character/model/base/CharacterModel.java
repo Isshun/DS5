@@ -11,6 +11,7 @@ import org.smallbox.faraway.modules.job.JobModel;
 import org.smallbox.faraway.util.MoveListener;
 import org.smallbox.faraway.util.log.Log;
 
+import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -22,10 +23,12 @@ public abstract class CharacterModel extends MovableModel {
     public double                              _moveStep;
     protected CharacterInfo                     _type;
     private boolean                             _isSleeping;
+    public Direction lastDirection = Direction.RIGHT;
     public CharacterPositionCommon position = new CharacterPositionCommon();
     protected Map<Class<? extends CharacterExtra>, CharacterExtra>  _extra = new ConcurrentHashMap<>();
     public PathModel _path;
     public GameTask _task;
+    private LocalDateTime lastJobDate;
 
     public CharacterModel(int id, CharacterInfo characterInfo, Parcel parcel) {
         super(id, parcel);
@@ -38,7 +41,7 @@ public abstract class CharacterModel extends MovableModel {
     }
 
     public <T extends CharacterExtra> T getExtra(Class<T> cls) { return (T) _extra.get(cls); }
-    public JobModel                     getJob() { return _job; }
+    public JobModel                     getJob() { return job; }
     public Parcel getParcel() { return _parcel; }
     public CharacterInfo                getType() { return _type; }
     public abstract String              getName();
@@ -53,29 +56,17 @@ public abstract class CharacterModel extends MovableModel {
         _parcel = parcel;
     }
 
-    public boolean                      isFree() { return _task == null; }
+    public boolean                      isFree() { return _task == null || (job != null && job.isOptional()); }
 //    public boolean                      isFree() { return getJob() == null && _path == null; }
     public boolean                      isAlive() { return _isAlive; }
     public boolean                      isDead() { return !_isAlive; }
     public boolean                      isSleeping() { return _isSleeping; }
 
     public void    setJob(JobModel job) {
-        assert _job == null;
+        assert this.job == null;
         assert job != null;
 
-        _job = job;
-    }
-
-    public void clearJob(JobModel job) {
-        if (_job != job) {
-            throw new GameException(CharacterModel.class, "clearJob: job not match character current job", _job, job, this);
-        }
-
-        _job = null;
-        _moveListener = null;
-        _moveProgress = 0;
-        _moveProgress2 = 0;
-        _path = null;
+        this.job = job;
     }
 
     public String toString() {
@@ -105,5 +96,31 @@ public abstract class CharacterModel extends MovableModel {
         _path = path;
         _moveProgress = 0;
         _moveProgress2 = 0;
+    }
+
+    public void setLastJobDate(LocalDateTime lastJobDate) {
+        this.lastJobDate = lastJobDate;
+    }
+
+    public LocalDateTime getLastJobDate() {
+        return lastJobDate;
+    }
+
+    public void clearMove() {
+        _moveListener = null;
+        _moveProgress = 0;
+        _moveProgress2 = 0;
+        _path = null;
+    }
+
+    public void clearJob(JobModel job, LocalDateTime endDate) {
+        if (this.job == job) {
+            this.job = null;
+            this.lastJobDate = endDate;
+            this.clearMove();
+            Log.debug("Job cleared from character: " + this);
+
+            job.clearCharacter(this, endDate);
+        }
     }
 }

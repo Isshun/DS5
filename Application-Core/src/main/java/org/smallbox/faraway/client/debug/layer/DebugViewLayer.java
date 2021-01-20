@@ -67,9 +67,9 @@ public class DebugViewLayer extends BaseLayer {
         toggleVisibility();
     }
 
-    @GameShortcut(key = Input.Keys.F2)
-    public void hideAllViews() {
-        uiManager.getRootViews().forEach(rootView -> rootView.setVisible(false));
-    }
+//    @GameShortcut(key = Input.Keys.F2)
+//    public void hideAllViews() {
+//        uiManager.getRootViews().forEach(rootView -> rootView.setVisible(false));
+//    }
 
 }

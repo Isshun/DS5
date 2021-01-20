@@ -1,6 +1,7 @@
 package org.smallbox.faraway.client.ui.engine.views.widgets;
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import org.smallbox.faraway.client.render.GDXRenderer;
 import org.smallbox.faraway.client.ui.engine.views.Align;
@@ -24,6 +25,8 @@ public class UILabel extends View {
     private Color _textColor = Color.BLACK;
     private int _maxLength;
     private boolean outlined;
+    private int _textLength;
+    private String font;
 
     public UILabel(ModuleBase module) {
         super(module);
@@ -162,6 +165,10 @@ public class UILabel extends View {
         return this;
     }
 
+    public void setTextLength(int length) {
+        _textLength = length;
+    }
+
     public void setStringValue(String string) {
         if (_maxLength > 0) {
             int index = string.indexOf(' ', _maxLength / 2);
@@ -169,6 +176,11 @@ public class UILabel extends View {
                 string = string.substring(0, index) + '\n' + string.substring(index + 1);
             }
         }
+
+        if (string.length() < _textLength) {
+            string = org.apache.commons.lang3.StringUtils.leftPad(string, _textLength);
+        }
+
         _text = string;
     }
 
@@ -215,17 +227,21 @@ public class UILabel extends View {
         super.draw(renderer, x, y);
 
         if (_isVisible) {
+
+            GlyphLayout glyphLayout = new GlyphLayout();
+            glyphLayout.setText(fontManager.getFont(font, _textSize), _text);
+
             if (_align == Align.CENTER) {
-                geometry.setOffsetX((getWidth() - getContentWidth()) / 2);
-                geometry.setOffsetY((getHeight() - getContentHeight()) / 2);
+                geometry.setOffsetX((int) (getWidth() / 2 - glyphLayout.width / 2));
+                geometry.setOffsetY((int) (getHeight() / 2 - glyphLayout.height / 2));
             }
 
             if (_align == Align.RIGHT) {
-                geometry.setOffsetX((getWidth() - getContentWidth()));
+                geometry.setOffsetX((int) (getWidth() / 2 - glyphLayout.width / 2));
             }
 
             if (_align == Align.CENTER_VERTICAL) {
-                geometry.setOffsetY((getHeight() - getContentHeight()) / 2);
+                geometry.setOffsetY((int) ((getHeight() - glyphLayout.height) / 2));
             }
 
 //            renderer.drawPixel(getAlignedX() + x + _offsetX + _paddingLeft + _marginLeft, getAlignedY() + y + _offsetY + _paddingTop + _marginTop, _textSize, _gdxTextColor, _text);
@@ -288,7 +304,7 @@ public class UILabel extends View {
                     font.setColor(_textColor);
                     font.draw(batch, _text, finalX, finalY);
                 }
-            }, _textSize, outlined);
+            }, _textSize, outlined, font);
         }
     }
 
@@ -296,7 +312,7 @@ public class UILabel extends View {
     public int getContentWidth() {
         if (_text != null) {
 //            return (int) ApplicationClient.fontGenerator.getFont(_textSize).getBounds(_text).width;
-            return (int) (_text.length() * fontManager.getFont(_textSize).getRegion().getRegionWidth()) + geometry.getPaddingLeft() + geometry.getPaddingRight();
+//            return (int) (_text.length() * fontManager.getFont(font, _textSize).getRegion().getRegionWidth()) + geometry.getPaddingLeft() + geometry.getPaddingRight();
         }
         return 0;
     }
@@ -348,5 +364,13 @@ public class UILabel extends View {
 
     public void setOutlined(boolean outlined) {
         this.outlined = outlined;
+    }
+
+    public void setFont(String font) {
+        this.font = font;
+    }
+
+    public String getFont() {
+        return font;
     }
 }

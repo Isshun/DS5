@@ -41,6 +41,7 @@ public class ApplicationConfig {
         public int              environmentDistance;
         public int              maxNearDistance;
         public double           characterSpeed;
+        public int              minuteBeforeIdleJob;
 
         // Temps nécéssaire pour construire 1 point de 'item cost'
         public double           craftTime;

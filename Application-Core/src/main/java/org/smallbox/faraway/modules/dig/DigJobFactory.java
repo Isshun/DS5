@@ -11,7 +11,12 @@ import org.smallbox.faraway.core.module.path.PathManager;
 import org.smallbox.faraway.core.module.world.model.Parcel;
 import org.smallbox.faraway.modules.character.model.CharacterSkillExtra;
 import org.smallbox.faraway.modules.consumable.ConsumableModule;
-import org.smallbox.faraway.modules.job.JobTaskReturn;
+import org.smallbox.faraway.modules.job.task.ActionTask;
+import org.smallbox.faraway.modules.job.task.MoveTask;
+import org.smallbox.faraway.modules.job.task.TechnicalTask;
+
+import static org.smallbox.faraway.modules.job.JobTaskReturn.TASK_COMPLETED;
+import static org.smallbox.faraway.modules.job.JobTaskReturn.TASK_CONTINUE;
 
 @GameObject
 public class DigJobFactory {
@@ -35,22 +40,20 @@ public class DigJobFactory {
             job.setIcon("[base]/graphics/jobs/ic_mining.png");
             job.setColor(new Color(0x80391eff));
 
-            job.addMoveTask("Move to parcel", () -> digParcel);
+            job.addTask(new MoveTask("Move to parcel", () -> digParcel));
 
             // Dig action
-            job.addTask("Dig", (character, hourInterval) -> {
+            job.addTask(new ActionTask("Dig", (character, hourInterval, localDateTime) -> {
                 if (digParcel.getRockInfo() != null) {
                     job._time += hourInterval;
                     job.setProgress(job._time, applicationConfig.game.digTime);
-                    return job._time >= applicationConfig.game.digTime ? JobTaskReturn.TASK_COMPLETED : JobTaskReturn.TASK_CONTINUE;
                 }
-                return JobTaskReturn.TASK_COMPLETED;
-            });
+            }, () -> !digParcel.hasRock() || job._time >= applicationConfig.game.digTime ? TASK_COMPLETED : TASK_CONTINUE));
 
             // - Create output products
             // - Remove rock from parcel
             // - Refresh GraphNode connections
-            job.addTechnicalTask(() -> {
+            job.addTask(new TechnicalTask(j -> {
                 if (digParcel.getRockInfo() != null) {
                     digParcel.getRockInfo().actions.stream()
                             .filter(action -> action.type == ItemInfo.ItemInfoAction.ActionType.MINE)
@@ -60,7 +63,7 @@ public class DigJobFactory {
                     pathManager.refreshConnections(digParcel);
                     Application.notify(gameObserver -> gameObserver.onRemoveRock(digParcel));
                 }
-            });
+            }));
 
             job.onNewInit();
 

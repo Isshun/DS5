@@ -11,6 +11,8 @@ import java.util.stream.Collectors;
 
 public class UIList extends CompositeView implements AutoCloseable {
 
+    private int spacing;
+
     public UIList(ModuleBase module) {
         super(module);
     }
@@ -52,7 +54,7 @@ public class UIList extends CompositeView implements AutoCloseable {
                 for (View view : _views) {
                     if (view.isVisible()) {
                         view.draw(renderer, getAlignedX() + x + geometry.getMarginLeft(), offset + getAlignedY() + y + geometry.getMarginTop());
-                        offset += view.getHeight() + view.getGeometry().getMarginTop() + view.getGeometry().getMarginBottom();
+                        offset += view.getHeight() + view.getGeometry().getMarginTop() + view.getGeometry().getMarginBottom() + spacing;
                     }
                 }
             } catch (ConcurrentModificationException e) {
@@ -78,4 +80,9 @@ public class UIList extends CompositeView implements AutoCloseable {
 
     @Override
     public String toString() { return "" + getId() + " [" + _views.stream().map(View::toString).collect(Collectors.joining(", ")) + "]"; }
+
+    public void setSpacing(int spacing) {
+        this.spacing = spacing;
+    }
+
 }

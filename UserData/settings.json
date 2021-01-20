@@ -10,7 +10,7 @@
   },
   "screen": {
     "position": [20, 20],
-    "mode": "WINDOW",
+    "mode": "window",
     "foregroundFPS": 60,
     "backgroundFPS": 30,
     "acceptedResolutions43": [
@@ -54,7 +54,8 @@
     "craftTime":  0.015,
     "buildTime": 0.015,
     "repairTime":  0.015,
-    "digTime": 0.05
+    "digTime": 0.05,
+    "minuteBeforeIdleJob": 5
   },
   "launchGui": true,
   "uiScale": 1,

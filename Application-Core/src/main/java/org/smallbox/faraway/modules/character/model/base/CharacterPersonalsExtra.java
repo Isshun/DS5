@@ -30,8 +30,12 @@ public class CharacterPersonalsExtra extends CharacterExtra {
         _isGay = (int)(Math.random() * 100) % 10 == 0;
         _lastName = lastName;
         if (name == null) {
-            _firstName = CharacterName.getFirstname(_gender) + " ";
-            _lastName = lastName != null ? lastName : CharacterName.getLastName();
+            for (int i = 0; i < 20; i++) {
+                if (_firstName == null || (_firstName + " " + _lastName).length() > 16) {
+                    _firstName = CharacterName.getFirstname(_gender) + " ";
+                    _lastName = lastName != null ? lastName : CharacterName.getLastName();
+                }
+            }
         }
         _birthName = _lastName;
     }

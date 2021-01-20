@@ -201,7 +201,7 @@ public abstract class LuaUIExtend extends LuaExtend {
     }
 
     private void readGeometry(LuaValue value, View view) {
-        readLua(value, "size", v -> view.setSize(v.get(1).toint(), v.get(2).toint()));
+        readLua(value, "size", v -> view.setSize(v.get(1).toint(), v.get(2).toint()), v -> view.setSize(View.FILL, View.FILL));
         readLua(value, "size", v -> view.getGeometry().setFixedSize(v.get(1).toint(), v.get(2).toint()));
         readLua(value, "position", v -> view.setPosition(v.get(1).toint(), v.get(2).toint()));
 

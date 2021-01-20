@@ -141,6 +141,10 @@ public class UIManager {
     private final Queue<Integer>              _visibleViews = new ConcurrentLinkedQueue<>();
     private final Map<String, List<View>>     _groups = new ConcurrentHashMap<>();
 
+    public String getSubViewParent(View subView) {
+        return _subViews.get(subView);
+    }
+
     public UIManager() {
         _context = new UIFrame(null);
         _context.setVisible(false);
@@ -328,7 +332,7 @@ public class UIManager {
         else {
             for (RootView view : _rootViews) {
                 if (view.getView() instanceof CompositeView) {
-                    View v = ((CompositeView)view.getView()).find(id);
+                    View v = view.getView().find(id);
                     if (v != null) {
                         return v;
                     }

@@ -5,6 +5,7 @@ import org.smallbox.faraway.core.module.world.model.ConsumableItem;
 import org.smallbox.faraway.core.module.world.model.MapObjectModel;
 import org.smallbox.faraway.modules.character.model.CharacterSkillExtra;
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
+import org.smallbox.faraway.modules.job.JobCheckReturn;
 import org.smallbox.faraway.modules.job.JobModel;
 
 import java.util.Map;

@@ -84,7 +84,7 @@ public class GameSaveManager {
         saveInfo.label = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss").format(saveInfo.date);
         saveInfo.filename = new SimpleDateFormat("yyyy-MM-dd-hh-hh-mm-ss").format(saveInfo.date);
         saveInfo.crew = characterModule.getCount();
-        saveInfo.duration = gameTime.getStartGameTime().until(gameTime.getTime(), SECONDS);
+        saveInfo.duration = gameTime.getStartGameTime().until(gameTime.now(), SECONDS);
         game.getInfo().saveFiles.add(saveInfo);
 
         // Write game.json

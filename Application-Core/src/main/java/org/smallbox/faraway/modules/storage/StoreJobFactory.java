@@ -13,6 +13,8 @@ import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 import org.smallbox.faraway.modules.consumable.ConsumableModule;
 import org.smallbox.faraway.modules.dig.DigJobFactory;
 import org.smallbox.faraway.modules.job.JobModel;
+import org.smallbox.faraway.modules.job.task.MoveTask;
+import org.smallbox.faraway.modules.job.task.TechnicalTask;
 
 @GameObject
 public class StoreJobFactory {
@@ -39,19 +41,19 @@ public class StoreJobFactory {
             job.setColor(new Color(0xbb391eff));
 
             // Init
-            job.addInitTask(() -> job.targetConsumable = consumableModule.addConsumable(consumableInfo, 0, targetParcel)); // Create consumable with 0 quantity (to book parcel on storage area)
-            job.addInitTask(() -> job.targetConsumable.setStoreJob(job)); // Set store job on source consumable
-            job.addInitTask(() -> job.sourceConsumable.setStoreJob(job)); // Set store job on source consumable
+            job.addInitTask(j -> job.targetConsumable = consumableModule.addConsumable(consumableInfo, 0, targetParcel)); // Create consumable with 0 quantity (to book parcel on storage area)
+            job.addInitTask(j -> job.targetConsumable.setStoreJob(job)); // Set store job on source consumable
+            job.addInitTask(j -> job.sourceConsumable.setStoreJob(job)); // Set store job on source consumable
 
             // Job
-            job.addMoveTask("Move to consumable", () -> job.sourceConsumable.getParcel()); // Move character to sourceConsumable
-            job.addTechnicalTask(() -> takeConsumable(job.sourceConsumable, job.getCharacter())); // Move consumable to character's inventory
-            job.addMoveTask("Move to storage", () -> job.targetConsumable.getParcel()); // Apporte les composants à la zone de stockage
-            job.addTechnicalTask(() -> dropConsumable(job.targetConsumable, job.getCharacter())); // Ajoute les composants à la zone de stockage
+            job.addTask(new MoveTask("Move to consumable", () -> job.sourceConsumable.getParcel())); // Move character to sourceConsumable
+            job.addTask(new TechnicalTask(j -> takeConsumable(job.sourceConsumable, job.getCharacter()))); // Move consumable to character's inventory
+            job.addTask(new MoveTask("Move to storage", () -> job.targetConsumable.getParcel())); // Apporte les composants à la zone de stockage
+            job.addTask(new TechnicalTask(j -> dropConsumable(job.targetConsumable, job.getCharacter()))); // Ajoute les composants à la zone de stockage
 
             // Close
-            job.addCloseTask(() -> job.targetConsumable.removeStoreJob(job)); // Remove job on targetConsumable when job is closed
-            job.addCloseTask(() -> job.sourceConsumable.removeStoreJob(job)); // Remove job on sourceConsumable when job is closed
+            job.addCloseTask(j -> job.targetConsumable.removeStoreJob(job)); // Remove job on targetConsumable when job is closed
+            job.addCloseTask(j -> job.sourceConsumable.removeStoreJob(job)); // Remove job on sourceConsumable when job is closed
 
             job.onNewInit();
 

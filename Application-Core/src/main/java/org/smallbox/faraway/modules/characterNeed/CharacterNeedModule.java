@@ -92,14 +92,14 @@ public class CharacterNeedModule extends SuperGameModule {
             // Arrêt du job uniquement si le personnage à son énergie au minimum à la moitier du niveau warning
             double workWakeUpThreshold  = (sleepNeed.critical + (sleepNeed.warning - sleepNeed.critical) / 2);
             if (state == CharacterTimetableExtra.State.WORK && hasSleepJob && sleepNeed.value() >= workWakeUpThreshold) {
-                sleepJob.close();
+                sleepJob.close(gameTime.now());
                 return;
             }
 
             // Check: le personnage est en période FREE et un job est lancé
             // Arrêt du job uniquement si le personnage à son énergie au minimum du niveau optimal
             if (state == CharacterTimetableExtra.State.FREE && hasSleepJob && sleepNeed.value() >= sleepNeed.optimal) {
-                sleepJob.close();
+                sleepJob.close(gameTime.now());
             }
 
         }

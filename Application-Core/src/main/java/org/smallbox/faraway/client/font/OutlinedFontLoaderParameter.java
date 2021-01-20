@@ -8,9 +8,9 @@ import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject
 public class OutlinedFontLoaderParameter implements FontLoaderParameterInterface {
 
     @Override
-    public FreetypeFontLoader.FreeTypeFontLoaderParameter getParameter(int fontSize) {
+    public FreetypeFontLoader.FreeTypeFontLoaderParameter getParameter(String font, int fontSize) {
         FreetypeFontLoader.FreeTypeFontLoaderParameter parameter = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
-        parameter.fontFileName = "data/fonts/font.ttf";
+        parameter.fontFileName = "data/fonts/" + font + ".ttf";
         parameter.fontParameters.size = fontSize;
         parameter.fontParameters.flip = true;
         parameter.fontParameters.borderColor = Color.BLACK;

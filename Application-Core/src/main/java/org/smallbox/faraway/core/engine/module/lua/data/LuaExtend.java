@@ -116,6 +116,15 @@ public abstract class LuaExtend {
         }
     }
 
+    protected void readLua(LuaValue value, String key, ReadCallback<LuaValue> callback, ReadCallback<LuaValue> callbackNotExist) {
+        LuaValue v = value.get(key);
+        if (!v.isnil()) {
+            callback.onReadCallback(v);
+        } else {
+            callbackNotExist.onReadCallback(null);
+        }
+    }
+
     protected <T> void readAsync(LuaValue value, String key, Class<T> cls, ReadCallback<T> callback) {
         LuaValue v = value.get(key);
         if (!v.isnil()) {

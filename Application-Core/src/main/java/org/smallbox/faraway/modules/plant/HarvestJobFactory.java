@@ -11,6 +11,8 @@ import org.smallbox.faraway.core.module.world.model.Parcel;
 import org.smallbox.faraway.modules.character.model.CharacterSkillExtra;
 import org.smallbox.faraway.modules.consumable.ConsumableModule;
 import org.smallbox.faraway.modules.job.JobModel;
+import org.smallbox.faraway.modules.job.task.MoveTask;
+import org.smallbox.faraway.modules.job.task.TechnicalTask;
 import org.smallbox.faraway.modules.plant.model.PlantItem;
 
 @GameObject
@@ -35,13 +37,13 @@ public class HarvestJobFactory {
             job.setColor(Color.CHARTREUSE);
 
             // Déplace le personnage à l'emplacement des composants
-            job.addMoveTask("Move to plant", () -> consumableDropParcel);
+            job.addTask(new MoveTask("Move to plant", () -> consumableDropParcel));
 
             // - Create output products
             // - Set plant maturity to 0
             // - Remove seed from plant
             // - Remove job from plant
-            job.addTechnicalTask(() -> {
+            job.addTask(new TechnicalTask(j -> {
                 plant.getInfo().actions.stream()
                         .filter(action -> action.type == ItemInfo.ItemInfoAction.ActionType.GATHER)
                         .flatMap(action -> action.products.stream())
@@ -49,7 +51,7 @@ public class HarvestJobFactory {
                 plant.setMaturity(0);
                 plant.setSeed(false);
                 plant.setJob(null);
-            });
+            }));
 
             plant.setJob(job);
 

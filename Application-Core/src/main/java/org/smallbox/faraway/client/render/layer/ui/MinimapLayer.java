@@ -4,18 +4,19 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import org.apache.commons.lang3.StringUtils;
 import org.smallbox.faraway.client.AssetManager;
-import org.smallbox.faraway.client.controller.MainPanelController;
+import org.smallbox.faraway.client.controller.SystemInfoController;
 import org.smallbox.faraway.client.render.GDXRenderer;
 import org.smallbox.faraway.client.render.LayerManager;
 import org.smallbox.faraway.client.render.Viewport;
 import org.smallbox.faraway.client.render.layer.BaseLayer;
-import org.smallbox.faraway.client.ui.UIManager;
 import org.smallbox.faraway.client.ui.engine.Colors;
 import org.smallbox.faraway.client.ui.engine.views.View;
 import org.smallbox.faraway.core.GameLayer;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
+import org.smallbox.faraway.core.dependencyInjector.annotationEvent.AfterGameLayerInit;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameManager;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
@@ -55,11 +56,12 @@ public class MinimapLayer extends BaseLayer {
     @Inject private ItemModule itemModule;
     @Inject private ConsumableModule consumableModule;
     @Inject private ApplicationConfig applicationConfig;
-    @Inject private UIManager uiManager;
     @Inject private Viewport viewport;
-    @Inject private MainPanelController mainPanelController;
+    @Inject private SystemInfoController mainPanelController;
     @Inject private GameManager gameManager;
     @Inject private AssetManager assetManager;
+    @Inject private GDXRenderer gdxRenderer;
+    @Inject private Game game;
 
     private List<MinimapRule> rules = Arrays.asList(
             new MinimapRule(parcel -> parcel.hasItem(StructureItem.class), parcel -> COLOR_STRUCTURE),
@@ -85,6 +87,10 @@ public class MinimapLayer extends BaseLayer {
     private float ratioX;
     private float ratioY;
 
+    public Sprite getSprite() {
+        return _spriteMap;
+    }
+
     private class MinimapRule {
         private final Predicate<Parcel> predicate;
         private final Function<Parcel, Integer> function;
@@ -103,8 +109,8 @@ public class MinimapLayer extends BaseLayer {
         }
     }
 
-    @Override
-    public void onGameStart(Game game) {
+    @AfterGameLayerInit
+    public void layerInit() {
         gameWidth = game.getInfo().worldWidth;
         gameHeight = game.getInfo().worldHeight;
 
@@ -113,9 +119,17 @@ public class MinimapLayer extends BaseLayer {
 
         ratioX = ((float) miniMapWidth / gameWidth);
         ratioY = ((float) miniMapHeight / gameHeight);
-
         _pixmap = assetManager.createPixmap(gameWidth, gameHeight, Pixmap.Format.RGB888);
         _floor = WorldHelper.getCurrentFloor();
+        _dirty = true;
+    }
+
+    @Override
+    public void onGameLongUpdate(Game game) {
+        if (miniMapWidth != (int) (mainPanelController.getMapContainer().getWidth() * applicationConfig.uiScale) ||
+                miniMapHeight != (int) (mainPanelController.getMapContainer().getHeight() * applicationConfig.uiScale)) {
+            layerInit();
+        }
     }
 
     @Override
@@ -138,17 +152,22 @@ public class MinimapLayer extends BaseLayer {
         if (mainPanelController.getRootView().isVisible()) {
 
             if (_dirty || _spriteMap == null) {
-                _dirty = false;
                 createMap();
             }
 
-            if (_spriteMap != null) {
-                renderer.drawUI(_spriteMap);
-            }
+//            if (_spriteMap != null) {
+//                renderer.drawUI(_spriteMap);
+//            }
 
             drawViewport(renderer);
             drawCharacters(renderer);
+            drawUI();
         }
+    }
+
+    private void drawUI() {
+        mainPanelController.getMapContainer().getViews().stream().filter(view -> !StringUtils.equals(view.getId(), "minimap"))
+                .forEach(view -> view.draw(gdxRenderer, view.getGeometry().getFinalX(), view.getGeometry().getFinalY()));
     }
 
     private void drawViewport(GDXRenderer renderer) {
@@ -174,7 +193,8 @@ public class MinimapLayer extends BaseLayer {
     }
 
     private void createMap() {
-        if (gameManager.isLoaded()) {
+        if (_pixmap != null) {
+            _dirty = false;
             _mainPosX = mainPanelController.getMapContainer().getGeometry().getFinalX();
             _mainPosY = mainPanelController.getMapContainer().getGeometry().getFinalY();
 
@@ -206,8 +226,12 @@ public class MinimapLayer extends BaseLayer {
             _spriteMap.flip(false, true);
             _spriteMap.setScale(scale, scale);
             _spriteMap.setPosition(
-                    mainPanelController.getMapContainer().getGeometry().getFinalX() + miniMapWidth / 2f - displayWidth / 2f,
-                    mainPanelController.getMapContainer().getGeometry().getFinalY() + miniMapHeight / 2f - displayHeight / 2f);
+                    mainPanelController.getMapContainer().getGeometry().getFinalX(),
+                    mainPanelController.getMapContainer().getGeometry().getFinalY()
+            );
+//            _spriteMap.setPosition(
+//                    mainPanelController.getMapContainer().getGeometry().getFinalX() + miniMapWidth / 2f - displayWidth / 2f,
+//                    mainPanelController.getMapContainer().getGeometry().getFinalY() + miniMapHeight / 2f - displayHeight / 2f);
             _spriteMap.setOrigin(0, 0);
         }
     }

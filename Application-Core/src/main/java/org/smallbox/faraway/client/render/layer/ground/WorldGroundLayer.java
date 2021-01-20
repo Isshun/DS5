@@ -37,8 +37,8 @@ public class WorldGroundLayer extends BaseLayer {
 
     @Override
     public void onDraw(GDXRenderer renderer, Viewport viewport, double animProgress, int frame) {
-        int fromX = Math.max(viewport.getWorldPosX(0), 0);
-        int fromY = Math.max(viewport.getWorldPosY(0), 0);
+        int fromX = Math.max(viewport.getWorldPosX(0) - 1, 0);
+        int fromY = Math.max(viewport.getWorldPosY(0) - 1, 0);
         int toX = Math.min(viewport.getWorldPosX(applicationConfig.getResolutionWidth()) + 2, worldModule.getWidth());
         int toY = Math.min(viewport.getWorldPosY(applicationConfig.getResolutionHeight()) + 2, worldModule.getWidth());
 

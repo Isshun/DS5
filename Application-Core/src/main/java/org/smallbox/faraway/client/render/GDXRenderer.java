@@ -230,19 +230,15 @@ public class GDXRenderer {
         _batch.end();
     }
 
-    public void drawFontUI(DrawFontCallback callback, int fontSize, boolean outlined) {
-        drawFont(callback, fontSize, _cameraUI, outlined);
+    public void drawFontUI(DrawFontCallback callback, int fontSize, boolean outlined, String font) {
+        drawFont(callback, fontSize, _cameraUI, outlined, font);
     }
 
-    public void drawFont(DrawFontCallback callback, int fontSize, boolean outlined) {
-        drawFont(callback, fontSize, _camera, outlined);
-    }
-
-    private void drawFont(DrawFontCallback callback, int fontSize, OrthographicCamera camera, boolean outlined) {
+    private void drawFont(DrawFontCallback callback, int fontSize, OrthographicCamera camera, boolean outlined, String font) {
         _batch.begin();
         _batch.setProjectionMatrix(camera.combined);
         fontSize *= getUiScale();
-        callback.onDraw(_batch, outlined ? fontManager.getOutlinedFont(fontSize) : fontManager.getFont(fontSize));
+        callback.onDraw(_batch, outlined ? fontManager.getOutlinedFont(font, fontSize) : fontManager.getFont(font, fontSize));
         _batch.end();
     }
 

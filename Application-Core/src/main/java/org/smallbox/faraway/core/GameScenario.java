@@ -45,6 +45,7 @@ public class GameScenario {
     public int width;
     public int height;
     public int level;
+    public int[] centerOnMap;
     public boolean generateMountains = true;
     public List<ScenarioCharacterEntity> characters;
     public List<ScenarioConsumableEntity> consumables;

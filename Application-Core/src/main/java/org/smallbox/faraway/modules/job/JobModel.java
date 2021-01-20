@@ -22,9 +22,6 @@ import java.util.Collection;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-import static org.smallbox.faraway.modules.job.JobTaskReturn.TASK_COMPLETED_STOP;
-import static org.smallbox.faraway.modules.job.JobTaskReturn.TASK_COMPLETED;
-
 public class JobModel extends ObjectModel {
 
     public double _time;
@@ -33,6 +30,12 @@ public class JobModel extends ObjectModel {
     private Color color;
     private final Collection<JobModel> subJob = new ConcurrentLinkedQueue<>();
     private boolean exactParcel;
+    private boolean optional;
+    private float moveSpeed = 1;
+
+    public void setMoveSpeed(float moveSpeed) {
+        this.moveSpeed = moveSpeed;
+    }
 
     public long getSoundId() {
         return soundId;
@@ -68,7 +71,7 @@ public class JobModel extends ObjectModel {
     }
 
     public void executeInitTasks() {
-        initTasks.forEach(TechnicalTaskAction::onExecuteTask);
+        initTasks.forEach(technicalTaskAction -> technicalTaskAction.onExecuteTask(this));
     }
 
     public void addSubJob(JobModel job) {
@@ -83,25 +86,28 @@ public class JobModel extends ObjectModel {
         return this.prerequisiteTasks.stream().allMatch(PrerequisiteTaskAction::onExecuteTask);
     }
 
-    public void unblock() {
-        _status = JobStatus.JOB_WAITING;
-        _blocked = null;
-    }
-
     public void setExactParcel(boolean exactParcel) {
         this.exactParcel = exactParcel;
     }
 
-    public enum JobCheckReturn {
-        OK, STAND_BY, ABORT, BLOCKED
+    public void setOptional(boolean optional) {
+        this.optional = optional;
     }
 
-    public enum JobStatus {
-        JOB_INITIALIZED, JOB_WAITING, JOB_RUNNING, JOB_COMPLETE, JOB_BLOCKED, JOB_INVALID, JOB_MISSING_COMPONENT
+    public boolean isOptional() {
+        return optional;
     }
 
-    public enum JobAbortReason {
-        NO_COMPONENTS, INTERRUPT, BLOCKED, NO_LEFT_CARRY, INVALID, DIED, NO_BUILD_RESOURCES
+    public float getMoveSpeed() {
+        return moveSpeed;
+    }
+
+    public void setStatus(JobStatus jobStatus) {
+        this.status = jobStatus;
+    }
+
+    public void setBlockedUntil(LocalDateTime _blocked) {
+        this._blocked = _blocked;
     }
 
     protected int               _limit;
@@ -112,11 +118,11 @@ public class JobModel extends ObjectModel {
     protected double            _progress;
     protected ItemFilter        _filter;
     protected ItemInfoAction    _actionInfo;
-    protected CharacterModel    _character;
+    protected CharacterModel character;
     protected CharacterModel    _characterRequire;
     protected JobAbortReason    _reason;
     protected String            _label;
-    protected JobStatus         _status = JobStatus.JOB_INITIALIZED;
+    protected JobStatus status = JobStatus.JOB_INITIALIZED;
     protected String            _message;
     public Parcel _targetParcel;
     protected boolean           _isEntertainment;
@@ -143,7 +149,7 @@ public class JobModel extends ObjectModel {
 
     private void init() {
         _filter = null;
-        _status = JobStatus.JOB_INITIALIZED;
+        status = JobStatus.JOB_INITIALIZED;
         _limit = -1;
         _label = "none";
 
@@ -153,17 +159,17 @@ public class JobModel extends ObjectModel {
     public String                   getMessage() { return _message; }
     public String                   getLabel() { return _mainLabel; }
     public String                   getMainLabel() { return _mainLabel; }
-    public CharacterModel           getCharacter() { return _character; }
+    public CharacterModel           getCharacter() { return character; }
     public CharacterModel           getCharacterRequire() { return _characterRequire; }
     public int                      getFail() { return _fail; }
     public LocalDateTime getBlocked() { return _blocked; }
-    public boolean isBlocked() { return _status == JobStatus.JOB_BLOCKED; }
-    public boolean isAvailable() { return _status == JobStatus.JOB_INITIALIZED || _status == JobStatus.JOB_WAITING; }
-    public boolean isFree() { return _character == null; }
+    public boolean isBlocked() { return status == JobStatus.JOB_BLOCKED; }
+    public boolean isAvailable() { return status == JobStatus.JOB_INITIALIZED || status == JobStatus.JOB_WAITING; }
+    public boolean isFree() { return character == null; }
     public JobAbortReason           getReason() { return _reason; }
     public double                   getQuantity() { return _progress; }
     public double                   getProgress() { return Math.min(_progress, 1); }
-    public JobStatus                getStatus() { return _status; }
+    public JobStatus                getStatus() { return status; }
     public double                   getSpeedModifier() { return 1; }
     public Parcel getTargetParcel() { return _targetParcel; }
     public ItemInfo.ItemInfoAction  getAction() { return _actionInfo; }
@@ -180,12 +186,7 @@ public class JobModel extends ObjectModel {
     public void                     setData(Object data) { _data = data; }
     public void                     setMainLabel(String mainLabel) { _mainLabel = mainLabel; }
     public void                     setProgress(double current, double  total) { _progress = current / total; }
-    public void block(CharacterModel character, LocalDateTime blocked) {
-        quit(character);
-        _blocked = blocked;
-        _status = JobStatus.JOB_BLOCKED;
-    }
-    public void                     setCharacter(CharacterModel character) { _character = character; }
+    public void                     setCharacter(CharacterModel character) { this.character = character; }
 
     public boolean                  isClose() { return _isClose; }
     public boolean                  isOpen() { return !_isClose; }
@@ -197,7 +198,6 @@ public class JobModel extends ObjectModel {
     protected boolean onFirstStart() { return true; }
     protected JobCheckReturn onCheck(CharacterModel character) { return JobCheckReturn.OK; }
     protected void onUpdate() {}
-    protected void onQuit(CharacterModel character) {}
     protected void onClose() {}
 
     public void start(CharacterModel character) {
@@ -207,8 +207,8 @@ public class JobModel extends ObjectModel {
             throw new GameException(JobModel.class, "Job is close");
         }
 
-        if (_status == JobStatus.JOB_INITIALIZED) {
-            _status = JobStatus.JOB_WAITING;
+        if (status == JobStatus.JOB_INITIALIZED) {
+            status = JobStatus.JOB_WAITING;
             onFirstStart();
         }
 
@@ -220,17 +220,17 @@ public class JobModel extends ObjectModel {
 //        if (_character != null) {
 //            quit(_character);
 //        }
-        if (_character != null) {
+        if (this.character != null) {
             throw new GameException(JobModel.class, "start: Task is already assigned to a character");
         }
 
         // Set job to new characters
-        _character = character;
+        this.character = character;
         if (character != null) {
             character.setJob(this);
         }
 
-        _status = JobStatus.JOB_RUNNING;
+        status = JobStatus.JOB_RUNNING;
     }
 
     public boolean checkCharacterAccepted(CharacterModel character) {
@@ -247,46 +247,40 @@ public class JobModel extends ObjectModel {
 
     /**
      * Retire le personnage de la tache, mais celle-ci continue
-     *
-     * @param character CharacterModel
      */
-    public void quit(CharacterModel character) {
-        assert character == _character;
-        onQuit(character);
+    public void clearCharacter(CharacterModel character, LocalDateTime currentTime) {
+        if (this.character == character) {
+            this.character = null;
+            this.status = JobStatus.JOB_WAITING;
+            Log.debug("Character cleared from job: " + this);
 
-        assert character.getJob() == this;
-        character.clearJob(this);
-
-        _character = null;
-        _status = JobStatus.JOB_WAITING;
-
-        Log.debug("Quit job " + this + " by " + character.getName());
+            character.clearJob(this, currentTime);
+        }
     }
 
     /**
      * La tache est fermée (terminée ou annulée)
+     * @param currentTime
      */
-    public void close() {
+    public void close(LocalDateTime currentTime) {
 
-        if (_character != null) {
-            Log.debug("Complete job " + this + " by " + _character.getName());
-            quit(_character);
+        if (character != null) {
+            Log.debug("Complete job " + this + " by " + character.getName());
+            clearCharacter(character, currentTime);
         }
 
         onClose();
 
-        closeTasks.forEach(TechnicalTaskAction::onExecuteTask);
+        closeTasks.forEach(technicalTaskAction -> technicalTaskAction.onExecuteTask(this));
 
         _isClose = true;
-        _status = JobStatus.JOB_COMPLETE;
+        status = JobStatus.JOB_COMPLETE;
 
         DependencyManager.getInstance().getDependency(SoundManager.class).stop(soundId);
     }
 
-    public void check() {
-        if (!_isClose && !onCheck()) {
-            close();
-        }
+    public boolean check() {
+        return onCheck();
     }
 
     public void update() {
@@ -294,25 +288,6 @@ public class JobModel extends ObjectModel {
     }
 
     protected boolean onCheck() { return true; }
-
-    public boolean check(CharacterModel character) {
-        if (_isAuto && character != null) {
-            return false;
-        }
-
-        JobCheckReturn ret = onCheck(character);
-
-//        // TODO
-//        if (ret == JobCheckReturn.JOB_BLOCKED) {
-//            _fail = MainLayer.getFrame();
-//        }
-
-        if (ret == JobCheckReturn.ABORT) {
-            close();
-        }
-
-        return ret == JobCheckReturn.OK;
-    }
 
     private final Queue<JobTask> _tasks = new ConcurrentLinkedQueue<>();
     private final Queue<TechnicalTaskAction> initTasks = new ConcurrentLinkedQueue<>();
@@ -323,30 +298,24 @@ public class JobModel extends ObjectModel {
         return _tasks;
     }
 
-    /**
-     * Add custom task action
-     *
-     * @param label Label
-     * @param jobTaskAction Action
-     */
-    public void addTask(String label, JobTask.JobTaskAction jobTaskAction) {
+    public void addTask(JobTask jobTask) {
         if (_tasks.isEmpty()) {
-            _label = label;
+            _label = jobTask.label;
         }
 
-        _tasks.add(new JobTask(label, jobTaskAction));
+        _tasks.add(jobTask);
+    }
+
+    public boolean hasStatus(JobStatus status) {
+        return this.status == status;
+    }
+
+    public boolean hasReason(JobAbortReason reason) {
+        return this._reason == reason;
     }
 
     public interface ParcelCallback {
         Parcel getParcel();
-    }
-
-    public void addMoveTask(String label, ParcelCallback parcelCallback) {
-        _tasks.add(new JobTask(label, TASK_COMPLETED_STOP, () -> _targetParcel = parcelCallback.getParcel()));
-    }
-
-    public void addTechnicalTask(TechnicalTaskAction technicalTaskAction) {
-        _tasks.add(new JobTask("Technical", TASK_COMPLETED, technicalTaskAction));
     }
 
     public void addInitTask(TechnicalTaskAction technicalTaskAction) {
@@ -366,20 +335,20 @@ public class JobModel extends ObjectModel {
      *
      * @param character CharacterModel
      */
-    public void action(CharacterModel character, double hourInterval) {
+    public void action(CharacterModel character, double hourInterval, LocalDateTime currentTime) {
 
         if (isClose()) {
             throw new GameException(JobModel.class, "Cannot call action on finished job");
         }
 
-        if (_status != JobStatus.JOB_RUNNING) {
+        if (status != JobStatus.JOB_RUNNING) {
             throw new GameException(JobModel.class, "Status must be JOB_RUNNING");
         }
 
         // Execute les taches à la suite tant que le retour est TASK_COMPLETE
         while (!_tasks.isEmpty()) {
 
-            switch (actionTask(character, _tasks.peek(), hourInterval)) {
+            switch (actionTask(character, _tasks.peek(), hourInterval, currentTime)) {
 
                 // Task isn't complete
                 case TASK_CONTINUE:
@@ -400,7 +369,7 @@ public class JobModel extends ObjectModel {
 
                 // Task return TASK_ERROR, immediatly close job
                 case TASK_ERROR:
-                    close();
+                    close(currentTime);
                     return;
 
             }
@@ -408,7 +377,7 @@ public class JobModel extends ObjectModel {
         }
 
         // All tasks has been executed
-        close();
+        close(currentTime);
     }
 
     /**
@@ -418,15 +387,20 @@ public class JobModel extends ObjectModel {
      * @param task JobTask
      * @return JobTaskReturn
      */
-    private JobTaskReturn actionTask(CharacterModel character, JobTask task, double hourInterval) {
+    private JobTaskReturn actionTask(CharacterModel character, JobTask task, double hourInterval, LocalDateTime localDateTime) {
         Log.debug(JobModel.class, "actionTask: (taks: %s, job: %s)", task.label, this);
 
         if (task.technicalAction != null) {
-            task.technicalAction.onExecuteTask();
+            task.technicalAction.onExecuteTask(this);
             return task.taskReturn;
         }
 
-        _lastTaskReturn = task.action.onExecuteTask(character, hourInterval);
+        if (task.startTime == null) {
+            task.init(localDateTime);
+        }
+
+        task.action(character, hourInterval, localDateTime);
+        _lastTaskReturn = task.getStatus(character, hourInterval, localDateTime);
         _label = task.label;
 
         Log.debug(JobModel.class, "actionTask return: %s", _lastTaskReturn);

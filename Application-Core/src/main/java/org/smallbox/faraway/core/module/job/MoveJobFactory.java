@@ -6,6 +6,7 @@ import org.smallbox.faraway.core.module.world.model.Parcel;
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 import org.smallbox.faraway.modules.dig.DigJob;
 import org.smallbox.faraway.modules.job.JobModel;
+import org.smallbox.faraway.modules.job.task.MoveTask;
 
 @GameObject
 public class MoveJobFactory {
@@ -22,7 +23,7 @@ public class MoveJobFactory {
         job.setExactParcel(true);
 
         // Move character to parcel
-        job.addMoveTask("Move to parcel", () -> targetParcel);
+        job.addTask(new MoveTask("Move to parcel", () -> targetParcel));
 
         job.onNewInit();
 

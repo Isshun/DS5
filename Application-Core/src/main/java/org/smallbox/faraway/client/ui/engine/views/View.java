@@ -14,6 +14,7 @@ import org.smallbox.faraway.core.engine.module.ModuleBase;
 import org.smallbox.faraway.core.game.Data;
 
 public abstract class View implements Comparable<View> {
+    public final static int FILL = -2;
 
     // Inject all dependency to view once for all, waiting for a clever solution
     protected final SpriteManager spriteManager = DependencyManager.getInstance().getDependency(SpriteManager.class);
@@ -269,6 +270,15 @@ public abstract class View implements Comparable<View> {
 
     public View setSize(int width, int height) {
         geometry.setSize(width, height);
+
+        if (width == FILL && _parent != null) {
+            geometry.setWidth(_parent.getGeometry().getWidth());
+        }
+
+        if (height == FILL && _parent != null) {
+            geometry.setHeight(_parent.getGeometry().getHeight());
+        }
+
         return this;
     }
 

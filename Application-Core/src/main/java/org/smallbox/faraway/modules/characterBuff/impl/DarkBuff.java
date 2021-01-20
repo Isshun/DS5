@@ -27,9 +27,9 @@ public class DarkBuff extends BuffFactory {
 
         buff.setName(name());
         buff.setBuffType(BuffType.DEBUFF);
-        buff.addLevel(1, "In the dark for a while", -5, character -> gameTime.getTime().isAfter(level1Time));
-        buff.addLevel(2, "In the dark for a long time", -10, character -> gameTime.getTime().isAfter(level2Time));
-        buff.addLevel(3, "In the dark for ages", -15, character -> gameTime.getTime().isAfter(level3Time));
+        buff.addLevel(1, "In the dark for a while", -5, character -> gameTime.now().isAfter(level1Time));
+        buff.addLevel(2, "In the dark for a long time", -10, character -> gameTime.now().isAfter(level2Time));
+        buff.addLevel(3, "In the dark for ages", -15, character -> gameTime.now().isAfter(level3Time));
 
         return buff;
     }

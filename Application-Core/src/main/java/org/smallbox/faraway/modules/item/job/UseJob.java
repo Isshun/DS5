@@ -4,8 +4,13 @@ import org.smallbox.faraway.modules.character.model.CharacterSkillExtra;
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 import org.smallbox.faraway.modules.item.ItemModule;
 import org.smallbox.faraway.modules.item.UsableItem;
+import org.smallbox.faraway.modules.job.JobCheckReturn;
 import org.smallbox.faraway.modules.job.JobModel;
-import org.smallbox.faraway.modules.job.JobTaskReturn;
+import org.smallbox.faraway.modules.job.task.ActionTask;
+import org.smallbox.faraway.modules.job.task.MoveTask;
+
+import static org.smallbox.faraway.modules.job.JobTaskReturn.TASK_COMPLETED;
+import static org.smallbox.faraway.modules.job.JobTaskReturn.TASK_CONTINUE;
 
 public class UseJob extends JobModel {
 
@@ -17,7 +22,8 @@ public class UseJob extends JobModel {
     public interface OnUseCallback {
         /**
          * Methode appelée à chaque tick tant que l'action n'est pas terminée
-         * @param item l'item
+         *
+         * @param item         l'item
          * @param durationLeft la durée restante
          */
         void onUse(UsableItem item, double durationLeft);
@@ -30,20 +36,14 @@ public class UseJob extends JobModel {
 
         setMainLabel("Use " + item.getInfo().label);
 
-        addMoveTask("Move", item::getParcel);
-        addTask("Use", (character, hourInterval) -> {
+        addTask(new MoveTask("Move", item::getParcel));
+        addTask(new ActionTask("Use", (character, hourInterval, localDateTime) -> {
             // TODO
 //            _duration += 1 / DependencyInjector.getInstance().getDependency(GameManager.class).getGame().getTickPerHour();
             double durationLeft = totalDuration - _duration;
             callback.onUse(item, durationLeft);
             setProgress(_duration, totalDuration);
-
-            if (durationLeft > 0) {
-                return JobTaskReturn.TASK_CONTINUE;
-            }
-
-            return JobTaskReturn.TASK_COMPLETED;
-        });
+        }, () -> (totalDuration - _duration) <= 0 ? TASK_COMPLETED : TASK_CONTINUE));
 
     }
 
@@ -61,13 +61,6 @@ public class UseJob extends JobModel {
 //        }
 
         return JobCheckReturn.OK;
-    }
-
-    @Override
-    protected void onQuit(CharacterModel character) {
-//        if (_item != null && _slot != null) {
-//            _item.releaseSlot(_slot);
-//        }
     }
 
     @Override

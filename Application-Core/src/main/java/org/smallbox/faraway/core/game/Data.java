@@ -66,7 +66,8 @@ public class Data {
     public Collection<ItemInfo> getItems() { return items; }
 
     public boolean          hasNetwork(String name) { return hasObject(networks, name); }
-    public boolean          hasString(int hash) { return strings.containsKey(hash); }
+//    public boolean          hasString(int hash) { return strings.containsKey(hash); }
+    public boolean          hasString(int hash) { return false; }
 
     public RegionInfo getRegion(String planetName, String regionName) {
         for (PlanetInfo planet: planets) {

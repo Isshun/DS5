@@ -6,7 +6,6 @@ import org.smallbox.faraway.client.controller.annotation.BindLua;
 import org.smallbox.faraway.client.gameAction.GameActionManager;
 import org.smallbox.faraway.client.manager.SpriteManager;
 import org.smallbox.faraway.client.selection.GameSelectionManager;
-import org.smallbox.faraway.client.ui.UIManager;
 import org.smallbox.faraway.client.ui.engine.Colors;
 import org.smallbox.faraway.client.ui.engine.OnClickListener;
 import org.smallbox.faraway.client.ui.engine.UIEventManager;
@@ -17,7 +16,6 @@ import org.smallbox.faraway.client.ui.engine.views.widgets.UIGrid;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UIList;
 import org.smallbox.faraway.core.GameShortcut;
-import org.smallbox.faraway.core.dependencyInjector.DependencyManager;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.dependencyInjector.annotationEvent.AfterGameLayerInit;
@@ -206,9 +204,9 @@ public class BuildController extends LuaController {
         setVisible(true);
     }
 
-    @GameShortcut(key = Input.Keys.F1)
-    public void onRefreshUI() {
-        DependencyManager.getInstance().getDependency(UIManager.class).refresh(this, "panel_build.lua");
-    }
+//    @GameShortcut(key = Input.Keys.F1)
+//    public void onRefreshUI() {
+//        DependencyManager.getInstance().getDependency(UIManager.class).refresh(this, "panel_build.lua");
+//    }
 
 }

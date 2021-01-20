@@ -3,6 +3,9 @@ package org.smallbox.faraway.core.engine.module.lua;
 import org.luaj.vm2.Globals;
 import org.luaj.vm2.LuaError;
 import org.luaj.vm2.LuaValue;
+import org.smallbox.faraway.client.ui.UIManager;
+import org.smallbox.faraway.client.ui.engine.views.CompositeView;
+import org.smallbox.faraway.client.ui.engine.views.View;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.GameException;
 import org.smallbox.faraway.core.dependencyInjector.DependencyManager;
@@ -36,6 +39,9 @@ public abstract class LuaModuleManager implements GameObserver {
 
     @Inject
     private DependencyManager dependencyManager;
+
+    @Inject
+    private UIManager uiManager;
 
     @Inject
     private Data data;
@@ -164,10 +170,29 @@ public abstract class LuaModuleManager implements GameObserver {
 
         _runAfterList.forEach(Runnable::run);
 
+        fixUISize();
+
         data.fix();
 
         Log.info("LOAD LUA !!!");
         _luaLoadListeners.forEach(LuaLoadListener::onLoad);
+    }
+
+    // Calcule toutes les tailles encore set a FILL, cela arrive dans les cas des sous-controlleurs lorsque ceux-ci sont chargés avant leur controlleur parent
+    private void fixUISize() {
+        uiManager.getSubViews().forEach(view -> {
+            Optional.ofNullable(uiManager.getSubViewParent(view)).ifPresent(parentId -> view.setParent((CompositeView) uiManager.findById(parentId)));
+        });
+        uiManager.getRootViews().forEach(rootView -> fixUISizeRecurse(rootView.getView()));
+    }
+
+    private void fixUISizeRecurse(View view) {
+        if (view.getWidth() == View.FILL || view.getHeight() == View.FILL) {
+            view.setSize(view.getWidth(), view.getHeight());
+        }
+        if (view instanceof CompositeView) {
+            ((CompositeView)view).getViews().forEach(this::fixUISizeRecurse);
+        }
     }
 
     public void loadLuaFiles(ModuleBase module, File dataDirectory) {

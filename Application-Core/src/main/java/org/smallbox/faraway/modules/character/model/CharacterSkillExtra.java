@@ -35,15 +35,15 @@ public class CharacterSkillExtra extends CharacterExtra {
 
     public enum SkillType {
         NONE,
-        HEAL,
-        CRAFT,
-        COOK,
-        GATHER,
-        DIG,
-        STORE,
-        BUILD,
-        CUT,
-        CLEAN
+        HEAL, // Medecin - croix
+        CRAFT, // Ingenieur - roue
+        SEARCHER, // Chercheur - loupe
+        COOK, // Cuisinier - fourchette
+        GATHER, // Biologiste - feuille
+        DIG, // Geologue - pioche
+        BUILD, // Ouvrier - marteau / casque
+        STORE, // Livreur - colis
+        CLEAN // Operateur - sceau
     }
 
     private final HashMap<SkillType, SkillEntry>    _skillsMap;
@@ -53,15 +53,14 @@ public class CharacterSkillExtra extends CharacterExtra {
         super(character);
 
         _skillsMap = new HashMap<>();
-        _skillsMap.put(SkillType.HEAL, new SkillEntry(SkillType.HEAL,    "Heal",     1,  true));
-        _skillsMap.put(SkillType.CRAFT, new SkillEntry(SkillType.CRAFT,   "Craft",    3,  true));
-        _skillsMap.put(SkillType.COOK, new SkillEntry(SkillType.COOK,       "Cook",     5,  true));
-        _skillsMap.put(SkillType.GATHER, new SkillEntry(SkillType.GATHER,  "Gather",   2,  true));
-        _skillsMap.put(SkillType.CUT, new SkillEntry(SkillType.CUT,         "Cut",      1,  true));
-        _skillsMap.put(SkillType.DIG, new SkillEntry(SkillType.DIG,         "Mine",     5,  true));
-        _skillsMap.put(SkillType.CLEAN, new SkillEntry(SkillType.CLEAN,   "Clean",    0,  false));
-        _skillsMap.put(SkillType.BUILD, new SkillEntry(SkillType.BUILD,   "Build",    2,  true));
-        _skillsMap.put(SkillType.STORE, new SkillEntry(SkillType.STORE,   "Store",    3,  true));
+        _skillsMap.put(SkillType.HEAL, new SkillEntry(SkillType.HEAL,    "Heal",     new Random().nextInt(10),  true));
+        _skillsMap.put(SkillType.CRAFT, new SkillEntry(SkillType.CRAFT,   "Craft",    new Random().nextInt(10),  true));
+        _skillsMap.put(SkillType.COOK, new SkillEntry(SkillType.COOK,       "Cook",     new Random().nextInt(10),  true));
+        _skillsMap.put(SkillType.GATHER, new SkillEntry(SkillType.GATHER,  "Gather",   new Random().nextInt(10),  true));
+        _skillsMap.put(SkillType.DIG, new SkillEntry(SkillType.DIG,         "Mine",     new Random().nextInt(10),  true));
+        _skillsMap.put(SkillType.CLEAN, new SkillEntry(SkillType.CLEAN,   "Clean",    new Random().nextInt(10),  false));
+        _skillsMap.put(SkillType.BUILD, new SkillEntry(SkillType.BUILD,   "Build",    new Random().nextInt(10),  true));
+        _skillsMap.put(SkillType.STORE, new SkillEntry(SkillType.STORE,   "Store",    new Random().nextInt(10),  true));
 
         _skills = new ConcurrentLinkedQueue<>();
         _skillsMap.values().stream().filter(skill -> skill.available).forEach(skill -> {

@@ -43,6 +43,19 @@ public class ClientLuaModuleManager extends LuaModuleManager {
                         "data = d\n" +
                         "ui = u\n" +
 
+                        "right_panel_width = " + View.FILL + "\n" +
+
+                        "fill = " + View.FILL + "\n" +
+
+                        "black = " + 0x000000ff + "\n" +
+                        "white = " + 0xffffffff + "\n" +
+
+                        "yellow = " + RawColors.RAW_YELLOW + "\n" +
+                        "yellow_50 = " + RawColors.RAW_YELLOW_50 + "\n" +
+                        "blue = " + RawColors.RAW_BLUE + "\n" +
+                        "green = " + RawColors.RAW_GREEN + "\n" +
+                        "red = " + RawColors.RAW_RED + "\n" +
+
                         "blue_light_1 = " + RawColors.RAW_BLUE_LIGHT_1 + "\n" +
                         "blue_light_2 = " + RawColors.RAW_BLUE_LIGHT_2 + "\n" +
                         "blue_light_3 = " + RawColors.RAW_BLUE_LIGHT_3 + "\n" +

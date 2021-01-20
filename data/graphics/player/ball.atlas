@@ -1,0 +1,117 @@
+ball.png
+size: 1632, 131
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+skeleton-animation
+  rotate: false
+  xy: 0, 0
+  size: 102, 131
+  orig: 102, 131
+  offset: 0, 0
+  index: 0
+skeleton-animation
+  rotate: false
+  xy: 102, 0
+  size: 102, 131
+  orig: 102, 131
+  offset: 0, 0
+  index: 1
+skeleton-animation
+  rotate: false
+  xy: 204, 0
+  size: 102, 131
+  orig: 102, 131
+  offset: 0, 0
+  index: 2
+skeleton-animation
+  rotate: false
+  xy: 306, 0
+  size: 102, 131
+  orig: 102, 131
+  offset: 0, 0
+  index: 3
+skeleton-animation
+  rotate: false
+  xy: 408, 0
+  size: 102, 131
+  orig: 102, 131
+  offset: 0, 0
+  index: 4
+skeleton-animation
+  rotate: false
+  xy: 510, 0
+  size: 102, 131
+  orig: 102, 131
+  offset: 0, 0
+  index: 5
+skeleton-animation
+  rotate: false
+  xy: 612, 0
+  size: 102, 131
+  orig: 102, 131
+  offset: 0, 0
+  index: 6
+skeleton-animation
+  rotate: false
+  xy: 714, 0
+  size: 102, 131
+  orig: 102, 131
+  offset: 0, 0
+  index: 7
+skeleton-animation
+  rotate: false
+  xy: 816, 0
+  size: 102, 131
+  orig: 102, 131
+  offset: 0, 0
+  index: 8
+skeleton-animation
+  rotate: false
+  xy: 918, 0
+  size: 102, 131
+  orig: 102, 131
+  offset: 0, 0
+  index: 9
+skeleton-animation
+  rotate: false
+  xy: 1020, 0
+  size: 102, 131
+  orig: 102, 131
+  offset: 0, 0
+  index: 10
+skeleton-animation
+  rotate: false
+  xy: 1122, 0
+  size: 102, 131
+  orig: 102, 131
+  offset: 0, 0
+  index: 11
+skeleton-animation
+  rotate: false
+  xy: 1224, 0
+  size: 102, 131
+  orig: 102, 131
+  offset: 0, 0
+  index: 12
+skeleton-animation
+  rotate: false
+  xy: 1326, 0
+  size: 102, 131
+  orig: 102, 131
+  offset: 0, 0
+  index: 13
+skeleton-animation
+  rotate: false
+  xy: 1428, 0
+  size: 102, 131
+  orig: 102, 131
+  offset: 0, 0
+  index: 14
+skeleton-animation
+  rotate: false
+  xy: 1530, 0
+  size: 102, 131
+  orig: 102, 131
+  offset: 0, 0
+  index: 15

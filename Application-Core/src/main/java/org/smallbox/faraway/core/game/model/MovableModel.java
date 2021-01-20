@@ -20,7 +20,7 @@ public abstract class MovableModel extends ObjectModel {
 
     protected int                       _frameIndex;
     public Direction                 _direction;
-    protected JobModel                  _job;
+    protected JobModel job;
     public double                       _moveProgress;
     public double                    _moveProgress2;
     public Parcel _parcel;

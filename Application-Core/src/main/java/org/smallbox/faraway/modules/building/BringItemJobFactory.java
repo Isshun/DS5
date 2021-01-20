@@ -11,6 +11,8 @@ import org.smallbox.faraway.modules.character.model.CharacterSkillExtra;
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 import org.smallbox.faraway.modules.consumable.ConsumableModule;
 import org.smallbox.faraway.modules.job.JobModule;
+import org.smallbox.faraway.modules.job.task.MoveTask;
+import org.smallbox.faraway.modules.job.task.TechnicalTask;
 
 @GameObject
 public class BringItemJobFactory {
@@ -40,10 +42,10 @@ public class BringItemJobFactory {
         });
 
         // Job
-        job.addMoveTask("Move to consumable", () -> job.sourceConsumable.getParcel()); // Move character to sourceConsumable
-        job.addTechnicalTask(() -> takeConsumable(parent, mapObject, job.sourceConsumable, job.getCharacter(), quantity)); // Move consumable to character's inventory
-        job.addMoveTask("Move to storage", mapObject::getParcel); // Move character to map object
-        job.addTechnicalTask(() -> mapObject.addInventory(job.getCharacter().getExtra(CharacterInventoryExtra.class).takeInventory(itemInfo))); // Move consumable to map object
+        job.addTask(new MoveTask("Move to consumable", () -> job.sourceConsumable.getParcel())); // Move character to sourceConsumable
+        job.addTask(new TechnicalTask(j -> takeConsumable(parent, mapObject, job.sourceConsumable, job.getCharacter(), quantity))); // Move consumable to character's inventory
+        job.addTask(new MoveTask("Move to storage", mapObject::getParcel)); // Move character to map object
+        job.addTask(new TechnicalTask(j -> mapObject.addInventory(job.getCharacter().getExtra(CharacterInventoryExtra.class).takeInventory(itemInfo)))); // Move consumable to map object
 
         job.onNewInit();
 

@@ -1,5 +1,5 @@
 package org.smallbox.faraway.client.ui.engine.views;
 
 public enum Align {
-    CENTER, LEFT, CENTER_VERTICAL, RIGHT
+    LEFT, RIGHT, CENTER, CENTER_VERTICAL, CENTER_HORIZONTAL
 }

@@ -3,15 +3,34 @@ package org.smallbox.faraway.modules.job;
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 import org.smallbox.faraway.modules.job.taskAction.TechnicalTaskAction;
 
-public class JobTask {
+import java.time.LocalDateTime;
 
+public class JobTask implements JobInterface {
     public final String label;
-    public final JobTaskAction action;
+    public JobTaskAction action;
     public final TechnicalTaskAction technicalAction;
     public final JobTaskReturn taskReturn;
+    public LocalDateTime startTime;
+
+    public void init(LocalDateTime localDateTime) {
+        startTime = localDateTime;
+        onInit(localDateTime);
+    }
+
+    public void action(CharacterModel character, double hourInterval, LocalDateTime localDateTime) {
+        if (this.action != null) {
+            this.action.onExecuteTask(character, hourInterval, localDateTime);
+        }
+
+        onAction(character, hourInterval, localDateTime);
+    }
+
+    public JobTaskReturn getStatus(CharacterModel character, double hourInterval, LocalDateTime localDateTime) {
+        return onGetStatus(localDateTime);
+    }
 
     public interface JobTaskAction {
-        JobTaskReturn onExecuteTask(CharacterModel character, double hourInterval);
+        void onExecuteTask(CharacterModel character, double hourInterval, LocalDateTime localDateTime);
     }
 
     public JobTask(String label, JobTaskAction action) {

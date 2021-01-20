@@ -37,7 +37,7 @@ public class GameTime {
     public int getMonth() { return _month; }
     public int getYear() { return _year; }
 
-    public LocalDateTime getTime() {
+    public LocalDateTime now() {
         return localDateTime;
     }
 
@@ -68,6 +68,10 @@ public class GameTime {
     }
 
     public LocalDateTime plus(int value, TimeUnit timeUnit) {
+        return plus(localDateTime, value, timeUnit);
+    }
+
+    public static LocalDateTime plus(LocalDateTime localDateTime, int value, TimeUnit timeUnit) {
         if (timeUnit == TimeUnit.SECONDS) {
             return localDateTime.plusSeconds(value);
         }

@@ -24,9 +24,20 @@ import java.time.LocalDateTime;
 
 public class GDXApplication extends ApplicationAdapter {
     private MainRender mainRender;
+    private GDXApplicationListener listener;
+
+    public interface GDXApplicationListener {
+        void onCreate();
+    }
+
+    public GDXApplication(GDXApplicationListener listener) {
+        this.listener = listener;
+    }
 
     @Override
     public void create () {
+        listener.onCreate();
+
         DependencyManager di = DependencyManager.getInstance();
         di.findAndCreateApplicationObjects();
 

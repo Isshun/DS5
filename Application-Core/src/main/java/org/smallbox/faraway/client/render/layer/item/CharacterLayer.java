@@ -29,31 +29,20 @@ import org.smallbox.faraway.modules.character.model.CharacterInventoryExtra;
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 import org.smallbox.faraway.modules.job.JobModel;
 import org.smallbox.faraway.util.Constant;
-import org.smallbox.faraway.util.log.Log;
 
 import java.util.Map;
+import java.util.Optional;
 
 @GameObject
 @GameLayer(level = LayerManager.CHARACTER_LAYER_LEVEL, visible = true)
 public class CharacterLayer extends BaseLayer {
+    @Inject private SpriteManager spriteManager;
+    @Inject private CharacterModule characterModule;
+    @Inject private GameManager gameManager;
+    @Inject private GDXRenderer gdxRenderer;
+    @Inject private Viewport viewport;
+    @Inject private Game game;
 
-    @Inject
-    private SpriteManager spriteManager;
-
-    @Inject
-    private CharacterModule characterModule;
-
-    @Inject
-    private GameManager gameManager;
-
-    @Inject
-    private GDXRenderer gdxRenderer;
-
-    @Inject
-    private Viewport viewport;
-
-    @Inject
-    private Game game;
     float stateTime;
 
     private static final Color COLOR_CRITICAL = ColorUtils.fromHex(0xbb0000ff);
@@ -61,17 +50,29 @@ public class CharacterLayer extends BaseLayer {
     private static final Color COLOR_OK = ColorUtils.fromHex(0x448800ff);
 
     public Animation<TextureRegion> runningAnimation;
+    public Animation<TextureRegion> runningAnimation2;
 
     @AfterGameLayerInit
     public void init() {
-        TextureAtlas atlas;
-        atlas = new TextureAtlas(Gdx.files.internal("data/graphics/player/player.atlas"));
-        atlas.getTextures().forEach(texture -> texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear));
-        atlas.getRegions().forEach(region -> region.flip(false, true));
 //        TextureAtlas.AtlasRegion region = atlas.findRegion("hero_walk");
 //        Sprite sprite = atlas.createSprite("otherimagename");
 //        NinePatch patch = atlas.createPatch("patchimagename");
-        runningAnimation = new Animation<>(0.045f, atlas.findRegions("hero_walk"), Animation.PlayMode.LOOP);
+
+        {
+            TextureAtlas atlas;
+            atlas = new TextureAtlas(Gdx.files.internal("data/graphics/player/player.atlas"));
+            atlas.getTextures().forEach(texture -> texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear));
+            atlas.getRegions().forEach(region -> region.flip(false, true));
+            runningAnimation = new Animation<>(0.045f, atlas.findRegions("hero_walk"), Animation.PlayMode.LOOP);
+        }
+
+        {
+            TextureAtlas atlas;
+            atlas = new TextureAtlas(Gdx.files.internal("data/graphics/player/ball.atlas"));
+            atlas.getTextures().forEach(texture -> texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear));
+            atlas.getRegions().forEach(region -> region.flip(false, true));
+            runningAnimation2 = new Animation<>(0.045f, atlas.findRegions("skeleton-animation"), Animation.PlayMode.LOOP);
+        }
     }
 
     @Override
@@ -93,6 +94,8 @@ public class CharacterLayer extends BaseLayer {
     }
 
     private void drawCharacter(GDXRenderer renderer, Viewport viewport, CharacterModel character) {
+        character.stateTime += Gdx.graphics.getDeltaTime(); // Accumulate elapsed animation time
+
         if (character.getParcel().z == viewport.getFloor()) {
             int viewPortX = viewport.getPosX();
             int viewPortY = viewport.getPosY();
@@ -103,9 +106,20 @@ public class CharacterLayer extends BaseLayer {
                 character.getPath().myCatmull.valueAt(out, (float) character._moveProgress2 / position.pathLength);
                 Vector2 dout = new Vector2();
                 character.getPath().myCatmull.derivativeAt(dout, (float) character._moveProgress2 / position.pathLength);
+
+                MovableModel.Direction direction;
+                if (dout.angleDeg() < 45 || dout.angleDeg() > 315) {
+                    direction = MovableModel.Direction.RIGHT;
+                } else if (dout.angleDeg() > 135 && dout.angleDeg() < 225) {
+                    direction = MovableModel.Direction.LEFT;
+                } else {
+                    direction = character.lastDirection;
+                }
+                character.lastDirection = direction;
+
                 doDraw(renderer, character,
                         (int) (viewPortX + out.x * Constant.TILE_SIZE),
-                        (int) (viewPortY + out.y * Constant.TILE_SIZE), dout);
+                        (int) (viewPortY + out.y * Constant.TILE_SIZE), direction);
             } else {
                 doDraw(renderer, character,
                         viewPortX + character.getParcel().x * Constant.TILE_SIZE,
@@ -114,7 +128,7 @@ public class CharacterLayer extends BaseLayer {
         }
     }
 
-    private void doDraw(GDXRenderer renderer, CharacterModel character, int posX, int posY, Vector2 dout) {
+    private void doDraw(GDXRenderer renderer, CharacterModel character, int posX, int posY, MovableModel.Direction dout) {
 //        if (positionCommon.isAlive()) {
         drawCharacter(renderer, character, posX, posY, dout);
         drawLabel(renderer, character, posX, posY);
@@ -151,36 +165,26 @@ public class CharacterLayer extends BaseLayer {
      * Draw label
      */
     private void drawLabel(GDXRenderer renderer, CharacterModel character, int posX, int posY) {
-        renderer.drawText(posX, posY - 8, 14, com.badlogic.gdx.graphics.Color.CHARTREUSE, character.getName());
+        renderer.drawText(posX, posY - 8, 28, com.badlogic.gdx.graphics.Color.CHARTREUSE, character.getName());
     }
 
     /**
      * Draw characters
      */
-    private void drawCharacter(GDXRenderer renderer, CharacterModel character, int posX, int posY, Vector2 dout) {
+    private void drawCharacter(GDXRenderer renderer, CharacterModel character, int posX, int posY, MovableModel.Direction direction) {
 //        renderer.draw(posX, posY, spriteManager.getCharacter(character, 0, 0));
 
-        posX -= 40;
-        posY -= 70;
+//        posX -= 40;
+//        posY -= 70;
 
         if (character.getPath() != null) {
-            stateTime += Gdx.graphics.getDeltaTime(); // Accumulate elapsed animation time
-            TextureRegion currentFrame = runningAnimation.getKeyFrame(stateTime, true);
+            TextureRegion currentFrame = runningAnimation2.getKeyFrame(character.stateTime, true);
 
-            if (dout != null) {
-                Log.info(String.valueOf(dout.angleDeg()));
-            }
-
-            MovableModel.Direction direction = MovableModel.Direction.RIGHT;
-            if (dout != null && dout.angleDeg() % 360 > 90 && dout.angleDeg() % 360 < 270) {
-                direction = MovableModel.Direction.LEFT;
-            }
-
-            if (direction == MovableModel.Direction.LEFT && !currentFrame.isFlipX()) {
+            if (direction == MovableModel.Direction.LEFT && currentFrame.isFlipX()) {
                 currentFrame.flip(true, false);
             }
 
-            if (direction == MovableModel.Direction.RIGHT && currentFrame.isFlipX()) {
+            if (direction == MovableModel.Direction.RIGHT && !currentFrame.isFlipX()) {
                 currentFrame.flip(true, false);
             }
 
@@ -188,7 +192,7 @@ public class CharacterLayer extends BaseLayer {
 
             drawPath(character);
         } else {
-            renderer.draw(runningAnimation.getKeyFrame(0, true), posX, posY);
+            renderer.draw(runningAnimation2.getKeyFrame(character.stateTime, true), posX, posY);
         }
     }
 
@@ -212,19 +216,19 @@ public class CharacterLayer extends BaseLayer {
     // TODO: https://github.com/libgdx/libgdx/wiki/Path-interface-%26-Splines
     private void drawPath(CharacterModel character) {
 
-        if (character.getPath() != null) {
+        Optional.ofNullable(character.getPath()).ifPresent(path -> {
 
             if (!init) {
                 init = true;
                 for (int i = 0; i < k; ++i) {
                     points[i] = new Vector2();
-                    character.getPath().myCatmull.valueAt(points[i], ((float) i) / ((float) k - 1));
+                    path.myCatmull.valueAt(points[i], ((float) i) / ((float) k - 1));
                 }
             }
 
             for (int i = 0; i < k - 1; ++i) {
-                Vector2 v1 = character.getPath().myCatmull.valueAt(points[i], ((float) i) / ((float) k - 1));
-                Vector2 v2 = character.getPath().myCatmull.valueAt(points[i + 1], ((float) (i + 1)) / ((float) k - 1));
+                Vector2 v1 = path.myCatmull.valueAt(points[i], ((float) i) / ((float) k - 1));
+                Vector2 v2 = path.myCatmull.valueAt(points[i + 1], ((float) (i + 1)) / ((float) k - 1));
 
                 gdxRenderer.drawLine(
                         (int) (viewport.getPosX() + v1.x * Constant.TILE_SIZE + Constant.HALF_TILE_SIZE),
@@ -233,7 +237,8 @@ public class CharacterLayer extends BaseLayer {
                         (int) (viewport.getPosY() + v2.y * Constant.TILE_SIZE + Constant.HALF_TILE_SIZE),
                         Colors.BLUE_LIGHT_3);
             }
-        }
+
+        });
 //
 //        int viewPortX = viewport.getPosX();
 //        int viewPortY = viewport.getPosY();

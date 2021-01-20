@@ -3,10 +3,14 @@ package org.smallbox.faraway.client.controller;
 import com.badlogic.gdx.Input;
 import org.smallbox.faraway.client.controller.annotation.BindLua;
 import org.smallbox.faraway.client.controller.annotation.BindLuaAction;
+import org.smallbox.faraway.client.render.Viewport;
+import org.smallbox.faraway.client.ui.UIManager;
+import org.smallbox.faraway.client.ui.engine.views.View;
+import org.smallbox.faraway.client.ui.engine.views.widgets.UIFrame;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UIImage;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
-import org.smallbox.faraway.client.ui.engine.views.View;
 import org.smallbox.faraway.core.GameShortcut;
+import org.smallbox.faraway.core.dependencyInjector.DependencyManager;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.game.Game;
@@ -15,28 +19,14 @@ import org.smallbox.faraway.core.game.GameTime;
 import org.smallbox.faraway.core.game.modelInfo.WeatherInfo;
 import org.smallbox.faraway.modules.weather.WeatherModule;
 
-/**
- * SystemInfoController
- *
- * Created by Alex
- */
 @GameObject
 public class SystemInfoController extends LuaController {
-
-    @Inject
-    private Game game;
-
-    @Inject
-    private GameTime gameTime;
-
-    @Inject
-    private GameManager gameManager;
-
-    @Inject
-    private WeatherModule weatherModule;
-
-    @Inject
-    private MainPanelController mainPanelController;
+    @Inject private Game game;
+    @Inject private GameTime gameTime;
+    @Inject private GameManager gameManager;
+    @Inject private WeatherModule weatherModule;
+    @Inject private MainPanelController mainPanelController;
+    @Inject private Viewport viewport;
 
     @BindLua private View viewWeather;
     @BindLua private UILabel lbTime;
@@ -46,6 +36,12 @@ public class SystemInfoController extends LuaController {
     @BindLua private UILabel lbTemperature;
     @BindLua private UIImage icSpeed;
     @BindLua private UILabel lbSpeed;
+    @BindLua private UILabel lbFloor;
+    @BindLua private UIFrame mapContainer;
+
+    public UIFrame getMapContainer() {
+        return mapContainer;
+    }
 
     @Override
     protected void onControllerUpdate() {
@@ -70,6 +66,7 @@ public class SystemInfoController extends LuaController {
         lbSpeed.setText("x" + game.getSpeed());
         icSpeed.setVisible(game.getSpeed() <= 3);
         lbSpeed.setVisible(game.getSpeed() > 3);
+        lbFloor.setText(String.valueOf(viewport.getFloor()));
     }
 
     @Override
@@ -100,6 +97,11 @@ public class SystemInfoController extends LuaController {
     @GameShortcut(key = Input.Keys.MINUS)
     public void actionSpeedDown() {
         game.setSpeed(game.getSpeed() - 1);
+    }
+
+    @GameShortcut(key = Input.Keys.F1)
+    public void onRefreshUI() {
+        DependencyManager.getInstance().getDependency(UIManager.class).refresh(this, "system_info.lua");
     }
 
 }

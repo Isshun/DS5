@@ -1,16 +1,18 @@
 package org.smallbox.faraway.client.controller.character;
 
 import com.badlogic.gdx.Input;
-import org.smallbox.faraway.client.selection.GameSelectionManager;
 import org.smallbox.faraway.client.controller.AbsInfoLuaController;
 import org.smallbox.faraway.client.controller.LuaController;
 import org.smallbox.faraway.client.controller.annotation.BindLua;
 import org.smallbox.faraway.client.controller.annotation.BindLuaAction;
-import org.smallbox.faraway.client.ui.engine.Colors;
+import org.smallbox.faraway.client.selection.GameSelectionManager;
+import org.smallbox.faraway.client.ui.UIManager;
+import org.smallbox.faraway.client.ui.engine.RawColors;
 import org.smallbox.faraway.client.ui.engine.UIEventManager;
-import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
 import org.smallbox.faraway.client.ui.engine.views.View;
+import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
 import org.smallbox.faraway.core.GameShortcut;
+import org.smallbox.faraway.core.dependencyInjector.DependencyManager;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.dependencyInjector.gameAction.OnGameSelectAction;
@@ -19,48 +21,29 @@ import org.smallbox.faraway.core.module.world.model.Parcel;
 import org.smallbox.faraway.modules.character.CharacterModule;
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 
+import java.util.Arrays;
 import java.util.Objects;
 import java.util.Queue;
 
 @GameObject
 public class CharacterInfoController extends AbsInfoLuaController<CharacterModel> {
-
-    @Inject
-    protected GameSelectionManager gameSelectionManager;
-
-    @Inject
-    private UIEventManager uiEventManager;
-
-    @Inject
-    private CharacterModule characterModule;
-
-    @Inject
-    private CharacterInfoStatusController characterInfoStatusController;
-
-    @Inject
-    private CharacterInfoDetailsController characterInfoDetailsController;
-
-    @Inject
-    private CharacterInfoHealthController characterInfoHealthController;
-
-    @Inject
-    private CharacterInfoInventoryController characterInfoInventoryController;
-
-    @Inject
-    private CharacterInfoTimetableController characterInfoTimetableController;
-
-    @Inject
-    private CharacterInfoSkillsController characterInfoSkillsController;
+    @Inject protected GameSelectionManager gameSelectionManager;
+    @Inject private UIEventManager uiEventManager;
+    @Inject private CharacterModule characterModule;
+    @Inject private CharacterInfoStatusController characterInfoStatusController;
+    @Inject private CharacterInfoDetailsController characterInfoDetailsController;
+    @Inject private CharacterInfoHealthController characterInfoHealthController;
+    @Inject private CharacterInfoInventoryController characterInfoInventoryController;
+    @Inject private CharacterInfoTimetableController characterInfoTimetableController;
+    @Inject private CharacterInfoSkillsController characterInfoSkillsController;
 
     @BindLua private UILabel lbName;
-    @BindLua private UILabel lbPosition;
 
-    @BindLua private View bgStatus;
-    @BindLua private View bgInventory;
-    @BindLua private View bgDetails;
-    @BindLua private View bgHealth;
-    @BindLua private View bgSkills;
-    @BindLua private View bgTimetable;
+    @BindLua private View btStatus;
+    @BindLua private View btInventory;
+    @BindLua private View btHealth;
+    @BindLua private View btTimetable;
+    @BindLua private View btInfo;
 
     private CharacterModel character;
 
@@ -90,7 +73,7 @@ public class CharacterInfoController extends AbsInfoLuaController<CharacterModel
         characterInfoTimetableController.selectCharacter(character);
         characterInfoSkillsController.selectCharacter(character);
 
-        openPage(characterInfoStatusController, bgStatus);
+        openPage(characterInfoStatusController, btStatus);
     }
 
     @Override
@@ -104,43 +87,44 @@ public class CharacterInfoController extends AbsInfoLuaController<CharacterModel
 
     @BindLuaAction
     public void onOpenStatus(View view) {
-        openPage(characterInfoStatusController, bgStatus);
+        openPage(characterInfoStatusController, btStatus);
     }
 
-    @BindLuaAction
-    public void onOpenInfo(View view) {
-        openPage(characterInfoDetailsController, bgDetails);
-    }
+//    @BindLuaAction
+//    public void onOpenInfo(View view) {
+//        openPage(characterInfoDetailsController, bgDetails);
+//    }
 
     @BindLuaAction
     public void onOpenInventory(View view) {
-        openPage(characterInfoInventoryController, bgInventory);
+        openPage(characterInfoInventoryController, btInventory);
     }
 
-    @BindLuaAction
-    public void onOpenSkill(View view) {
-        openPage(characterInfoSkillsController, bgSkills);
-    }
+//    @BindLuaAction
+//    public void onOpenSkill(View view) {
+//        openPage(characterInfoSkillsController, bgSkills);
+//    }
 
     @BindLuaAction
     public void onOpenHealth(View view) {
-        openPage(characterInfoHealthController, bgHealth);
+        openPage(characterInfoHealthController, btHealth);
     }
 
     @BindLuaAction
     public void onOpenTimetable(View view) {
-        openPage(characterInfoTimetableController, bgTimetable);
+        openPage(characterInfoTimetableController, btTimetable);
     }
 
-    private void openPage(LuaController controller, View bg) {
-        bgStatus.getStyle().setBackgroundColor(Colors.BLUE_DARK_4);
-        bgInventory.getStyle().setBackgroundColor(Colors.BLUE_DARK_4);
-        bgHealth.getStyle().setBackgroundColor(Colors.BLUE_DARK_4);
-        bgDetails.getStyle().setBackgroundColor(Colors.BLUE_DARK_4);
-        bgTimetable.getStyle().setBackgroundColor(Colors.BLUE_DARK_4);
-        bgSkills.getStyle().setBackgroundColor(Colors.BLUE_DARK_4);
+    @BindLuaAction
+    public void onOpenInfo(View view) {
+        openPage(characterInfoTimetableController, btInfo);
+    }
+
+    private void openPage(LuaController controller, View button) {
+        Arrays.asList(btStatus, btInventory, btHealth, btTimetable).forEach(view -> view.getStyle().setBackgroundColor(RawColors.RAW_YELLOW_50));
+        button.getStyle().setBackgroundColor(RawColors.RAW_YELLOW);
+
         controller.setVisible(true);
-        bg.getStyle().setBackgroundColor(Colors.BLUE_DARK_3);
     }
 
     @Override
@@ -148,7 +132,6 @@ public class CharacterInfoController extends AbsInfoLuaController<CharacterModel
         if (Objects.nonNull(character)) {
 
             if (Objects.nonNull(character.getParcel())) {
-                lbPosition.setText(character.getParcel().x + "x" + character.getParcel().y + "x" + character.getParcel().z);
             }
 
         }
@@ -162,17 +145,24 @@ public class CharacterInfoController extends AbsInfoLuaController<CharacterModel
     @GameShortcut(key = Input.Keys.TAB)
     public void onNextTab() {
         if (characterInfoStatusController.isVisible()) {
-            openPage(characterInfoInventoryController, bgInventory);
-        } else if (characterInfoInventoryController.isVisible()) {
-            openPage(characterInfoDetailsController, bgDetails);
-        } else if (characterInfoDetailsController.isVisible()) {
-            openPage(characterInfoSkillsController, bgSkills);
+            openPage(characterInfoInventoryController, btInventory);
+//        } else if (characterInfoInventoryController.isVisible()) {
+//            openPage(characterInfoDetailsController, bgDetails);
+//        } else if (characterInfoDetailsController.isVisible()) {
+//            openPage(characterInfoSkillsController, bgSkills);
         } else if (characterInfoSkillsController.isVisible()) {
-            openPage(characterInfoHealthController, bgHealth);
+            openPage(characterInfoHealthController, btHealth);
         } else if (characterInfoHealthController.isVisible()) {
-            openPage(characterInfoTimetableController, bgTimetable);
+            openPage(characterInfoTimetableController, btTimetable);
         } else if (characterInfoTimetableController.isVisible()) {
-            openPage(characterInfoStatusController, bgStatus);
+            openPage(characterInfoStatusController, btStatus);
         }
     }
+
+//    @GameShortcut(key = Input.Keys.F1)
+//    public void onRefreshUI() {
+//        DependencyManager.getInstance().getDependency(UIManager.class).refresh(this, "panel_character.lua");
+//        onDisplayUnique(characterModule.getAll().stream().findFirst().orElse(null));
+//    }
+
 }

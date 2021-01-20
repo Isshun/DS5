@@ -16,6 +16,8 @@ import org.smallbox.faraway.util.Constant;
 import org.smallbox.faraway.util.MoveListener;
 import org.smallbox.faraway.util.log.Log;
 
+import java.util.Optional;
+
 @GameObject
 public class CharacterMoveModule extends SuperGameModule2<CharacterModuleObserver> {
 
@@ -56,7 +58,7 @@ public class CharacterMoveModule extends SuperGameModule2<CharacterModuleObserve
 //        characterModule.getAll().forEach(this::move);
     }
 
-    public CharacterMoveStatus move(CharacterModel character, Parcel parcel, boolean minusOne) {
+    public CharacterMoveStatus move(CharacterModel character, Parcel parcel, boolean minusOne, float moveSpeed) {
 
         // Character is already moving to this parcel
         if (character.getPath() != null && character.getPath().getLastParcel() == parcel) {
@@ -76,14 +78,15 @@ public class CharacterMoveModule extends SuperGameModule2<CharacterModuleObserve
             return CharacterMoveStatus.BLOCKED;
         }
 
+        path.setMoveSpeed(moveSpeed);
         character.setPath(path);
         return CharacterMoveStatus.CONTINUE;
     }
 
     private void doMove(CharacterModel character) {
-        PathModel _path = character._path;
 
-        if (_path != null) {
+        Optional.ofNullable(character.getPath()).ifPresent(path -> {
+
             // Character is sleeping
             if (character.isSleeping()) {
                 Log.debug("Character #" + character.getId() + ": sleeping . move canceled");
@@ -96,11 +99,11 @@ public class CharacterMoveModule extends SuperGameModule2<CharacterModuleObserve
 
             // Character has reach next parcel
             if (character._moveProgress >= 1) {
-                moveToNextParcel(character, _path);
+                moveToNextParcel(character, path);
             }
 
-            character._moveProgress += character._moveStep;
-            character._moveProgress2 += character._moveStep;
+            character._moveProgress += character._moveStep * path.getMoveSpeed();
+            character._moveProgress2 += character._moveStep * path.getMoveSpeed();
 
             character.position._moveProgress = character._moveProgress;
             character.position._moveProgress2 = character._moveProgress2;
@@ -110,7 +113,8 @@ public class CharacterMoveModule extends SuperGameModule2<CharacterModuleObserve
             character.position.parcelZ = character.getParcel().z;
 
             Log.debug(getName() + " Move progress = " + character._moveProgress + ", " + character._moveProgress2);
-        }
+
+        });
     }
 
     private void moveToNextParcel(CharacterModel character, PathModel _path) {

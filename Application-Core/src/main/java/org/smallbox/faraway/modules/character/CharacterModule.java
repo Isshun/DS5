@@ -20,7 +20,7 @@ import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 import org.smallbox.faraway.modules.character.model.base.CharacterPersonalsExtra;
 import org.smallbox.faraway.modules.consumable.ConsumableModule;
 import org.smallbox.faraway.modules.item.ItemModule;
-import org.smallbox.faraway.modules.job.JobModel;
+import org.smallbox.faraway.modules.job.JobAbortReason;
 import org.smallbox.faraway.modules.job.JobModule;
 import org.smallbox.faraway.modules.world.WorldModule;
 import org.smallbox.faraway.util.Constant;
@@ -34,24 +34,12 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 @GameObject
 public class CharacterModule extends SuperGameModule<CharacterModel, CharacterModuleObserver> {
-
-    @Inject
-    private Data data;
-
-    @Inject
-    private GameTaskManager gameTaskManager;
-
-    @Inject
-    private JobModule jobModule;
-
-    @Inject
-    private ConsumableModule consumableModule;
-
-    @Inject
-    private ItemModule itemModule;
-
-    @Inject
-    private WorldModule worldModule;
+    @Inject private GameTaskManager gameTaskManager;
+    @Inject private JobModule jobModule;
+    @Inject private ConsumableModule consumableModule;
+    @Inject private ItemModule itemModule;
+    @Inject private WorldModule worldModule;
+    @Inject private Data data;
 
     private final List<CharacterModel>                _addOnUpdate = new ArrayList<>();
     private int                                 _count;
@@ -91,7 +79,7 @@ public class CharacterModule extends SuperGameModule<CharacterModel, CharacterMo
     private void updateDeadCharacter(CharacterModel character) {
         // Cancel job
         if (character.getJob() != null) {
-            jobModule.quitJob(character.getJob(), JobModel.JobAbortReason.DIED);
+            jobModule.quitJob(character.getJob(), JobAbortReason.DIED);
         }
     }
 

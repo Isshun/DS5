@@ -26,27 +26,39 @@ public class FontManager {
         assetManager.setLoader(BitmapFont.class, ".ttf", new FreetypeFontLoader(resolver));
 
         for (int i = MIN_SIZE; i <= MAX_SIZE; i++) {
-            assetManager.load("data/fonts/regular-" + i + "-font.ttf", BitmapFont.class, regularFontLoaderParameter.getParameter(i));
-            assetManager.load("data/fonts/outlined-" + i + "-font.ttf", BitmapFont.class, outlinedFontLoaderParameter.getParameter(i));
+            assetManager.load("data/fonts/regular-" + i + "-font.ttf", BitmapFont.class, regularFontLoaderParameter.getParameter("font", i));
+            assetManager.load("data/fonts/outlined-" + i + "-font.ttf", BitmapFont.class, outlinedFontLoaderParameter.getParameter("font", i));
         }
     }
 
     public BitmapFont getFont(int fontSize) {
-        return lazyLoad("data/fonts/regular-" + Math.max(fontSize, 1) + "-font.ttf", Math.max(fontSize, 1), regularFontLoaderParameter);
+        return getFont(null, fontSize);
+    }
+
+    public BitmapFont getFont(String font, int fontSize) {
+        return lazyLoad("data/fonts/" + safeFontName(font) + "-regular-" + Math.max(fontSize, 1) + "-font.ttf", Math.max(fontSize, 1), font, regularFontLoaderParameter);
     }
 
     public BitmapFont getOutlinedFont(int fontSize) {
-        return lazyLoad("data/fonts/outlined-" + fontSize + "-font.ttf", fontSize, outlinedFontLoaderParameter);
+        return getOutlinedFont(null, fontSize);
     }
 
-    private BitmapFont lazyLoad(String key, int fontSize, FontLoaderParameterInterface fontLoaderParameterInterface) {
+    public BitmapFont getOutlinedFont(String font, int fontSize) {
+        return lazyLoad("data/fonts/" + safeFontName(font) + "-outlined-" + fontSize + "-font.ttf", fontSize, font, outlinedFontLoaderParameter);
+    }
+
+    private BitmapFont lazyLoad(String key, int fontSize, String font, FontLoaderParameterInterface fontLoaderParameterInterface) {
         if (!assetManager.contains(key)) {
-            assetManager.load(key, BitmapFont.class, fontLoaderParameterInterface.getParameter(fontSize));
+            assetManager.load(key, BitmapFont.class, fontLoaderParameterInterface.getParameter(safeFontName(font), fontSize));
             assetManager.finishLoading();
             Log.warning("Lazy load: " + key);
         }
 
         return assetManager.get(key);
+    }
+
+    private String safeFontName(String fontName) {
+        return fontName == null ? "font" : fontName;
     }
 
 }

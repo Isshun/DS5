@@ -1,6 +1,12 @@
 package org.smallbox.faraway.client.ui.engine;
 
 public class RawColors {
+    public static final long RAW_YELLOW = 0xffa600ff;
+    public static final long RAW_YELLOW_50 = 0xffa60088;
+    public static final long RAW_BLUE = 0x00d8ddff;
+    public static final long RAW_GREEN = 0x87d100ff;
+    public static final long RAW_RED = 0xe62317ff;
+
     public static final long RAW_BLUE_LIGHT_1 = 0x359f9fff;
     public static final long RAW_BLUE_LIGHT_2 = 0x2ab8baff;
     public static final long RAW_BLUE_LIGHT_3 = 0x4dd3d8ff;
@@ -24,18 +30,4 @@ public class RawColors {
     public static final long RAW_RED_DARK_3 = 0x68241cff;
     public static final long RAW_RED_DARK_4 = 0x581a12ff;
     public static final long RAW_RED_DARK_5 = 0x4f0e07ff;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 }

@@ -23,6 +23,7 @@ public class PathModel {
     public Path<Vector2> myCatmull;
     private long _startTime;
     public boolean minusOne;
+    private float moveSpeed;
 
     public void setStartTime(long startTime) {
         _startTime = startTime;
@@ -34,6 +35,14 @@ public class PathModel {
 
     public Parcel getLastParcelCharacter() {
         return _lastParcelCharacter;
+    }
+
+    public void setMoveSpeed(float moveSpeed) {
+        this.moveSpeed = moveSpeed;
+    }
+
+    public float getMoveSpeed() {
+        return moveSpeed;
     }
 
     public static class PathSection {

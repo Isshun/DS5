@@ -4,7 +4,11 @@ import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.module.world.model.ConsumableItem;
-import org.smallbox.faraway.modules.job.JobTaskReturn;
+import org.smallbox.faraway.modules.job.task.ActionTask;
+import org.smallbox.faraway.modules.job.task.MoveTask;
+
+import static org.smallbox.faraway.modules.job.JobTaskReturn.TASK_COMPLETED;
+import static org.smallbox.faraway.modules.job.JobTaskReturn.TASK_CONTINUE;
 
 @GameObject
 public class ConsumeJobFactory {
@@ -24,27 +28,22 @@ public class ConsumeJobFactory {
 
         job.setMainLabel("Consume " + consumable.getInfo().label);
 
-        job.addMoveTask("Move", consumable::getParcel);
-        job.addTask("Consume", (character, hourInterval) -> {
-            if (job._lock.available) {
-                // TODO
-                job._duration += 1 / game.getTickPerHour();
-                double durationLeft = totalDuration - job._duration;
-                callback.onConsume(consumable, durationLeft);
-                job.setProgress(job._duration, totalDuration);
+        job.addTask(new MoveTask("Move", consumable::getParcel));
+        job.addTask(new ActionTask("Consume", (character, hourInterval, localDateTime) -> {
+            // TODO
+            job._duration += 1 / game.getTickPerHour();
+            double durationLeft = totalDuration - job._duration;
+            callback.onConsume(consumable, durationLeft);
+            job.setProgress(job._duration, totalDuration);
 
-                if (durationLeft > 0) {
-                    return JobTaskReturn.TASK_CONTINUE;
-                }
-
-                // Retire le lock si l'action est terminée
+            // Retire le lock si l'action est terminée
+            if (durationLeft <= 0) {
                 consumableModule.createConsumableFromLock(job._lock);
-                return JobTaskReturn.TASK_COMPLETED;
             }
-            return JobTaskReturn.TASK_ERROR;
-        });
 
-        job.addCloseTask(() -> {
+        }, () -> totalDuration - job._duration <= 0 ? TASK_CONTINUE : TASK_COMPLETED));
+
+        job.addCloseTask(j -> {
             if (job._lock.available) {
                 consumableModule.cancelLock(job._lock);
             }

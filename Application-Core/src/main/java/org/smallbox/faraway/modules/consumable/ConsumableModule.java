@@ -17,6 +17,7 @@ import org.smallbox.faraway.core.module.world.model.Parcel;
 import org.smallbox.faraway.modules.character.model.PathModel;
 import org.smallbox.faraway.modules.job.JobModel;
 import org.smallbox.faraway.modules.job.JobModule;
+import org.smallbox.faraway.modules.job.JobStatus;
 import org.smallbox.faraway.modules.structure.StructureModule;
 import org.smallbox.faraway.modules.world.WorldModule;
 import org.smallbox.faraway.util.Utils;
@@ -302,7 +303,7 @@ public class ConsumableModule extends SuperGameModule<ConsumableItem, Consumable
 
         // Retire les locks des jobs n'existant plus
         _locks.stream()
-                .filter(lock -> lock.job.getStatus() != JobModel.JobStatus.JOB_INITIALIZED && !jobModule.hasJob(lock.job))
+                .filter(lock -> lock.job.getStatus() != JobStatus.JOB_INITIALIZED && !jobModule.hasJob(lock.job))
                 .forEach(this::unlock);
     }
 

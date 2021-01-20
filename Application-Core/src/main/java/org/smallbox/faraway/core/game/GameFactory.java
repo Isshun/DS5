@@ -52,7 +52,9 @@ public class GameFactory {
                 Optional.ofNullable(scenario.items).ifPresent(items -> items.forEach(i -> itemModule.addItem(i.name, true, i.x, i.y, i.z)));
                 Optional.ofNullable(scenario.plants).ifPresent(plants -> plants.forEach(i -> plantModule.addPlant(i.name, i.x, i.y, i.z)));
                 Optional.ofNullable(scenario.resources).ifPresent(resources -> resources.forEach(i -> worldModule.getParcel(i.x, i.y, i.z).setRockInfo(data.getItemInfo("base.granite"))));
-                viewport.centerOnMap(7, 12);
+                if (scenario.centerOnMap != null && scenario.centerOnMap.length == 2) {
+                    viewport.centerOnMap(scenario.centerOnMap[0], scenario.centerOnMap[1]);
+                }
             }
 
             @Override
