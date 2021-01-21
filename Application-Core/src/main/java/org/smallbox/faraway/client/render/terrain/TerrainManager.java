@@ -5,9 +5,10 @@ import org.smallbox.faraway.client.AssetManager;
 import org.smallbox.faraway.client.render.terrain.TerrainMaskLoaderParameters.Type;
 import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
-import org.smallbox.faraway.util.Constant;
+import org.smallbox.faraway.core.module.world.model.Parcel;
 
 import static org.smallbox.faraway.util.Constant.HALF_TILE_SIZE;
+import static org.smallbox.faraway.util.Constant.TILE_SIZE;
 
 @ApplicationObject
 public class TerrainManager {
@@ -54,16 +55,25 @@ public class TerrainManager {
 
     }
 
-    public void generate(Pixmap pixmapOut, Pixmap pixmapIn, String key, int position, int outX, int outY) {
+    public void generate(Pixmap pixmapOut, Pixmap pixmapIn, String key, int position, int positionX, int positionY, Parcel parcel) {
         Pixmap mask = assetManager.get(buildPath(key, 0, position));
 
         for (int x = 0; x < HALF_TILE_SIZE; x++) {
             for (int y = 0; y < HALF_TILE_SIZE; y++) {
-                int regularColor = pixmapIn.getPixel((x + outX) % 512, (y + outY) % 512) & 0xffffff00;
+                int regularColor = pixmapIn.getPixel((parcel.x * TILE_SIZE % pixmapIn.getWidth()) + positionX + x, (parcel.y * TILE_SIZE % pixmapIn.getHeight()) + positionY + y) & 0xffffff00;
                 int alpha = mask.getPixel(x, y) & 0x000000ff;
                 int dark = (mask.getPixel(x, y) & 0x0000ff00) >> 8;
                 int newColor = applyDarkPattern(regularColor, Math.max(0, dark - 128));
-                pixmapOut.drawPixel(outX + x, Constant.TILE_SIZE - 1 - (outY + y), newColor + alpha);
+                pixmapOut.drawPixel(positionX + x, TILE_SIZE - 1 - (positionY + y), newColor + alpha);
+            }
+        }
+    }
+
+    public void generate(Pixmap pixmapOut, Pixmap pixmapIn, int positionX, int positionY, Parcel parcel) {
+        for (int x = 0; x < TILE_SIZE; x++) {
+            for (int y = 0; y < TILE_SIZE; y++) {
+                int regularColor = pixmapIn.getPixel((parcel.x * TILE_SIZE % pixmapIn.getWidth()) + positionX + x, (parcel.y * TILE_SIZE % pixmapIn.getHeight()) + positionY + y);
+                pixmapOut.drawPixel(positionX + x, TILE_SIZE - 1 - (positionY + y), regularColor);
             }
         }
     }

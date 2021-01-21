@@ -84,22 +84,33 @@ public class RockTileGenerator {
 
     private int computeNeighborhood(Parcel parcel) {
         int neighborhood = 0;
-        neighborhood |= worldModule.checkOrNull(parcel, Parcel::hasRock, MovableModel.Direction.TOP_LEFT) ? 0b100000000 : 0b000000000;
-        neighborhood |= worldModule.checkOrNull(parcel, Parcel::hasRock, MovableModel.Direction.TOP) ? 0b010000000 : 0b000000000;
-        neighborhood |= worldModule.checkOrNull(parcel, Parcel::hasRock, MovableModel.Direction.TOP_RIGHT) ? 0b001000000 : 0b000000000;
-        neighborhood |= worldModule.checkOrNull(parcel, Parcel::hasRock, MovableModel.Direction.LEFT) ? 0b000100000 : 0b000000000;
-        neighborhood |= worldModule.checkOrNull(parcel, Parcel::hasRock, MovableModel.Direction.NONE) ? 0b000010000 : 0b000000000;
-        neighborhood |= worldModule.checkOrNull(parcel, Parcel::hasRock, MovableModel.Direction.RIGHT) ? 0b000001000 : 0b000000000;
-        neighborhood |= worldModule.checkOrNull(parcel, Parcel::hasRock, MovableModel.Direction.BOTTOM_LEFT) ? 0b000000100 : 0b000000000;
-        neighborhood |= worldModule.checkOrNull(parcel, Parcel::hasRock, MovableModel.Direction.BOTTOM) ? 0b000000010 : 0b000000000;
-        neighborhood |= worldModule.checkOrNull(parcel, Parcel::hasRock, MovableModel.Direction.BOTTOM_RIGHT) ? 0b000000001 : 0b000000000;
+
+        neighborhood |= parcel.y % 4 == 3 ? 0b10000000 : 0;
+        neighborhood |= parcel.y % 4 == 2 ? 0b01000000 : 0;
+        neighborhood |= parcel.y % 4 == 1 ? 0b00100000 : 0;
+        neighborhood |= parcel.y % 4 == 0 ? 0b00010000 : 0;
+        neighborhood |= parcel.x % 4 == 3 ? 0b00001000 : 0;
+        neighborhood |= parcel.x % 4 == 2 ? 0b00000100 : 0;
+        neighborhood |= parcel.x % 4 == 1 ? 0b00000010 : 0;
+        neighborhood |= parcel.x % 4 == 0 ? 0b00000001 : 0;
+
+        neighborhood |= worldModule.checkOrNull(parcel, Parcel::hasRock, MovableModel.Direction.TOP_LEFT) ? 0b100000000 << 8 : 0;
+        neighborhood |= worldModule.checkOrNull(parcel, Parcel::hasRock, MovableModel.Direction.TOP) ? 0b010000000 << 8 : 0;
+        neighborhood |= worldModule.checkOrNull(parcel, Parcel::hasRock, MovableModel.Direction.TOP_RIGHT) ? 0b001000000 << 8 : 0;
+        neighborhood |= worldModule.checkOrNull(parcel, Parcel::hasRock, MovableModel.Direction.LEFT) ? 0b000100000 << 8 : 0;
+        neighborhood |= worldModule.checkOrNull(parcel, Parcel::hasRock, MovableModel.Direction.NONE) ? 0b000010000 << 8 : 0;
+        neighborhood |= worldModule.checkOrNull(parcel, Parcel::hasRock, MovableModel.Direction.RIGHT) ? 0b000001000 << 8 : 0;
+        neighborhood |= worldModule.checkOrNull(parcel, Parcel::hasRock, MovableModel.Direction.BOTTOM_LEFT) ? 0b000000100 << 8 : 0;
+        neighborhood |= worldModule.checkOrNull(parcel, Parcel::hasRock, MovableModel.Direction.BOTTOM) ? 0b000000010 << 8 : 0;
+        neighborhood |= worldModule.checkOrNull(parcel, Parcel::hasRock, MovableModel.Direction.BOTTOM_RIGHT) ? 0b000000001 << 8 : 0;
+
         return neighborhood;
     }
 
     private void draw(TileGeneratorRule rule, Pixmap pixmapOut, Pixmap pixmapIn, Parcel parcel) {
         int outX = rule.position == 1 || rule.position == 3 ? HALF_TILE_SIZE : 0;
         int outY = rule.position == 2 || rule.position == 3 ? HALF_TILE_SIZE : 0;
-        terrainManager.generate(pixmapOut, pixmapIn, rule.key, rule.position, outX, outY);
+        terrainManager.generate(pixmapOut, pixmapIn, rule.key, rule.position, outX, outY, parcel);
     }
 
 }

@@ -1,20 +1,23 @@
 package org.smallbox.faraway.client.render.layer;
 
+import com.badlogic.gdx.graphics.Color;
 import org.smallbox.faraway.client.GameClientObserver;
-import org.smallbox.faraway.client.render.GDXRenderer;
-import org.smallbox.faraway.client.selection.GameSelectionManager;
 import org.smallbox.faraway.client.manager.SpriteManager;
+import org.smallbox.faraway.client.render.GDXRenderer;
 import org.smallbox.faraway.client.render.Viewport;
+import org.smallbox.faraway.client.selection.GameSelectionManager;
 import org.smallbox.faraway.common.ObjectModel;
 import org.smallbox.faraway.core.GameException;
 import org.smallbox.faraway.core.GameLayer;
-import org.smallbox.faraway.core.dependencyInjector.DependencyManager;
+import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameObserver;
 import org.smallbox.faraway.util.Constant;
 import org.smallbox.faraway.util.log.Log;
 
 public abstract class BaseLayer implements GameObserver, GameClientObserver {
+    @Inject private GameSelectionManager gameSelectionManager;
+
     private final boolean       _isThirdParty;
     private long                _totalDrawDelay;
     private long                _lastDrawDelay;
@@ -62,7 +65,7 @@ public abstract class BaseLayer implements GameObserver, GameClientObserver {
     }
 
     protected void drawSelection(GDXRenderer renderer, SpriteManager spriteManager, ObjectModel object, int posX, int posY, int width, int height, int offsetX, int offsetY) {
-        if (DependencyManager.getInstance().getDependency(GameSelectionManager.class).selectContains(object)) {
+        if (gameSelectionManager.selectContains(object)) {
             if (_selectionOffset > 2) {
                 _selectionChange = -0.2;
             } else if (_selectionOffset < -2) {
@@ -70,10 +73,11 @@ public abstract class BaseLayer implements GameObserver, GameClientObserver {
             }
             _selectionOffset += _selectionChange;
             int index = (int)_selectionOffset;
-            renderer.draw(spriteManager.getSelectorCorner(0), offsetX - 4 + posX - index,            offsetY - 4 + posY - index);
-            renderer.draw(spriteManager.getSelectorCorner(1), offsetX - 4 + posX + width + index,    offsetY - 4 + posY - index);
-            renderer.draw(spriteManager.getSelectorCorner(2), offsetX - 4 + posX - index,            offsetY - 4 + posY + height + index);
-            renderer.draw(spriteManager.getSelectorCorner(3), offsetX - 4 + posX + width + index,    offsetY - 4 + posY + height + index);
+            renderer.drawRectangle(posX, posY, 128, 128, Color.WHITE, false);
+//            renderer.draw(spriteManager.getSelectorCorner(0), offsetX - 4 + posX - index,            offsetY - 4 + posY - index);
+//            renderer.draw(spriteManager.getSelectorCorner(1), offsetX - 4 + posX + width + index,    offsetY - 4 + posY - index);
+//            renderer.draw(spriteManager.getSelectorCorner(2), offsetX - 4 + posX - index,            offsetY - 4 + posY + height + index);
+//            renderer.draw(spriteManager.getSelectorCorner(3), offsetX - 4 + posX + width + index,    offsetY - 4 + posY + height + index);
         }
     }
 
