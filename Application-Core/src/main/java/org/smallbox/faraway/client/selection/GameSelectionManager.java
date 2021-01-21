@@ -34,27 +34,13 @@ import java.util.stream.Collectors;
 
 @GameObject
 public class GameSelectionManager extends GameManager {
-
-    @Inject
-    private LayerManager layerManager;
-
-    @Inject
-    private GameActionManager gameActionManager;
-
-    @Inject
-    private CharacterModule characterModule;
-
-    @Inject
-    private ConsumableModule consumableModule;
-
-    @Inject
-    private ItemModule itemModule;
-
-    @Inject
-    private StructureModule structureModule;
-
-    @Inject
-    private DependencyManager dependencyManager;
+    @Inject private LayerManager layerManager;
+    @Inject private GameActionManager gameActionManager;
+    @Inject private CharacterModule characterModule;
+    @Inject private ConsumableModule consumableModule;
+    @Inject private ItemModule itemModule;
+    @Inject private StructureModule structureModule;
+    @Inject private DependencyManager dependencyManager;
 
 //    private Collection<SelectionParcelListener> selectionParcelListeners = new ConcurrentLinkedQueue<>();
     private final Collection<SelectionAreaListener> selectionAreaListeners = new ConcurrentLinkedQueue<>();

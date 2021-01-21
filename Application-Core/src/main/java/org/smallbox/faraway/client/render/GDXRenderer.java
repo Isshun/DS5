@@ -31,7 +31,7 @@ public class GDXRenderer {
     @Inject private Viewport viewport;
 
     private SpriteBatch _batch;
-    private OrthographicCamera _camera;
+    public OrthographicCamera _camera;
     private OrthographicCamera _cameraUI;
     private ShapeRenderer _drawPixelShapeLayer;
     private ShaderProgram shader;
@@ -267,11 +267,11 @@ public class GDXRenderer {
             _batch.setProjectionMatrix(camera.combined);
 
             if (outlined) {
-                fontManager.getOutlinedFont(textSize).setColor(color != null ? color : Color.WHITE);
-                fontManager.getOutlinedFont(textSize).draw(_batch, string, x, y);
+                fontManager.getOutlinedFont("font3", textSize).setColor(color != null ? color : Color.WHITE);
+                fontManager.getOutlinedFont("font3", textSize).draw(_batch, string, x, y);
             } else {
-                fontManager.getFont(textSize).setColor(color != null ? color : Color.WHITE);
-                fontManager.getFont(textSize).draw(_batch, string, x, y);
+                fontManager.getFont("font3", textSize).setColor(color != null ? color : Color.WHITE);
+                fontManager.getFont("font3", textSize).draw(_batch, string, x, y);
             }
 
             //            _fonts[textSize].drawMultiLine(_batch, string, x, y);

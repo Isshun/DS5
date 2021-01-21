@@ -2,12 +2,15 @@ package org.smallbox.faraway.client.render.layer.item;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import org.smallbox.faraway.client.manager.SpriteManager;
+import org.smallbox.faraway.client.manager.input.InputManager;
 import org.smallbox.faraway.client.render.GDXRenderer;
 import org.smallbox.faraway.client.render.LayerManager;
 import org.smallbox.faraway.client.render.Viewport;
@@ -22,8 +25,10 @@ import org.smallbox.faraway.core.dependencyInjector.annotationEvent.AfterGameLay
 import org.smallbox.faraway.core.engine.ColorUtils;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameManager;
+import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.model.MovableModel;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
+import org.smallbox.faraway.core.module.world.model.Parcel;
 import org.smallbox.faraway.modules.character.CharacterModule;
 import org.smallbox.faraway.modules.character.model.CharacterInventoryExtra;
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
@@ -36,6 +41,7 @@ import java.util.Optional;
 @GameObject
 @GameLayer(level = LayerManager.CHARACTER_LAYER_LEVEL, visible = true)
 public class CharacterLayer extends BaseLayer {
+    @Inject private InputManager inputManager;
     @Inject private SpriteManager spriteManager;
     @Inject private CharacterModule characterModule;
     @Inject private GameManager gameManager;
@@ -172,13 +178,12 @@ public class CharacterLayer extends BaseLayer {
      * Draw characters
      */
     private void drawCharacter(GDXRenderer renderer, CharacterModel character, int posX, int posY, MovableModel.Direction direction) {
-//        renderer.draw(posX, posY, spriteManager.getCharacter(character, 0, 0));
+        TextureRegion currentFrame = runningAnimation2.getKeyFrame(character.stateTime, true);
 
-//        posX -= 40;
-//        posY -= 70;
+        Parcel parcelOver = WorldHelper.getParcel(viewport.getWorldPosX(inputManager.getMouseX()), viewport.getWorldPosY(inputManager.getMouseY()), viewport.getFloor());
 
+        // TODO: direction not applied to overlay
         if (character.getPath() != null) {
-            TextureRegion currentFrame = runningAnimation2.getKeyFrame(character.stateTime, true);
 
             if (direction == MovableModel.Direction.LEFT && currentFrame.isFlipX()) {
                 currentFrame.flip(true, false);
@@ -188,12 +193,40 @@ public class CharacterLayer extends BaseLayer {
                 currentFrame.flip(true, false);
             }
 
-            renderer.draw(currentFrame, posX, posY);
-
             drawPath(character);
-        } else {
-            renderer.draw(runningAnimation2.getKeyFrame(character.stateTime, true), posX, posY);
         }
+
+        if (parcelOver == character.getParcel()) {
+            drawOverlay(currentFrame, posX, posY);
+        } else {
+            renderer.draw(currentFrame, posX, posY);
+        }
+    }
+
+    // TODO: put overlay in asset manager
+    private void drawOverlay(TextureRegion currentFrame, int posX, int posY) {
+        currentFrame.getTexture().getTextureData().prepare();
+        Pixmap pixmap = currentFrame.getTexture().getTextureData().consumePixmap();
+        Pixmap newPixmap = new Pixmap(currentFrame.getRegionWidth(), currentFrame.getRegionHeight(), Pixmap.Format.RGBA8888);
+
+        for (int x = 0; x < currentFrame.getRegionWidth(); x++) {
+            for (int y = 0; y < currentFrame.getRegionHeight(); y++) {
+                int colorInt = pixmap.getPixel(currentFrame.getRegionX() + x, currentFrame.getRegionY() - y);
+                int r = (int) Math.min(((colorInt >> 24) & 0x000000ff) * 1.4 + 32, 255);
+                int g = (int) Math.min(((colorInt >> 16) & 0x000000ff) * 1.4 + 32, 255);
+                int b = (int) Math.min(((colorInt >> 8) & 0x000000ff) * 1.4 + 32, 255);
+                newPixmap.drawPixel(x, y, (r << 24) + (g << 16) + (b << 8) + (colorInt & 0x000000ff));
+            }
+        }
+
+        Texture texture = new Texture(newPixmap);
+        texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+        Sprite sprite = new Sprite(texture);
+        gdxRenderer.draw(sprite, posX, posY);
+        texture.dispose();
+
+        pixmap.dispose();
+        newPixmap.dispose();
     }
 
     /**
