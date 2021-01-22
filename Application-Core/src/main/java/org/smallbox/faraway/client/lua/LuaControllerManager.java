@@ -168,7 +168,7 @@ public class LuaControllerManager implements GameObserver {
                     View view = controller.getRootView().findByAction(method.getName());
                     if (view != null) {
                         Log.debug(LuaControllerManager.class, "LuaController: Bind method %s", method.getName());
-                        view.getEvents().setOnClickListener((int x, int y) -> {
+                        view.getEvents().setOnClickListener(() -> {
                             try {
                                 Log.debug(LuaControllerManager.class, "Method: %s", method.getName());
                                 Log.debug(LuaControllerManager.class, "View: %s", view.getId());

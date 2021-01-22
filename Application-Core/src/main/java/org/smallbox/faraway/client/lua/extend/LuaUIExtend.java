@@ -148,7 +148,7 @@ public abstract class LuaUIExtend extends LuaExtend {
 
         LuaValue onClick = value.get("on_click");
         if (!onClick.isnil()) {
-            view.getEvents().setOnClickListener((int x, int y) -> {
+            view.getEvents().setOnClickListener(() -> {
                 try {
                     if (onClick.isfunction()) {
                         onClick.call(luaView);

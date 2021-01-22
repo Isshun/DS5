@@ -53,7 +53,7 @@ public class CharacterInfoTimetableController extends LuaController {
 
                     View subView = view.find("view_timetable");
                     subView.getStyle().setBackgroundColor(getStateColor(timetable.getState(dayTime.hour)));
-                    subView.getEvents().setOnClickListener((x, y) -> {
+                    subView.getEvents().setOnClickListener(() -> {
                         timetable.nextState(dayTime.hour);
                         subView.getStyle().setBackgroundColor(getStateColor(timetable.getState(dayTime.hour)));
                     });

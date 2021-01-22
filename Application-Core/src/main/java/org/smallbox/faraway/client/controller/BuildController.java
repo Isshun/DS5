@@ -62,14 +62,14 @@ public class BuildController extends LuaController {
         // Add item's categories to UI
         categories.forEach(category -> {
             UIFrame viewCategory = listCategories.createFromTemplate(UIFrame.class);
-            viewCategory.getEvents().setOnClickListener((x, y) -> openCategory(viewCategory, category));
+            viewCategory.getEvents().setOnClickListener(() -> openCategory(viewCategory, category));
             viewCategory.findImage("img_category").setImage("[base]/graphics/items/bt_categories/" + category + ".png");
             listCategories.addNextView(viewCategory);
         });
         listCategories.switchViews();
 
         // Open first category
-        listCategories.getViews().stream().findFirst().ifPresent(view -> view.getEvents()._onClickListener.onClick(0, 0));
+        listCategories.getViews().stream().findFirst().ifPresent(view -> view.getEvents()._onClickListener.onClick());
     }
 
 //    @Override

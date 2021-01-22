@@ -39,19 +39,19 @@ public class ViewEvents {
 
     // TODO: crash in lua throw on main thread
     public void setOnClickListener(LuaValue value) {
-        _onClickListener = (int x, int y) -> value.call(CoerceJavaToLua.coerce(view));
+        _onClickListener = () -> value.call(CoerceJavaToLua.coerce(view));
         uiEventManager.setOnClickListener(view, _onClickListener);
     }
 
     // TODO: crash in lua throw on main thread
     public void setOnMouseWheelUpListener(LuaValue value) {
-        _onMouseWheelUpListener = (int x, int y) -> value.call(CoerceJavaToLua.coerce(view));
+        _onMouseWheelUpListener = () -> value.call(CoerceJavaToLua.coerce(view));
         uiEventManager.setOnMouseWheelUpListener(view, _onMouseWheelUpListener);
     }
 
     // TODO: crash in lua throw on main thread
     public void setOnMouseWheelDownListener(LuaValue value) {
-        _onMouseWheelDownListener = (int x, int y) -> value.call(CoerceJavaToLua.coerce(view));
+        _onMouseWheelDownListener = () -> value.call(CoerceJavaToLua.coerce(view));
         uiEventManager.setOnMouseWheelDownListener(view, _onMouseWheelDownListener);
     }
 
@@ -93,7 +93,7 @@ public class ViewEvents {
 
     public void click(int x, int y) {
         if (_onClickListener != null) {
-            _onClickListener.onClick(x, y);
+            _onClickListener.onClick();
 
             if (view.getParent() != null && view.getParent() instanceof UIDropDown) {
                 ((UIDropDown)view.getParent()).setCurrent(view);

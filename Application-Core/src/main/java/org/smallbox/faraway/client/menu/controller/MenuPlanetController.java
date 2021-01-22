@@ -57,7 +57,7 @@ public class MenuPlanetController extends LuaController {
             UILabel lbPlanet = listPlanets.createFromTemplate(UILabel.class);
             lbPlanet.setId(planet.name);
             lbPlanet.setText(planet.label);
-            lbPlanet.getEvents().setOnClickListener((x, y) -> selectPlanet(planet));
+            lbPlanet.getEvents().setOnClickListener(() -> selectPlanet(planet));
             listPlanets.addView(lbPlanet);
         });
         selectPlanet(data.planets.get(0));

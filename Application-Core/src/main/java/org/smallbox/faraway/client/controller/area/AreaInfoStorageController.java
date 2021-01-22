@@ -105,11 +105,11 @@ public class AreaInfoStorageController extends AbsInfoLuaController<AreaModel> {
                 .map(CategoryContainer::new)
                 .collect(Collectors.toList());
 
-        btPriority1.getEvents().setOnClickListener((int x, int y) -> setPriority(1));
-        btPriority2.getEvents().setOnClickListener((int x, int y) -> setPriority(2));
-        btPriority3.getEvents().setOnClickListener((int x, int y) -> setPriority(3));
-        btPriority4.getEvents().setOnClickListener((int x, int y) -> setPriority(4));
-        btPriority5.getEvents().setOnClickListener((int x, int y) -> setPriority(5));
+        btPriority1.getEvents().setOnClickListener(() -> setPriority(1));
+        btPriority2.getEvents().setOnClickListener(() -> setPriority(2));
+        btPriority3.getEvents().setOnClickListener(() -> setPriority(3));
+        btPriority4.getEvents().setOnClickListener(() -> setPriority(4));
+        btPriority5.getEvents().setOnClickListener(() -> setPriority(5));
     }
 
     private void setPriority(int priority) {
@@ -134,12 +134,12 @@ public class AreaInfoStorageController extends AbsInfoLuaController<AreaModel> {
             UIFrame frameStorage = (UIFrame)listStorage.createFromTemplate();
             frameStorage.findLabel("lb_category").setText(categoryContainer.categoryName);
             frameStorage.findImage("img_category").setImage(getContainerImage(categoryContainer.categoryName));
-            frameStorage.find("img_category").getEvents().setOnClickListener((int x, int y) -> {
+            frameStorage.find("img_category").getEvents().setOnClickListener(() -> {
                 clickOnBox(categoryContainer.categoryName, null);
                 storageModule.notifyRulesChange(_area);
                 displayTree();
             });
-            frameStorage.getEvents().setOnClickListener((int x, int y) -> {
+            frameStorage.getEvents().setOnClickListener(() -> {
                 categoryContainer.isOpen = !categoryContainer.isOpen;
                 displayTree();
             });
@@ -182,13 +182,13 @@ public class AreaInfoStorageController extends AbsInfoLuaController<AreaModel> {
                 .addView(UILabel.createFast("   " + itemInfo.label, Color.WHITE).getGeometry().setPadding(5, 5, 5, 5))
                 .addView(UIImage.createFast(getItemImage(itemInfo), 16, 16)
                         .setPosition(300, 0)
-                        .getEvents().setOnClickListener((int x, int y) -> {
+                        .getEvents().setOnClickListener(() -> {
                             _area.setAccept(itemInfo, !_area.isAccepted(itemInfo));
                             storageModule.notifyRulesChange(_area);
                             displayTree();
                         }))
                 .setSize(200, 20)
-                .getEvents().setOnClickListener((int x, int y) -> {
+                .getEvents().setOnClickListener(() -> {
                     _area.setAccept(itemInfo, !_area.isAccepted(itemInfo));
                     displayTree();
                 })

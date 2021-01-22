@@ -58,7 +58,7 @@ public class RoomPanelController extends LuaController {
                             .setSize(160, 40)
                             .setFocusBackgroundColor(0x25c9cbff)
                             .setRegularBackgroundColor(0x121c1eff)
-                            .getEvents().setOnClickListener((int x, int y) -> {
+                            .getEvents().setOnClickListener(() -> {
                                 roomLayer.setMode(RoomLayer.Mode.ADD, cls);
                                 gameSelectionManager.setSelectionListener(parcels -> {
                                     Log.warning(RoomPanelController.class, "HELLO");
@@ -77,7 +77,7 @@ public class RoomPanelController extends LuaController {
                             .setSize(160, 40)
                             .setFocusBackgroundColor(0x25c9cbff)
                             .setRegularBackgroundColor(0x121c1eff)
-                            .getEvents().setOnClickListener((int x, int y) -> {
+                            .getEvents().setOnClickListener(() -> {
                                 roomLayer.setMode(RoomLayer.Mode.SUB, cls);
                                 gameSelectionManager.setSelectionListener(parcels -> {
                                     Log.warning(RoomPanelController.class, "HELLO");

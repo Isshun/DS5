@@ -48,8 +48,8 @@ public class AreaPanelController extends LuaController {
                     CompositeView frameArea = listAreasAdd.createFromTemplate(CompositeView.class);
                     UILabel lbArea = frameArea.findLabel("lb_area");
                     lbArea.setText(dependency.getClass().getAnnotation(AreaTypeInfo.class).label());
-                    frameArea.find("bt_add").getEvents().setOnClickListener((int x, int y) -> gameActionManager.setAreaAction(GameActionMode.ADD_AREA, (AreaModel) dependency));
-                    frameArea.find("bt_remove").getEvents().setOnClickListener((int x, int y) -> gameActionManager.setAreaAction(GameActionMode.REMOVE_AREA, (AreaModel) dependency));
+                    frameArea.find("bt_add").getEvents().setOnClickListener(() -> gameActionManager.setAreaAction(GameActionMode.ADD_AREA, (AreaModel) dependency));
+                    frameArea.find("bt_remove").getEvents().setOnClickListener(() -> gameActionManager.setAreaAction(GameActionMode.REMOVE_AREA, (AreaModel) dependency));
                     listAreasAdd.addNextView(frameArea);
                 });
 

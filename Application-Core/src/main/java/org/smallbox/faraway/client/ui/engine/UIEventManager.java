@@ -275,7 +275,7 @@ public class UIEventManager implements EventManager {
     public boolean rightClick(int x, int y) {
         for (View view: _onRightClickListeners.keySet()) {
             if (view.isActive() && hasVisibleHierarchy(view) && view.contains(x, y)) {
-                _onRightClickListeners.get(view).onClick(x, y);
+                _onRightClickListeners.get(view).onClick();
                 return true;
             }
         }
@@ -285,7 +285,7 @@ public class UIEventManager implements EventManager {
     public boolean mouseWheelUp(int x, int y) {
         for (View view: _onMouseWheelUpListeners.keySet()) {
             if (view.isActive() && hasVisibleHierarchy(view) && view.contains(x, y)) {
-                _onMouseWheelUpListeners.get(view).onClick(x, y);
+                _onMouseWheelUpListeners.get(view).onClick();
                 return true;
             }
         }
@@ -295,7 +295,7 @@ public class UIEventManager implements EventManager {
     public boolean mouseWheelDown(int x, int y) {
         for (View view: _onMouseWheelDownListeners.keySet()) {
             if (view.isActive() && hasVisibleHierarchy(view) && view.contains(x, y)) {
-                _onMouseWheelDownListeners.get(view).onClick(x, y);
+                _onMouseWheelDownListeners.get(view).onClick();
                 return true;
             }
         }

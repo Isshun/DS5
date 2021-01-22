@@ -59,10 +59,10 @@ public class MainPanelController extends LuaController {
     @Override
     public void onReloadUI() {
         gameSelectionManager.registerSelectionPre(this);
-        btCrew.getEvents().setOnClickListener((x, y) -> openPane(crewController, lbCrew, maskCrew, focusCrew, RawColors.RAW_YELLOW));
-        btBuild.getEvents().setOnClickListener((x, y) -> openPane(buildController, lbBuild, maskBuild, focusBuild, RawColors.RAW_BLUE));
-        btArea.getEvents().setOnClickListener((x, y) -> openPane(areaPanelController, lbArea, maskArea, focusArea, RawColors.RAW_GREEN));
-        btJobs.getEvents().setOnClickListener((x, y) -> openPane(jobController, lbJobs, maskJobs, focusJobs, RawColors.RAW_RED));
+        btCrew.getEvents().setOnClickListener(() -> openPane(crewController, lbCrew, maskCrew, focusCrew, RawColors.RAW_YELLOW));
+        btBuild.getEvents().setOnClickListener(() -> openPane(buildController, lbBuild, maskBuild, focusBuild, RawColors.RAW_BLUE));
+        btArea.getEvents().setOnClickListener(() -> openPane(areaPanelController, lbArea, maskArea, focusArea, RawColors.RAW_GREEN));
+        btJobs.getEvents().setOnClickListener(() -> openPane(jobController, lbJobs, maskJobs, focusJobs, RawColors.RAW_RED));
     }
 
     private void openPane(LuaController controller, UILabel label, View mask, View focus, int focusColor) {

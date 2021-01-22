@@ -59,7 +59,7 @@ public class AreaInfoGardenController extends AbsInfoLuaController<AreaModel> {
                                 .setTextSize(14)
                                 .setTextColor(0xB4D4D3FF)
                                 .setSize(200, 20)
-                                .getEvents().setOnClickListener((x, y) ->
+                                .getEvents().setOnClickListener(() ->
                                         area.getParcels().forEach(parcel -> plantModule.addPlant(item, parcel)))));
     }
 
