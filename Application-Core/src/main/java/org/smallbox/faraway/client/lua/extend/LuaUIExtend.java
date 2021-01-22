@@ -7,14 +7,12 @@ import org.luaj.vm2.LuaValue;
 import org.luaj.vm2.lib.jse.CoerceJavaToLua;
 import org.smallbox.faraway.client.ClientLuaModuleManager;
 import org.smallbox.faraway.client.RotateAnimation;
-import org.smallbox.faraway.client.controller.LuaController;
 import org.smallbox.faraway.client.lua.LuaControllerManager;
 import org.smallbox.faraway.client.lua.LuaStyleManager;
 import org.smallbox.faraway.client.ui.UIManager;
 import org.smallbox.faraway.client.ui.engine.OnFocusListener;
 import org.smallbox.faraway.client.ui.engine.views.*;
 import org.smallbox.faraway.client.ui.engine.views.widgets.FadeEffect;
-import org.smallbox.faraway.core.dependencyInjector.DependencyManager;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.engine.module.ModuleBase;
 import org.smallbox.faraway.core.engine.module.lua.data.LuaExtend;
@@ -56,15 +54,17 @@ public abstract class LuaUIExtend extends LuaExtend {
         RootView rootView = new RootView();
         rootView.setView((CompositeView) view);
 
-        if (value.get("parent").isnil() && rootName.startsWith("base.ui.menu.")) {
-            if (!value.get("controller").isnil()) {
-                try {
-                    rootView.getView().setController((LuaController) DependencyManager.getInstance().getDependency(Class.forName(value.get("controller").tojstring())));
-                } catch (ClassNotFoundException e) {
-                    e.printStackTrace();
-                }
-            }
+//        if (!value.get("controller").isnil()) {
+//            try {
+//                LuaController controller = (LuaController) DependencyManager.getInstance().getDependency(Class.forName(value.get("controller").tojstring()));
+//                readString(globals, "file", controller::setFileName);
+//                rootView.getView().setController(controller);
+//            } catch (ClassNotFoundException e) {
+//                e.printStackTrace();
+//            }
+//        }
 
+        if (value.get("parent").isnil() && rootName.startsWith("base.ui.menu.")) {
             uiManager.addMenuView(rootView);
         } else if (value.get("parent").isnil()) {
             uiManager.addRootView(rootView);
@@ -100,24 +100,24 @@ public abstract class LuaUIExtend extends LuaExtend {
 
         readLua(value, "background", v -> {
             if (v.istable()) {
-                readLong(v, "regular", view::setRegularBackgroundColor, -1);
-                if (view.getRegularBackground() != -1) {
-                    view.getStyle().setBackgroundColor(view.getRegularBackground());
-                }
+                readInt(v, "regular", view::setRegularBackgroundColor, -1);
+//                if (view.getRegularBackground() != -1) {
+//                    view.getStyle().setBackgroundColor(view.getRegularBackground());
+//                }
 
                 readInt(v, "focus", view::setFocusBackgroundColor, -1);
                 if (view.getFocusBackground() != -1) {
-                    view.getEvents().setOnFocusListener(new OnFocusListener() {
-                        @Override
-                        public void onEnter(View view) {
-                            view.getStyle().setBackgroundColor(view.getFocusBackground());
-                        }
-
-                        @Override
-                        public void onExit(View view) {
-                            view.getStyle().setBackgroundColor(view.getRegularBackground());
-                        }
-                    });
+//                    view.getEvents().setOnFocusListener(new OnFocusListener() {
+//                        @Override
+//                        public void onEnter(View view) {
+//                            view.getStyle().setBackgroundColor(view.getFocusBackground());
+//                        }
+//
+//                        @Override
+//                        public void onExit(View view) {
+//                            view.getStyle().setBackgroundColor(view.getRegularBackground());
+//                        }
+//                    });
                 }
             } else {
                 view.getStyle().setBackgroundColor(v.toint());
@@ -184,7 +184,7 @@ public abstract class LuaUIExtend extends LuaExtend {
         ));
 
         // Set controller
-        readString(value, "controller", controllerName -> luaControllerManager.setControllerView(controllerName, (CompositeView) view));
+        readString(value, "controller", controllerName -> luaControllerManager.setControllerView(controllerName, (CompositeView) view, globals.get("file").tojstring()));
 
         readString(value, "style", styleName -> applyStyle(view, styleName));
 

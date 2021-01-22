@@ -21,8 +21,8 @@ public class ViewStyle {
         _borderColor = color;
     }
 
-    public void setBackgroundColor(long color) {
-        _backgroundColor = ColorUtils.fromHex(color);
+    public void setBackgroundColor(int color) {
+        _backgroundColor = new Color(color);
     }
 
     public void setBackgroundColor(Color color) {

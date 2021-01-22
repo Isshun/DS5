@@ -12,10 +12,10 @@ public class ViewGeometry {
     protected int marginRight;
     protected int marginBottom;
     protected int marginLeft;
-    protected int width = -1;
-    protected int height = -1;
-    protected int fixedWidth = -1;
-    protected int fixedHeight = -1;
+    protected int width = View.FILL;
+    protected int height = View.FILL;
+    protected int fixedWidth = View.FILL;
+    protected int fixedHeight = View.FILL;
     protected int paddingLeft;
     protected int paddingBottom;
     protected int paddingRight;

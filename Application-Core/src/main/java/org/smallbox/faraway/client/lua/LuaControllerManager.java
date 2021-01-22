@@ -21,10 +21,7 @@ import org.smallbox.faraway.util.log.Log;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @ApplicationObject
@@ -33,17 +30,33 @@ public class LuaControllerManager implements GameObserver {
     @Inject
     private DependencyManager dependencyManager;
 
-    private final Map<String, CompositeView>         _viewByControllerName = new HashMap<>();
-    private Map<String, LuaController>      _controllers;
-    private long                            _lastUpdate;
+    private final Map<String, CompositeView> _viewByControllerName = new HashMap<>();
+    private final Map<String, String> fileNameByControllerName = new HashMap<>();
+    private Map<String, LuaController> _controllers;
+    private long _lastUpdate;
 
-    public void setControllerView(String controllerName, CompositeView view) { _viewByControllerName.put(controllerName, view); }
+    public void setControllerView(String controllerName, CompositeView view, String fileName) {
+        _viewByControllerName.put(controllerName, view);
+        fileNameByControllerName.put(controllerName, fileName);
+    }
+
+    public String getFileName(String controllerName) {
+        return fileNameByControllerName.get(controllerName);
+    }
+
+    public CompositeView getView(String controllerName) {
+        return _viewByControllerName.get(controllerName);
+    }
 
     @OnGameLayerInit
     @OnApplicationLayerInit
     public void onGameInitLayers() {
         _controllers = dependencyManager.getSubTypesOf(LuaController.class).stream().collect(Collectors.toConcurrentMap(LuaController::getCanonicalName, o -> o));
         _controllers.values().forEach(this::initController);
+    }
+
+    public Collection<LuaController> getControllers() {
+        return _controllers.values();
     }
 
     public void initController(LuaController controller) {
@@ -74,8 +87,11 @@ public class LuaControllerManager implements GameObserver {
     private void bindRootViewToController(LuaController controller) {
         String controllerClassName = controller.getClass().getCanonicalName();
         CompositeView rootView = _viewByControllerName.get(controllerClassName);
-        Objects.requireNonNull(rootView, "Unable to find rootView for controller " + controllerClassName);
-        controller.setRootView(rootView);
+        if (rootView != null) {
+            controller.setRootView(rootView);
+        } else {
+            Log.warning("Unable to find rootView for controller " + controllerClassName);
+        }
     }
 
     /**
@@ -90,19 +106,21 @@ public class LuaControllerManager implements GameObserver {
                 .forEach(field -> {
                     try {
                         Log.debug(LuaControllerManager.class, "Bind field: " + field.getName());
-                        View view = ObjectUtils.firstNonNull(
-                                controller.getRootView().find(field.getName()),
-                                controller.getRootView().find(CaseFormat.LOWER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE, field.getName()))
-                        );
+                        CompositeView rootView = controller.getRootView();
+                        if (rootView != null) {
+                            View view = ObjectUtils.firstNonNull(
+                                    controller.getRootView().find(field.getName()),
+                                    controller.getRootView().find(CaseFormat.LOWER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE, field.getName()))
+                            );
 
-                        if (view != null) {
-                            Log.debug(LuaControllerManager.class, "LuaController: Bind view %s", view.getId());
-                            field.setAccessible(true);
-                            field.set(controller, view);
-                        } else {
-                            throw new GameException(LuaControllerManager.class, "Unable to bind field: " + field.getName() + " in controller: " + controller.getClass().getName());
+                            if (view != null) {
+                                Log.debug(LuaControllerManager.class, "LuaController: Bind view %s", view.getId());
+                                field.setAccessible(true);
+                                field.set(controller, view);
+                            } else {
+                                Log.warning("Unable to bind field: " + field.getName() + " in controller: " + controller.getClass().getName());
+                            }
                         }
-
                     } catch (IllegalAccessException e) {
                         throw new GameException(LuaControllerManager.class, e);
                     }
@@ -142,24 +160,27 @@ public class LuaControllerManager implements GameObserver {
      * @param controller Controller receiving binding
      */
     private void bindMethodsForController(LuaController controller) {
-        for (Method method: controller.getClass().getDeclaredMethods()) {
-            if (method.getAnnotation(BindLuaAction.class) != null) {
-                method.setAccessible(true);
+        if (controller.getRootView() != null) {
+            for (Method method : controller.getClass().getDeclaredMethods()) {
+                if (method.getAnnotation(BindLuaAction.class) != null) {
+                    method.setAccessible(true);
 
-                View view = controller.getRootView().findByAction(method.getName());
-                if (view != null) {
-                    Log.debug(LuaControllerManager.class, "LuaController: Bind method %s", method.getName());
-                    view.getEvents().setOnClickListener((int x, int y) -> {
-                        try {
-                            Log.debug(LuaControllerManager.class, "Method: %s", method.getName());
-                            Log.debug(LuaControllerManager.class, "View: %s", view.getId());
-                            method.invoke(controller, view);
-                        } catch (IllegalArgumentException | IllegalAccessException | InvocationTargetException e) {
-                            throw new GameException(LuaControllerManager.class, e);
-                        }
-                    });
+                    View view = controller.getRootView().findByAction(method.getName());
+                    if (view != null) {
+                        Log.debug(LuaControllerManager.class, "LuaController: Bind method %s", method.getName());
+                        view.getEvents().setOnClickListener((int x, int y) -> {
+                            try {
+                                Log.debug(LuaControllerManager.class, "Method: %s", method.getName());
+                                Log.debug(LuaControllerManager.class, "View: %s", view.getId());
+                                method.invoke(controller, view);
+                            } catch (IllegalArgumentException | IllegalAccessException | InvocationTargetException e) {
+                                throw new GameException(LuaControllerManager.class, e);
+                            }
+                        });
+                    }
                 }
             }
         }
     }
+
 }

@@ -111,24 +111,29 @@ public class MinimapLayer extends BaseLayer {
 
     @AfterGameLayerInit
     public void layerInit() {
-        gameWidth = game.getInfo().worldWidth;
-        gameHeight = game.getInfo().worldHeight;
+        if (mainPanelController != null) {
+            gameWidth = game.getInfo().worldWidth;
+            gameHeight = game.getInfo().worldHeight;
 
-        miniMapWidth = (int) (mainPanelController.getMapContainer().getWidth() * applicationConfig.uiScale);
-        miniMapHeight = (int) (mainPanelController.getMapContainer().getHeight() * applicationConfig.uiScale);
+            miniMapWidth = (int) (mainPanelController.getMapContainer().getWidth() * applicationConfig.uiScale);
+            miniMapHeight = (int) (mainPanelController.getMapContainer().getHeight() * applicationConfig.uiScale);
 
-        ratioX = ((float) miniMapWidth / gameWidth);
-        ratioY = ((float) miniMapHeight / gameHeight);
-        _pixmap = assetManager.createPixmap(gameWidth, gameHeight, Pixmap.Format.RGB888);
-        _floor = WorldHelper.getCurrentFloor();
-        _dirty = true;
+            ratioX = ((float) miniMapWidth / gameWidth);
+            ratioY = ((float) miniMapHeight / gameHeight);
+            _pixmap = assetManager.createPixmap(gameWidth, gameHeight, Pixmap.Format.RGB888);
+            _floor = WorldHelper.getCurrentFloor();
+            _dirty = true;
+        }
     }
 
     @Override
     public void onGameLongUpdate(Game game) {
-        if (miniMapWidth != (int) (mainPanelController.getMapContainer().getWidth() * applicationConfig.uiScale) ||
-                miniMapHeight != (int) (mainPanelController.getMapContainer().getHeight() * applicationConfig.uiScale)) {
-            layerInit();
+        if (mainPanelController != null) {
+            Optional.ofNullable(mainPanelController.getMapContainer()).ifPresent(container -> {
+                if (miniMapWidth != (int) (container.getWidth() * applicationConfig.uiScale) || miniMapHeight != (int) (container.getHeight() * applicationConfig.uiScale)) {
+                    layerInit();
+                }
+            });
         }
     }
 
@@ -149,7 +154,7 @@ public class MinimapLayer extends BaseLayer {
     }
 
     public void onDraw(GDXRenderer renderer, Viewport viewport, double animProgress, int frame) {
-        if (mainPanelController.getRootView().isVisible()) {
+        if (mainPanelController != null && mainPanelController.getRootView().isVisible()) {
 
             if (_dirty || _spriteMap == null) {
                 createMap();

@@ -51,7 +51,9 @@ public class MainPanelController extends LuaController {
 
     @OnGameLayerInit
     public void layerInit() {
-        openPane(crewController, lbCrew, maskCrew, focusCrew, RawColors.RAW_YELLOW);
+//        openPane(crewController, lbCrew, maskCrew, focusCrew, RawColors.RAW_YELLOW);
+//        openPane(buildController, lbBuild, maskBuild, focusBuild, RawColors.RAW_BLUE);
+        openPane(areaPanelController, lbArea, maskArea, focusArea, RawColors.RAW_GREEN);
     }
 
     @Override
@@ -63,7 +65,7 @@ public class MainPanelController extends LuaController {
         btJobs.getEvents().setOnClickListener((x, y) -> openPane(jobController, lbJobs, maskJobs, focusJobs, RawColors.RAW_RED));
     }
 
-    private void openPane(LuaController controller, UILabel label, View mask, View focus, long focusColor) {
+    private void openPane(LuaController controller, UILabel label, View mask, View focus, int focusColor) {
         maskCrew.setVisible(true);
         maskBuild.setVisible(true);
         maskArea.setVisible(true);
@@ -81,7 +83,9 @@ public class MainPanelController extends LuaController {
         focus.setVisible(true);
         label.setTextColor(RawColors.RAW_BLUE_DARK_4);
 //        label.getStyle().setBackgroundColor(RawColors.RAW_BLUE_DARK_4);
+//        viewBorder.setRegularBackgroundColor(focusColor);
         viewBorder.getStyle().setBackgroundColor(focusColor);
+//        viewBorder.getStyle().setBackgroundFocusColor(focusColor);
 
         controller.getRootView().setVisible(true);
     }

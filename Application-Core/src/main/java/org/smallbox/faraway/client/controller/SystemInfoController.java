@@ -4,13 +4,11 @@ import com.badlogic.gdx.Input;
 import org.smallbox.faraway.client.controller.annotation.BindLua;
 import org.smallbox.faraway.client.controller.annotation.BindLuaAction;
 import org.smallbox.faraway.client.render.Viewport;
-import org.smallbox.faraway.client.ui.UIManager;
 import org.smallbox.faraway.client.ui.engine.views.View;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UIFrame;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UIImage;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
 import org.smallbox.faraway.core.GameShortcut;
-import org.smallbox.faraway.core.dependencyInjector.DependencyManager;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.game.Game;
@@ -97,11 +95,6 @@ public class SystemInfoController extends LuaController {
     @GameShortcut(key = Input.Keys.MINUS)
     public void actionSpeedDown() {
         game.setSpeed(game.getSpeed() - 1);
-    }
-
-    @GameShortcut(key = Input.Keys.F1)
-    public void onRefreshUI() {
-        DependencyManager.getInstance().getDependency(UIManager.class).refresh(this, "system_info.lua");
     }
 
 }

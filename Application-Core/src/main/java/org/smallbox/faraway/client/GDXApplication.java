@@ -56,6 +56,7 @@ public class GDXApplication extends ApplicationAdapter {
         taskManager.addWaitTask("Loading sprites", false, () -> di.getDependency(AssetManager.class).update(16), () -> di.getDependency(AssetManager.class).getProgress());
         taskManager.addLoadTask("Load client lua modules", false, () -> di.getDependency(SpriteManager.class).setTexturesFilter());
         taskManager.addLoadTask("Load client lua modules", false, () -> di.getDependency(ClientLuaModuleManager.class).init(true));
+        taskManager.addLoadTask("Calling layer init", false, di::destroyNonBindControllers);
         taskManager.addLoadTask("Calling layer init", false, () -> di.callMethodAnnotatedBy(OnApplicationLayerInit.class));
         taskManager.addLoadTask("Calling layer init", false, () -> di.callMethodAnnotatedBy(AfterApplicationLayerInit.class));
         taskManager.addLoadTask("Background music", true, () -> di.getDependency(BackgroundMusicManager.class).start());

@@ -1,6 +1,8 @@
 package org.smallbox.faraway.core.dependencyInjector;
 
 import org.reflections.Reflections;
+import org.smallbox.faraway.client.controller.LuaController;
+import org.smallbox.faraway.client.lua.LuaControllerManager;
 import org.smallbox.faraway.client.manager.ShortcutManager;
 import org.smallbox.faraway.common.ObjectModel;
 import org.smallbox.faraway.core.Application;
@@ -20,6 +22,7 @@ import java.lang.reflect.Method;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @ApplicationObject
@@ -203,9 +206,9 @@ public class DependencyManager {
                     //Objects.requireNonNull(_objectPoolByClass.get(field.getType()), "Unable to find field to inject: " + field.getType().getName());
                     DependencyInfo<?> toInject = getDependencyInfo(field.getType());
 
-                    if (field.getType().isAnnotationPresent(ApplicationObject.class) || gameExists) {
-                        Objects.requireNonNull(toInject, "Try to inject null value for " + field.getType().getSimpleName() + " in " + host.getClass().getSimpleName());
-                    }
+//                    if (field.getType().isAnnotationPresent(ApplicationObject.class) || gameExists) {
+//                        Objects.requireNonNull(toInject, "Try to inject null value for " + field.getType().getSimpleName() + " in " + host.getClass().getSimpleName());
+//                    }
 
                     if (toInject != null) {
                         field.set(host, toInject.dependency);
@@ -302,4 +305,20 @@ public class DependencyManager {
         }
     }
 
+    public void destroyNonBindControllers() {
+        destroyNonBindControllers(_applicationObjectPoolByClass);
+        destroyNonBindControllers(_gameObjectPoolByClass);
+    }
+
+    private void destroyNonBindControllers(Map<Class<?>, DependencyInfo<?>> collection) {
+        LuaControllerManager luaControllerManager = getDependency(LuaControllerManager.class);
+        List<Class<?>> toRemove = collection.values().stream()
+                .map(dependencyInfo -> dependencyInfo.dependency)
+                .filter(o -> o instanceof LuaController)
+                .map(o -> (LuaController)o)
+                .filter(controller -> luaControllerManager.getFileName(controller.getClass().getCanonicalName()) == null)
+                .map(LuaController::getClass)
+                .collect(Collectors.toList());
+        toRemove.forEach(collection::remove);
+    }
 }

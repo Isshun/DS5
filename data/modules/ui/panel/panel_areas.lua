@@ -5,9 +5,13 @@ ui:extend({
     controller = "org.smallbox.faraway.client.controller.area.AreaPanelController",
     visible = false,
     views = {
-        { type = "label", text = "Areas", text_color = blue_light_2, text_size = 28, position = {12, 16}},
-        { type = "list", id = "list_areas_add", position = {10, 40}, template = {
-            { type = "label", text_color = blue_light_2, text_size = 18, padding = 10, background = {regular = 0x121c1eff, focus = 0x25c9cbff}, size = {160, 40}, position = {12, 16}},
+        { type = "list", id = "list_areas_add", position = {0, 0}, template = {
+            { type = "view", size = {400, 65}, views = {
+                { type = "label", id = "lb_area", text_align = "CENTER_VERTICAL", text_color = green, text_size = 20, text_font = "font3", size = {160, 65}, position = {18, 0}},
+                { type = "view", background = green_50, size = {394, 1}, position = {0, 65}},
+                { type = "label", text = "+", text_align = "CENTER", text_color = blue_dark_4, background = green, text_size = 34, text_font = "font3", size = {34, 34}, position = {292, 16}},
+                { type = "label", text = "-", text_align = "CENTER", text_color = blue_dark_4, background = green, text_size = 34, text_font = "font3", size = {34, 34}, position = {342, 16}},
+            }},
         }},
         { type = "list", id = "list_areas_sub", position = {205, 40}},
     },

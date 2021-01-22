@@ -108,7 +108,7 @@ public abstract class View implements Comparable<View> {
 
     protected RotateAnimation _animation;
     protected boolean _focusable;
-    private long _regularBackground;
+    private int _regularBackground;
     private int _focusBackground;
 
     public void setAnimation(RotateAnimation animation) {
@@ -176,7 +176,7 @@ public abstract class View implements Comparable<View> {
         _effect = effect;
     }
 
-    public View setRegularBackgroundColor(long regularBackground) {
+    public View setRegularBackgroundColor(int regularBackground) {
         _regularBackground = regularBackground;
         return this;
     }
@@ -206,7 +206,7 @@ public abstract class View implements Comparable<View> {
         return _id;
     }
 
-    public long getRegularBackground() {
+    public int getRegularBackground() {
         return _regularBackground;
     }
 

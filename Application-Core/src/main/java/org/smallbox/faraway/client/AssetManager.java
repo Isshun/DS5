@@ -46,6 +46,16 @@ public class AssetManager extends com.badlogic.gdx.assets.AssetManager {
         return texture;
     }
 
+    public Texture createTextureFromPixmap(String key, int width, int height, Pixmap.Format format, Consumer<Pixmap> pixmapConsumer) {
+        Pixmap pixmap = new Pixmap(width, height, format);
+        pixmapConsumer.accept(pixmap);
+        Texture texture = new Texture(pixmap);
+        texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+        pixmap.dispose();
+        addAsset(key, Texture.class, texture);
+        return texture;
+    }
+
     public Pixmap createPixmapFromTexture(String absolutePath) {
         Texture texture = lazyLoad(absolutePath, Texture.class);
         texture.getTextureData().prepare();

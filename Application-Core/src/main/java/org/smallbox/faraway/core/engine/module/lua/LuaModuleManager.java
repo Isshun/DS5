@@ -37,14 +37,11 @@ public abstract class LuaModuleManager implements GameObserver {
     protected Collection<LuaExtend> _extends;
     private final Queue<Runnable> _runAfterList = new ConcurrentLinkedQueue<>();
 
-    @Inject
-    private DependencyManager dependencyManager;
+    @Inject private DependencyManager dependencyManager;
+    @Inject private UIManager uiManager;
+    @Inject private Data data;
 
-    @Inject
-    private UIManager uiManager;
-
-    @Inject
-    private Data data;
+    private Globals globals;
 
     public LuaModuleManager() {
         Application.addObserver(new GameObserver() {
@@ -126,24 +123,18 @@ public abstract class LuaModuleManager implements GameObserver {
                 e.printStackTrace();
             }
         });
-        _luaModules.forEach(this::loadModule);
+
+        globals = createGlobals(null, null);
+
+        _luaModules.forEach(luaModule -> loadModule(luaModule, globals));
 
         // TODO: load all lua files
-        loadLuaFiles(null, new File(FileUtils.BASE_PATH));
-
-        Globals globals = createGlobals(null, null);
+        loadLuaFiles(null, new File(FileUtils.BASE_PATH), globals);
 
         com.google.common.io.Files.fileTreeTraverser().preOrderTraversal(new File("."))
                 .filter(file -> file.getAbsolutePath().replace('\\', '/').contains("src/main/resources"))
                 .filter(file -> file.getName().endsWith(".lua"))
-                .forEach(file -> {
-                    try {
-                        Log.debug(LuaModuleManager.class, "Load lua file: %s", file.getAbsolutePath());
-                        globals.load(new FileReader(file), file.getName()).call();
-                    } catch (FileNotFoundException | LuaError e) {
-                        throw new GameException(LuaModuleManager.class, "Error for reading lua file: " + file.getAbsolutePath());
-                    }
-                });
+                .forEach(this::doLoadFile);
 
 //        org.apache.commons.io.FileUtils.listFilesAndDirs(new File("."), null, TrueFileFilter.TRUE).stream()
 //                .filter(file -> )
@@ -178,6 +169,17 @@ public abstract class LuaModuleManager implements GameObserver {
         _luaLoadListeners.forEach(LuaLoadListener::onLoad);
     }
 
+    public void doLoadFile(File file) {
+        Log.debug(LuaModuleManager.class, "Load lua file: %s", file.getAbsolutePath());
+
+        try (FileReader fileReader = new FileReader(file)) {
+            globals.set("file", file.getAbsolutePath());
+            globals.load(fileReader, file.getName()).call();
+        } catch (LuaError | IOException e) {
+            throw new GameException(LuaModuleManager.class, "Error for reading lua file: " + file.getAbsolutePath(), e);
+        }
+    }
+
     // Calcule toutes les tailles encore set a FILL, cela arrive dans les cas des sous-controlleurs lorsque ceux-ci sont chargés avant leur controlleur parent
     private void fixUISize() {
         uiManager.getSubViews().forEach(view -> {
@@ -195,20 +197,13 @@ public abstract class LuaModuleManager implements GameObserver {
         }
     }
 
-    public void loadLuaFiles(ModuleBase module, File dataDirectory) {
-        Globals globals = createGlobals(module, dataDirectory);
+    public void loadLuaFiles(ModuleBase module, File dataDirectory, Globals globals) {
+//        Globals globals = createGlobals(module, dataDirectory);
 
         // Load lua files
         FileUtils.listRecursively(dataDirectory).stream()
                 .filter(f -> f.getName().endsWith(".lua"))
-                .forEach(f -> {
-                    Log.debug(LuaModuleManager.class, "Load lua file: %s", f.getAbsolutePath());
-                    try (FileReader fileReader = new FileReader(f)) {
-                        globals.load(fileReader, f.getName()).call();
-                    } catch (LuaError | IOException e) {
-                        e.printStackTrace();
-                    }
-                });
+                .forEach(this::doLoadFile);
 
         // TODO
 //        // Load css files
@@ -236,20 +231,12 @@ public abstract class LuaModuleManager implements GameObserver {
 
     public void loadLuaFile(String fileName) {
         File dataDirectory = new File(FileUtils.BASE_PATH);
-        Globals globals = createGlobals(null, dataDirectory);
 
         // Load lua files
         FileUtils.listRecursively(dataDirectory).stream()
-                .filter(f -> f.getName().endsWith(".lua"))
-                .filter(f -> f.getName().equals(fileName))
-                .forEach(f -> {
-                    Log.debug(LuaModuleManager.class, "Load lua file: %s", f.getAbsolutePath());
-                    try (FileReader fileReader = new FileReader(f)) {
-                        globals.load(fileReader, f.getName()).call();
-                    } catch (LuaError | IOException e) {
-                        e.printStackTrace();
-                    }
-                });
+                .filter(file -> file.getName().endsWith(".lua"))
+                .filter(file -> file.getName().equals(fileName))
+                .forEach(this::doLoadFile);
 
         // TODO
 //        // Load css files
@@ -308,7 +295,7 @@ public abstract class LuaModuleManager implements GameObserver {
         }
     }
 
-    private void loadModule(LuaModule luaModule) {
+    private void loadModule(LuaModule luaModule, Globals globals) {
         ModuleInfo info = luaModule.getInfo();
 
         if (!hasRequiredModules(info)) {
@@ -317,7 +304,7 @@ public abstract class LuaModuleManager implements GameObserver {
         }
         Log.info("Load lua module: " + info.id + " (" + info.name + ")");
 
-        loadLuaFiles(luaModule, luaModule.getDirectory());
+        loadLuaFiles(luaModule, luaModule.getDirectory(), globals);
 
         luaModule.setActivate(true);
     }

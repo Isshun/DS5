@@ -44,6 +44,10 @@ public class GroundTileGenerator {
 
     private void draw(Pixmap pixmapOut, Pixmap pixmapIn, Parcel parcel) {
         terrainManager.generate(pixmapOut, pixmapIn, 0, 0, parcel);
+
+//        assetManager.temporaryPixmap("data/graphics/texture/g2_decoration_3.png", pixmap -> {
+//            pixmapOut.drawPixmap(pixmap, 0, 0, new Random().nextInt(4) * 128, new Random().nextInt(4) * 128, 128, 128);
+//        });
     }
 
     @OnGameStop

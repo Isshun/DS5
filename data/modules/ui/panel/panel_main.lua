@@ -6,6 +6,7 @@ local button_height = 52
 
 ui:extend({
     type = "view",
+    debug = true,
     id = "base.ui.right_panel",
     controller = "org.smallbox.faraway.client.controller.MainPanelController",
     align = {"top", "right"},
@@ -57,7 +58,9 @@ ui:extend({
 
             }},
 
-        }}
+            { type = "view", id = "base.ui.right_panel.sub_controller_full", special = true},
+        }},
+
 
     },
 

@@ -31,7 +31,7 @@ data:extend({
         fertility = 1,
         permeability = 0.5,
         graphics = {
-            { path = "[base]/graphics/texture/g2_ground.png", type = "TERRAIN" }
+            { path = "[base]/graphics/texture/g2_ground2.png", type = "TERRAIN" }
         }
     },
     {

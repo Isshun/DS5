@@ -1,10 +1,10 @@
 package org.smallbox.faraway.client.ui;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.luaj.vm2.LuaValue;
 import org.smallbox.faraway.client.ClientLuaModuleManager;
 import org.smallbox.faraway.client.controller.LuaController;
@@ -19,29 +19,31 @@ import org.smallbox.faraway.client.ui.engine.views.View;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UIDropDown;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UIFrame;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
+import org.smallbox.faraway.core.GameShortcut;
+import org.smallbox.faraway.core.dependencyInjector.DependencyManager;
 import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
-import org.smallbox.faraway.core.dependencyInjector.annotationEvent.AfterApplicationLayerInit;
-import org.smallbox.faraway.core.dependencyInjector.annotationEvent.AfterGameLayerInit;
+import org.smallbox.faraway.core.dependencyInjector.annotationEvent.*;
+import org.smallbox.faraway.util.log.Log;
 
+import java.io.File;
+import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.stream.Collectors;
 
 import static org.smallbox.faraway.core.engine.GameEventListener.Action;
 import static org.smallbox.faraway.core.engine.GameEventListener.Modifier;
 
 @ApplicationObject
 public class UIManager {
-
-    @Inject
-    private ClientLuaModuleManager clientLuaModuleManager;
-
-    @Inject
-    private LuaControllerManager luaControllerManager;
+    @Inject private ClientLuaModuleManager clientLuaModuleManager;
+    @Inject private LuaControllerManager luaControllerManager;
+    @Inject private DependencyManager dependencyManager;
 
     private final Map<String, LuaValue> _styles = new ConcurrentHashMap<>();
     private UIEventManager.OnDragListener _dragListener;
@@ -94,30 +96,64 @@ public class UIManager {
         _menuViews.put(view.getName(), view);
     }
 
-    public void refresh(LuaController controller, String fileName) {
-        _menuViews.remove(controller.getRootView().getId());
-        _rootViews.removeIf(rootView -> rootView.getView() == controller.getRootView());
-        _subViews.keySet().stream().filter(view -> StringUtils.equals(view.getId(), controller.getRootView().getId())).findFirst().ifPresent(_subViews::remove);
-        clientLuaModuleManager.loadLuaFile(fileName);
-        luaControllerManager.initController(controller);
-        Arrays.stream(controller.getClass().getDeclaredMethods()).filter(method -> method.isAnnotationPresent(AfterApplicationLayerInit.class)).forEach(method -> {
-            try {
-                method.setAccessible(true);
-                method.invoke(controller);
-            } catch (IllegalAccessException | InvocationTargetException e) {
-                e.printStackTrace();
-            }
+    @GameShortcut(key = Input.Keys.F1)
+    public void refreshUI() {
+        _views.clear();
+        _menuViews.clear();
+        _rootViews.clear();
+        _subViews.clear();
+
+        luaControllerManager.getControllers().forEach(controller -> {
+            Log.info("Reload lua: " + luaControllerManager.getFileName(controller.getClass().getCanonicalName()));
+            clientLuaModuleManager.doLoadFile(new File(luaControllerManager.getFileName(controller.getClass().getCanonicalName())));
+            luaControllerManager.initController(controller);
         });
-        Arrays.stream(controller.getClass().getDeclaredMethods()).filter(method -> method.isAnnotationPresent(AfterGameLayerInit.class)).forEach(method -> {
-            try {
-                method.setAccessible(true);
-                method.invoke(controller);
-            } catch (IllegalAccessException | InvocationTargetException e) {
-                e.printStackTrace();
-            }
+
+        dependencyManager.getSubTypesOf(LuaController.class).forEach(controller -> {
+            callMethodAnnotatedBy(controller, OnInit.class);
+            callMethodAnnotatedBy(controller, OnApplicationLayerInit.class);
+            callMethodAnnotatedBy(controller, AfterApplicationLayerInit.class);
+            callMethodAnnotatedBy(controller, OnGameLayerInit.class);
+            callMethodAnnotatedBy(controller, AfterGameLayerInit.class);
         });
-        controller.setVisible(true);
     }
+
+    private void callMethodAnnotatedBy(LuaController controller, Class<? extends Annotation> cls) {
+        Arrays.stream(controller.getClass().getDeclaredMethods()).filter(method -> method.isAnnotationPresent(cls)).forEach(method -> {
+            try {
+                method.setAccessible(true);
+                method.invoke(controller);
+            } catch (IllegalAccessException | InvocationTargetException e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
+//
+//    public void refresh(LuaController controller) {
+//        _menuViews.remove(controller.getRootView().getId());
+//        _rootViews.removeIf(rootView -> rootView.getView() == controller.getRootView());
+//        _subViews.keySet().stream().filter(view -> StringUtils.equals(view.getId(), controller.getRootView().getId())).findFirst().ifPresent(_subViews::remove);
+//        clientLuaModuleManager.loadLuaFile(controller.getFileName());
+//        luaControllerManager.initController(controller);
+//        Arrays.stream(controller.getClass().getDeclaredMethods()).filter(method -> method.isAnnotationPresent(AfterApplicationLayerInit.class)).forEach(method -> {
+//            try {
+//                method.setAccessible(true);
+//                method.invoke(controller);
+//            } catch (IllegalAccessException | InvocationTargetException e) {
+//                e.printStackTrace();
+//            }
+//        });
+//        Arrays.stream(controller.getClass().getDeclaredMethods()).filter(method -> method.isAnnotationPresent(AfterGameLayerInit.class)).forEach(method -> {
+//            try {
+//                method.setAccessible(true);
+//                method.invoke(controller);
+//            } catch (IllegalAccessException | InvocationTargetException e) {
+//                e.printStackTrace();
+//            }
+//        });
+//        controller.setVisible(true);
+//    }
 
     private static class ContextEntry {
         public String                   label;
@@ -174,7 +210,7 @@ public class UIManager {
         _subViews.forEach((subView, parentName) -> {
             _views.stream()
                     .filter(view -> parentName.equals(view.getId()))
-                    .findAny()
+                    .findFirst()
                     .flatMap(CompositeView::instanceOf)
                     .ifPresent(compositeView -> {
                         if (compositeView.getViews().stream().noneMatch(v -> subView == v)) {
@@ -182,18 +218,42 @@ public class UIManager {
                             subView.setParent(compositeView);
                         }
                     });
-            _rootViews.stream()
-                    .map(RootView::getView)
-                    .filter(view -> parentName.equals(view.getId()))
-                    .findAny()
-                    .flatMap(CompositeView::instanceOf)
-                    .ifPresent(compositeView -> {
-                        if (compositeView.getViews().stream().noneMatch(v -> subView == v)) {
-                            compositeView.addView(subView);
-                            subView.setParent(compositeView);
-                        }
-                    });
+//            _rootViews.stream()
+//                    .map(RootView::getView)
+//                    .filter(view -> parentName.equals(view.getId()))
+//                    .findAny()
+//                    .flatMap(CompositeView::instanceOf)
+//                    .ifPresent(compositeView -> {
+//                        if (compositeView.getViews().stream().noneMatch(v -> subView == v)) {
+//                            compositeView.addView(subView);
+//                            subView.setParent(compositeView);
+//                        }
+//                    });
         });
+
+        fixRootAndSubViews2();
+    }
+
+    private void fixRootAndSubViews2() {
+//        _views.stream()
+//                .filter(view -> view instanceof CompositeView)
+//                .map(view -> (CompositeView) view)
+//                .forEach(this::fixRootAndSubViews);
+
+        _rootViews.stream()
+                .map(RootView::getView)
+                .forEach(this::fixRootAndSubViews);
+    }
+
+    private void fixRootAndSubViews(CompositeView compositeView) {
+        List<View> subs = _subViews.entrySet().stream()
+                .filter(entry -> entry.getValue().equals(compositeView.getId()))
+                .map(Map.Entry::getKey)
+                .collect(Collectors.toList());
+        if (CollectionUtils.isNotEmpty(subs)) {
+//            compositeView.removeAllViews();
+            subs.forEach(compositeView::addView);
+        }
     }
 
     public void addSubView(View subViewToAdd, String parentName) {

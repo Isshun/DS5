@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
+import org.smallbox.faraway.client.AssetManager;
 import org.smallbox.faraway.client.manager.SpriteManager;
 import org.smallbox.faraway.client.manager.input.InputManager;
 import org.smallbox.faraway.client.render.GDXRenderer;
@@ -41,6 +42,7 @@ import java.util.Optional;
 @GameObject
 @GameLayer(level = LayerManager.CHARACTER_LAYER_LEVEL, visible = true)
 public class CharacterLayer extends BaseLayer {
+    @Inject private AssetManager assetManager;
     @Inject private InputManager inputManager;
     @Inject private SpriteManager spriteManager;
     @Inject private CharacterModule characterModule;
@@ -203,30 +205,27 @@ public class CharacterLayer extends BaseLayer {
         }
     }
 
-    // TODO: put overlay in asset manager
     private void drawOverlay(TextureRegion currentFrame, int posX, int posY) {
-        currentFrame.getTexture().getTextureData().prepare();
-        Pixmap pixmap = currentFrame.getTexture().getTextureData().consumePixmap();
-        Pixmap newPixmap = new Pixmap(currentFrame.getRegionWidth(), currentFrame.getRegionHeight(), Pixmap.Format.RGBA8888);
+        String key = "player-" + currentFrame.getRegionX() + "-" + currentFrame.getRegionY();
 
-        for (int x = 0; x < currentFrame.getRegionWidth(); x++) {
-            for (int y = 0; y < currentFrame.getRegionHeight(); y++) {
-                int colorInt = pixmap.getPixel(currentFrame.getRegionX() + x, currentFrame.getRegionY() - y);
-                int r = (int) Math.min(((colorInt >> 24) & 0x000000ff) * 1.4 + 32, 255);
-                int g = (int) Math.min(((colorInt >> 16) & 0x000000ff) * 1.4 + 32, 255);
-                int b = (int) Math.min(((colorInt >> 8) & 0x000000ff) * 1.4 + 32, 255);
-                newPixmap.drawPixel(x, y, (r << 24) + (g << 16) + (b << 8) + (colorInt & 0x000000ff));
-            }
+        if (!assetManager.contains(key, Texture.class)) {
+            assetManager.createTextureFromPixmap(key, currentFrame.getRegionWidth(), currentFrame.getRegionHeight(), Pixmap.Format.RGBA8888, newPixmap -> {
+                currentFrame.getTexture().getTextureData().prepare();
+                Pixmap pixmap = currentFrame.getTexture().getTextureData().consumePixmap();
+                for (int x = 0; x < currentFrame.getRegionWidth(); x++) {
+                    for (int y = 0; y < currentFrame.getRegionHeight(); y++) {
+                        int colorInt = pixmap.getPixel(currentFrame.getRegionX() + x, currentFrame.getRegionY() - y);
+                        int r = (int) Math.min(((colorInt >> 24) & 0x000000ff) * 1.4 + 32, 255);
+                        int g = (int) Math.min(((colorInt >> 16) & 0x000000ff) * 1.4 + 32, 255);
+                        int b = (int) Math.min(((colorInt >> 8) & 0x000000ff) * 1.4 + 32, 255);
+                        newPixmap.drawPixel(x, y, (r << 24) + (g << 16) + (b << 8) + (colorInt & 0x000000ff));
+                    }
+                }
+                pixmap.dispose();
+            });
         }
 
-        Texture texture = new Texture(newPixmap);
-        texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
-        Sprite sprite = new Sprite(texture);
-        gdxRenderer.draw(sprite, posX, posY);
-        texture.dispose();
-
-        pixmap.dispose();
-        newPixmap.dispose();
+        gdxRenderer.draw(new Sprite(assetManager.get(key, Texture.class)), posX, posY);
     }
 
     /**

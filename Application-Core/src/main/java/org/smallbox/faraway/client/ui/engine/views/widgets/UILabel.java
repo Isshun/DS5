@@ -2,7 +2,6 @@ package org.smallbox.faraway.client.ui.engine.views.widgets;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import org.smallbox.faraway.client.render.GDXRenderer;
 import org.smallbox.faraway.client.ui.engine.views.Align;
 import org.smallbox.faraway.client.ui.engine.views.View;
@@ -27,6 +26,12 @@ public class UILabel extends View {
     private boolean outlined;
     private int _textLength;
     private String font;
+    private int shadow;
+    private Color shadowColor = Color.BLACK;
+
+    public int getShadow() {
+        return shadow;
+    }
 
     public UILabel(ModuleBase module) {
         super(module);
@@ -252,61 +257,68 @@ public class UILabel extends View {
                 int tagOffsetX = 0;
 
                 if (_text.contains("{")) {
-
-                    boolean inTag = false;
-                    boolean inTagMeta = false;
-                    StringBuilder sb = new StringBuilder();
-                    StringBuilder sbTag = new StringBuilder();
-                    StringBuilder sbTagMeta = new StringBuilder();
-                    for (int i = 0; i < _text.length(); i++) {
-                        if (_text.charAt(i) == '{') {
-                            inTagMeta = true;
-                        } else if (_text.charAt(i) == '}') {
-                            inTag = false;
-
-                            if (sbTagMeta.toString().contains("icon")) {
-                                Sprite sprite = spriteManager.getIcon("[base]/res/ic_blueprint.png");
-                                sprite.setPosition(finalX - 8, finalY - 8);
-                                sprite.draw(batch);
-                                tagOffsetX += 32;
-                                sb.append("   ");
-                            }
-
-                            if (sbTagMeta.toString().contains("blue")) {
-                                font.setColor(com.badlogic.gdx.graphics.Color.BLUE);
-                            }
-
-                            if (sbTagMeta.toString().contains("red")) {
-                                font.setColor(com.badlogic.gdx.graphics.Color.RED);
-                            }
-
-                            if (sbTag != null) {
-                                font.draw(batch, sbTag.toString(), finalX + tagOffsetX, finalY);
-                                sbTag = null;
-                            }
-                        } else if (inTagMeta && _text.charAt(i) == ';') {
-                            inTag = true;
-                            inTagMeta = false;
-                            sbTag = new StringBuilder();
-                        } else if (inTagMeta) {
-                            sbTagMeta.append(_text.charAt(i));
-                        } else if (inTag) {
-                            sb.append(' ');
-                            sbTag.append(_text.charAt(i));
-                        } else {
-                            sb.append(_text.charAt(i));
-                        }
-                    }
-
-                    font.setColor(_textColor);
-                    font.draw(batch, sb.toString(), finalX, finalY);
+//                    resolveTag();
                 } else {
+                    if (shadow != 0) {
+                        font.setColor(shadowColor);
+                        font.draw(batch, _text, finalX + shadow, finalY + shadow);
+                    }
                     font.setColor(_textColor);
                     font.draw(batch, _text, finalX, finalY);
                 }
             }, _textSize, outlined, font);
         }
     }
+//
+//    private void resolveTag() {
+//        boolean inTag = false;
+//        boolean inTagMeta = false;
+//        StringBuilder sb = new StringBuilder();
+//        StringBuilder sbTag = new StringBuilder();
+//        StringBuilder sbTagMeta = new StringBuilder();
+//        for (int i = 0; i < _text.length(); i++) {
+//            if (_text.charAt(i) == '{') {
+//                inTagMeta = true;
+//            } else if (_text.charAt(i) == '}') {
+//                inTag = false;
+//
+//                if (sbTagMeta.toString().contains("icon")) {
+//                    Sprite sprite = spriteManager.getIcon("[base]/res/ic_blueprint.png");
+//                    sprite.setPosition(finalX - 8, finalY - 8);
+//                    sprite.draw(batch);
+//                    tagOffsetX += 32;
+//                    sb.append("   ");
+//                }
+//
+//                if (sbTagMeta.toString().contains("blue")) {
+//                    font.setColor(com.badlogic.gdx.graphics.Color.BLUE);
+//                }
+//
+//                if (sbTagMeta.toString().contains("red")) {
+//                    font.setColor(com.badlogic.gdx.graphics.Color.RED);
+//                }
+//
+//                if (sbTag != null) {
+//                    font.draw(batch, sbTag.toString(), finalX + tagOffsetX, finalY);
+//                    sbTag = null;
+//                }
+//            } else if (inTagMeta && _text.charAt(i) == ';') {
+//                inTag = true;
+//                inTagMeta = false;
+//                sbTag = new StringBuilder();
+//            } else if (inTagMeta) {
+//                sbTagMeta.append(_text.charAt(i));
+//            } else if (inTag) {
+//                sb.append(' ');
+//                sbTag.append(_text.charAt(i));
+//            } else {
+//                sb.append(_text.charAt(i));
+//            }
+//        }
+//
+//        font.setColor(_textColor);
+//        font.draw(batch, sb.toString(), finalX, finalY);
+//    }
 
     @Override
     public int getContentWidth() {
@@ -372,5 +384,13 @@ public class UILabel extends View {
 
     public String getFont() {
         return font;
+    }
+
+    public void setShadow(int shadow) {
+        this.shadow = shadow;
+    }
+
+    public void setShadowColor(int shadowColor) {
+        this.shadowColor = new Color(shadowColor);
     }
 }

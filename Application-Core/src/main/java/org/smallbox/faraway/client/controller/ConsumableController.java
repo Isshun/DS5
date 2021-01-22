@@ -23,12 +23,8 @@ public class ConsumableController extends LuaController {
     @Inject
     private ConsumableModule consumableModule;
 
-    @Inject
-    private MainPanelController mainPanelController;
-
     @AfterGameLayerInit
     public void afterGameLayerInit() {
-        mainPanelController.addShortcut("Consumables", this);
     }
 
     @Override

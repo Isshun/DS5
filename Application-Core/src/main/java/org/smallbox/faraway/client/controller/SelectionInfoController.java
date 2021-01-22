@@ -1,9 +1,13 @@
 package org.smallbox.faraway.client.controller;
 
+import com.badlogic.gdx.Input;
 import org.smallbox.faraway.client.controller.annotation.BindLua;
+import org.smallbox.faraway.client.controller.annotation.BindLuaAction;
 import org.smallbox.faraway.client.selection.GameSelectionManager;
 import org.smallbox.faraway.client.ui.engine.UIEventManager;
+import org.smallbox.faraway.client.ui.engine.views.View;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
+import org.smallbox.faraway.core.GameShortcut;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnInit;
@@ -20,18 +24,10 @@ import java.util.Queue;
 
 @GameObject
 public class SelectionInfoController extends AbsInfoLuaController<Parcel> {
-
-    @Inject
-    protected GameSelectionManager gameSelectionManager;
-
-    @Inject
-    private UIEventManager uiEventManager;
-
-    @Inject
-    private ItemModule itemModule;
-
-    @Inject
-    private ConsumableModule consumableModule;
+    @Inject protected GameSelectionManager gameSelectionManager;
+    @Inject private UIEventManager uiEventManager;
+    @Inject private ItemModule itemModule;
+    @Inject private ConsumableModule consumableModule;
 
     @BindLua private UILabel lbParcel;
     @BindLua private UILabel lbQuantity;
@@ -122,4 +118,15 @@ public class SelectionInfoController extends AbsInfoLuaController<Parcel> {
     public Parcel getObjectOnParcel(Parcel parcel) {
         return parcel.getRockInfo() != null ? parcel : null;
     }
+
+    @BindLuaAction
+    private void onClose(View view) {
+        setVisible(false);
+    }
+
+    @GameShortcut(key = Input.Keys.ESCAPE)
+    private void onClose() {
+        setVisible(false);
+    }
+
 }

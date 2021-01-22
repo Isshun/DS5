@@ -84,6 +84,7 @@ public class GDXRenderer {
 
     public void draw(Texture texture, int x, int y) {
         _batch.begin();
+        _batch.setProjectionMatrix(_camera.combined);
         _batch.draw(texture, x, y);
         _batch.end();
     }
@@ -198,11 +199,12 @@ public class GDXRenderer {
     public void draw(Sprite sprite) {
         if (sprite != null) {
             Gdx.gl.glEnable(GL20.GL_BLEND);
-            Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
+//            Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
 
             _batch.begin();
             sprite.draw(_batch);
             _batch.end();
+            Gdx.gl.glBlendEquation(GL20.GL_FUNC_ADD);
         }
     }
 
@@ -304,14 +306,19 @@ public class GDXRenderer {
 
     private void drawPixel(int x, int y, int width, int height, Color color, OrthographicCamera camera) {
         if (color != null) {
-            _batch.begin();
             Gdx.gl.glEnable(GL20.GL_BLEND);
+            Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
+            _batch.begin();
+//            Gdx.gl30.glBlendEquation(GL30.GL_MAX);
+//            _batch.setBlendFunction(GL20.GL_BLEND, GL20.GL_BLEND);
             _drawPixelShapeLayer.setProjectionMatrix(camera.combined);
             _drawPixelShapeLayer.begin(ShapeRenderer.ShapeType.Filled);
             _drawPixelShapeLayer.setColor(color);
             _drawPixelShapeLayer.rect(x, y, width, height);
             _drawPixelShapeLayer.end();
             _batch.end();
+//            Gdx.gl.glBlendEquation(GL20.GL_FUNC_ADD);
+            Gdx.gl.glDisable(GL20.GL_BLEND);
         }
     }
 
@@ -331,6 +338,7 @@ public class GDXRenderer {
             _drawPixelShapeLayer.setColor(color);
             _drawPixelShapeLayer.rect(x, y, width, height);
             _drawPixelShapeLayer.end();
+            Gdx.gl.glBlendEquation(GL20.GL_FUNC_ADD);
         }
     }
 
@@ -342,6 +350,7 @@ public class GDXRenderer {
             _drawPixelShapeLayer.setColor(color);
             _drawPixelShapeLayer.circle(x, y, radius);
             _drawPixelShapeLayer.end();
+            Gdx.gl.glBlendEquation(GL20.GL_FUNC_ADD);
         }
     }
 
@@ -385,6 +394,8 @@ public class GDXRenderer {
             cache.begin();
             cache.draw(cacheId);
             cache.end();
+
+            Gdx.gl.glBlendEquation(GL20.GL_FUNC_ADD);
         }
     }
 

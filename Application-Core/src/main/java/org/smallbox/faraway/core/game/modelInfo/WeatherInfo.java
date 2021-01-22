@@ -16,8 +16,8 @@ public class WeatherInfo extends ObjectInfo {
     public String           particle;
     public String           icon;
     public String           music;
-    public long             color1;
-    public long             color2;
+    public int              color1;
+    public int              color2;
     public WeatherSunModel  sun;
     public WeatherCondition condition;
     public boolean          unique;

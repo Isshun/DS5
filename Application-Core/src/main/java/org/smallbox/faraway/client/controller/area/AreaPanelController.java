@@ -8,6 +8,7 @@ import org.smallbox.faraway.client.gameAction.GameActionMode;
 import org.smallbox.faraway.client.render.layer.area.AreaLayer;
 import org.smallbox.faraway.client.selection.GameSelectionManager;
 import org.smallbox.faraway.client.ui.engine.UIEventManager;
+import org.smallbox.faraway.client.ui.engine.views.CompositeView;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UIList;
 import org.smallbox.faraway.core.dependencyInjector.DependencyManager;
@@ -44,10 +45,11 @@ public class AreaPanelController extends LuaController {
                 .filter(dependency -> dependency.getClass().isAnnotationPresent(AreaTypeInfo.class))
                 .sorted(Comparator.comparing(o -> o.getClass().getAnnotation(AreaTypeInfo.class).label()))
                 .forEach(dependency -> {
-                    UILabel lbArea = (UILabel) listAreasAdd.createFromTemplate();
-                    lbArea.setText(" + " + dependency.getClass().getAnnotation(AreaTypeInfo.class).label());
+                    CompositeView frameArea = listAreasAdd.createFromTemplate(CompositeView.class);
+                    UILabel lbArea = frameArea.findLabel("lb_area");
+                    lbArea.setText(dependency.getClass().getAnnotation(AreaTypeInfo.class).label());
                     lbArea.getEvents().setOnClickListener((int x, int y) -> gameActionManager.setAreaAction(GameActionMode.ADD_AREA, (AreaModel) dependency));
-                    listAreasAdd.addNextView(lbArea);
+                    listAreasAdd.addNextView(frameArea);
                 });
 
         listAreasAdd.switchViews();

@@ -4,13 +4,12 @@ local gauge_width = 18;
 ui:extend({
     type = "view",
     id = "base.ui.right_panel.crew",
+    debug = true,
     parent = "base.ui.right_panel.sub_controller",
     controller = "org.smallbox.faraway.client.controller.CrewController",
     visible = false,
-    debug = true,
     views = {
         { type = "view", views = {
-
 --            { type = "view", position = {270, 10}, views = {
 --                {type = "image", src = "[base]/graphics/needs/ic_food.png", size = {12, 12}, position = {gauge_spacing * 0, 0}},
 --                {type = "image", src = "[base]/graphics/needs/ic_health.png", size = {12, 12}, position = {gauge_spacing * 1, 0}},

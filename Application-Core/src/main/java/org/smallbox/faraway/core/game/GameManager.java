@@ -84,6 +84,7 @@ public class GameManager implements GameObserver {
         _game.loadLayers();
 
         // Inject GameObjects
+        dependencyManager.destroyNonBindControllers();
         dependencyManager.injectGameDependencies();
         dependencyManager.callMethodAnnotatedBy(OnGameLayerInit.class);
         dependencyManager.callMethodAnnotatedBy(AfterGameLayerInit.class);

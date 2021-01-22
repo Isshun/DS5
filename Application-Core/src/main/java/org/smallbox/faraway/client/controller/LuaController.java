@@ -7,6 +7,7 @@ public abstract class LuaController implements GameClientObserver {
 
     private CompositeView _rootView;
     private long _lastUpdate;
+//    private String fileName;
 
     public void setRootView(CompositeView rootView) {
         _rootView = rootView;
@@ -34,4 +35,12 @@ public abstract class LuaController implements GameClientObserver {
     public CompositeView getRootView() { return _rootView; }
     public String getCanonicalName() { return getClass().getCanonicalName(); }
     public boolean isVisible() { return getRootView() != null && getRootView().isVisible(); }
+
+//    public String getFileName() {
+//        return fileName;
+//    }
+//
+//    public void setFileName(String fileName) {
+//        this.fileName = fileName;
+//    }
 }

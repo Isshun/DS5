@@ -69,7 +69,7 @@ public class CharacterInfoTimetableController extends LuaController {
         }
     }
 
-    private long getStateColor(CharacterTimetableExtra.State state) {
+    private int getStateColor(CharacterTimetableExtra.State state) {
         switch (state) {
             case FREE:
                 return 0x225aff5a;

@@ -16,18 +16,9 @@ import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 
 @ApplicationObject
 public class MenuRender {
-
-    @Inject
-    private GDXRenderer gdxRenderer;
-
-    @Inject
-    private MenuMainController menuMainController;
-
-    @Inject
-    private ShortcutManager shortcutManager;
-
-    @Inject
-    private UIManager uiManager;
+    @Inject private GDXRenderer gdxRenderer;
+    @Inject private ShortcutManager shortcutManager;
+    @Inject private UIManager uiManager;
 
     private final InputProcessor _menuInputAdapter = new InputAdapter() {
         public boolean touchUp (int screenX, int screenY, int pointer, int button) {

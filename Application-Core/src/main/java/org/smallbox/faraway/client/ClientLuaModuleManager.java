@@ -54,6 +54,7 @@ public class ClientLuaModuleManager extends LuaModuleManager {
                         "yellow_50 = " + RawColors.RAW_YELLOW_50 + "\n" +
                         "blue = " + RawColors.RAW_BLUE + "\n" +
                         "green = " + RawColors.RAW_GREEN + "\n" +
+                        "green_50 = " + RawColors.RAW_GREEN_50 + "\n" +
                         "red = " + RawColors.RAW_RED + "\n" +
 
                         "blue_light_1 = " + RawColors.RAW_BLUE_LIGHT_1 + "\n" +
@@ -89,6 +90,7 @@ public class ClientLuaModuleManager extends LuaModuleManager {
         globals.get("main").call(
                 CoerceJavaToLua.coerce(luaApplicationModel),
                 CoerceJavaToLua.coerce((LuaExtendInterface) values -> {
+//                    if (values.get("debug").isnil()) return;
                     if (!values.get("type").isnil()) {
                         extendLuaValue(module, values, globals, dataDirectory);
                     } else {

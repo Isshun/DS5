@@ -47,7 +47,6 @@ public class NotificationController extends LuaController {
     public void addNotification(NotificationLevel level, String text) {
         UILabel label = listNotification.createFromTemplate(UILabel.class);
         label.setText(text);
-        label.setOutlined(true);
 
         switch (level) {
             case INFO: label.setTextColor(COLOR_INFO); break;

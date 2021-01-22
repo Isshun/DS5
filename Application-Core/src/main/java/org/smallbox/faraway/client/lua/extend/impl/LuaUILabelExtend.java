@@ -20,6 +20,8 @@ public class LuaUILabelExtend extends LuaUIExtend {
         UILabel label = (UILabel) view;
         readString(value, "text_font", label::setFont);
         readBoolean(value, "text_outlined", label::setOutlined);
+        readInt(value, "shadow", label::setShadow);
+        readInt(value, "shadow_color", label::setShadowColor);
         readString(value, "text_align", label::setTextAlign);
         readInt(value, "text_length", label::setTextLength);
         readInt(value, "text_size", label::setTextSize);

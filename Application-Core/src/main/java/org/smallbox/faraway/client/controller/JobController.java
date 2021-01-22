@@ -55,10 +55,4 @@ public class JobController extends LuaController {
         setVisible(true);
     }
 
-    @GameShortcut(key = Input.Keys.F1)
-    public void onRefreshUI() {
-        DependencyManager.getInstance().getDependency(UIManager.class).refresh(this, "panel_jobs.lua");
-//        onDisplayUnique(characterModule.getAll().stream().findFirst().orElse(null));
-    }
-
 }

@@ -6,7 +6,6 @@ import org.smallbox.faraway.client.controller.annotation.BindLua;
 import org.smallbox.faraway.client.gameAction.GameActionManager;
 import org.smallbox.faraway.client.manager.SpriteManager;
 import org.smallbox.faraway.client.selection.GameSelectionManager;
-import org.smallbox.faraway.client.ui.engine.Colors;
 import org.smallbox.faraway.client.ui.engine.OnClickListener;
 import org.smallbox.faraway.client.ui.engine.UIEventManager;
 import org.smallbox.faraway.client.ui.engine.views.CompositeView;
@@ -14,7 +13,6 @@ import org.smallbox.faraway.client.ui.engine.views.View;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UIFrame;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UIGrid;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
-import org.smallbox.faraway.client.ui.engine.views.widgets.UIList;
 import org.smallbox.faraway.core.GameShortcut;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
@@ -42,7 +40,7 @@ public class BuildController extends LuaController {
     @Inject private GameActionManager gameActionManager;
     @Inject private Data data;
 
-    @BindLua private UIList listCategories;
+    @BindLua private CompositeView listCategories;
     @BindLua private UILabel contentLabel;
     @BindLua private UILabel lbCategory;
     @BindLua private UIGrid gridItems;
@@ -186,8 +184,9 @@ public class BuildController extends LuaController {
     }
 
     private void openCategory(UIFrame viewCategory, String currentCategory) {
-        listCategories.getViews().forEach(view -> ((CompositeView) view).findImage("img_category").getStyle().setBackgroundColor(Colors.BLUE_DARK_1));
-        viewCategory.findImage("img_category").getStyle().setBackgroundColor(Colors.BLUE_LIGHT_2);
+        listCategories.getViews().forEach(view -> ((CompositeView) view).find("bg_category").getStyle().setBackgroundColor(0xffffff88));
+//        viewCategory.findImage("img_category").getStyle().setBackgroundColor(Colors.BLUE_LIGHT_2);
+        viewCategory.find("bg_category").getStyle().setBackgroundColor(0x2ab8baff);
 
         lbCategory.setText(currentCategory);
 
