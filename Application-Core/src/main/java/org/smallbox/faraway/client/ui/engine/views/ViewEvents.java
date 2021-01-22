@@ -92,11 +92,12 @@ public class ViewEvents {
     }
 
     public void click(int x, int y) {
-        assert _onClickListener != null;
-        _onClickListener.onClick(x, y);
+        if (_onClickListener != null) {
+            _onClickListener.onClick(x, y);
 
-        if (view.getParent() != null && view.getParent() instanceof UIDropDown) {
-            ((UIDropDown)view.getParent()).setCurrent(view);
+            if (view.getParent() != null && view.getParent() instanceof UIDropDown) {
+                ((UIDropDown)view.getParent()).setCurrent(view);
+            }
         }
     }
 

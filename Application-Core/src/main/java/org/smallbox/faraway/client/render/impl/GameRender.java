@@ -12,24 +12,12 @@ import org.smallbox.faraway.core.game.GameManager;
 
 @ApplicationObject
 public class GameRender {
-
-    @Inject
-    private GameRender gameRender;
-
-    @Inject
-    private GameManager gameManager;
-
-    @Inject
-    private LayerManager layerManager;
-
-    @Inject
-    private InputManager inputManager;
-
-    @Inject
-    private GDXRenderer gdxRenderer;
-
-    @Inject
-    private Game game;
+    @Inject private GameRender gameRender;
+    @Inject private GameManager gameManager;
+    @Inject private LayerManager layerManager;
+    @Inject private InputManager inputManager;
+    @Inject private GDXRenderer gdxRenderer;
+    @Inject private Game game;
 
     public void render() {
         Gdx.input.setInputProcessor(inputManager);

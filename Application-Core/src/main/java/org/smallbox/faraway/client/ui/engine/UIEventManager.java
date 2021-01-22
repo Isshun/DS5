@@ -143,6 +143,15 @@ public class UIEventManager implements EventManager {
             }
         }
 
+        if (bestView == null) {
+            for (View view: uiManager.getViews()) {
+                if (view.isActive() && hasVisibleHierarchy(view) && view.contains(x, y) && view.getDeep() > bestDepth) {
+                    bestDepth = view.getDeep();
+                    bestView = view;
+                }
+            }
+        }
+
         if (_currentDropDown != null) {
             _currentDropDown.setOpen(false);
             _currentDropDown = null;
@@ -316,7 +325,7 @@ public class UIEventManager implements EventManager {
     }
 
     public boolean has(int x, int y) {
-        for (View view: _onClickListeners.keySet()) {
+        for (View view: uiManager.getViews()) {
             if (hasVisibleHierarchy(view) && view.contains(x, y)) {
                 return true;
             }

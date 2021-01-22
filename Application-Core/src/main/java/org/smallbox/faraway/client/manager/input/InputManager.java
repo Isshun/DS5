@@ -24,42 +24,18 @@ import static com.badlogic.gdx.Input.Keys;
 
 @ApplicationObject
 public class InputManager implements InputProcessor {
-
-    @Inject
-    private DebugService debugService;
-
-    @Inject
-    private GameSelectionManager gameSelectionManager;
-
-    @Inject
-    private GameEventManager gameEventManager;
-
-    @Inject
-    private GameContextMenuManager gameContextMenuManager;
-
-    @Inject
-    private GameActionManager gameActionManager;
-
-    @Inject
-    private UIEventManager uiEventManager;
-
-    @Inject
-    private UIManager uiManager;
-
-    @Inject
-    private WorldInputManager worldInputManager;
-
-    @Inject
-    private GameManager gameManager;
-
-    @Inject
-    private ShortcutManager shortcutManager;
-
-    @Inject
-    private Viewport viewport;
-
-    @Inject
-    private GDXRenderer gdxRenderer;
+    @Inject private DebugService debugService;
+    @Inject private GameSelectionManager gameSelectionManager;
+    @Inject private GameEventManager gameEventManager;
+    @Inject private GameContextMenuManager gameContextMenuManager;
+    @Inject private GameActionManager gameActionManager;
+    @Inject private UIEventManager uiEventManager;
+    @Inject private UIManager uiManager;
+    @Inject private WorldInputManager worldInputManager;
+    @Inject private GameManager gameManager;
+    @Inject private ShortcutManager shortcutManager;
+    @Inject private Viewport viewport;
+    @Inject private GDXRenderer gdxRenderer;
 
     private GameEventListener.Modifier _modifier = GameEventListener.Modifier.NONE;
     private int _lastPosX;
