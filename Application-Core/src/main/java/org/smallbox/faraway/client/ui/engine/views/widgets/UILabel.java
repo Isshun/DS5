@@ -236,17 +236,24 @@ public class UILabel extends View {
             GlyphLayout glyphLayout = new GlyphLayout();
             glyphLayout.setText(fontManager.getFont(font, _textSize), _text);
 
-            if (_align == Align.CENTER) {
-                geometry.setOffsetX((int) (getWidth() / 2 - glyphLayout.width / 2));
-                geometry.setOffsetY((int) (getHeight() / 2 - glyphLayout.height / 2));
-            }
+//            if (_align == Align.RIGHT) {
+//                geometry.setOffsetX((int) (getWidth() / 2 - glyphLayout.width / 2));
+//            }
 
-            if (_align == Align.RIGHT) {
-                geometry.setOffsetX((int) (getWidth() / 2 - glyphLayout.width / 2));
-            }
-
-            if (_align == Align.CENTER_VERTICAL) {
+            if (_align == Align.LEFT || _align == Align.CENTER || _align == Align.RIGHT || _align == Align.CENTER_VERTICAL) {
                 geometry.setOffsetY((int) ((getHeight() - glyphLayout.height) / 2));
+            }
+
+            if (_align == Align.BOTTOM_LEFT || _align == Align.BOTTOM_CENTER || _align == Align.BOTTOM_RIGHT) {
+                geometry.setOffsetY((int) (getHeight() - glyphLayout.height));
+            }
+
+            if (_align == Align.TOP_CENTER || _align == Align.CENTER || _align == Align.BOTTOM_CENTER || _align == Align.CENTER_HORIZONTAL) {
+                geometry.setOffsetX((int) (getWidth() / 2 - glyphLayout.width / 2));
+            }
+
+            if (_align == Align.TOP_RIGHT || _align == Align.RIGHT || _align == Align.BOTTOM_RIGHT) {
+                geometry.setOffsetX((int) (getWidth() - glyphLayout.width));
             }
 
 //            renderer.drawPixel(getAlignedX() + x + _offsetX + _paddingLeft + _marginLeft, getAlignedY() + y + _offsetY + _paddingTop + _marginTop, _textSize, _gdxTextColor, _text);

@@ -48,7 +48,7 @@ public abstract class View implements Comparable<View> {
     protected ViewGeometry geometry = new ViewGeometry(this);
     protected ViewEvents events = new ViewEvents(this);
     protected ViewStyle style = new ViewStyle(this);
-    protected Align _align = Align.LEFT;
+    protected Align _align = Align.TOP_LEFT;
 
     public ViewEvents getEvents() {
         return events;

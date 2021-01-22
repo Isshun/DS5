@@ -1,5 +1,6 @@
 package org.smallbox.faraway.client.render.layer.ground;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import org.smallbox.faraway.client.render.GDXRenderer;
 import org.smallbox.faraway.client.render.LayerManager;
@@ -7,6 +8,7 @@ import org.smallbox.faraway.client.render.Viewport;
 import org.smallbox.faraway.client.render.layer.BaseLayer;
 import org.smallbox.faraway.client.render.layer.ground.impl.GroundTileGenerator;
 import org.smallbox.faraway.client.render.layer.ground.impl.RockTileGenerator;
+import org.smallbox.faraway.client.selection.GameSelectionManager;
 import org.smallbox.faraway.core.GameLayer;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
@@ -14,6 +16,7 @@ import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.service.applicationConfig.ApplicationConfig;
 import org.smallbox.faraway.core.module.world.model.Parcel;
 import org.smallbox.faraway.modules.world.WorldModule;
+import org.smallbox.faraway.util.Constant;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -25,6 +28,7 @@ public class WorldGroundLayer extends BaseLayer {
     @Inject private RockTileGenerator rockTileGenerator;
     @Inject private ApplicationConfig applicationConfig;
     @Inject private WorldModule worldModule;
+    @Inject private GameSelectionManager gameSelectionManager;
 
     private final Map<Parcel, Texture> cachedGrounds = new ConcurrentHashMap<>();
     private final Map<Parcel, Texture> cachedRocks = new ConcurrentHashMap<>();
@@ -52,6 +56,10 @@ public class WorldGroundLayer extends BaseLayer {
 
                 if (parcel != null && parcel.hasRock()) {
                     renderer.drawOnMap(cachedRocks.computeIfAbsent(parcel, p -> rockTileGenerator.getTexture(p)), parcel);
+                }
+
+                if (parcel != null && gameSelectionManager.getSelected().contains(parcel)) {
+                    renderer.drawRectangleOnMap(parcel.x, parcel.y, Constant.TILE_SIZE - 8, Constant.TILE_SIZE - 8, Color.WHITE, false, 4, 4);
                 }
             }
         }

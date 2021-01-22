@@ -151,20 +151,13 @@ public class GameSelectionManager extends GameManager {
         List<Parcel> parcelList = WorldHelper.getParcelInRect(fromMapX, fromMapY, toMapX, toMapY, layerManager.getViewport().getFloor());
         Log.info("Click on map for parcels: %s", parcelList);
 
-        gameActionManager.selectParcels(parcelList);
-//            if (parcelList != null) {
-//
-//                if (_selectionListener != null) {
-//                    if (_selectionListener.onSelection(parcelList)) {
-//                        _selectionListener = null;
-//                    }
-//                }
-//
-//                else {
-//                    _selected = null;
-//                    doSelectionMultiple(parcelList);
-//                }
-//            }
+        if (gameActionManager.hasAction()) {
+            gameActionManager.selectParcels(parcelList);
+            //gameActionManager.callActions(OnGameSelectAction.class, object);
+        } else {
+            _selected.clear();
+            _selected.addAll(parcelList);
+        }
     }
 
     private void doSelectionUnique(Parcel parcel) {

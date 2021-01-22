@@ -2,7 +2,7 @@ data:extend({
     label = "Windtrap",
     id = "base.windtrap",
     type = "item",
-    category = "common",
+    category = "industrial",
     graphics = { path = "[base]/graphics/items/windtrap.png" },
     slots = {{-1, 1},{0, 1},{1, 1},{-1, 0},{1, 0},{-1, -1},{0, -1},{1, -1},},
     build = { cost = 100 },

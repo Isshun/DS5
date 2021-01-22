@@ -1,6 +1,7 @@
 package org.smallbox.faraway.core.game.modelInfo;
 
 import com.badlogic.gdx.math.Rectangle;
+import org.smallbox.faraway.util.Constant;
 
 public class GraphicInfo {
     public enum Type { NONE, TERRAIN, WALL, DOOR, STRUCTURE, PLANT, ICON }
@@ -13,8 +14,8 @@ public class GraphicInfo {
     public int              y;
     public int              width;
     public int              height;
-    public int              tileWidth = 32;
-    public int              tileHeight = 32;
+    public int              tileWidth = Constant.TILE_SIZE;
+    public int              tileHeight = Constant.TILE_SIZE;
     public Type             type = Type.NONE;
     public Rectangle        textureRect;
 

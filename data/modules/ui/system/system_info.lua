@@ -1,8 +1,8 @@
 local window_width = 400
-local minimap_header_height = 54
-local minimap_container_height = window_width * 0.60
+local minimap_header_height = 51
+local minimap_container_height = window_width * 0.599
 local minimap_footer_height = 0
-local window_height = minimap_header_height + minimap_container_height + minimap_footer_height
+local window_height = minimap_header_height + minimap_container_height + minimap_footer_height + 4
 
 ui:extend({
     type = "view",
@@ -16,10 +16,10 @@ ui:extend({
     debug = true,
     views = {
 
-        { type = "view", size = {window_width, window_height}, background = 0x282828ff, views = {
+        { type = "view", size = {window_width, window_height}, background = 0x181818ff, views = {
 
             -- HEADER
-            { type = "view", id = "map_header", position = {4, 4}, size = {window_width - 8, minimap_header_height - 8}, views = {
+            { type = "view", id = "map_header", position = {4, 4}, size = {window_width - 8, minimap_header_height}, views = {
 
                 -- Top right system icons
                 { type = "view", id = "view_weather", views = {
@@ -27,16 +27,18 @@ ui:extend({
                     -- Time and day
                     { type = "image", id = "img_time", src = "[base]/graphics/icons/daytimes/noon.png", size = {32, 32}, position = {2000, 2}},
                     { type = "image", src = "[base]/graphics/icons/daytimes/sun.png", size = {minimap_header_height, minimap_header_height}, position = {-1, -1}},
-                    { type = "label", id = "lb_time", text = "lb_time", text_font = "font3", text_color = 0xffffffcc, text_size = 18, position = {52, 10} },
+                    { type = "label", id = "lb_time", text = "lb_time", text_font = "font3", text_color = 0xffffffcc, text_size = 18, position = {52, 8} },
                     { type = "label", id = "lb_date", text = "lb_date", text_font = "font3", text_color = 0xffffff88, text_size = 13, position = {52, 31} },
 
                     -- Weather
-                    { type = "label", id = "lb_weather", text = "lb_weather", text_font = "font3", text_color = 0xffffffcc, text_size = 18, text_align = "RIGHT", text_length = 20, size = {200, 20}, position = {window_width - 280, 10}},
-                    { type = "label", id = "lb_temperature", text = "lb_temperature", text_font = "font3", text_color = 0xffffff88, text_size = 13, text_align = "RIGHT", text_length = 26, size = {200, 20}, position = {window_width - 280, 31}},
-                    { type = "image", id = "img_weather", src = "[base]/graphics/icons/weather/regular.png", size = {32, 32}, position = {window_width - 40, 3}},
+                    { type = "label", id = "lb_weather", text = "lb_weather", text_font = "font3", text_color = 0xffffffcc, text_size = 18, text_align = "TOP_RIGHT", text_length = 20, size = {200, 20}, position = {window_width - 252, 8}},
+                    { type = "label", id = "lb_temperature", text = "lb_temperature", text_font = "font3", text_color = 0xffffff88, text_size = 13, text_align = "TOP_RIGHT", text_length = 26, size = {200, 20}, position = {window_width - 252, 31}},
+                    { type = "image", id = "img_weather", src = "[base]/graphics/icons/weather/regular.png", size = {32, 32}, position = {window_width - 46, 7}},
 
                     -- Game speed
                     { type = "label", id = "lb_speed", text_color = blue_light_5, text_size = 16, position = {220, 40}},
+
+                    { type = "view", size = {window_width - 8, 2}, background = 0x181818ff, position = {0, minimap_header_height - 2}},
 
                     -- Menu icon
                     --            { type = "image", src = "[base]/graphics/icons/menu.png", position = {335, 4}, size = {32, 32}, action = "onActionMenu"},
@@ -46,7 +48,7 @@ ui:extend({
             -- HEADER: END
 
             -- MAP
-            { type = "view", id = "map_container", position = {4, minimap_header_height}, size = {window_width - 8, minimap_container_height}, views = {
+            { type = "view", id = "map_container", position = {4, minimap_header_height + 4}, size = {window_width - 8, minimap_container_height}, views = {
                 { type = "minimap", id = "minimap"},
 --                { type = "image", id = "img_speed", position = {40, minimap_container_height - 40}, size = {32, 32}},
                 { type = "image", id = "ic_speed", src = "[base]/graphics/ic_speed_1.png", size = {32, 32}, position = {8, 8}},

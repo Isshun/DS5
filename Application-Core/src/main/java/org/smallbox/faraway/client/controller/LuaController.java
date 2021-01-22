@@ -1,5 +1,6 @@
 package org.smallbox.faraway.client.controller;
 
+import com.badlogic.gdx.Gdx;
 import org.smallbox.faraway.client.GameClientObserver;
 import org.smallbox.faraway.client.ui.engine.views.CompositeView;
 
@@ -15,18 +16,15 @@ public abstract class LuaController implements GameClientObserver {
 
     public void setVisible(boolean visible) {
         if (getRootView() != null) {
-
-            if (!getRootView().isVisible() && visible) {
-                onControllerUpdate();
-            }
-
             getRootView().setVisible(visible);
         }
+
+        controllerUpdate();
     }
 
     public void controllerUpdate() {
         if (isVisible()) {
-            onControllerUpdate();
+            Gdx.app.postRunnable(this::onControllerUpdate);
         }
     }
 

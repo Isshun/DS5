@@ -7,8 +7,8 @@ import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameTime;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.service.applicationConfig.ApplicationConfig;
+import org.smallbox.faraway.core.module.path.PathManager;
 import org.smallbox.faraway.modules.character.CharacterModule;
-import org.smallbox.faraway.modules.character.model.CharacterFreeTimeExtra;
 import org.smallbox.faraway.modules.character.model.CharacterSkillExtra;
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 import org.smallbox.faraway.modules.job.freeTimeJobs.WalkJobFactory;
@@ -23,6 +23,7 @@ import static java.time.temporal.ChronoUnit.MINUTES;
 
 @GameObject
 public class JobOrchestratorModule extends SuperGameModule<JobModel, JobModuleObserver> {
+    @Inject private PathManager pathManager;
     @Inject private ApplicationConfig applicationConfig;
     @Inject private CharacterModule characterModule;
     @Inject private WalkJobFactory walkJobFactory;
@@ -45,6 +46,7 @@ public class JobOrchestratorModule extends SuperGameModule<JobModel, JobModuleOb
                 .filter(JobModel::isFree)
                 .filter(JobModel::isSubJobCompleted)
                 .filter(JobModel::initConditionalCompleted)
+                .filter(job -> hasPath(job, character))
                 .sorted(Comparator.comparingInt(job -> WorldHelper.getApproxDistance(job.getTargetParcel(), character.getParcel())))
                 .collect(Collectors.toList());
 
@@ -60,17 +62,21 @@ public class JobOrchestratorModule extends SuperGameModule<JobModel, JobModuleOb
             }
         }
 
-        // Aucun job n'a pu être assigné
-        // Assign freetime job
-        if (character.getJob() == null && waitTimeBeforeOptionalExpired(character) && character.hasExtra(CharacterFreeTimeExtra.class)) {
-//                character.getExtra(CharacterFreeTimeExtra.class).getTypes().stream().findAny().ifPresent(type -> {
-//                        JobModel freeTimeJob = type.getConstructor(CharacterModel.class).newInstance(character);
-            JobModel job = walkJobFactory.createJob(character);
-            jobModule.add(job);
-            assign(character, job);
-//                });
-        }
+//        // Aucun job n'a pu être assigné
+//        // Assign freetime job
+//        if (character.getJob() == null && waitTimeBeforeOptionalExpired(character) && character.hasExtra(CharacterFreeTimeExtra.class)) {
+////                character.getExtra(CharacterFreeTimeExtra.class).getTypes().stream().findAny().ifPresent(type -> {
+////                        JobModel freeTimeJob = type.getConstructor(CharacterModel.class).newInstance(character);
+//            JobModel job = walkJobFactory.createJob(character);
+//            jobModule.add(job);
+//            assign(character, job);
+////                });
+//        }
 
+    }
+
+    private boolean hasPath(JobModel job, CharacterModel character) {
+        return pathManager.getPath(job.getTargetParcel(), character.getParcel(), false, false, true) != null;
     }
 
     private boolean waitTimeBeforeOptionalExpired(CharacterModel character) {

@@ -9,7 +9,7 @@ ui:extend({
     views = {
         { type = "view", size = {368, 56}, position = {13, 0}, views = {
             { type = "label", id = "lb_name", text_font = "font3", outlined = false, text_color = yellow, text_size = 26, size = {300, 56}, position = {0, 20}},
-            { type = "label", text = "x", text_font = "whitrabt", outlined = false, text_color = blue_dark_4, background = yellow, text_size = 32, padding = {0, 5}, size = {26, 26}, position = {341, 14}},
+            { type = "label", text = "x", text_font = "whitrabt", outlined = false, text_color = blue_dark_4, background = yellow, text_size = 32, padding = {0, 5}, size = {26, 26}, position = {341, 14}, action = "onClose"},
         }},
 
         { type = "view", size = {368, 2}, background = yellow, position = {12, 0}},

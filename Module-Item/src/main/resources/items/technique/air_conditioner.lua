@@ -4,7 +4,7 @@ data:extend(
         label = "Air conditioner",
         id = "base.air_conditioner",
         type = "item",
-        category = "temperature",
+        category = "industrial",
         build = { cost = 600 },
         size = {1, 1},
         cost = 42,

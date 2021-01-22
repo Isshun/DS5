@@ -1,7 +1,10 @@
 package org.smallbox.faraway.client.gameAction;
 
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
+import org.smallbox.faraway.client.ui.engine.Colors;
 import org.smallbox.faraway.common.ObjectModel;
+import org.smallbox.faraway.core.GameShortcut;
 import org.smallbox.faraway.core.dependencyInjector.DependencyManager;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
@@ -26,18 +29,10 @@ import java.util.function.Consumer;
 
 @GameObject
 public class GameActionManager extends GameManager {
-
-    @Inject
-    private AreaModule areaModule;
-
-    @Inject
-    private JobModule jobModule;
-
-    @Inject
-    private BuildJobFactory buildJobFactory;
-
-    @Inject
-    private DependencyManager dependencyManager;
+    @Inject private AreaModule areaModule;
+    @Inject private JobModule jobModule;
+    @Inject private BuildJobFactory buildJobFactory;
+    @Inject private DependencyManager dependencyManager;
 
     private Map<Class<? extends Annotation>, Map<OnGameSelectAction, Consumer<ObjectModel>>> gameActionsConsumers;
     private Collection<GameActionAreaListener> specializedAreaModules;
@@ -75,6 +70,13 @@ public class GameActionManager extends GameManager {
         this.actionColor = Color.BLUE;
         this.actionLabel = "Build " + itemInfo.label;
         this.areaAction = parcel -> jobModule.add(buildJobFactory.createJob(itemInfo, parcel));
+    }
+
+    public void setCancelAction() {
+        this.mode = GameActionMode.CANCEL;
+        this.actionColor = Colors.COLOR_CURSOR;
+        this.actionLabel = "Cancel";
+        this.areaAction = parcel -> jobModule.removeIf(job -> job.getTargetParcel() == parcel);
     }
 
     public GameActionMode getMode() {
@@ -136,6 +138,11 @@ public class GameActionManager extends GameManager {
         gameActionsConsumers.get(annotation).entrySet().stream()
                 .filter(entry -> entry.getKey().value().isInstance(object))
                 .forEach(entry -> entry.getValue().accept(object));
+    }
+
+    @GameShortcut(key = Input.Keys.C)
+    public void onPressCancel() {
+        setCancelAction();
     }
 
 }

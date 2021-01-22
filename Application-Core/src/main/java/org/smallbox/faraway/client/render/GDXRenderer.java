@@ -245,22 +245,26 @@ public class GDXRenderer {
     }
 
     public void drawTextUI(int x, int y, int textSize, Color color, String string, boolean outlined) {
-        drawText(x, y, textSize, color, string, _cameraUI, outlined);
+        drawText(x, y, textSize, color, string, _cameraUI, outlined, "font3");
+    }
+
+    public void drawTextUI(int x, int y, int textSize, Color color, String string, String font) {
+        drawText(x, y, textSize, color, string, _cameraUI, false, font);
     }
 
     public void drawTextUI(int x, int y, int textSize, Color color, String string) {
-        drawText(x, y, textSize, color, string, _cameraUI, false);
+        drawText(x, y, textSize, color, string, _cameraUI, false, "font3");
     }
 
     public void drawText(int x, int y, int textSize, Color color, String string, boolean outlined) {
-        drawText(x, y, textSize, color, string, _camera, outlined);
+        drawText(x, y, textSize, color, string, _camera, outlined, "font3");
     }
 
     public void drawText(int x, int y, int textSize, Color color, String string) {
-        drawText(x, y, textSize, color, string, _camera, false);
+        drawText(x, y, textSize, color, string, _camera, false, "font3");
     }
 
-    private void drawText(int x, int y, int textSize, Color color, String string, OrthographicCamera camera, boolean outlined) {
+    private void drawText(int x, int y, int textSize, Color color, String string, OrthographicCamera camera, boolean outlined, String font) {
         textSize *= getUiScale();
 
         if (string != null) {
@@ -269,11 +273,11 @@ public class GDXRenderer {
             _batch.setProjectionMatrix(camera.combined);
 
             if (outlined) {
-                fontManager.getOutlinedFont("font3", textSize).setColor(color != null ? color : Color.WHITE);
-                fontManager.getOutlinedFont("font3", textSize).draw(_batch, string, x, y);
+                fontManager.getOutlinedFont(font, textSize).setColor(color != null ? color : Color.WHITE);
+                fontManager.getOutlinedFont(font, textSize).draw(_batch, string, x, y);
             } else {
-                fontManager.getFont("font3", textSize).setColor(color != null ? color : Color.WHITE);
-                fontManager.getFont("font3", textSize).draw(_batch, string, x, y);
+                fontManager.getFont(font, textSize).setColor(color != null ? color : Color.WHITE);
+                fontManager.getFont(font, textSize).draw(_batch, string, x, y);
             }
 
             //            _fonts[textSize].drawMultiLine(_batch, string, x, y);

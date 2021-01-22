@@ -29,6 +29,8 @@ public class AssetManager extends com.badlogic.gdx.assets.AssetManager {
     }
 
     public void temporaryPixmap(String absolutePath, Consumer<Pixmap> pixmapConsumer) {
+        Log.info("Create temporary pixmap");
+
         Texture texture = lazyLoad(absolutePath, Texture.class);
         texture.getTextureData().prepare();
         Pixmap pixmap = texture.getTextureData().consumePixmap();

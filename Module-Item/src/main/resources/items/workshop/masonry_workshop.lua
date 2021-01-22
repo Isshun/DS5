@@ -3,7 +3,7 @@ data:extend({
         label = "Masonry Workshop",
         id = "base.item.masonry_workshop",
         type = "item",
-        category = "workshop",
+        category = "factory",
         graphics = { path = "[base]/graphics/items/workshop/masonry.png" },
         size = {3, 1},
         health = 100,

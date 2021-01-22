@@ -3,7 +3,7 @@ ui:extend({
     id = "base.ui.notifications",
     controller = "org.smallbox.faraway.client.controller.NotificationController",
     align = {"top", "left"},
-    position = {10, 100},
+    position = {10, 10},
     size = {377, 300},
     views = {
         { type = "list", id = "list_notification", template = {

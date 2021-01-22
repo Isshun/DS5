@@ -3,16 +3,15 @@ package org.smallbox.faraway.client.controller.character;
 import com.badlogic.gdx.Input;
 import org.smallbox.faraway.client.controller.AbsInfoLuaController;
 import org.smallbox.faraway.client.controller.LuaController;
+import org.smallbox.faraway.client.controller.MainPanelController;
 import org.smallbox.faraway.client.controller.annotation.BindLua;
 import org.smallbox.faraway.client.controller.annotation.BindLuaAction;
 import org.smallbox.faraway.client.selection.GameSelectionManager;
-import org.smallbox.faraway.client.ui.UIManager;
 import org.smallbox.faraway.client.ui.engine.RawColors;
 import org.smallbox.faraway.client.ui.engine.UIEventManager;
 import org.smallbox.faraway.client.ui.engine.views.View;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
 import org.smallbox.faraway.core.GameShortcut;
-import org.smallbox.faraway.core.dependencyInjector.DependencyManager;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.dependencyInjector.gameAction.OnGameSelectAction;
@@ -36,6 +35,7 @@ public class CharacterInfoController extends AbsInfoLuaController<CharacterModel
     @Inject private CharacterInfoInventoryController characterInfoInventoryController;
     @Inject private CharacterInfoTimetableController characterInfoTimetableController;
     @Inject private CharacterInfoSkillsController characterInfoSkillsController;
+    @Inject private MainPanelController mainPanelController;
 
     @BindLua private UILabel lbName;
 
@@ -164,5 +164,19 @@ public class CharacterInfoController extends AbsInfoLuaController<CharacterModel
 //        DependencyManager.getInstance().getDependency(UIManager.class).refresh(this, "panel_character.lua");
 //        onDisplayUnique(characterModule.getAll().stream().findFirst().orElse(null));
 //    }
+
+    @BindLuaAction
+    private void onClose(View view) {
+        setVisible(false);
+        mainPanelController.setVisible(true);
+        mainPanelController.openCrew();
+    }
+
+    @GameShortcut(key = Input.Keys.ESCAPE)
+    private void onClose() {
+        setVisible(false);
+        mainPanelController.setVisible(true);
+        mainPanelController.openCrew();
+    }
 
 }

@@ -1,6 +1,7 @@
 package org.smallbox.faraway.client.controller;
 
 import com.badlogic.gdx.Input;
+import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.smallbox.faraway.client.controller.annotation.BindLua;
 import org.smallbox.faraway.client.gameAction.GameActionManager;
@@ -52,7 +53,7 @@ public class BuildController extends LuaController {
     public void afterGameLayerInit() {
         mainPanelController.addShortcut("Build", this);
 
-        List<String> categories = List.of("kitchen", "entertainment", "furniture", "power", "production", "other");
+        List<String> categories = List.of("kitchen", "furniture", "power", "industrial", "production", "other");
 
         // Build item map by category
         itemsByCategory = data.getItems().stream()
@@ -184,16 +185,19 @@ public class BuildController extends LuaController {
     }
 
     private void openCategory(UIFrame viewCategory, String currentCategory) {
-        listCategories.getViews().forEach(view -> ((CompositeView) view).find("bg_category").getStyle().setBackgroundColor(0xffffff88));
+        listCategories.getViews().forEach(view -> ((CompositeView) view).find("bg_category_off").setVisible(true));
+        listCategories.getViews().forEach(view -> ((CompositeView) view).find("bg_category_on").setVisible(false));
 //        viewCategory.findImage("img_category").getStyle().setBackgroundColor(Colors.BLUE_LIGHT_2);
-        viewCategory.find("bg_category").getStyle().setBackgroundColor(0x2ab8baff);
+        viewCategory.find("bg_category_off").setVisible(false);
+        viewCategory.find("bg_category_on").setVisible(true);
 
         lbCategory.setText(currentCategory);
 
         Optional.ofNullable(itemsByCategory.get(currentCategory)).ifPresent(itemInfos -> itemInfos.forEach(entry -> {
-            UILabel lbItem = gridItems.createFromTemplate(UILabel.class);
-            lbItem.setText(entry.label);
-            gridItems.addNextView(lbItem);
+            CompositeView viewItem = gridItems.createFromTemplate(CompositeView.class);
+            viewItem.findLabel("lb_item").setText(entry.label);
+            viewItem.findImage("img_item").setImage(ObjectUtils.firstNonNull(entry.icon, entry.defaultGraphic));
+            gridItems.addNextView(viewItem);
         }));
         gridItems.switchViews();
     }

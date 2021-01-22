@@ -5,6 +5,7 @@ import org.smallbox.faraway.common.ObjectModel;
 import java.util.Collection;
 import java.util.Random;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.function.Predicate;
 
 public abstract class GenericGameModule<T_MODEL extends ObjectModel> extends AbsGameModule {
     protected Collection<T_MODEL> modelList = new LinkedBlockingQueue<>();
@@ -32,6 +33,10 @@ public abstract class GenericGameModule<T_MODEL extends ObjectModel> extends Abs
 
     public void remove(T_MODEL model) {
         modelList.remove(model);
+    }
+
+    public void removeIf(Predicate<T_MODEL> predicate) {
+        modelList.removeIf(predicate);
     }
 
     public boolean contains(T_MODEL model) {

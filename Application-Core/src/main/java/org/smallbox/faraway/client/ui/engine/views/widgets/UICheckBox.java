@@ -36,7 +36,7 @@ public class UICheckBox extends View {
     public UICheckBox setOnCheckListener(OnCheckListener onCheckListener) {
         events.setOnClickListener(() -> {
             _checked = !_checked;
-            onCheckListener.onCheck(_checked, x < geometry.getFinalX() + 32);
+//            onCheckListener.onCheck(_checked, x < geometry.getFinalX() + 32);
         });
         return this;
     }

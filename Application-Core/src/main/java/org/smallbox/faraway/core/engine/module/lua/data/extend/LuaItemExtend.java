@@ -104,6 +104,7 @@ public class LuaItemExtend extends LuaExtend {
             itemInfo.graphics.add(graphicInfo);
         }
 
+        itemInfo.defaultGraphic = itemInfo.graphics.stream().findFirst().orElse(null);
         itemInfo.isWalkable = getBoolean(value, "walkable", itemInfo.isWalkable);
         itemInfo.health = getInt(value, "health", itemInfo.health);
 
@@ -336,6 +337,9 @@ public class LuaItemExtend extends LuaExtend {
 
         graphicInfo.width = itemInfo.width * Constant.TILE_SIZE;
         graphicInfo.height = itemInfo.height * Constant.TILE_SIZE;
+
+        readInt(luaGraphic, "width", value -> graphicInfo.width = value);
+        readInt(luaGraphic, "height", value -> graphicInfo.height = value);
 
         return graphicInfo;
     }

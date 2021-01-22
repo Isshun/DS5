@@ -40,8 +40,8 @@ ui:extend({
 --                    { type = "label", id = "lb_character_job", text_font = "sf", outlined = true, text_color = 0xffb324ff, text_size = 12, size = {300, 28}, position = {8, 28}, padding = {8, 0}, text = "USE WOOD BED"},
 
                     { type = "label", id = "lb_character_name", text_font = "font3", outlined = false, text_color = 0xffb324ff, text_size = 18, size = {300, 28}, position = {8, 12}},
-                    { type = "label", id = "lb_character_skill", visible = false, text_font = "sui", outlined = true, background = 0xffb324ff, text_size = 12, position = {8, 33}, padding = {1, 1}, text = "CRAFTER"},
-                    { type = "label", id = "lb_character_job", text_font = "sui", outlined = true, text_color = 0xffb324ff, text_size = 10, size = {300, 28}, position = {8, 28}, padding = {8, 0}, text = "USE WOOD BED"},
+                    { type = "label", id = "lb_character_skill", visible = false, text_font = "sui", outlined = true, background = 0xffb324ff, text_size = 12, position = {8, 33}, padding = {1, 1}, text = ""},
+                    { type = "label", id = "lb_character_job", text_font = "sui", outlined = true, text_color = 0xffb324ff, text_size = 10, size = {300, 28}, position = {8, 28}, padding = {8, 0}, text = ""},
 
                     { type = "grid", columns = 4, column_width = gauge_spacing, row_height = gauge_spacing, position = {272, 7}, views = {
 

@@ -110,6 +110,10 @@ public class MainPanelController extends LuaController {
 //        uiLabel.getEvents().setOnClickListener((x, y) -> controller.getRootView().setVisible(true));
     }
 
+    public void openCrew() {
+        openPane(crewController, lbCrew, maskCrew, focusCrew, RawColors.RAW_YELLOW);
+    }
+
 //    @GameShortcut(key = Input.Keys.F1)
 //    public void onRefreshUI() {
 //        DependencyManager.getInstance().getDependency(UIManager.class).refresh(this, "panel_main.lua");

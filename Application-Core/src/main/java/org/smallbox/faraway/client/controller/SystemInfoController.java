@@ -53,10 +53,10 @@ public class SystemInfoController extends LuaController {
         if (weatherInfo != null) {
             viewWeather.getStyle().setBackgroundColor(weatherInfo.color1);
             lbWeather.setText(weatherInfo.label);
-            lbWeather.setTextColor(weatherInfo.color2);
+//            lbWeather.setTextColor(weatherInfo.color2);
             imgWeather.setImage(weatherInfo.icon);
             lbTemperature.setText(String.format("%.1f° / %.1fhp", weatherModule.getTemperature(), 12.7));
-            lbTemperature.setTextColor(weatherInfo.color2);
+//            lbTemperature.setTextColor(weatherInfo.color2);
         }
 
         // Display game speed

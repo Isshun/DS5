@@ -117,9 +117,4 @@ public class CrewController extends LuaController {
 //        DependencyManager.getInstance().getDependency(UIManager.class).refresh(this, "panel_crew.lua");
 //    }
 
-    @GameShortcut(key = Input.Keys.C)
-    public void onPressT() {
-        setVisible(true);
-    }
-
 }

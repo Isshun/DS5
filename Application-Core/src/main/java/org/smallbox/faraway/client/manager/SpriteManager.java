@@ -334,11 +334,15 @@ public class SpriteManager {
             if (texture != null) {
                 texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
 
-                sprite = new Sprite(texture,
-                        (graphicInfo.x + tile) * graphicInfo.tileWidth,
-                        graphicInfo.y * graphicInfo.tileHeight,
-                        graphicInfo.tileWidth,
-                        graphicInfo.tileHeight);
+                if (graphicInfo.type == GraphicInfo.Type.ICON) {
+                    sprite = new Sprite(texture, 0, 0, graphicInfo.width, graphicInfo.height);
+                } else {
+                    sprite = new Sprite(texture,
+                            (graphicInfo.x + tile) * graphicInfo.tileWidth,
+                            graphicInfo.y * graphicInfo.tileHeight,
+                            graphicInfo.tileWidth,
+                            graphicInfo.tileHeight);
+                }
                 sprite.setFlip(false, true);
                 sprite.setColor(new Color(255, 255, 255, 1));
 

@@ -250,6 +250,7 @@ public class ItemInfo extends ObjectInfo {
     public List<ItemInfo>               childs = new ArrayList<>();
     public List<GraphicInfo>            graphics = new ArrayList<>();
     public GraphicInfo                  icon;
+    public GraphicInfo                  defaultGraphic;
     public ItemInfoFactory              factory;
     public ItemInfo                     parent;
     public String                       parentName;

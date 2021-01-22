@@ -20,6 +20,9 @@ public class Colors {
     public static Color COLOR2 = ColorUtils.fromHex(0x9afbffff);
     public static Color COLOR3 = ColorUtils.fromHex(0x132733ff);
 
+    public static Color COLOR_SELECTION = ColorUtils.fromHex(0xaaaaaaff);
+    public static Color COLOR_CURSOR = ColorUtils.fromHex(0xffffffff);
+
     public static final Color BLUE_LIGHT_1 = ColorUtils.fromHex(RawColors.RAW_BLUE_LIGHT_1);
     public static final Color BLUE_LIGHT_2 = ColorUtils.fromHex(RawColors.RAW_BLUE_LIGHT_2);
     public static final Color BLUE_LIGHT_3 = ColorUtils.fromHex(RawColors.RAW_BLUE_LIGHT_3);

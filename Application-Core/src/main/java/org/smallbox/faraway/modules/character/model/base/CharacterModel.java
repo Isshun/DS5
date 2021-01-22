@@ -56,7 +56,7 @@ public abstract class CharacterModel extends MovableModel {
         _parcel = parcel;
     }
 
-    public boolean                      isFree() { return _task == null || (job != null && job.isOptional()); }
+    public boolean                      isFree() { return (job == null && _task == null) || (job != null && job.isOptional()); }
 //    public boolean                      isFree() { return getJob() == null && _path == null; }
     public boolean                      isAlive() { return _isAlive; }
     public boolean                      isDead() { return !_isAlive; }

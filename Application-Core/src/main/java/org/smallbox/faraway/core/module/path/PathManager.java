@@ -158,7 +158,7 @@ public class PathManager extends SuperGameModule {
         return null;
     }
 
-    public GraphPath<Parcel> findPath(Parcel fromParcel, Parcel toParcel, boolean minusOne) {
+    private GraphPath<Parcel> findPath(Parcel fromParcel, Parcel toParcel, boolean minusOne) {
         assert fromParcel != null;
         assert toParcel != null;
 

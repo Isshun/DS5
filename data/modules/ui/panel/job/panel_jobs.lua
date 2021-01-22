@@ -6,9 +6,11 @@ ui:extend({
     visible = false,
     views = {
         { type = "list", id = "list_jobs", position = {10, 10}, spacing = 10, template = {
-            { type = "view", background = blue_dark_3, size = {370, 55}, views = {
-                { type = "label", id = "lb_job", text = "Jobs", text_font = "font3", text_color = 0xe62317cc, text_size = 22, padding = 10, position = {0, 0}},
-                { type = "label", id = "lb_character", text = "Jobs", text_font = "sui", text_color = 0xe62317cc, text_size = 10, padding = 10, position = {0, 28}},
+            { type = "view", background = blue_dark_3, size = {370, 100}, views = {
+                { type = "label", id = "lb_job", text = "Jobs", text_font = "font3", text_color = red, text_size = 22, padding = 10, position = {0, 0}},
+                { type = "label", id = "lb_character", text = "Jobs", text_font = "sui", text_color = red, text_size = 14, padding = 10, position = {0, 28}},
+                { type = "label", id = "lb_status", text = "Jobs", text_font = "sui", text_color = red, text_size = 14, padding = 10, position = {0, 48}},
+                { type = "label", id = "lb_blocked", text = "Jobs", text_font = "sui", text_color = red, text_size = 14, padding = 10, position = {0, 68}},
                 { type = "image", id = "img_job", position = {46, 0}},
             }},
         }},

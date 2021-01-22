@@ -7,6 +7,7 @@ import org.smallbox.faraway.client.render.GDXRenderer;
 import org.smallbox.faraway.client.render.LayerManager;
 import org.smallbox.faraway.client.render.Viewport;
 import org.smallbox.faraway.client.render.layer.BaseLayer;
+import org.smallbox.faraway.client.ui.engine.Colors;
 import org.smallbox.faraway.core.GameLayer;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
@@ -16,7 +17,6 @@ import org.smallbox.faraway.util.Constant;
 @GameObject
 @GameLayer(level = LayerManager.TOP, visible = true)
 public class GameSelectionLayer extends BaseLayer {
-
     private final Color COLOR1 = new Color(0x4569d5ff);
     private final Color COLOR2 = new Color(0x01013a55);
 
@@ -55,7 +55,7 @@ public class GameSelectionLayer extends BaseLayer {
 
         for (int x = fromMapX; x <= toMapX; x++) {
             for (int y = fromMapY; y <= toMapY; y++) {
-                renderer.drawRectangleOnMap(x, y, Constant.TILE_SIZE, Constant.TILE_SIZE, Color.BLUE, true, 0, 0);
+                renderer.drawRectangleOnMap(x, y, Constant.TILE_SIZE - 8, Constant.TILE_SIZE - 8, Colors.COLOR_SELECTION, false, 4, 4);
             }
         }
 //        renderer.drawRectangleUI(viewport.getWorldPosX(fromX), viewport.getWorldPosX(fromY), width, height, COLOR2, true);

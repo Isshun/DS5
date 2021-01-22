@@ -40,8 +40,6 @@ public class DigJobFactory {
             job.setIcon("[base]/graphics/jobs/ic_mining.png");
             job.setColor(new Color(0x80391eff));
 
-            job.addTask(new MoveTask("Move to parcel", () -> digParcel));
-
             // Dig action
             job.addTask(new ActionTask("Dig", (character, hourInterval, localDateTime) -> {
                 if (digParcel.getRockInfo() != null) {
