@@ -128,29 +128,29 @@ public class PathModel {
         _currentParcel = nodes.getCount() > 0 ? nodes.get(0) : null;
         _firstParcel = nodes.getCount() > 0 ? nodes.get(0) : null;
         _lastParcel = nodes.getCount() > 0 ? nodes.get(nodes.getCount() - 1) : null;
-        _lastParcelCharacter = nodes.getCount() > 0 ? nodes.get(nodes.getCount() - (minusOne ? 2 : 1)) : null;
+        _lastParcelCharacter = nodes.getCount() > 0 ? nodes.get(Math.max(nodes.getCount() - (minusOne ? 2 : 1), 0)) : null;
         _length = nodes.getCount();
         _index = 0;
 
         Parcel p1 = nodes.get(0);
-        int lastOffsetX = nodes.get(1).x - nodes.get(0).x;
-        int lastOffsetY = nodes.get(1).y - nodes.get(0).y;
-        int length = 1;
-        for (int i = 1; i < nodes.getCount() - 1; i++) {
-            int offsetX = nodes.get(i + 1).x - nodes.get(i).x;
-            int offsetY = nodes.get(i + 1).y - nodes.get(i).y;
-            if (offsetX != lastOffsetX || offsetY != lastOffsetY) {
-                _smooth.add(new PathSection(p1, nodes.get(i), length));
-                p1 = nodes.get(i + 1);
-                length = 1;
-                lastOffsetX = offsetX;
-                lastOffsetY = offsetY;
-            } else {
-                length++;
-            }
-        }
+//        int lastOffsetX = nodes.get(1).x - nodes.get(0).x;
+//        int lastOffsetY = nodes.get(1).y - nodes.get(0).y;
+//        int length = 1;
+//        for (int i = 1; i < nodes.getCount() - 1; i++) {
+//            int offsetX = nodes.get(i + 1).x - nodes.get(i).x;
+//            int offsetY = nodes.get(i + 1).y - nodes.get(i).y;
+//            if (offsetX != lastOffsetX || offsetY != lastOffsetY) {
+//                _smooth.add(new PathSection(p1, nodes.get(i), length));
+//                p1 = nodes.get(i + 1);
+//                length = 1;
+//                lastOffsetX = offsetX;
+//                lastOffsetY = offsetY;
+//            } else {
+//                length++;
+//            }
+//        }
 
-        _smooth.add(new PathSection(p1, _lastParcel, length));
+        _smooth.add(new PathSection(p1, _lastParcel, nodes.getCount()));
     }
 
     private int dirY(int dir) {

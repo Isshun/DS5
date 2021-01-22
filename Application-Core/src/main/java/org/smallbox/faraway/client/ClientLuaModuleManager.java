@@ -8,6 +8,7 @@ import org.smallbox.faraway.client.lua.extend.LuaUIExtend;
 import org.smallbox.faraway.client.ui.engine.RawColors;
 import org.smallbox.faraway.client.ui.engine.views.CompositeView;
 import org.smallbox.faraway.client.ui.engine.views.View;
+import org.smallbox.faraway.core.GameException;
 import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.engine.module.ModuleBase;
@@ -43,7 +44,7 @@ public class ClientLuaModuleManager extends LuaModuleManager {
                         "data = d\n" +
                         "ui = u\n" +
 
-                        "right_panel_width = " + View.FILL + "\n" +
+                        "right_panel_width = " + 600 + "\n" +
 
                         "fill = " + View.FILL + "\n" +
 
@@ -124,7 +125,7 @@ public class ClientLuaModuleManager extends LuaModuleManager {
             Log.warning(LuaModuleManager.class, "No extend for type: %s", type);
         }
 
-        return null;
+        throw new GameException(ClientLuaModuleManager.class, "Cannot read view type: " + type);
     }
 
 }

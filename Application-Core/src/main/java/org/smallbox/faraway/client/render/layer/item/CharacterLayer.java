@@ -109,30 +109,32 @@ public class CharacterLayer extends BaseLayer {
             int viewPortY = viewport.getPosY();
             CharacterPositionCommon position = character.position;
 
-            if (character.getPath() != null && position.pathLength > 0) {
-                Vector2 out = new Vector2();
-                character.getPath().myCatmull.valueAt(out, (float) character._moveProgress2 / position.pathLength);
-                Vector2 dout = new Vector2();
-                character.getPath().myCatmull.derivativeAt(dout, (float) character._moveProgress2 / position.pathLength);
+            Optional.ofNullable(character.getPath()).ifPresent(path -> {
+                if (position.pathLength > 0) {
+                    Vector2 out = new Vector2();
+                    path.myCatmull.valueAt(out, (float) character._moveProgress2 / position.pathLength);
+                    Vector2 dout = new Vector2();
+                    path.myCatmull.derivativeAt(dout, (float) character._moveProgress2 / position.pathLength);
 
-                MovableModel.Direction direction;
-                if (dout.angleDeg() < 45 || dout.angleDeg() > 315) {
-                    direction = MovableModel.Direction.RIGHT;
-                } else if (dout.angleDeg() > 135 && dout.angleDeg() < 225) {
-                    direction = MovableModel.Direction.LEFT;
+                    MovableModel.Direction direction;
+                    if (dout.angleDeg() < 45 || dout.angleDeg() > 315) {
+                        direction = MovableModel.Direction.RIGHT;
+                    } else if (dout.angleDeg() > 135 && dout.angleDeg() < 225) {
+                        direction = MovableModel.Direction.LEFT;
+                    } else {
+                        direction = character.lastDirection;
+                    }
+                    character.lastDirection = direction;
+
+                    doDraw(renderer, character,
+                            (int) (viewPortX + out.x * Constant.TILE_SIZE),
+                            (int) (viewPortY + out.y * Constant.TILE_SIZE), direction);
                 } else {
-                    direction = character.lastDirection;
+                    doDraw(renderer, character,
+                            viewPortX + character.getParcel().x * Constant.TILE_SIZE,
+                            viewPortY + character.getParcel().y * Constant.TILE_SIZE, null);
                 }
-                character.lastDirection = direction;
-
-                doDraw(renderer, character,
-                        (int) (viewPortX + out.x * Constant.TILE_SIZE),
-                        (int) (viewPortY + out.y * Constant.TILE_SIZE), direction);
-            } else {
-                doDraw(renderer, character,
-                        viewPortX + character.getParcel().x * Constant.TILE_SIZE,
-                        viewPortY + character.getParcel().y * Constant.TILE_SIZE, null);
-            }
+            });
         }
     }
 

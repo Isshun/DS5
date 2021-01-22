@@ -24,6 +24,10 @@ import static org.smallbox.faraway.util.Constant.TILE_SIZE;
 
 @ApplicationObject
 public class GDXRenderer {
+    private final static float MAX_ZOOM_IN = 1.5f;
+    private final static float MAX_ZOOM_OUT = 3f;
+    private final static float ZOOM_INTERVAL = 0.125f;
+
     @Inject private LayerManager layerManager;
     @Inject private ApplicationConfig applicationConfig;
     @Inject private FontManager fontManager;
@@ -139,12 +143,12 @@ public class GDXRenderer {
     }
 
     public void zoomOut() {
-        _camera.zoom = Math.min(_camera.zoom + 0.125f, 3f);
+        _camera.zoom = Math.min(_camera.zoom + ZOOM_INTERVAL, MAX_ZOOM_OUT);
         Log.info("Set zoom: " + _camera.zoom);
     }
 
     public void zoomIn() {
-        _camera.zoom = Math.max(_camera.zoom - 0.125f, 1f);
+        _camera.zoom = Math.max(_camera.zoom - ZOOM_INTERVAL, MAX_ZOOM_IN);
         Log.info("Set zoom: " + _camera.zoom);
     }
 

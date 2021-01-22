@@ -24,6 +24,7 @@ import java.util.Queue;
 
 @GameObject
 public class SelectionInfoController extends AbsInfoLuaController<Parcel> {
+    @Inject protected MainPanelController mainPanelController;
     @Inject protected GameSelectionManager gameSelectionManager;
     @Inject private UIEventManager uiEventManager;
     @Inject private ItemModule itemModule;
@@ -121,12 +122,12 @@ public class SelectionInfoController extends AbsInfoLuaController<Parcel> {
 
     @BindLuaAction
     private void onClose(View view) {
-        setVisible(false);
+        mainPanelController.setVisible(true);
     }
 
     @GameShortcut(key = Input.Keys.ESCAPE)
     private void onClose() {
-        setVisible(false);
+        mainPanelController.setVisible(true);
     }
 
 }

@@ -115,6 +115,7 @@ public class UIManager {
             callMethodAnnotatedBy(controller, AfterApplicationLayerInit.class);
             callMethodAnnotatedBy(controller, OnGameLayerInit.class);
             callMethodAnnotatedBy(controller, AfterGameLayerInit.class);
+            callMethodAnnotatedBy(controller, OnGameStart.class);
         });
     }
 

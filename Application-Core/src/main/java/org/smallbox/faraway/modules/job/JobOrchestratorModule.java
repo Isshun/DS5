@@ -13,10 +13,7 @@ import org.smallbox.faraway.modules.character.model.CharacterSkillExtra;
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 import org.smallbox.faraway.modules.job.freeTimeJobs.WalkJobFactory;
 
-import java.util.Comparator;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static java.time.temporal.ChronoUnit.MINUTES;
@@ -33,34 +30,64 @@ public class JobOrchestratorModule extends SuperGameModule<JobModel, JobModuleOb
 
     @Override
     public void onGameLongUpdate(Game game) {
-        characterModule.getAll().stream().filter(CharacterModel::isFree).forEach(this::assign);
+        List<JobModel> potentialJobs = jobModule.getAll().stream()
+                .filter(JobModel::isAvailable)
+                .filter(JobModel::isFree)
+                .filter(JobModel::isSubJobCompleted)
+                .filter(JobModel::initConditionalCompleted)
+                .collect(Collectors.toList());
+
+        characterModule.getAll().stream().filter(CharacterModel::isFree).forEach(character -> assign(character, potentialJobs));
     }
 
     /**
      * Looking for best job to fit characters
      */
-    private void assign(CharacterModel character) {
+    private void assign(CharacterModel character, List<JobModel> potentialJobs) {
 
-        List<JobModel> availableJobs = jobModule.getAll().stream()
-                .filter(JobModel::isAvailable)
-                .filter(JobModel::isFree)
-                .filter(JobModel::isSubJobCompleted)
-                .filter(JobModel::initConditionalCompleted)
-                .filter(job -> hasPath(job, character))
-                .sorted(Comparator.comparingInt(job -> WorldHelper.getApproxDistance(job.getTargetParcel(), character.getParcel())))
-                .collect(Collectors.toList());
-
-        // Assign regular job
-        if (character.hasExtra(CharacterSkillExtra.class)) {
-            for (CharacterSkillExtra.SkillEntry skill : character.getExtra(CharacterSkillExtra.class).getAll()) {
-                for (JobModel job : availableJobs) {
-                    if ((job.getSkillType() == null || job.getSkillType() == skill.type)) {
-                        assign(character, job);
-                        return;
-                    }
-                }
+        potentialJobs.forEach(job -> {
+            JobCharacterStatus statusForCharacter = new JobCharacterStatus();
+            statusForCharacter.character = character;
+            statusForCharacter.available = true;
+            statusForCharacter.approxDistance = WorldHelper.getApproxDistance(job.getTargetParcel(), character.getParcel());
+            statusForCharacter.skillLevel = getSkillLevel(character, job.getSkillType());
+            if (!hasPath(job, character)) {
+                statusForCharacter.label = "No path";
+                statusForCharacter.available = false;
             }
-        }
+            job.statusMap.put(character, statusForCharacter);
+        });
+
+//        Collections.sort(potentialJobs, Comparator.comparing(o -> o.getStatusForCharacter(character).skillLevel, j -> j));
+//        Collections.sort(potentialJobs, new Comparator<JobModel>() {
+//            @Override
+//            public int compare(JobModel o1, JobModel o2) {
+//                int skillLevelDiff = o1.getStatusForCharacter(character).skillLevel - o2.getStatusForCharacter(character).skillLevel;
+//                if (skillLevelDiff != 0) {
+//                    return skillLevelDiff;
+//                }
+//                return 0;
+//            }
+//        });
+        potentialJobs.sort(Comparator.comparing(o -> o.getStatusForCharacter(character)));
+
+        potentialJobs.forEach(job -> job.getStatusForCharacter(character).index = potentialJobs.indexOf(job));
+
+        potentialJobs.stream()
+                .filter(job -> job.getStatusForCharacter(character).available).findFirst()
+                .ifPresent(bestJob -> assign(character, bestJob));
+
+        //        // Assign regular job
+//        if (character.hasExtra(CharacterSkillExtra.class)) {
+//            for (CharacterSkillExtra.SkillEntry skill : character.getExtra(CharacterSkillExtra.class).getAll()) {
+//                for (JobModel job : availableJobs) {
+//                    if ((job.getSkillType() == null || job.getSkillType() == skill.type)) {
+//                        assign(character, job);
+//                        return;
+//                    }
+//                }
+//            }
+//        }
 
 //        // Aucun job n'a pu être assigné
 //        // Assign freetime job
@@ -75,8 +102,12 @@ public class JobOrchestratorModule extends SuperGameModule<JobModel, JobModuleOb
 
     }
 
+    private int getSkillLevel(CharacterModel character, CharacterSkillExtra.SkillType skillType) {
+        return Optional.ofNullable(character.getExtra(CharacterSkillExtra.class).get(skillType)).map(skillEntry -> (int) skillEntry.level).orElse(0);
+    }
+
     private boolean hasPath(JobModel job, CharacterModel character) {
-        return pathManager.getPath(job.getTargetParcel(), character.getParcel(), false, false, true) != null;
+        return pathManager.getPath(character.getParcel(), job.getTargetParcel(), false, false, true) != null;
     }
 
     private boolean waitTimeBeforeOptionalExpired(CharacterModel character) {

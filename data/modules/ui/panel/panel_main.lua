@@ -9,13 +9,10 @@ ui:extend({
     debug = true,
     id = "base.ui.right_panel",
     controller = "org.smallbox.faraway.client.controller.MainPanelController",
-    align = {"top", "right"},
-    position = {10, window_pos},
-    background = blue_light_1,
-    size = {window_width, application.screen_height - window_pos - 14},
+    parent = "base.ui.right_panel.sub_controller_full",
     views = {
 
-        { type = "view", size = {window_width, application.screen_height - window_pos - 14}, background = blue_dark_4, views = {
+        { type = "view", views = {
 
             { type = "view", position = {0, 0}, id = "content_list", views = {
 
@@ -58,9 +55,7 @@ ui:extend({
 
             }},
 
-            { type = "view", id = "base.ui.right_panel.sub_controller_full", special = true},
         }},
-
 
     },
 

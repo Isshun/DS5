@@ -19,7 +19,9 @@ import org.smallbox.faraway.util.log.Log;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
+import java.util.Map;
 import java.util.Queue;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class JobModel extends ObjectModel {
@@ -131,6 +133,7 @@ public class JobModel extends ObjectModel {
     protected Object            _data;
     protected boolean           _visible = true;
     protected JobTaskReturn     _lastTaskReturn;
+    protected Map<CharacterModel, JobCharacterStatus> statusMap = new ConcurrentHashMap<>();
     private CharacterSkillExtra.SkillType skillType;
 
     public JobModel(ItemInfo.ItemInfoAction actionInfo, Parcel targetParcel) {
@@ -170,6 +173,7 @@ public class JobModel extends ObjectModel {
     public double                   getQuantity() { return _progress; }
     public double                   getProgress() { return Math.min(_progress, 1); }
     public JobStatus                getStatus() { return status; }
+    public JobCharacterStatus getStatusForCharacter(CharacterModel character) { return statusMap.get(character); }
     public double                   getSpeedModifier() { return 1; }
     public Parcel getTargetParcel() { return _targetParcel; }
     public ItemInfo.ItemInfoAction  getAction() { return _actionInfo; }

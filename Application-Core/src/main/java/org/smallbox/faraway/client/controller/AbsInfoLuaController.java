@@ -70,11 +70,11 @@ public abstract class AbsInfoLuaController<T extends ObjectModel> extends LuaCon
 
     @Override
     public void onControllerUpdate() {
-        if (CollectionUtils.isNotEmpty(listSelected)) {
-            displayObjects();
-        } else {
-            mainPanelController.setVisible(true);
-        }
+//        if (CollectionUtils.isNotEmpty(listSelected)) {
+//            displayObjects();
+//        } else {
+//            mainPanelController.setVisible(true);
+//        }
     }
 
     protected void closePanel() {

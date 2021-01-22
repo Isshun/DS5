@@ -7,30 +7,32 @@ import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.dependencyInjector.annotationEvent.AfterApplicationLayerInit;
+import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnGameStart;
+import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnGameStop;
 import org.smallbox.faraway.core.game.GameFactory;
 import org.smallbox.faraway.core.game.GameManager;
 import org.smallbox.faraway.core.game.service.applicationConfig.ApplicationConfig;
 
 @ApplicationObject
 public class MenuMainController extends LuaController {
-
-    @Inject
-    private GameManager gameManager;
-
-    @Inject
-    private GameFactory gameFactory;
-
-    @Inject
-    private ApplicationConfig applicationConfig;
-
-    @Inject
-    private MenuSettingsController menuSettingsController;
-
-    @Inject
-    private MenuPlanetController menuPlanetController;
+    @Inject private GameManager gameManager;
+    @Inject private GameFactory gameFactory;
+    @Inject private ApplicationConfig applicationConfig;
+    @Inject private MenuSettingsController menuSettingsController;
+    @Inject private MenuPlanetController menuPlanetController;
 
     @AfterApplicationLayerInit
     private void afterApplicationLayerInit() {
+        setVisible(true);
+    }
+
+    @OnGameStart
+    private void onGameStart() {
+        setVisible(false);
+    }
+
+    @OnGameStop
+    private void onGameStop() {
         setVisible(true);
     }
 
