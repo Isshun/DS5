@@ -15,18 +15,10 @@ import org.smallbox.faraway.core.game.save.GameSaveType;
 
 @GameObject
 public class GameMenuPauseController extends LuaController {
-
-    @Inject
-    private Game game;
-
-    @Inject
-    private GameManager gameManager;
-
-    @Inject
-    private GameSaveManager gameSaveManager;
-
-    @Inject
-    private GameMenuLoadController gameMenuLoadController;
+    @Inject private Game game;
+    @Inject private GameManager gameManager;
+    @Inject private GameSaveManager gameSaveManager;
+    @Inject private GameMenuLoadController gameMenuLoadController;
 
     @BindLua
     private View viewPause;

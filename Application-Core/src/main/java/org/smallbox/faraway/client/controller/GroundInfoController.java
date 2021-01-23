@@ -23,7 +23,7 @@ import java.util.Optional;
 import java.util.Queue;
 
 @GameObject
-public class SelectionInfoController extends AbsInfoLuaController<Parcel> {
+public class GroundInfoController extends AbsInfoLuaController<Parcel> {
     @Inject protected MainPanelController mainPanelController;
     @Inject protected GameSelectionManager gameSelectionManager;
     @Inject private UIEventManager uiEventManager;

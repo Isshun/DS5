@@ -32,6 +32,7 @@ import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.module.world.model.Parcel;
 import org.smallbox.faraway.modules.character.CharacterModule;
 import org.smallbox.faraway.modules.character.model.CharacterInventoryExtra;
+import org.smallbox.faraway.modules.character.model.PathModel;
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 import org.smallbox.faraway.modules.job.JobModel;
 import org.smallbox.faraway.util.Constant;
@@ -109,33 +110,37 @@ public class CharacterLayer extends BaseLayer {
             int viewPortY = viewport.getPosY();
             CharacterPositionCommon position = character.position;
 
-            Optional.ofNullable(character.getPath()).ifPresent(path -> {
-                if (position.pathLength > 0) {
-                    Vector2 out = new Vector2();
-                    path.myCatmull.valueAt(out, (float) character._moveProgress2 / position.pathLength);
-                    Vector2 dout = new Vector2();
-                    path.myCatmull.derivativeAt(dout, (float) character._moveProgress2 / position.pathLength);
+            PathModel path = character.getPath();
+            if (path != null) {
+                Vector2 out = new Vector2();
+                path.myCatmull.valueAt(out, (float) character._moveProgress2 / position.pathLength);
 
-                    MovableModel.Direction direction;
-                    if (dout.angleDeg() < 45 || dout.angleDeg() > 315) {
-                        direction = MovableModel.Direction.RIGHT;
-                    } else if (dout.angleDeg() > 135 && dout.angleDeg() < 225) {
-                        direction = MovableModel.Direction.LEFT;
-                    } else {
-                        direction = character.lastDirection;
-                    }
-                    character.lastDirection = direction;
+                character.lastDirection = getDirection(character, position, path);
 
-                    doDraw(renderer, character,
-                            (int) (viewPortX + out.x * Constant.TILE_SIZE),
-                            (int) (viewPortY + out.y * Constant.TILE_SIZE), direction);
-                } else {
-                    doDraw(renderer, character,
-                            viewPortX + character.getParcel().x * Constant.TILE_SIZE,
-                            viewPortY + character.getParcel().y * Constant.TILE_SIZE, null);
-                }
-            });
+                doDraw(renderer, character,
+                        (int) (viewPortX + out.x * Constant.TILE_SIZE),
+                        (int) (viewPortY + out.y * Constant.TILE_SIZE), character.lastDirection);
+            } else {
+                doDraw(renderer, character,
+                        viewPortX + character.getParcel().x * Constant.TILE_SIZE,
+                        viewPortY + character.getParcel().y * Constant.TILE_SIZE, null);
+            }
         }
+    }
+
+    private MovableModel.Direction getDirection(CharacterModel character, CharacterPositionCommon position, PathModel path) {
+        Vector2 dout = new Vector2();
+        path.myCatmull.derivativeAt(dout, (float) character._moveProgress2 / position.pathLength);
+
+        MovableModel.Direction direction;
+        if (dout.angleDeg() < 45 || dout.angleDeg() > 315) {
+            direction = MovableModel.Direction.RIGHT;
+        } else if (dout.angleDeg() > 135 && dout.angleDeg() < 225) {
+            direction = MovableModel.Direction.LEFT;
+        } else {
+            direction = character.lastDirection;
+        }
+        return direction;
     }
 
     private void doDraw(GDXRenderer renderer, CharacterModel character, int posX, int posY, MovableModel.Direction dout) {

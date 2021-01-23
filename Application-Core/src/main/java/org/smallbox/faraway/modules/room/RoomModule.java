@@ -21,12 +21,8 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 @GameObject
 public class RoomModule extends SuperGameModule {
-
-    @Inject
-    private WorldModule worldModule;
-
-    @Inject
-    private WeatherModule weatherModule;
+    @Inject private WorldModule worldModule;
+    @Inject private WeatherModule weatherModule;
 
     private final List<RoomModel>                               _exteriorRooms = new ArrayList<>();
     private final Collection<RoomModel>                         _rooms = new ConcurrentLinkedQueue<>();

@@ -22,12 +22,8 @@ import java.util.concurrent.TimeUnit;
 
 @GameObject
 public class Game {
-
-    @Inject
-    private GameTaskManager gameTaskManager;
-
-    @Inject
-    private GameTime gameTime;
+    @Inject private GameTaskManager gameTaskManager;
+    @Inject private GameTime gameTime;
 
     public static long interval = 1000;
     private final ApplicationConfig config;

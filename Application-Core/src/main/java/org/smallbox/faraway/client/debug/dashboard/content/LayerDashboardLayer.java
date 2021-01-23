@@ -9,12 +9,8 @@ import org.smallbox.faraway.core.game.Game;
 
 @GameObject
 public class LayerDashboardLayer extends DashboardLayerBase {
-
-    @Inject
-    private LayerManager layerManager;
-
-    @Inject
-    private Game game;
+    @Inject private LayerManager layerManager;
+    @Inject private Game game;
 
     @Override
     protected void onDraw(GDXRenderer renderer, int frame) {

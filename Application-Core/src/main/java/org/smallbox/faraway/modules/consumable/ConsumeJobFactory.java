@@ -12,12 +12,8 @@ import static org.smallbox.faraway.modules.job.JobTaskReturn.TASK_CONTINUE;
 
 @GameObject
 public class ConsumeJobFactory {
-
-    @Inject
-    private ConsumableModule consumableModule;
-
-    @Inject
-    private Game game;
+    @Inject private ConsumableModule consumableModule;
+    @Inject private Game game;
 
     public ConsumeJob create(ConsumableItem consumable, double totalDuration, ConsumeJob.OnConsumeCallback callback) {
         ConsumeJob job = new ConsumeJob();

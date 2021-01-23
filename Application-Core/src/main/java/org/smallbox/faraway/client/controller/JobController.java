@@ -8,26 +8,18 @@ import org.smallbox.faraway.client.ui.engine.views.widgets.UIList;
 import org.smallbox.faraway.core.GameShortcut;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
-import org.smallbox.faraway.core.dependencyInjector.annotationEvent.AfterGameLayerInit;
 import org.smallbox.faraway.modules.character.CharacterModule;
 import org.smallbox.faraway.modules.job.JobCharacterStatus;
 import org.smallbox.faraway.modules.job.JobModel;
 import org.smallbox.faraway.modules.job.JobModule;
 
-import java.time.format.DateTimeFormatter;
-import java.util.Optional;
-
 @GameObject
 public class JobController extends LuaController {
+    @Inject private MainPanelController mainPanelController;
     @Inject private CharacterModule characterModule;
     @Inject private JobModule jobModule;
-    @BindLua private UIList listJobs;
-    @Inject private MainPanelController mainPanelController;
 
-    @AfterGameLayerInit
-    public void afterGameLayerInit() {
-        mainPanelController.addShortcut("Jobs", this);
-    }
+    @BindLua private UIList listJobs;
 
     @Override
     public void onControllerUpdate() {
@@ -35,7 +27,6 @@ public class JobController extends LuaController {
             UIFrame frame = listJobs.createFromTemplate(UIFrame.class);
             frame.findLabel("lb_job").setText(job.getMainLabel());
             frame.findLabel("lb_status").setText(String.valueOf(job.getStatus()));
-            Optional.ofNullable(job.getBlocked()).ifPresent(localDateTime -> frame.findLabel("lb_blocked").setText(localDateTime.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)));
             frame.findImage("img_job").setImage(job.getIcon());
 
             UIList listStatus = (UIList) frame.find("list_status");

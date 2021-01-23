@@ -13,9 +13,7 @@ import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 public class UILayer extends BaseLayer {
 
     public View _debugView;
-
-    @Inject
-    private UIManager uiManager;
+    @Inject private UIManager uiManager;
 
     @Override
     protected void onDraw(GDXRenderer renderer, Viewport viewport, double animProgress, int frame) {

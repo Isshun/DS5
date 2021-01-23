@@ -19,15 +19,9 @@ import org.smallbox.faraway.util.Constant;
 public class GameSelectionLayer extends BaseLayer {
     private final Color COLOR1 = new Color(0x4569d5ff);
     private final Color COLOR2 = new Color(0x01013a55);
-
-    @Inject
-    private GameEventManager gameEventManager;
-
-    @Inject
-    private GameActionManager gameActionManager;
-
-    @Inject
-    private Viewport viewport;
+    @Inject private GameEventManager gameEventManager;
+    @Inject private GameActionManager gameActionManager;
+    @Inject private Viewport viewport;
 
     @Override
     public void onGameStart(Game game) {
@@ -48,10 +42,10 @@ public class GameSelectionLayer extends BaseLayer {
 //        renderer.drawRectangleUI(fromX, fromY, width, height, COLOR2, true);
 //        renderer.drawRectangleUI(fromX, fromY, width, height, COLOR1, false);
 
-        int fromMapX = viewport.getWorldPosX(fromX);
-        int fromMapY = viewport.getWorldPosY(fromY);
-        int toMapX = viewport.getWorldPosX(fromX + width);
-        int toMapY = viewport.getWorldPosY(fromY + height);
+        int fromMapX = Math.min(viewport.getWorldPosX(fromX), viewport.getWorldPosX(fromX + width));
+        int fromMapY = Math.min(viewport.getWorldPosY(fromY), viewport.getWorldPosY(fromY + height));
+        int toMapX = Math.max(viewport.getWorldPosX(fromX), viewport.getWorldPosX(fromX + width));
+        int toMapY = Math.max(viewport.getWorldPosY(fromY), viewport.getWorldPosY(fromY + height));
 
         for (int x = fromMapX; x <= toMapX; x++) {
             for (int y = fromMapY; y <= toMapY; y++) {

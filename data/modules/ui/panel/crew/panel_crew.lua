@@ -34,7 +34,7 @@ ui:extend({
 --            0x42ad20ff
 --            0x0cb797ff
             { type = "list", id = "list_crew", position = {10, 10}, spacing = 10, template = {
-                { type = "view", size = {370, 55}, background = blue_dark_3, views = {
+                { type = "view", size = {panel_width - 30, 55}, background = blue_dark_3, views = {
 --                    { type = "label", id = "lb_character_name", text_font = "sf", outlined = true, text_color = 0xffb324ff, text_size = 20, size = {300, 28}, position = {8, 10}},
 --                    { type = "label", id = "lb_character_skill", text_font = "sf", outlined = true, background = 0xffb324ff, text_size = 12, position = {8, 33}, padding = {1, 1}, text = "CRAFTER"},
 --                    { type = "label", id = "lb_character_job", text_font = "sf", outlined = true, text_color = 0xffb324ff, text_size = 12, size = {300, 28}, position = {8, 28}, padding = {8, 0}, text = "USE WOOD BED"},
@@ -43,7 +43,7 @@ ui:extend({
                     { type = "label", id = "lb_character_skill", visible = false, text_font = "sui", outlined = true, background = 0xffb324ff, text_size = 12, position = {8, 33}, padding = {1, 1}, text = ""},
                     { type = "label", id = "lb_character_job", text_font = "sui", outlined = true, text_color = 0xffb324ff, text_size = 10, size = {300, 28}, position = {8, 28}, padding = {8, 0}, text = ""},
 
-                    { type = "grid", columns = 4, column_width = gauge_spacing, row_height = gauge_spacing, position = {272, 7}, views = {
+                    { type = "grid", columns = 4, column_width = gauge_spacing, row_height = gauge_spacing, position = {panel_width - 128, 7}, views = {
 
                         { type = "view", position = {0, 0}, views = {
                             {type = "view", size = {gauge_width, gauge_width}, background = blue_dark_5},

@@ -21,15 +21,9 @@ import org.smallbox.faraway.util.log.Log;
 public class ParticleLayer extends BaseLayer {
     private ParticleEffect effect;
     private String name;
-
-    @Inject
-    private WeatherModule weatherModule;
-
-    @Inject
-    private Game game;
-
-    @Inject
-    private AssetManager assetManager;
+    @Inject private WeatherModule weatherModule;
+    @Inject private Game game;
+    @Inject private AssetManager assetManager;
 
     @Override
     public void onDraw(GDXRenderer renderer, Viewport viewport, double animProgress, int frame) {

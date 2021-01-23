@@ -13,9 +13,7 @@ import java.util.UUID;
 
 @ApplicationObject
 public class GameInfoFactory {
-
-    @Inject
-    private Data data;
+    @Inject private Data data;
 
     public JSONObject toJSON(GameInfo gameInfo) {
         JSONObject json = new JSONObject();

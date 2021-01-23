@@ -1,6 +1,7 @@
 package org.smallbox.faraway.client.manager.input;
 
 import com.badlogic.gdx.InputProcessor;
+import org.apache.commons.collections4.CollectionUtils;
 import org.smallbox.faraway.client.GameEventManager;
 import org.smallbox.faraway.client.debug.DebugService;
 import org.smallbox.faraway.client.gameAction.GameActionManager;
@@ -18,6 +19,7 @@ import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.engine.GameEventListener;
 import org.smallbox.faraway.core.game.GameManager;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
+import org.smallbox.faraway.core.module.world.model.Parcel;
 
 import static com.badlogic.gdx.Input.Buttons;
 import static com.badlogic.gdx.Input.Keys;
@@ -168,19 +170,25 @@ public class InputManager implements InputProcessor {
 
     @Override
     public boolean touchUp(int x, int y, int pointer, int button) {
+        Parcel parcel = WorldHelper.getParcel(viewport.getWorldPosX(x), viewport.getWorldPosY(y), viewport.getFloor());
 
         if (debugService.isDebugMode()) {
             debugService.click(x, y);
             return false;
         }
 
-        else if (!moveMoved(x, y) && !gameActionManager.hasAction() && button == Buttons.RIGHT) {
-            gameContextMenuManager.open(WorldHelper.getParcel(viewport.getWorldPosX(x), viewport.getWorldPosY(y), viewport.getFloor()), x, y);
+        else if (!moveMoved(x, y) && gameContextMenuManager.hasContent(parcel) && !gameActionManager.hasAction() && button == Buttons.RIGHT) {
+            gameContextMenuManager.open(parcel, x, y);
             return true;
         }
 
         else if (!moveMoved(x, y) && gameContextMenuManager.getMenu() != null && button == Buttons.LEFT) {
             gameContextMenuManager.click(x, y);
+            return true;
+        }
+
+        else if (!moveMoved(x, y) && CollectionUtils.isNotEmpty(gameSelectionManager.getSelected()) && button == Buttons.RIGHT) {
+            gameSelectionManager.clear();
             return true;
         }
 

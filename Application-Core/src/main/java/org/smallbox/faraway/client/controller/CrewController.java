@@ -37,11 +37,6 @@ public class CrewController extends LuaController {
 
     @BindLua private UIList listCrew;
 
-    @AfterGameLayerInit
-    public void afterGameLayerInit() {
-        mainPanelController.addShortcut("Crew", this);
-    }
-
     @Override
     public void onControllerUpdate() {
         if (listCrew != null) {

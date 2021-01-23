@@ -1,12 +1,15 @@
 {
   "debug": {
-    "actionOnLoad": "NEW_GAME",
+    "actionOnLoad": "LAST_SAVE",
     "scenario": "data/scenarios/test1.json",
     "log": true,
     "logFontSize": 16,
     "logLineNumber": 50,
     "logLineLength": 600,
     "logLevel": "INFO"
+  },
+  "ui": {
+    "panelWidth": 400
   },
   "screen": {
     "position": [20, 20],

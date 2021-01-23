@@ -11,9 +11,7 @@ import java.util.Comparator;
 
 @GameObject
 public class ModuleDashboardLayer extends DashboardLayerBase {
-
-    @Inject
-    private Game game;
+    @Inject private Game game;
 
     @Override
     protected void onDraw(GDXRenderer renderer, int frame) {

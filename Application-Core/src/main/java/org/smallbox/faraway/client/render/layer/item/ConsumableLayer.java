@@ -23,15 +23,9 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 @GameObject
 @GameLayer(level = LayerManager.CONSUMABLE_LAYER_LEVEL, visible = true)
 public class ConsumableLayer extends BaseLayer {
-
-    @Inject
-    private SpriteManager spriteManager;
-
-    @Inject
-    private ConsumableModule consumableModule;
-
-    @Inject
-    private GDXRenderer gdxRenderer;
+    @Inject private SpriteManager spriteManager;
+    @Inject private ConsumableModule consumableModule;
+    @Inject private GDXRenderer gdxRenderer;
 
     private final Queue<TagDraw> tags = new ConcurrentLinkedQueue<>();
 

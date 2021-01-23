@@ -37,9 +37,6 @@ public class AreaPanelController extends LuaController {
 
     @AfterGameLayerInit
     public void afterGameLayerInit() {
-
-        mainPanelController.addShortcut("Areas", this);
-
         dependencyManager.getGameDependencies().stream()
                 .map(dependencyInfo -> dependencyInfo.dependency)
                 .filter(dependency -> dependency.getClass().isAnnotationPresent(AreaTypeInfo.class))

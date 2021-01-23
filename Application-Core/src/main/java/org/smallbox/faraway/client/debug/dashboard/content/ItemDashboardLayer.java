@@ -9,9 +9,7 @@ import org.smallbox.faraway.modules.item.UsableItem;
 
 @GameObject
 public class ItemDashboardLayer extends DashboardLayerBase {
-
-    @Inject
-    private ItemModule itemModule;
+    @Inject private ItemModule itemModule;
 
     @Override
     protected void onDraw(GDXRenderer renderer, int frame) {

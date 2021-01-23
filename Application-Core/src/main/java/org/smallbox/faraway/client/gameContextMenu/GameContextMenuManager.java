@@ -11,9 +11,7 @@ import java.util.Collection;
 
 @GameObject
 public class GameContextMenuManager {
-
-    @Inject
-    private DependencyManager dependencyManager;
+    @Inject private DependencyManager dependencyManager;
 
     private Collection<GameContextMenuAction> actions;
     private GameContextMenu menu;
@@ -27,12 +25,16 @@ public class GameContextMenuManager {
         if (parcel != null) {
             GameContextMenu menu = new GameContextMenu(mouseX, mouseY);
             actions.stream()
-                    .filter(action -> action.check(parcel, mouseX, mouseY))
+                    .filter(action -> action.check(parcel))
                     .forEach(action -> menu.addEntry(action.getLabel(), mouseX, mouseY, action.getRunnable(parcel, mouseX, mouseY)));
             if (CollectionUtils.isNotEmpty(menu.getEntries())) {
                 this.menu = menu;
             }
         }
+    }
+
+    public boolean hasContent(Parcel parcel) {
+        return parcel != null && actions.stream().anyMatch(action -> action.check(parcel));
     }
 
     public GameContextMenu getMenu() {

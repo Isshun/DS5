@@ -4,6 +4,7 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.ObjectUtils;
 import org.smallbox.faraway.client.controller.AbsInfoLuaController;
 import org.smallbox.faraway.client.controller.LuaController;
+import org.smallbox.faraway.client.controller.MainPanelController;
 import org.smallbox.faraway.client.gameAction.GameActionManager;
 import org.smallbox.faraway.client.render.LayerManager;
 import org.smallbox.faraway.common.ObjectModel;
@@ -41,6 +42,7 @@ public class GameSelectionManager extends GameManager {
     @Inject private ItemModule itemModule;
     @Inject private StructureModule structureModule;
     @Inject private DependencyManager dependencyManager;
+    @Inject private MainPanelController mainPanelController;
 
 //    private Collection<SelectionParcelListener> selectionParcelListeners = new ConcurrentLinkedQueue<>();
     private final Collection<SelectionAreaListener> selectionAreaListeners = new ConcurrentLinkedQueue<>();
@@ -81,6 +83,11 @@ public class GameSelectionManager extends GameManager {
 
     public <T extends ObjectModel> T getSelected(Class<T> cls) {
         return _selected.size() == 1 ? _selected.stream().filter(cls::isInstance).map(cls::cast).findFirst().orElse(null) : null;
+    }
+
+    public void clear() {
+        _selected.clear();
+        mainPanelController.openLast();
     }
 
     public interface OnSelectionListener {

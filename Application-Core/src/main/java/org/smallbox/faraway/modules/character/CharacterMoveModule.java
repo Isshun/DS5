@@ -20,21 +20,11 @@ import java.util.Optional;
 
 @GameObject
 public class CharacterMoveModule extends SuperGameModule2<CharacterModuleObserver> {
-
-    @Inject
-    private CharacterModule characterModule;
-
-    @Inject
-    private ApplicationConfig applicationConfig;
-
-    @Inject
-    private PathManager pathManager;
-
-    @Inject
-    private GameManager gameManager;
-
-    @Inject
-    private Game game;
+    @Inject private CharacterModule characterModule;
+    @Inject private ApplicationConfig applicationConfig;
+    @Inject private PathManager pathManager;
+    @Inject private GameManager gameManager;
+    @Inject private Game game;
 
 //    private Map<CharacterModel, PathModel> paths = new ConcurrentHashMap<>();
 

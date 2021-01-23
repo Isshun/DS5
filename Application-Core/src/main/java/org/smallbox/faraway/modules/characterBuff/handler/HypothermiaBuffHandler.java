@@ -7,9 +7,7 @@ import org.smallbox.faraway.modules.weather.WeatherModule;
 
 @GameObject
 public class HypothermiaBuffHandler extends BuffHandler {
-
-    @Inject
-    private WeatherModule weatherModule;
+    @Inject private WeatherModule weatherModule;
 
     @Override
     protected int OnGetLevel(CharacterModel character) {

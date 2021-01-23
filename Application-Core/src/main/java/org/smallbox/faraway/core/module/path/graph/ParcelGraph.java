@@ -42,7 +42,7 @@ public class ParcelGraph implements IndexedGraph<Parcel> {
         connections.get(source).clear();
 
         if (source.isWalkable()) {
-            WorldHelper.getParcelAround(source, SurroundedPattern.X_CROSS, Parcel::isWalkable, target -> createConnection(source, target));
+            WorldHelper.getParcelAround(source, SurroundedPattern.X_SQUARE, Parcel::isWalkable, target -> createConnection(source, target));
         }
     }
 

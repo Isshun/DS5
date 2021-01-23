@@ -20,27 +20,13 @@ import java.util.Optional;
 
 @GameObject
 public class PlantModule extends GenericGameModule<PlantItem> {
-
-    @Inject
-    private Data data;
-
-    @Inject
-    private WorldModule worldModule;
-
-    @Inject
-    private ConsumableModule consumableModule;
-
-    @Inject
-    private JobModule jobModule;
-
-    @Inject
-    private AreaModule areaModule;
-
-    @Inject
-    private GameTaskManager gameTaskManager;
-
-    @Inject
-    private HarvestJobFactory harvestJobFactory;
+    @Inject private Data data;
+    @Inject private WorldModule worldModule;
+    @Inject private ConsumableModule consumableModule;
+    @Inject private JobModule jobModule;
+    @Inject private AreaModule areaModule;
+    @Inject private GameTaskManager gameTaskManager;
+    @Inject private HarvestJobFactory harvestJobFactory;
 
     @OnInit
     public void init() {

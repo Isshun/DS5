@@ -18,24 +18,12 @@ import java.util.stream.Collectors;
 
 @GameObject
 public class CharacterBuffModule extends GenericGameModule<BuffModel> {
-
-    @Inject
-    private Game game;
-
-    @Inject
-    private Data data;
-
-    @Inject
-    private CharacterModule characterModule;
-
-    @Inject
-    private GameTime gameTime;
-
-    @Inject
-    private CharacterNeedModule characterNeedModule;
-
-    @Inject
-    private DependencyManager dependencyManager;
+    @Inject private Game game;
+    @Inject private Data data;
+    @Inject private CharacterModule characterModule;
+    @Inject private GameTime gameTime;
+    @Inject private CharacterNeedModule characterNeedModule;
+    @Inject private DependencyManager dependencyManager;
 
     private Collection<BuffFactory> buffFactories;
 

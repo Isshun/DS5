@@ -10,9 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class DashboardLayerBase {
-
-    @Inject
-    private AssetManager assetManager;
+    @Inject private AssetManager assetManager;
 
     private int index;
     private int max = 0;

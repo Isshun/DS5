@@ -15,9 +15,7 @@ import org.smallbox.faraway.util.log.Log;
 
 @GameObject
 public class CharacterInfoSkillsController extends LuaController {
-
-    @Inject
-    private UIEventManager uiEventManager;
+    @Inject private UIEventManager uiEventManager;
 
     @BindLua
     private UIList listSkills;

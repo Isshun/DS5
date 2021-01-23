@@ -29,21 +29,11 @@ public class UIEventManager implements EventManager {
     private UIDropDown                      _currentDropDown;
     private final Map<View, Object>               _dropViews;
     private OnDragListener                  _dragListener;
-
-    @Inject
-    private LayerManager layerManager;
-
-    @Inject
-    private GameSelectionManager gameSelectionManager;
-
-    @Inject
-    private InputManager inputManager;
-
-    @Inject
-    private UIManager uiManager;
-
-    @Inject
-    private GameManager gameManager;
+    @Inject private LayerManager layerManager;
+    @Inject private GameSelectionManager gameSelectionManager;
+    @Inject private InputManager inputManager;
+    @Inject private UIManager uiManager;
+    @Inject private GameManager gameManager;
 
     public UIEventManager() {
         _onDragListeners = new ConcurrentSkipListMap<>();

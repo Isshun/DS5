@@ -13,18 +13,10 @@ import org.smallbox.faraway.modules.storage.StorageArea;
 
 @GameObject
 public class AreaSerializer extends GameSerializer {
-
-    @Inject
-    private Game game;
-
-    @Inject
-    private Data data;
-
-    @Inject
-    private AreaModule areaModule;
-
-    @Inject
-    private SQLManager sqlManager;
+    @Inject private Game game;
+    @Inject private Data data;
+    @Inject private AreaModule areaModule;
+    @Inject private SQLManager sqlManager;
 
     @Override
     public void onSave(SQLManager sqlManager) {

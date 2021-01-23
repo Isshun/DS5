@@ -14,18 +14,10 @@ import org.smallbox.faraway.util.log.Log;
 
 @GameObject
 public class Viewport {
-
-    @Inject
-    private ApplicationConfig applicationConfig;
-
-    @Inject
-    private Game game;
-
-    @Inject
-    private GameManager gameManager;
-
-    @Inject
-    private GDXRenderer gdxRenderer;
+    @Inject private ApplicationConfig applicationConfig;
+    @Inject private Game game;
+    @Inject private GameManager gameManager;
+    @Inject private GDXRenderer gdxRenderer;
 
     private final static int ANIM_FRAME = 10;
     public final static float[] ZOOM_LEVELS = new float[]{
@@ -59,12 +51,11 @@ public class Viewport {
         _width = applicationConfig.getResolutionWidth() - Constant.PANEL_WIDTH;
         _height = applicationConfig.getResolutionHeight();
         _floor = game.getInfo().worldFloors - 1;
-        centerOnMap(game.getInfo().worldWidth / 2, game.getInfo().worldHeight / 2);
+//        centerOnMap(game.getInfo().worldWidth / 2, game.getInfo().worldHeight / 2);
     }
 
     public void centerOnMap(int parcelX, int parcelY) {
-        _posX = (_width / 2) - (parcelX * Constant.TILE_SIZE);
-        _posY = (_height / 2) - (parcelY * Constant.TILE_SIZE);
+        setPosition((_width / 2) - (parcelX * Constant.TILE_SIZE), (_height / 2) - (parcelY * Constant.TILE_SIZE));
     }
 
     public void update(int x, int y) {
@@ -90,6 +81,21 @@ public class Viewport {
         _posX = x;
         _posY = y;
 
+        _worldX = (int) Math.max(0, (-_posX / Constant.TILE_SIZE) * getScale());
+        _worldY = (int) Math.max(0, (-_posY / Constant.TILE_SIZE) * getScale());
+    }
+
+    public void setPositionX(int x) {
+        _posX = x;
+        _worldX = (int) Math.max(0, (-_posX / Constant.TILE_SIZE) * getScale());
+    }
+
+    public void setPositionY(int y) {
+        _posY = y;
+        _worldY = (int) Math.max(0, (-_posY / Constant.TILE_SIZE) * getScale());
+    }
+
+    public void refresh() {
         _worldX = (int) Math.max(0, (-_posX / Constant.TILE_SIZE) * getScale());
         _worldY = (int) Math.max(0, (-_posY / Constant.TILE_SIZE) * getScale());
     }
@@ -147,8 +153,7 @@ public class Viewport {
 //    }
 
     public void move(int x, int y) {
-        _posX += (int) ((x * (1 + (1 - 0.5))) * 1);
-        _posY += (int) ((y * (1 + (1 - 0.5))) * 1);
+        setPosition(_posX + (int) ((x * (1 + (1 - 0.5))) * 1), _posY + (int) ((y * (1 + (1 - 0.5))) * 1));
     }
 
     public int getFloor() {
@@ -177,9 +182,10 @@ public class Viewport {
     }
 
     public boolean hasParcel(Parcel parcel) {
-        return parcel != null
-                && parcel.z == _floor
-                && parcel.x >= _worldX && parcel.x <= _worldX + 50
-                && parcel.y >= _worldY && parcel.y <= _worldY + 50;
+        return true;
+//        return parcel != null
+//                && parcel.z == _floor
+//                && parcel.x >= _worldX && parcel.x <= _worldX + 50
+//                && parcel.y >= _worldY && parcel.y <= _worldY + 50;
     }
 }

@@ -11,9 +11,7 @@ import java.util.stream.Collectors;
 
 @GameObject
 public class StorageModuleConsoleInterpreter extends ConsoleInterpreterBase {
-
-    @Inject
-    private StorageModule storageModule;
+    @Inject private StorageModule storageModule;
 
     @ConsoleCommand("list")
     public Collection<String> getList() {

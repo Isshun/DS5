@@ -4,27 +4,20 @@ import com.almworks.sqlite4java.SQLiteConnection;
 import com.almworks.sqlite4java.SQLiteException;
 import org.smallbox.faraway.core.module.world.SQLManager;
 
-import java.util.Collection;
-
-public abstract class GenericGameSerializer<T> extends GameSerializer {
+public abstract class GenericGameSerializer extends GameSerializer {
     public abstract void onCreateTable(SQLiteConnection db) throws SQLiteException;
-    public abstract void onSaveEntry(SQLiteConnection db, T entry) throws SQLiteException;
-    public abstract void onLoadEntry(SQLiteConnection db) throws SQLiteException;
-    public abstract Collection<T> getEntries();
+
+    public abstract void onSave(SQLiteConnection db) throws SQLiteException;
+
+    public abstract void onLoad(SQLiteConnection db) throws SQLiteException;
 
     public void onSave(SQLManager sqlManager) {
         sqlManager.post(db -> {
             try {
                 onCreateTable(db);
-                getEntries().forEach(entry -> {
-                    try {
-                        db.exec("begin transaction");
-                        onSaveEntry(db, entry);
-                        db.exec("end transaction");
-                    } catch (SQLiteException e) {
-                        e.printStackTrace();
-                    }
-                });
+                db.exec("begin transaction");
+                onSave(db);
+                db.exec("end transaction");
             } catch (SQLiteException e) {
                 e.printStackTrace();
             }
@@ -34,7 +27,7 @@ public abstract class GenericGameSerializer<T> extends GameSerializer {
     public void onLoad(SQLManager sqlManager) {
         sqlManager.post(db -> {
             try {
-                onLoadEntry(db);
+                onLoad(db);
             } catch (SQLiteException e) {
                 e.printStackTrace();
             }

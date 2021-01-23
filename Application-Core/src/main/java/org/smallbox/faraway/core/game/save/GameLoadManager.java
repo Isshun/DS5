@@ -20,18 +20,10 @@ import java.util.Comparator;
 
 @ApplicationObject
 public class GameLoadManager {
-    
-    @Inject
-    private DependencyManager dependencyManager;
-
-    @Inject
-    private SQLManager sqlManager;
-
-    @Inject
-    private Data data;
-
-    @Inject
-    private Game game;
+    @Inject private DependencyManager dependencyManager;
+    @Inject private SQLManager sqlManager;
+    @Inject private Data data;
+    @Inject private Game game;
 
     public void load(File gameDirectory, String prefixName, GameSerializerInterface listener) {
         Log.info("============ LOAD GAME ============");

@@ -6,20 +6,16 @@ import com.almworks.sqlite4java.SQLiteStatement;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.game.Data;
-import org.smallbox.faraway.core.game.GenericGameSerializer;
+import org.smallbox.faraway.core.game.GenericGameCollectionSerializer;
 import org.smallbox.faraway.core.module.world.model.StructureItem;
 import org.smallbox.faraway.util.Constant;
 
 import java.util.Collection;
 
 @GameObject
-public class StructureModuleSerializer extends GenericGameSerializer<StructureItem> {
-
-    @Inject
-    private Data data;
-
-    @Inject
-    private StructureModule structureModule;
+public class StructureModuleCollectionSerializer extends GenericGameCollectionSerializer<StructureItem> {
+    @Inject private Data data;
+    @Inject private StructureModule structureModule;
 
     @Override
     public int getModulePriority() { return Constant.MODULE_ITEM_PRIORITY; }

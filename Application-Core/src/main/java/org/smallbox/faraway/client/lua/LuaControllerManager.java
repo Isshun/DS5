@@ -26,9 +26,7 @@ import java.util.stream.Collectors;
 
 @ApplicationObject
 public class LuaControllerManager implements GameObserver {
-
-    @Inject
-    private DependencyManager dependencyManager;
+    @Inject private DependencyManager dependencyManager;
 
     private final Map<String, CompositeView> _viewByControllerName = new HashMap<>();
     private final Map<String, String> fileNameByControllerName = new HashMap<>();

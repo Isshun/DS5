@@ -1,6 +1,7 @@
 package org.smallbox.faraway.core.module.path.graph;
 
 import com.badlogic.gdx.ai.pfa.Connection;
+import com.badlogic.gdx.math.Vector2;
 import org.smallbox.faraway.core.module.world.model.Parcel;
 
 public class ParcelConnection implements Connection<Parcel> {
@@ -21,8 +22,10 @@ public class ParcelConnection implements Connection<Parcel> {
 //        if (_toParcel.hasPlant()) {
 //            return 5;
 //        }
+        return Vector2.dst(_fromParcel.x, _fromParcel.y, _toParcel.x, _toParcel.y);
 
-        return _fromParcel.x == _toParcel.x || _fromParcel.y == _toParcel.y ? 1 : 3;
+//        return _fromParcel.x == _toParcel.x || _fromParcel.y == _toParcel.y ? 1 : 3;
+//        return 1;
     }
 
     @Override

@@ -51,13 +51,11 @@ public class BuildController extends LuaController {
 
     @AfterGameLayerInit
     public void afterGameLayerInit() {
-        mainPanelController.addShortcut("Build", this);
-
-        List<String> categories = List.of("kitchen", "furniture", "power", "industrial", "production", "other");
+        List<String> categories = List.of("structure", "furniture", "kitchen", "power", "industrial", "production", "other");
 
         // Build item map by category
         itemsByCategory = data.getItems().stream()
-                .filter(itemInfo -> StringUtils.equals(itemInfo.type, "item"))
+                .filter(itemInfo -> StringUtils.equals(itemInfo.type, "item") || StringUtils.equals(itemInfo.type, "structure"))
                 .collect(Collectors.groupingBy(itemInfo -> categories.contains(itemInfo.category) ? itemInfo.category : "other"));
 
         // Add item's categories to UI
@@ -197,6 +195,7 @@ public class BuildController extends LuaController {
             CompositeView viewItem = gridItems.createFromTemplate(CompositeView.class);
             viewItem.findLabel("lb_item").setText(entry.label);
             viewItem.findImage("img_item").setImage(ObjectUtils.firstNonNull(entry.icon, entry.defaultGraphic));
+            viewItem.getEvents().setOnClickListener(() -> gameActionManager.setBuildAction(entry));
             gridItems.addNextView(viewItem);
         }));
         gridItems.switchViews();

@@ -11,9 +11,7 @@ import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 
 @ApplicationObject
 public class MenuSettingsController extends LuaController {
-
-    @Inject
-    private MenuMainController menuMainController;
+    @Inject private MenuMainController menuMainController;
 
     @BindLua private View btGraphic;
     @BindLua private View btSound;

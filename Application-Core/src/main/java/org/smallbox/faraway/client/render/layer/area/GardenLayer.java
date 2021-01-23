@@ -22,12 +22,8 @@ import java.util.concurrent.ConcurrentHashMap;
 @GameObject
 @GameLayer(level = LayerManager.AREA_LAYER_LEVEL, visible = true)
 public class GardenLayer extends BaseLayer {
-
-    @Inject
-    private SpriteManager spriteManager;
-
-    @Inject
-    private GardenModule gardenModule;
+    @Inject private SpriteManager spriteManager;
+    @Inject private GardenModule gardenModule;
 
     private final Map<Class, TextureRegion> _textureByClass = new ConcurrentHashMap<>();
     private TextureRegion[] _regions;

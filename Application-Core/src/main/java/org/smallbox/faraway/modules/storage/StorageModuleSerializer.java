@@ -19,21 +19,11 @@ import java.util.List;
 
 @GameObject
 public class StorageModuleSerializer extends GameSerializer {
-
-    @Inject
-    private Game game;
-
-    @Inject
-    private Data data;
-
-    @Inject
-    private AreaModule areaModule;
-
-    @Inject
-    private StorageModule storageModule;
-
-    @Inject
-    private SQLManager sqlManager;
+    @Inject private Game game;
+    @Inject private Data data;
+    @Inject private AreaModule areaModule;
+    @Inject private StorageModule storageModule;
+    @Inject private SQLManager sqlManager;
 
     @Override
     public void onSave(SQLManager sqlManager) {

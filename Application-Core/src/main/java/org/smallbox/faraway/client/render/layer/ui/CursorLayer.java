@@ -1,6 +1,5 @@
 package org.smallbox.faraway.client.render.layer.ui;
 
-import com.badlogic.gdx.graphics.Color;
 import org.smallbox.faraway.client.gameAction.GameActionManager;
 import org.smallbox.faraway.client.gameAction.GameActionMode;
 import org.smallbox.faraway.client.manager.SpriteManager;
@@ -9,12 +8,10 @@ import org.smallbox.faraway.client.render.GDXRenderer;
 import org.smallbox.faraway.client.render.LayerManager;
 import org.smallbox.faraway.client.render.Viewport;
 import org.smallbox.faraway.client.render.layer.BaseLayer;
-import org.smallbox.faraway.client.ui.engine.Colors;
 import org.smallbox.faraway.core.GameLayer;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.game.GameManager;
-import org.smallbox.faraway.core.module.world.model.Parcel;
 import org.smallbox.faraway.modules.character.CharacterModule;
 import org.smallbox.faraway.modules.world.WorldModule;
 import org.smallbox.faraway.util.Constant;
@@ -32,24 +29,11 @@ public class CursorLayer extends BaseLayer {
     @Override
     public void onDraw(GDXRenderer renderer, Viewport viewport, double animProgress, int frame) {
         if (gameActionManager.getMode() != GameActionMode.NONE) {
-            renderer.drawTextUI(inputManager.getMouseX() + 2, inputManager.getMouseY() + 2, 22, Color.BLACK, gameActionManager.getActionLabel(), "sui");
-            renderer.drawTextUI(inputManager.getMouseX() + 1, inputManager.getMouseY() + 1, 22, Color.BLACK, gameActionManager.getActionLabel(), "sui");
-            renderer.drawTextUI(inputManager.getMouseX(), inputManager.getMouseY(), 22, gameActionManager.getActionColor(), gameActionManager.getActionLabel(), "sui");
             renderer.drawRectangleOnMap(
                     viewport.getWorldPosX(inputManager.getMouseX()),
                     viewport.getWorldPosY(inputManager.getMouseY()),
                     Constant.TILE_SIZE - 8, Constant.TILE_SIZE - 8, gameActionManager.getActionColor(), false, 4, 4);
-        }
-
-        if (gameActionManager.getMode() == GameActionMode.BUILD) {
-            Parcel parcel = worldModule.getParcel(
-                    viewport.getWorldPosX(inputManager.getMouseX()),
-                    viewport.getWorldPosY(inputManager.getMouseY()),
-                    viewport.getFloor()
-            );
-            if (parcel != null) {
-                renderer.drawRectangleOnMap(parcel.x, parcel.y, Constant.TILE_SIZE, Constant.TILE_SIZE, Colors.COLOR_CURSOR, true, 0, 0);
-            }
+            renderer.drawTextUI(inputManager.getMouseX() + 10, inputManager.getMouseY() - 10, 22, gameActionManager.getActionColor(), gameActionManager.getActionLabel(), "sui", 2);
         }
     }
 

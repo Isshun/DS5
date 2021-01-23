@@ -18,12 +18,8 @@ import java.util.stream.Collectors;
 public class GardenArea extends AreaModel {
     private Collection<ItemInfo>    _potentialItem;
     private ItemInfo                _currentItem;
-
-    @Inject
-    private GardenModule gardenModule;
-
-    @Inject
-    private Data data;
+    @Inject private GardenModule gardenModule;
+    @Inject private Data data;
 
     @OnInit
     public void init() {

@@ -19,12 +19,8 @@ public class StructureInfoController extends AbsInfoLuaController<StructureItem>
 
     @Inject
     protected GameSelectionManager gameSelectionManager;
-
-    @Inject
-    private UIEventManager uiEventManager;
-
-    @Inject
-    private StructureModule structureModule;
+    @Inject private UIEventManager uiEventManager;
+    @Inject private StructureModule structureModule;
 
     @BindLua private UILabel lbName;
     @BindLua private UILabel lbHealth;

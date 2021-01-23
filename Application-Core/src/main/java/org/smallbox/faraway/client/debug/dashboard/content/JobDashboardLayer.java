@@ -8,9 +8,7 @@ import org.smallbox.faraway.modules.job.JobModule;
 
 @GameObject
 public class JobDashboardLayer extends DashboardLayerBase {
-
-    @Inject
-    private JobModule jobModule;
+    @Inject private JobModule jobModule;
 
     @Override
     protected void onDraw(GDXRenderer renderer, int frame) {

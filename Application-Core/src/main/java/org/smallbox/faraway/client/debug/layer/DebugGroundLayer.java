@@ -15,9 +15,7 @@ import org.smallbox.faraway.modules.world.WorldModule;
 @GameObject
 @GameLayer(level = LayerManager.CONSUMABLE_LAYER_LEVEL + 1, visible = false)
 public class DebugGroundLayer extends BaseLayer {
-
-    @Inject
-    private WorldModule worldModule;
+    @Inject private WorldModule worldModule;
 
     public void    onDraw(GDXRenderer renderer, Viewport viewport, double animProgress, int frame) {
         worldModule.getAll().stream()

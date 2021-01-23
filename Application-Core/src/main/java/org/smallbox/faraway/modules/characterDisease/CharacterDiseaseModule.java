@@ -13,9 +13,7 @@ import java.util.Collection;
 
 @GameObject
 public class CharacterDiseaseModule extends SuperGameModule2<CharacterModuleObserver> {
-
-    @Inject
-    private CharacterModule characterModule;
+    @Inject private CharacterModule characterModule;
 
     @Override
     public void onModuleUpdate(Game game) {

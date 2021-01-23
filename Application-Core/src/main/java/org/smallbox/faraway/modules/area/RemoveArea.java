@@ -9,9 +9,7 @@ import org.smallbox.faraway.core.module.world.model.Parcel;
 @GameObject
 @AreaTypeInfo(label = "Remove area", color = 0xa8a8a8ff)
 public class RemoveArea extends AreaModel {
-
-    @Inject
-    private GameActionManager areaModule;
+    @Inject private GameActionManager areaModule;
 
     @Override
     public boolean isAccepted(ItemInfo itemInfo) {

@@ -139,6 +139,8 @@ public class CharacterInfoController extends AbsInfoLuaController<CharacterModel
 
     @OnGameSelectAction(CharacterModel.class)
     public void onSelectCharacter(CharacterModel character) {
+        mainPanelController.openCrew();
+        setVisible(true);
         display(character);
     }
 

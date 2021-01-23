@@ -13,12 +13,8 @@ import java.util.Queue;
 
 @GameObject
 public class RoomInfoCellController extends AbsInfoLuaController<RoomModel> {
-
-    @Inject
-    private RoomModule roomModule;
-
-    @Inject
-    private Data data;
+    @Inject private RoomModule roomModule;
+    @Inject private Data data;
 
     @Override
     protected void onDisplayUnique(RoomModel room) {

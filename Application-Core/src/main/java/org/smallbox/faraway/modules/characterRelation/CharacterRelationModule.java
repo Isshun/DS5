@@ -10,12 +10,8 @@ import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 
 @GameObject
 public class CharacterRelationModule extends SuperGameModule {
-
-    @Inject
-    private CharacterModule characterModule;
-
-    @Inject
-    private CharacterMoveModule characterMoveModule;
+    @Inject private CharacterModule characterModule;
+    @Inject private CharacterMoveModule characterMoveModule;
 
     @Override
     public void onModuleUpdate(Game game) {

@@ -12,9 +12,7 @@ import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnInit;
 @GameObject
 @GameLayer(level = 999, visible = true)
 public class MiniDashboardLayer extends BaseLayer {
-
-    @Inject
-    private ConsoleDashboardLayer consoleDashboardLayer;
+    @Inject private ConsoleDashboardLayer consoleDashboardLayer;
 
     @OnInit
     public void init() {

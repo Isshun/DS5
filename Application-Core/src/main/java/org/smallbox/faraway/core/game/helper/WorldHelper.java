@@ -384,7 +384,7 @@ public class WorldHelper {
         Optional.ofNullable(getParcel(source.x, source.y + 1, source.z)).filter(condition).ifPresent(callback::onCallback);
 
         // Diagonal
-        if (surroundedPattern == SurroundedPattern.SQUARE) {
+        if (surroundedPattern == SurroundedPattern.SQUARE || surroundedPattern == SurroundedPattern.X_SQUARE) {
             Optional.ofNullable(getParcel(source.x - 1, source.y - 1, source.z)).filter(condition).ifPresent(callback::onCallback);
             Optional.ofNullable(getParcel(source.x + 1, source.y + 1, source.z)).filter(condition).ifPresent(callback::onCallback);
             Optional.ofNullable(getParcel(source.x - 1, source.y + 1, source.z)).filter(condition).ifPresent(callback::onCallback);

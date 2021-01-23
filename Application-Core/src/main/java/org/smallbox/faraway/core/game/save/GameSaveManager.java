@@ -27,27 +27,13 @@ import static java.time.temporal.ChronoUnit.SECONDS;
 
 @ApplicationObject
 public class GameSaveManager {
-    
-    @Inject
-    private GameInfoFactory gameInfoFactory;
-
-    @Inject
-    private SQLManager sqlManager;
-
-    @Inject
-    private Data data;
-
-    @Inject
-    private Game game;
-
-    @Inject
-    private GameTime gameTime;
-
-    @Inject
-    private CharacterModule characterModule;
-
-    @Inject
-    private DependencyManager dependencyManager;
+    @Inject private GameInfoFactory gameInfoFactory;
+    @Inject private SQLManager sqlManager;
+    @Inject private CharacterModule characterModule;
+    @Inject private DependencyManager dependencyManager;
+    @Inject private GameTime gameTime;
+    @Inject private Data data;
+    @Inject private Game game;
 
     public void saveGame(GameSaveType type) {
         long time = System.currentTimeMillis();

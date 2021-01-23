@@ -15,9 +15,7 @@ import java.io.IOException;
 
 @ApplicationObject
 public class ApplicationConfigService {
-
-    @Inject
-    private DependencyManager dependencyManager;
+    @Inject private DependencyManager dependencyManager;
 
     private ApplicationConfig applicationConfig;
 

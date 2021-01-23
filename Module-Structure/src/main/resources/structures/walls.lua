@@ -2,7 +2,7 @@ data:extend({
     { label = "Wall",
         id = "base.wall",
         type = "structure_group",
-        category = "Wall",
+        category = "structure",
         is_wall = true,
         walkable = false
     },
@@ -10,6 +10,7 @@ data:extend({
         id = "base.wood_wall",
         parent = "base.wall",
         type = "structure",
+        category = "structure",
         health = 200,
         receipts = {label = "Sandstone", icon = "[base]/graphics/icons/material/wood.png", components = { item = "base.consumable.wood_log", quantity = 10} },
         permeability = 0.2,
@@ -20,6 +21,7 @@ data:extend({
         id = "base.sandstone_wall",
         parent = "base.wall",
         type = "structure",
+        category = "structure",
         health = 250,
         graphics = {path = "[base]/graphics/items/structures/wall_wood.png", type = "wall"},
         receipts = {label = "Sandstone", icon = "[base]/graphics/icons/material/sandstone.png", components = { item = "base.sandstone_brick", quantity = 10} }
@@ -28,6 +30,7 @@ data:extend({
         id = "base.calcite_wall",
         parent = "base.wall",
         type = "structure",
+        category = "structure",
         health = 350,
         graphics = {path = "[base]/graphics/items/structures/wall_wood.png", type = "wall"},
         receipts = {label = "Calcite", icon = "[base]/graphics/icons/material/calcite.png", components = { item = "base.calcite_brick", quantity = 10} }
@@ -36,6 +39,7 @@ data:extend({
         id = "base.granite_wall",
         parent = "base.wall",
         type = "structure",
+        category = "structure",
         health = 500,
         graphics = {path = "[base]/graphics/items/structures/wall_granite.png", type = "wall"},
         receipts = {label = "Granite", icon = "[base]/graphics/icons/material/granite.png", components = { item = "base.granite_brick", quantity = 10} }
@@ -44,6 +48,7 @@ data:extend({
         id = "base.metal_wall",
         parent = "base.wall",
         type = "structure",
+        category = "structure",
         health = 450,
         graphics = {path = "[base]/graphics/items/structures/wall_wood.png", type = "wall"},
         receipts = {label = "Iron", icon = "[base]/graphics/icons/material/iron.png", components = { item = "base.iron_plate", quantity = 10} }
@@ -52,6 +57,7 @@ data:extend({
         id = "base.carbon_fiber_wall",
         parent = "base.wall",
         type = "structure",
+        category = "structure",
         health = 800,
         graphics = {path = "[base]/graphics/items/structures/wall_wood.png", type = "wall"},
         receipts = {label = "Carbon fiber", icon = "[base]/graphics/icons/material/carbon_fiber.png", components = { item = "base.carbon_fiber_part", quantity = 10} }

@@ -8,9 +8,7 @@ import org.smallbox.faraway.modules.plant.PlantModule;
 
 @GameObject
 public class PlantDashboardLayer extends DashboardLayerBase {
-
-    @Inject
-    private PlantModule plantModule;
+    @Inject private PlantModule plantModule;
 
     @Override
     protected void onDraw(GDXRenderer renderer, int frame) {

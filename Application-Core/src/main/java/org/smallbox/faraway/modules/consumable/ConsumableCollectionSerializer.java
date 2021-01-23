@@ -7,7 +7,7 @@ import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.game.Data;
 import org.smallbox.faraway.core.game.Game;
-import org.smallbox.faraway.core.game.GenericGameSerializer;
+import org.smallbox.faraway.core.game.GenericGameCollectionSerializer;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.module.world.model.ConsumableItem;
 import org.smallbox.faraway.util.Constant;
@@ -15,16 +15,10 @@ import org.smallbox.faraway.util.Constant;
 import java.util.Collection;
 
 @GameObject
-public class ConsumableSerializer extends GenericGameSerializer<ConsumableItem> {
-
-    @Inject
-    private Game game;
-
-    @Inject
-    private Data data;
-
-    @Inject
-    private ConsumableModule consumableModule;
+public class ConsumableCollectionSerializer extends GenericGameCollectionSerializer<ConsumableItem> {
+    @Inject private Game game;
+    @Inject private Data data;
+    @Inject private ConsumableModule consumableModule;
 
     @Override
     public int getModulePriority() { return Constant.MODULE_ITEM_PRIORITY; }

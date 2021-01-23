@@ -19,9 +19,7 @@ import java.util.List;
  * Unload
  */
 public abstract class AbsGameModule extends ModuleBase implements GameObserver {
-
-    @Inject
-    private Game game;
+    @Inject private Game game;
 
     protected int           _updateInterval = 1;
     private final List<Long>      _updateTimeHistory = new ArrayList<>();

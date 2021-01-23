@@ -26,12 +26,8 @@ import java.util.stream.Stream;
 
 @ApplicationObject
 public class GameFileManager {
-
-    @Inject
-    private GameInfoFactory gameInfoFactory;
-
-    @Inject
-    private Game game;
+    @Inject private GameInfoFactory gameInfoFactory;
+    @Inject private Game game;
 
     public List<GameSaveInfo> getSaves() {
         File gameDirectory = FileUtils.getSaveDirectory(game.getInfo().name);

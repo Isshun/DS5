@@ -16,12 +16,8 @@ import org.smallbox.faraway.modules.job.task.TechnicalTask;
 
 @GameObject
 public class BringItemJobFactory {
-
-    @Inject
-    private ConsumableModule consumableModule;
-
-    @Inject
-    private JobModule jobModule;
+    @Inject private ConsumableModule consumableModule;
+    @Inject private JobModule jobModule;
 
     public BringItemJob createJob(BuildJob parent, BuildableMapObject mapObject, ItemInfo itemInfo, int quantity) {
         BringItemJob job = new BringItemJob();

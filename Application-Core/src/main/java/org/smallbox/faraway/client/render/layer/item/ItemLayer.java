@@ -17,12 +17,8 @@ import org.smallbox.faraway.modules.item.UsableItem;
 @GameObject
 @GameLayer(level = LayerManager.ITEM_LAYER_LEVEL, visible = true)
 public class ItemLayer extends BaseLayer {
-
-    @Inject
-    private ItemModule itemModule;
-
-    @Inject
-    private SpriteManager spriteManager;
+    @Inject private ItemModule itemModule;
+    @Inject private SpriteManager spriteManager;
 
     public void onDraw(GDXRenderer renderer, Viewport viewport, double animProgress, int frame) {
         itemModule.getAll().stream()

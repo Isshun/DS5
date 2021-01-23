@@ -13,9 +13,7 @@ import java.util.stream.Collectors;
 
 @GameObject
 public class CharacterModuleConsoleInterpreter extends ConsoleInterpreterBase {
-
-    @Inject
-    private CharacterModule characterModule;
+    @Inject private CharacterModule characterModule;
 
     @ConsoleCommand("list")
     public Collection<String> getList() {

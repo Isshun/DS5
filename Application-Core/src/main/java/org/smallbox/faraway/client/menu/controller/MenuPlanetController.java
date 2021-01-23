@@ -24,24 +24,12 @@ import org.smallbox.faraway.core.game.service.applicationConfig.ApplicationConfi
 
 @ApplicationObject
 public class MenuPlanetController extends LuaController {
-
-    @Inject
-    private GameManager gameManager;
-
-    @Inject
-    private GameFactory gameFactory;
-
-    @Inject
-    private ApplicationConfig applicationConfig;
-
-    @Inject
-    private MenuCrewController menuCrewController;
-
-    @Inject
-    private MenuMainController menuMainController;
-
-    @Inject
-    private Data data;
+    @Inject private GameManager gameManager;
+    @Inject private GameFactory gameFactory;
+    @Inject private ApplicationConfig applicationConfig;
+    @Inject private MenuCrewController menuCrewController;
+    @Inject private MenuMainController menuMainController;
+    @Inject private Data data;
 
     @BindLua private UIList listPlanets;
     @BindLua private UIImage imgPlanet;

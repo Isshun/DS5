@@ -19,15 +19,9 @@ import org.smallbox.faraway.util.Constant;
 public class DebugPathLayer extends BaseLayer {
     private static final Color GREEN = new Color(0x00ff00dd);
     private static final Color RED = new Color(0xff0000ff);
-
-    @Inject
-    private WorldModule worldModule;
-
-    @Inject
-    private CharacterModule characterModule;
-
-    @Inject
-    private PathManager pathManager;
+    @Inject private WorldModule worldModule;
+    @Inject private CharacterModule characterModule;
+    @Inject private PathManager pathManager;
 
     public void    onDraw(GDXRenderer renderer, Viewport viewport, double animProgress, int frame) {
         worldModule.getAll().stream()

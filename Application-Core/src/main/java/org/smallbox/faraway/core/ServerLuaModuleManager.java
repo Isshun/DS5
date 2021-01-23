@@ -18,15 +18,9 @@ import java.io.File;
 
 @ApplicationObject
 public class ServerLuaModuleManager extends LuaModuleManager {
-
-    @Inject
-    private ApplicationConfig applicationConfig;
-
-    @Inject
-    private LuaApplicationModel luaApplicationModel;
-
-    @Inject
-    private Data data;
+    @Inject private ApplicationConfig applicationConfig;
+    @Inject private LuaApplicationModel luaApplicationModel;
+    @Inject private Data data;
 
     @Override
     protected Globals createGlobals(ModuleBase module, File dataDirectory) {
@@ -35,6 +29,7 @@ public class ServerLuaModuleManager extends LuaModuleManager {
                 "application = a\n" +
                 "data = d\n" +
                 "ui = u\n" +
+                "panel_width = " + applicationConfig.ui.panelWidth + "\n" +
                 "math.round = function(num, idp)\n" +
                 "  local mult = 10^(idp or 0)\n" +
                 "  return math.floor(num * mult + 0.5) / mult\n" +

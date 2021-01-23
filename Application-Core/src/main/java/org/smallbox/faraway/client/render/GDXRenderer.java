@@ -75,6 +75,10 @@ public class GDXRenderer {
         return _camera.zoom;
     }
 
+    public void setZoom(float zoom) {
+        _camera.zoom = zoom;
+    }
+
     public float getUiScale() {
         return (float) applicationConfig.uiScale;
     }
@@ -144,11 +148,13 @@ public class GDXRenderer {
 
     public void zoomOut() {
         _camera.zoom = Math.min(_camera.zoom + ZOOM_INTERVAL, MAX_ZOOM_OUT);
+        viewport.refresh();
         Log.info("Set zoom: " + _camera.zoom);
     }
 
     public void zoomIn() {
         _camera.zoom = Math.max(_camera.zoom - ZOOM_INTERVAL, MAX_ZOOM_IN);
+        viewport.refresh();
         Log.info("Set zoom: " + _camera.zoom);
     }
 
@@ -249,32 +255,46 @@ public class GDXRenderer {
     }
 
     public void drawTextUI(int x, int y, int textSize, Color color, String string, boolean outlined) {
-        drawText(x, y, textSize, color, string, _cameraUI, outlined, "font3");
+        drawText(x, y, textSize, color, string, _cameraUI, outlined, "font3", 0);
     }
 
     public void drawTextUI(int x, int y, int textSize, Color color, String string, String font) {
-        drawText(x, y, textSize, color, string, _cameraUI, false, font);
+        drawText(x, y, textSize, color, string, _cameraUI, false, font, 0);
+    }
+
+    public void drawTextUI(int x, int y, int textSize, Color color, String string, String font, int shadow) {
+        drawText(x, y, textSize, color, string, _cameraUI, false, font, shadow);
     }
 
     public void drawTextUI(int x, int y, int textSize, Color color, String string) {
-        drawText(x, y, textSize, color, string, _cameraUI, false, "font3");
+        drawText(x, y, textSize, color, string, _cameraUI, false, "font3", 0);
     }
 
     public void drawText(int x, int y, int textSize, Color color, String string, boolean outlined) {
-        drawText(x, y, textSize, color, string, _camera, outlined, "font3");
+        drawText(x, y, textSize, color, string, _camera, outlined, "font3", 0);
     }
 
     public void drawText(int x, int y, int textSize, Color color, String string) {
-        drawText(x, y, textSize, color, string, _camera, false, "font3");
+        drawText(x, y, textSize, color, string, _camera, false, "font3", 0);
     }
 
-    private void drawText(int x, int y, int textSize, Color color, String string, OrthographicCamera camera, boolean outlined, String font) {
+    private void drawText(int x, int y, int textSize, Color color, String string, OrthographicCamera camera, boolean outlined, String font, int shadow) {
         textSize *= getUiScale();
 
         if (string != null) {
             _batch.begin();
 //            _cameraUI.updateGame();
             _batch.setProjectionMatrix(camera.combined);
+
+            if (shadow != 0) {
+                if (outlined) {
+                    fontManager.getOutlinedFont(font, textSize).setColor(Color.BLACK);
+                    fontManager.getOutlinedFont(font, textSize).draw(_batch, string, x + shadow, y + shadow);
+                } else {
+                    fontManager.getFont(font, textSize).setColor(Color.BLACK);
+                    fontManager.getFont(font, textSize).draw(_batch, string, x + shadow, y + shadow);
+                }
+            }
 
             if (outlined) {
                 fontManager.getOutlinedFont(font, textSize).setColor(color != null ? color : Color.WHITE);

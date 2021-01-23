@@ -21,9 +21,7 @@ import java.util.stream.Collectors;
 @GameObject
 @GameLayer(level = 999, visible = false)
 public class DebugCharacterLayer extends BaseLayer {
-
-    @Inject
-    private CharacterModule characterModule;
+    @Inject private CharacterModule characterModule;
 
     private static final Color BG_COLOR = new Color(0f, 0f, 0f, 0.5f);
 

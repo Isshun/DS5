@@ -23,24 +23,12 @@ import org.smallbox.faraway.util.log.Log;
 
 @GameObject
 public class ItemModule extends SuperGameModule<UsableItem, ItemModuleObserver> {
-
-    @Inject
-    private WorldModule worldModule;
-
-    @Inject
-    private JobModule jobModule;
-
-    @Inject
-    private StructureModule structureModule;
-
-    @Inject
-    private ConsumableModule consumableModule;
-
-    @Inject
-    private BuildJobFactory buildJobFactory;
-
-    @Inject
-    private Data data;
+    @Inject private WorldModule worldModule;
+    @Inject private JobModule jobModule;
+    @Inject private StructureModule structureModule;
+    @Inject private ConsumableModule consumableModule;
+    @Inject private BuildJobFactory buildJobFactory;
+    @Inject private Data data;
 
     /**
      * Crée un UseJob

@@ -18,15 +18,9 @@ import java.util.List;
 @GameObject
 public class ConsoleDashboardLayer extends DashboardLayerBase {
     private final Color BACKGROUND_COLOR = new Color(0x000000aa);
-
-    @Inject
-    private ApplicationConfig applicationConfig;
-
-    @Inject
-    private DebugCommandInterpreterService debugCommandInterpreterService;
-
-    @Inject
-    private DebugService debugService;
+    @Inject private ApplicationConfig applicationConfig;
+    @Inject private DebugCommandInterpreterService debugCommandInterpreterService;
+    @Inject private DebugService debugService;
 
     private int _index;
 

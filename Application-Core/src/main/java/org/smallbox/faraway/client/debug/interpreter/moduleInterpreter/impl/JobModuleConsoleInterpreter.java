@@ -15,15 +15,9 @@ import java.util.stream.Collectors;
 
 @GameObject
 public class JobModuleConsoleInterpreter extends ConsoleInterpreterBase {
-
-    @Inject
-    private JobModule jobModule;
-
-    @Inject
-    private WorldModule worldModule;
-
-    @Inject
-    private CharacterModule characterModule;
+    @Inject private JobModule jobModule;
+    @Inject private WorldModule worldModule;
+    @Inject private CharacterModule characterModule;
 
     @ConsoleCommand("list")
     public Collection<String> getList() {

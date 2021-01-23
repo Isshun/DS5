@@ -13,9 +13,7 @@ import org.smallbox.faraway.modules.item.UsableItem;
 
 @GameObject
 public class ItemInfoFactoryComponentsController extends LuaController {
-
-    @Inject
-    private Data data;
+    @Inject private Data data;
 
     @BindLua
     private UIList listComponents;

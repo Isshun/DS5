@@ -19,15 +19,9 @@ import java.util.Map;
 
 @GameObject
 public class ItemFinderModule extends SuperGameModule {
-
-    @Inject
-    private PathManager pathManager;
-
-    @Inject
-    private ItemModule itemModule;
-
-    @Inject
-    private ApplicationConfig applicationConfig;
+    @Inject private PathManager pathManager;
+    @Inject private ItemModule itemModule;
+    @Inject private ApplicationConfig applicationConfig;
 
     // TODO: setJob item
     // TODO: isJobLaunchable path

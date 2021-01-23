@@ -26,12 +26,8 @@ import java.util.concurrent.Executors;
 @GameObject
 public class PathManager extends SuperGameModule {
     private static final int                    THREAD_POOL_SIZE = 1;
-
-    @Inject
-    private WorldModule worldModule;
-
-    @Inject
-    private Game game;
+    @Inject private WorldModule worldModule;
+    @Inject private Game game;
 
     final private ArrayList<Runnable>           _runnable;
     final private ExecutorService               _threadPool;
@@ -238,7 +234,7 @@ public class PathManager extends SuperGameModule {
     }
 
     public void refreshConnections(Parcel source) {
-        WorldHelper.getParcelAround(source, SurroundedPattern.X_CROSS, parcel -> parcelGraph.refreshConnections(parcel));
+        WorldHelper.getParcelAround(source, SurroundedPattern.X_SQUARE, parcel -> parcelGraph.refreshConnections(parcel));
     }
 
     public boolean hasConnection(Parcel fromParcel, Parcel toParcel) {
@@ -255,7 +251,7 @@ public class PathManager extends SuperGameModule {
         worldModule.getAll().forEach(fromParcel ->
                 WorldHelper.getParcelAround(
                         fromParcel,
-                        SurroundedPattern.X_CROSS,
+                        SurroundedPattern.X_SQUARE,
                         Parcel::isWalkable,
                         toParcel -> parcelGraph.createConnection(fromParcel, toParcel)
                 )

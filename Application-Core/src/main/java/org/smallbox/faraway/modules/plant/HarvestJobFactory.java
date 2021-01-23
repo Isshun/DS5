@@ -17,12 +17,8 @@ import org.smallbox.faraway.modules.plant.model.PlantItem;
 
 @GameObject
 public class HarvestJobFactory {
-
-    @Inject
-    private ConsumableModule consumableModule;
-
-    @Inject
-    private PathManager pathManager;
+    @Inject private ConsumableModule consumableModule;
+    @Inject private PathManager pathManager;
 
     public JobModel create(PlantItem plant) {
         Parcel consumableDropParcel = WorldHelper.searchAround(plant.getParcel(), 1, WorldHelper.SearchStrategy.FREE);

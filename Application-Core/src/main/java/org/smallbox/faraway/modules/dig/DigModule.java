@@ -1,6 +1,10 @@
 package org.smallbox.faraway.modules.dig;
 
+import com.badlogic.gdx.Input;
 import org.apache.commons.collections4.CollectionUtils;
+import org.smallbox.faraway.client.gameAction.GameActionManager;
+import org.smallbox.faraway.client.gameAction.GameActionMode;
+import org.smallbox.faraway.core.GameShortcut;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnInit;
@@ -15,25 +19,21 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @GameObject
-public class DigModule extends AreaModuleBase<DigArea> {
-
-    @Inject
-    private JobModule jobModule;
-
-    @Inject
-    private AreaModule areaModule;
-
-    @Inject
-    private DigJobFactory digJobFactory;
+public class DigModule extends AreaModuleBase<DigAction> {
+    @Inject private JobModule jobModule;
+    @Inject private AreaModule areaModule;
+    @Inject private DigJobFactory digJobFactory;
+    @Inject private GameActionManager gameActionManager;
+    @Inject private DigAction digAction;
 
     @OnInit
     public void init() {
-        areaModule.addAreaClass(DigArea.class);
+        areaModule.addAreaClass(DigAction.class);
     }
 
     @Override
     protected void onModuleUpdate(Game game) {
-        List<Parcel> parcelInDigArea = areaModule.getParcelsByType(DigArea.class);
+        List<Parcel> parcelInDigArea = areaModule.getParcelsByType(DigAction.class);
         List<Parcel> parcelInDigJob = jobModule.getAll().stream()
                 .filter(job -> job instanceof DigJob)
                 .map(JobModel::getTargetParcel)
@@ -47,7 +47,13 @@ public class DigModule extends AreaModuleBase<DigArea> {
     }
 
     @Override
-    public DigArea onNewArea() {
-        return new DigArea();
+    public DigAction onNewArea() {
+        return digAction;
     }
+
+    @GameShortcut(key = Input.Keys.G)
+    public void digMode() {
+        gameActionManager.setAreaAction(GameActionMode.ADD_AREA, digAction);
+    }
+
 }

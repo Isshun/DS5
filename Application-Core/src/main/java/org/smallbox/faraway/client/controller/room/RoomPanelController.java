@@ -22,30 +22,19 @@ public class RoomPanelController extends LuaController {
 
     @Inject
     protected GameSelectionManager gameSelectionManager;
-
-    @Inject
-    private UIEventManager uiEventManager;
-
-    @Inject
-    private RoomModule roomModule;
+    @Inject private UIEventManager uiEventManager;
+    @Inject private RoomModule roomModule;
 
     @BindLua
     private UIList listRoomsAdd;
 
     @BindLua
     private UIList listRoomsSub;
-
-    @Inject
-    private MainPanelController mainPanelController;
-
-    @Inject
-    private RoomLayer roomLayer;
+    @Inject private MainPanelController mainPanelController;
+    @Inject private RoomLayer roomLayer;
 
     @AfterGameLayerInit
     public void afterGameLayerInit() {
-
-        mainPanelController.addShortcut("Rooms", this);
-
         roomModule.getRoomClasses().stream()
                 .sorted(Comparator.comparing(o -> o.getAnnotation(RoomTypeInfo.class).label()))
                 .forEach(cls -> {

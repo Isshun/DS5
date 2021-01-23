@@ -13,12 +13,8 @@ import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 public abstract class AbsInfoLuaController<T extends ObjectModel> extends LuaController {
-
-    @Inject
-    private MainPanelController mainPanelController;
-
-    @Inject
-    private GameSelectionManager gameSelectionManager;
+    @Inject private MainPanelController mainPanelController;
+    @Inject private GameSelectionManager gameSelectionManager;
 
     protected Queue<T> listSelected = new ConcurrentLinkedQueue<>();
 

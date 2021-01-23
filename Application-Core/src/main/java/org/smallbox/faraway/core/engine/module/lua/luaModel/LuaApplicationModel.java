@@ -21,24 +21,14 @@ import java.util.Collection;
 
 @ApplicationObject
 public class LuaApplicationModel {
-
-    @Inject
-    private ServerLuaModuleManager serverLuaModuleManager;
-
-    @Inject
-    private ModuleManager moduleManager;
-
-    @Inject
-    private ApplicationConfig applicationConfig;
-
-    @Inject
-    private GameManager gameManager;
+    @Inject private ServerLuaModuleManager serverLuaModuleManager;
+    @Inject private ModuleManager moduleManager;
+    @Inject private ApplicationConfig applicationConfig;
+    @Inject private GameManager gameManager;
 
     @Inject
     public Game game;
-
-    @Inject
-    private GameTime gameTime;
+    @Inject private GameTime gameTime;
 
     public long tick;
     public int day;

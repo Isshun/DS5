@@ -21,24 +21,12 @@ import org.smallbox.faraway.util.log.Log;
 
 @GameObject
 public class StructureModule extends SuperGameModule<StructureItem, StructureModuleObserver> {
-
-    @Inject
-    private PathManager pathManager;
-
-    @Inject
-    private WorldModule worldModule;
-
-    @Inject
-    private JobModule jobModule;
-
-    @Inject
-    private ConsumableModule consumableModule;
-
-    @Inject
-    private BuildJobFactory buildJobFactory;
-
-    @Inject
-    private Data data;
+    @Inject private PathManager pathManager;
+    @Inject private WorldModule worldModule;
+    @Inject private JobModule jobModule;
+    @Inject private ConsumableModule consumableModule;
+    @Inject private BuildJobFactory buildJobFactory;
+    @Inject private Data data;
 
     @Override
     public void onGameCreate(Game game) {

@@ -15,12 +15,8 @@ import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 
 @GameObject
 public class CharacterInfoTimetableController extends LuaController {
-
-    @Inject
-    private Game game;
-
-    @Inject
-    private GameTime gameTime;
+    @Inject private Game game;
+    @Inject private GameTime gameTime;
 
     @BindLua
     private UIList listTimetable;

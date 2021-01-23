@@ -12,9 +12,7 @@ import java.util.stream.Collectors;
 
 @GameObject
 public class StructureModuleConsoleInterpreter extends ConsoleInterpreterBase {
-
-    @Inject
-    private JobModule jobModule;
+    @Inject private JobModule jobModule;
 
     @ConsoleCommand("list")
     public Collection<String> getList() {

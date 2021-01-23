@@ -18,12 +18,8 @@ public class AreaInfoController extends AbsInfoLuaController<AreaModel> {
 
     @Inject
     protected GameSelectionManager gameSelectionManager;
-
-    @Inject
-    private UIEventManager uiEventManager;
-
-    @Inject
-    private AreaModule areaModule;
+    @Inject private UIEventManager uiEventManager;
+    @Inject private AreaModule areaModule;
 
     @BindLua
     private UILabel lbName;

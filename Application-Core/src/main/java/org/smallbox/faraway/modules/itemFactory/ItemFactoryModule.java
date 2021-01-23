@@ -18,24 +18,14 @@ import org.smallbox.faraway.modules.world.WorldModule;
 @GameObject
 @ModuleInfoAnnotation(name = "ItemFactoryModule", updateInterval = 1)
 public class ItemFactoryModule extends SuperGameModule {
-
-    @Inject
-    private WorldModule worldModule;
-
-    @Inject
-    private JobModule jobModule;
-
-    @Inject
-    private StructureModule structureModule;
-
-    @Inject
-    private ConsumableModule consumableModule;
+    @Inject private WorldModule worldModule;
+    @Inject private JobModule jobModule;
+    @Inject private StructureModule structureModule;
+    @Inject private ConsumableModule consumableModule;
 
 //    @Inject
 //    private WorldInteractionModule worldInteractionModule;
-
-    @Inject
-    private ItemModule itemModule;
+    @Inject private ItemModule itemModule;
 
     @Override
     protected void onModuleUpdate(Game game) {

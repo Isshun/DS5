@@ -28,24 +28,12 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 @GameObject
 public class ConsumableModule extends SuperGameModule<ConsumableItem, ConsumableModuleObserver> {
-
-    @Inject
-    private PathManager pathManager;
-
-    @Inject
-    private Data data;
-
-    @Inject
-    private WorldModule worldModule;
-
-    @Inject
-    private JobModule jobModule;
-
-    @Inject
-    private StructureModule structureModule;
-
-    @Inject
-    private ApplicationConfig applicationConfig;
+    @Inject private PathManager pathManager;
+    @Inject private Data data;
+    @Inject private WorldModule worldModule;
+    @Inject private JobModule jobModule;
+    @Inject private StructureModule structureModule;
+    @Inject private ApplicationConfig applicationConfig;
 
     public void addConsumable(String itemName, int quantity, int x, int y, int z) {
         addConsumable(data.getItemInfo(itemName), quantity, WorldHelper.getParcel(x, y, z), 0);

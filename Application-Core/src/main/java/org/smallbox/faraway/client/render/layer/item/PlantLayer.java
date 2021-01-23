@@ -14,12 +14,8 @@ import org.smallbox.faraway.modules.plant.model.PlantItem;
 @GameObject
 @GameLayer(level = LayerManager.PLANT_LAYER_LEVEL, visible = true)
 public class PlantLayer extends BaseLayer {
-
-    @Inject
-    private PlantModule plantModule;
-
-    @Inject
-    private SpriteManager spriteManager;
+    @Inject private PlantModule plantModule;
+    @Inject private SpriteManager spriteManager;
 
     public void onDraw(GDXRenderer renderer, Viewport viewport, double animProgress, int frame) {
         plantModule.getAll().stream()

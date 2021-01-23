@@ -19,15 +19,9 @@ import java.util.function.Consumer;
 
 @ApplicationObject
 public class MinimalRender {
-
-    @Inject
-    private TaskManager taskManager;
-
-    @Inject
-    private SpriteManager spriteManager;
-
-    @Inject
-    private AssetManager assetManager;
+    @Inject private TaskManager taskManager;
+    @Inject private SpriteManager spriteManager;
+    @Inject private AssetManager assetManager;
 
     private final BitmapFont systemFont;
     private final SpriteBatch batch = new SpriteBatch();

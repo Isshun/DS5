@@ -22,18 +22,10 @@ import java.time.format.DateTimeFormatter;
 
 @GameObject
 public class GameMenuLoadController extends LuaController {
-
-    @Inject
-    private Game game;
-
-    @Inject
-    private GameManager gameManager;
-
-    @Inject
-    private GameFileManager gameFileManager;
-
-    @Inject
-    private GameMenuPauseController gameMenuPauseController;
+    @Inject private Game game;
+    @Inject private GameManager gameManager;
+    @Inject private GameFileManager gameFileManager;
+    @Inject private GameMenuPauseController gameMenuPauseController;
 
     @BindLua private UIList loadEntries;
     @BindLua private View loadDetail;

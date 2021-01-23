@@ -19,9 +19,7 @@ import java.util.Map;
 public class ConsumableController extends LuaController {
 
     @BindLua private UIList consumableList;
-
-    @Inject
-    private ConsumableModule consumableModule;
+    @Inject private ConsumableModule consumableModule;
 
     @AfterGameLayerInit
     public void afterGameLayerInit() {

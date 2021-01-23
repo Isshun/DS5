@@ -30,6 +30,10 @@ public class ApplicationConfig {
         public int              backgroundFPS;
     }
 
+    public static class ApplicationConfigUI {
+        public int              panelWidth;
+    }
+
     public static class ApplicationConfigGameInfo {
         public int[]            ticksPerHour;
         public int              tickInterval;
@@ -59,6 +63,7 @@ public class ApplicationConfig {
     public ApplicationConfigDebug debug;
     public ApplicationConfigScreenInfo screen;
     public ApplicationConfigGameInfo game;
+    public ApplicationConfigUI ui;
     public boolean              launchGui;
     public double               uiScale;
     public String               lang;

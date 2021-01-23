@@ -9,12 +9,8 @@ import org.smallbox.faraway.modules.job.JobModule;
 
 @GameObject
 public class DigRockAction implements GameContextMenuAction {
-
-    @Inject
-    private DigJobFactory digJobFactory;
-
-    @Inject
-    private JobModule jobModule;
+    @Inject private DigJobFactory digJobFactory;
+    @Inject private JobModule jobModule;
 
     @Override
     public String getLabel() {
@@ -22,7 +18,7 @@ public class DigRockAction implements GameContextMenuAction {
     }
 
     @Override
-    public boolean check(Parcel parcel, int mouseX, int mouseY) {
+    public boolean check(Parcel parcel) {
         return parcel.getRockInfo() != null;
     }
 

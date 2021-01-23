@@ -24,12 +24,8 @@ import static org.smallbox.faraway.util.Constant.TILE_SIZE;
 @GameObject
 @GameLayer(level = LayerManager.AREA_LAYER_LEVEL, visible = true)
 public class StorageLayer extends BaseLayer {
-
-    @Inject
-    private SpriteManager spriteManager;
-
-    @Inject
-    private StorageModule storageModule;
+    @Inject private SpriteManager spriteManager;
+    @Inject private StorageModule storageModule;
 
     private final Map<Class, TextureRegion> _textureByClass = new ConcurrentHashMap<>();
     private TextureRegion[] _regions;

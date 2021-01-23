@@ -16,12 +16,8 @@ import org.smallbox.faraway.modules.storage.StoreJob;
 @GameObject
 @GameLayer(level = LayerManager.JOB_LAYER_LEVEL, visible = true)
 public class JobLayer extends BaseLayer {
-
-    @Inject
-    private JobModule jobModule;
-
-    @Inject
-    private SpriteManager spriteManager;
+    @Inject private JobModule jobModule;
+    @Inject private SpriteManager spriteManager;
 
     public void onDraw(GDXRenderer renderer, Viewport viewport, double animProgress, int frame) {
 

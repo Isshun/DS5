@@ -5,6 +5,7 @@ import org.smallbox.faraway.client.render.GDXRenderer;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
+import org.smallbox.faraway.core.module.world.model.Parcel;
 import org.smallbox.faraway.modules.consumable.ConsumableModule;
 
 import java.util.HashMap;
@@ -12,9 +13,7 @@ import java.util.Map;
 
 @GameObject
 public class ConsumableDashboardLayer extends DashboardLayerBase {
-
-    @Inject
-    private ConsumableModule consumableModule;
+    @Inject private ConsumableModule consumableModule;
 
     @Override
     protected void onDraw(GDXRenderer renderer, int frame) {
@@ -22,10 +21,12 @@ public class ConsumableDashboardLayer extends DashboardLayerBase {
             Map<ItemInfo, Integer> consumables = new HashMap<>();
             consumableModule.getAll().forEach(consumable -> {
                 int quantity = consumables.getOrDefault(consumable.getInfo(), 0);
-                consumables.put(consumable.getInfo(), quantity + consumable.getFreeQuantity());
+                Parcel parcel = consumable.getParcel();
+                drawDebug(renderer, "Consumable", consumable.getInfo().label + " x " + quantity + " at " + (parcel != null ? parcel : "???"));
+//                consumables.put(consumable.getInfo(), quantity + consumable.getFreeQuantity());
             });
 
-            consumables.forEach((key, value) -> drawDebugConsumableInfo(renderer, key, value));
+//            consumables.forEach((key, value) -> drawDebugConsumableInfo(renderer, key, value));
         }
     }
 

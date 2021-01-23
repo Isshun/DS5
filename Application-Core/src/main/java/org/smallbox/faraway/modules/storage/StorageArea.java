@@ -20,9 +20,7 @@ public class StorageArea extends AreaModel {
     private final int                         _index;
     private int                         _priority = 1;
     protected Set<ItemInfo> _items;
-
-    @Inject
-    private StorageModule storageModule;
+    @Inject private StorageModule storageModule;
 
     public StorageArea() {
         _index = ++_count;

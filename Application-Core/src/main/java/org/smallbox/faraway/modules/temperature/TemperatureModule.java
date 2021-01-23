@@ -14,18 +14,10 @@ import org.smallbox.faraway.modules.world.WorldModule;
 
 @GameObject
 public class TemperatureModule extends SuperGameModule {
-
-    @Inject
-    private WorldModule worldModule;
-
-    @Inject
-    private WeatherModule weatherModule;
-
-    @Inject
-    private RoomModule roomModule;
-
-    @Inject
-    private ItemModule itemModule;
+    @Inject private WorldModule worldModule;
+    @Inject private WeatherModule weatherModule;
+    @Inject private RoomModule roomModule;
+    @Inject private ItemModule itemModule;
 
     @Override
     public void onGameCreate(Game game) {

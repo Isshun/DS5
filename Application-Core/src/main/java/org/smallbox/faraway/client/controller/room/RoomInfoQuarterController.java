@@ -19,15 +19,9 @@ import java.util.Queue;
 
 @GameObject
 public class RoomInfoQuarterController extends AbsInfoLuaController<RoomModel> {
-
-    @Inject
-    private RoomModule roomModule;
-
-    @Inject
-    private CharacterModule characterModule;
-
-    @Inject
-    private Data data;
+    @Inject private RoomModule roomModule;
+    @Inject private CharacterModule characterModule;
+    @Inject private Data data;
 
     @BindLua
     private UILabel lbOwner;

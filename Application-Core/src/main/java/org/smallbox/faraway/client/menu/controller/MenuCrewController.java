@@ -12,21 +12,11 @@ import org.smallbox.faraway.core.game.service.applicationConfig.ApplicationConfi
 
 @ApplicationObject
 public class MenuCrewController extends LuaController {
-
-    @Inject
-    private GameManager gameManager;
-
-    @Inject
-    private GameFactory gameFactory;
-
-    @Inject
-    private ApplicationConfig applicationConfig;
-
-    @Inject
-    private MenuSettingsController menuSettingsController;
-
-    @Inject
-    private MenuPlanetController menuPlanetController;
+    @Inject private GameManager gameManager;
+    @Inject private GameFactory gameFactory;
+    @Inject private ApplicationConfig applicationConfig;
+    @Inject private MenuSettingsController menuSettingsController;
+    @Inject private MenuPlanetController menuPlanetController;
 
     @AfterApplicationLayerInit
     private void afterApplicationLayerInit() {

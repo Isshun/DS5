@@ -11,9 +11,9 @@ ui:extend({
     controller = "org.smallbox.faraway.client.controller.MainPanelContainerController",
     align = {"top", "right"},
     position = {10, window_pos},
-    size = {window_width, application.screen_height - window_pos - 14},
+    size = {panel_width, application.screen_height - window_pos - 14},
     views = {
-        { type = "view", size = {window_width, application.screen_height - window_pos - 14}, background = blue_dark_4, views = {
+        { type = "view", size = {panel_width, application.screen_height - window_pos - 14}, background = blue_dark_4, views = {
             { type = "view", id = "base.ui.right_panel.sub_controller_full", special = true},
         }},
     },

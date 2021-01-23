@@ -17,12 +17,8 @@ import org.smallbox.faraway.modules.structure.StructureModule;
 @GameObject
 @GameLayer(level = LayerManager.STRUCTURE_LAYER_LEVEL, visible = true)
 public class StructureTopLayer extends BaseLayer {
-
-    @Inject
-    private SpriteManager spriteManager;
-
-    @Inject
-    private StructureModule structureModule;
+    @Inject private SpriteManager spriteManager;
+    @Inject private StructureModule structureModule;
 
     protected MapObjectModel    _itemSelected;
 

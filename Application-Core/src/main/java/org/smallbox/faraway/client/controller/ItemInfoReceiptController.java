@@ -18,9 +18,7 @@ public class ItemInfoReceiptController extends AbsInfoLuaController<ItemFactoryM
 
     @BindLua private UILabel lbName;
     @BindLua private UIList listActions;
-
-    @Inject
-    private ItemInfoController itemInfoController;
+    @Inject private ItemInfoController itemInfoController;
 
     @Override
     public boolean onKeyPress(int key) {

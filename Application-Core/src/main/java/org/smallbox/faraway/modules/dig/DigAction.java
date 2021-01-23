@@ -10,13 +10,9 @@ import org.smallbox.faraway.modules.job.JobModule;
 
 @GameObject
 @AreaTypeInfo(label = "Dig", color = 0x80391eff)
-public class DigArea extends AreaModel {
-
-    @Inject
-    private JobModule jobModule;
-
-    @Inject
-    private DigJobFactory digJobFactory;
+public class DigAction extends AreaModel {
+    @Inject private JobModule jobModule;
+    @Inject private DigJobFactory digJobFactory;
 
     @Override
     public boolean isAccepted(ItemInfo itemInfo) {

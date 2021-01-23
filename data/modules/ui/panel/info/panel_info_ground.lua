@@ -2,7 +2,7 @@ ui:extend({
     type = "view",
     id = "base.ui.info_rock",
     parent = "base.ui.right_panel.sub_controller_full",
-    controller = "org.smallbox.faraway.client.controller.SelectionInfoController",
+    controller = "org.smallbox.faraway.client.controller.GroundInfoController",
     visible = false,
     size = {400, 940},
     views = {

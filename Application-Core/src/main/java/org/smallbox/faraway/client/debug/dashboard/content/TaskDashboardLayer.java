@@ -8,9 +8,7 @@ import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 
 @GameObject
 public class TaskDashboardLayer extends DashboardLayerBase {
-
-    @Inject
-    private TaskClientModule taskClientModule;
+    @Inject private TaskClientModule taskClientModule;
 
     @Override
     protected void onDraw(GDXRenderer renderer, int frame) {

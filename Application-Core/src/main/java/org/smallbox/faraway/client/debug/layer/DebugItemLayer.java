@@ -16,12 +16,8 @@ import org.smallbox.faraway.modules.job.JobModule;
 @GameObject
 @GameLayer(level = LayerManager.CONSUMABLE_LAYER_LEVEL + 1, visible = false)
 public class DebugItemLayer extends BaseLayer {
-
-    @Inject
-    private ItemModule itemModule;
-
-    @Inject
-    private JobModule jobModule;
+    @Inject private ItemModule itemModule;
+    @Inject private JobModule jobModule;
 
     public void    onDraw(GDXRenderer renderer, Viewport viewport, double animProgress, int frame) {
         itemModule.getAll()

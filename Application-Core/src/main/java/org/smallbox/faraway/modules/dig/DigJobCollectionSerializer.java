@@ -5,7 +5,7 @@ import com.almworks.sqlite4java.SQLiteException;
 import com.almworks.sqlite4java.SQLiteStatement;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
-import org.smallbox.faraway.core.game.GenericGameSerializer;
+import org.smallbox.faraway.core.game.GenericGameCollectionSerializer;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.modules.job.JobModule;
 
@@ -14,13 +14,9 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @GameObject
-public class DigJobSerializer extends GenericGameSerializer<DigJob> {
-
-    @Inject
-    private DigJobFactory digJobFactory;
-
-    @Inject
-    private JobModule jobModule;
+public class DigJobCollectionSerializer extends GenericGameCollectionSerializer<DigJob> {
+    @Inject private DigJobFactory digJobFactory;
+    @Inject private JobModule jobModule;
 
     @Override
     public Collection<DigJob> getEntries() {

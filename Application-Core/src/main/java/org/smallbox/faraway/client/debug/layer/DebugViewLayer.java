@@ -18,12 +18,8 @@ import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 @GameObject
 @GameLayer(level = 999, visible = false)
 public class DebugViewLayer extends BaseLayer {
-
-    @Inject
-    private UIManager uiManager;
-
-    @Inject
-    private UIEventManager uiEventManager;
+    @Inject private UIManager uiManager;
+    @Inject private UIEventManager uiEventManager;
 
     public void    onDraw(GDXRenderer renderer, Viewport viewport, double animProgress, int frame) {
         uiManager.getRootViews().forEach(rootView -> drawViewRecurse(renderer, rootView.getView()));

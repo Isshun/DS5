@@ -10,12 +10,8 @@ import org.smallbox.faraway.modules.weather.WeatherModule;
 
 @GameObject
 public class WeatherModuleConsoleInterpreter extends ConsoleInterpreterBase {
-
-    @Inject
-    private WeatherModule weatherModule;
-
-    @Inject
-    private Data data;
+    @Inject private WeatherModule weatherModule;
+    @Inject private Data data;
 
     private int index;
 

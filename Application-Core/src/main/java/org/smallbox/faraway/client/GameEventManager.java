@@ -9,9 +9,7 @@ import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 @ApplicationObject
 public class GameEventManager implements EventManager {
 
-
-    @Inject
-    private GameActionManager gameActionManager;
+    @Inject private GameActionManager gameActionManager;
 
     private boolean _mousePressed;
 

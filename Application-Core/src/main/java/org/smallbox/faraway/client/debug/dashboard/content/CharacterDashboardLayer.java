@@ -9,9 +9,7 @@ import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 
 @GameObject
 public class CharacterDashboardLayer extends DashboardLayerBase {
-
-    @Inject
-    private CharacterModule characterModule;
+    @Inject private CharacterModule characterModule;
 
     @Override
     protected void onDraw(GDXRenderer renderer, int frame) {

@@ -111,7 +111,7 @@ public class GameActionManager extends GameManager {
 //        }
 //
 //        else {
-//            selectionInfoController.onSelectParcelOld(parcel);
+//            GroundInfoController.onSelectParcelOld(parcel);
 //        }
     }
 

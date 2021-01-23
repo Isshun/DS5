@@ -22,24 +22,14 @@ public class AreaInfoGardenController extends AbsInfoLuaController<AreaModel> {
 
     @Inject
     protected GameSelectionManager gameSelectionManager;
-
-    @Inject
-    private UIEventManager uiEventManager;
-
-    @Inject
-    private AreaModule areaModule;
-
-    @Inject
-    private PlantModule plantModule;
+    @Inject private UIEventManager uiEventManager;
+    @Inject private AreaModule areaModule;
+    @Inject private PlantModule plantModule;
 
     @BindLua
     private UIList listPlants;
-
-    @Inject
-    private Data data;
-
-    @Inject
-    private AreaInfoController areaInfoController;
+    @Inject private Data data;
+    @Inject private AreaInfoController areaInfoController;
 
     @Override
     public void onReloadUI() {

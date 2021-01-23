@@ -1,5 +1,6 @@
 package org.smallbox.faraway.client.controller;
 
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import org.apache.commons.collections4.CollectionUtils;
 import org.smallbox.faraway.client.controller.annotation.BindLua;
@@ -8,6 +9,7 @@ import org.smallbox.faraway.client.selection.GameSelectionManager;
 import org.smallbox.faraway.client.ui.engine.UIEventManager;
 import org.smallbox.faraway.client.ui.engine.views.View;
 import org.smallbox.faraway.client.ui.engine.views.widgets.*;
+import org.smallbox.faraway.core.GameShortcut;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.dependencyInjector.gameAction.OnGameSelectAction;
@@ -22,33 +24,30 @@ import java.util.Queue;
 
 @GameObject
 public class ItemInfoController extends AbsInfoLuaController<UsableItem> {
+    @Inject protected GameSelectionManager gameSelectionManager;
+    @Inject private UIEventManager uiEventManager;
+    @Inject private MainPanelController mainPanelController;
 
-    @Inject
-    protected GameSelectionManager gameSelectionManager;
+    @BindLua private UILabel lbName;
+    @BindLua private UILabel lbHealth;
+    @BindLua private View progressHealth;
 
-    @Inject
-    private UIEventManager uiEventManager;
-
-    @BindLua private UILabel        lbName;
-    @BindLua private UILabel        lbHealth;
-    @BindLua private View           progressHealth;
-
-    @BindLua private View           frameContent;
+    @BindLua private View frameContent;
     @BindLua private View frameWorkers;
-    @BindLua private View           frameComponents;
-    @BindLua private UILabel        lbBuildCost;
-    @BindLua private UILabel        lbBuildProgress;
-    @BindLua private UIImage        imgBuildProgress;
+    @BindLua private View frameComponents;
+    @BindLua private UILabel lbBuildCost;
+    @BindLua private UILabel lbBuildProgress;
+    @BindLua private UIImage imgBuildProgress;
 
-    @BindLua private UILabel        lbFactoryMessage;
-    @BindLua private UILabel        lbFactoryJob;
+    @BindLua private UILabel lbFactoryMessage;
+    @BindLua private UILabel lbFactoryJob;
 
-    @BindLua private UILabel        currentAction;
-    @BindLua private UIList         listActions;
-    @BindLua private UIList         listWorkers;
-    @BindLua private UIList         listComponents;
-    @BindLua private UIList         listFactoryInventory;
-    @BindLua private UIList         listInventory;
+    @BindLua private UILabel currentAction;
+    @BindLua private UIList listActions;
+    @BindLua private UIList listWorkers;
+    @BindLua private UIList listComponents;
+    @BindLua private UIList listFactoryInventory;
+    @BindLua private UIList listInventory;
 
     @BindLua private View frameBuild;
     @BindLua private View buildingActions;
@@ -56,15 +55,9 @@ public class ItemInfoController extends AbsInfoLuaController<UsableItem> {
     @BindLua private UILabel progressBuild;
     @BindLua private UIList listBuildComponents;
     @BindLua private UIImage image;
-
-    @Inject
-    private ItemInfoReceiptController itemInfoReceiptController;
-
-    @Inject
-    private ItemInfoFactoryComponentsController itemInfoFactoryComponentsController;
-
-    @Inject
-    private ItemModule itemModule;
+    @Inject private ItemInfoReceiptController itemInfoReceiptController;
+    @Inject private ItemInfoFactoryComponentsController itemInfoFactoryComponentsController;
+    @Inject private ItemModule itemModule;
 
     @Override
     public void onReloadUI() {
@@ -114,7 +107,7 @@ public class ItemInfoController extends AbsInfoLuaController<UsableItem> {
     }
 
     private void displayBuildPane(UsableItem item) {
-        progressBuild.setText(String.format("%3d%%", (int)(item.getBuildProgress() * 100)));
+        progressBuild.setText(String.format("%3d%%", (int) (item.getBuildProgress() * 100)));
 
         item.getInfo().build.components.forEach(componentInfo ->
                 listBuildComponents.addNextView(UILabel.create(null)
@@ -274,4 +267,15 @@ public class ItemInfoController extends AbsInfoLuaController<UsableItem> {
             itemModule.removeObject(listSelected.peek());
         }
     }
+
+    @BindLuaAction
+    private void onClose(View view) {
+        mainPanelController.setVisible(true);
+    }
+
+    @GameShortcut(key = Input.Keys.ESCAPE)
+    private void onClose() {
+        mainPanelController.setVisible(true);
+    }
+
 }

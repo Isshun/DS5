@@ -20,27 +20,13 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 @GameObject
 public class StorageModule extends AreaModuleBase<StorageArea> {
-
-    @Inject
-    private WorldModule worldModule;
-
-    @Inject
-    private ConsumableModule consumableModule;
-
-    @Inject
-    private JobModule jobModule;
-
-    @Inject
-    private AreaModule areaModule;
-
-    @Inject
-    private PathManager pathManager;
-
-    @Inject
-    private AreaInfoStorageController areaInfoStorageController;
-
-    @Inject
-    private StoreJobFactory storeJobFactory;
+    @Inject private WorldModule worldModule;
+    @Inject private ConsumableModule consumableModule;
+    @Inject private JobModule jobModule;
+    @Inject private AreaModule areaModule;
+    @Inject private PathManager pathManager;
+    @Inject private AreaInfoStorageController areaInfoStorageController;
+    @Inject private StoreJobFactory storeJobFactory;
 
     private final Queue<ConsumableItem> _checkQueue = new ConcurrentLinkedQueue<>();
 

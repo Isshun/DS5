@@ -45,15 +45,9 @@ public class WeatherModule extends SuperGameModule2<WeatherModuleObserver> imple
     private double[]                            _temperatureByFloor;
     private double[]                            _temperatureTargetByFloor;
     private double                              _temperature;
-
-    @Inject
-    private Data data;
-
-    @Inject
-    private GameTime gameTime;
-
-    @Inject
-    private BackgroundMusicManager backgroundMusicManager;
+    @Inject private Data data;
+    @Inject private GameTime gameTime;
+    @Inject private BackgroundMusicManager backgroundMusicManager;
 
     @Override
     public void onGameStart(Game game) {

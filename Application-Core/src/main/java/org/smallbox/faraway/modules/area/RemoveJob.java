@@ -9,9 +9,7 @@ import org.smallbox.faraway.modules.job.JobModule;
 @GameObject
 @AreaTypeInfo(label = "Remove job", color = 0xa8a8a8ff)
 public class RemoveJob extends AreaModel {
-
-    @Inject
-    private JobModule jobModule;
+    @Inject private JobModule jobModule;
 
     @Override
     public boolean isAccepted(ItemInfo itemInfo) {

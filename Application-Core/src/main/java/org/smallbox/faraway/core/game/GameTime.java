@@ -13,9 +13,7 @@ import java.util.concurrent.TimeUnit;
 @GameObject
 public class GameTime {
     private final static DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-
-    @Inject
-    private ApplicationConfig applicationConfig;
+    @Inject private ApplicationConfig applicationConfig;
 
     private LocalDateTime startGameTime;
     private LocalDateTime localDateTime;

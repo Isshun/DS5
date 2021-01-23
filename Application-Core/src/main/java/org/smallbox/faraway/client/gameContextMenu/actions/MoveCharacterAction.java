@@ -11,15 +11,9 @@ import org.smallbox.faraway.modules.job.JobModule;
 
 @GameObject
 public class MoveCharacterAction implements GameContextMenuAction {
-
-    @Inject
-    private GameSelectionManager gameSelectionManager;
-
-    @Inject
-    private MoveJobFactory moveJobFactory;
-
-    @Inject
-    private JobModule jobModule;
+    @Inject private GameSelectionManager gameSelectionManager;
+    @Inject private MoveJobFactory moveJobFactory;
+    @Inject private JobModule jobModule;
 
     @Override
     public String getLabel() {
@@ -27,7 +21,7 @@ public class MoveCharacterAction implements GameContextMenuAction {
     }
 
     @Override
-    public boolean check(Parcel parcel, int mouseX, int mouseY) {
+    public boolean check(Parcel parcel) {
         return gameSelectionManager.getSelected(CharacterModel.class) != null;
     }
 

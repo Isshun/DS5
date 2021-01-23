@@ -16,12 +16,8 @@ import java.util.Optional;
 @GameObject
 @GameLayer(level = LayerManager.AREA_LAYER_LEVEL, visible = true)
 public class GameContextMenuLayer extends BaseLayer {
-
-    @Inject
-    private GameContextMenuManager gameContextMenuManager;
-
-    @Inject
-    private InputManager inputManager;
+    @Inject private GameContextMenuManager gameContextMenuManager;
+    @Inject private InputManager inputManager;
 
     @Override
     public void onDraw(GDXRenderer renderer, Viewport viewport, double animProgress, int frame) {

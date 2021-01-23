@@ -20,15 +20,9 @@ import static org.smallbox.faraway.modules.job.JobTaskReturn.TASK_CONTINUE;
 
 @GameObject
 public class DigJobFactory {
-
-    @Inject
-    private ApplicationConfig applicationConfig;
-
-    @Inject
-    private ConsumableModule consumableModule;
-
-    @Inject
-    private PathManager pathManager;
+    @Inject private ApplicationConfig applicationConfig;
+    @Inject private ConsumableModule consumableModule;
+    @Inject private PathManager pathManager;
 
     public DigJob createJob(Parcel digParcel) {
         if (digParcel.getRockInfo() != null) {

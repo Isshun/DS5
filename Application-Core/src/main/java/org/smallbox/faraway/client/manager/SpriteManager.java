@@ -43,12 +43,8 @@ public class SpriteManager {
     private final Set<String> paths = new ConcurrentSkipListSet<>();
 
     protected int _spriteCount;
-
-    @Inject
-    private Data data;
-
-    @Inject
-    private AssetManager assetManager;
+    @Inject private Data data;
+    @Inject private AssetManager assetManager;
 
     public SpriteManager() {
         _icons = new HashMap<>();

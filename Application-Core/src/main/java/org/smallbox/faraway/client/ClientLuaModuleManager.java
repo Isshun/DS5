@@ -25,15 +25,9 @@ import java.util.Optional;
 
 @ApplicationObject
 public class ClientLuaModuleManager extends LuaModuleManager {
-
-    @Inject
-    private ApplicationConfig applicationConfig;
-
-    @Inject
-    private LuaApplicationModel luaApplicationModel;
-
-    @Inject
-    private Data data;
+    @Inject private ApplicationConfig applicationConfig;
+    @Inject private LuaApplicationModel luaApplicationModel;
+    @Inject private Data data;
 
     @Override
     protected Globals createGlobals(ModuleBase module, File dataDirectory) {
@@ -44,7 +38,7 @@ public class ClientLuaModuleManager extends LuaModuleManager {
                         "data = d\n" +
                         "ui = u\n" +
 
-                        "right_panel_width = " + 600 + "\n" +
+                        "panel_width = " + applicationConfig.ui.panelWidth + "\n" +
 
                         "fill = " + View.FILL + "\n" +
 

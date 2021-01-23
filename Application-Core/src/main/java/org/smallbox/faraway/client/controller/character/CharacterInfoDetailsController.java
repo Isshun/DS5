@@ -15,9 +15,7 @@ public class CharacterInfoDetailsController extends LuaController {
 
     @BindLua private UIList listDetails;
     @BindLua private UIList listBuffs;
-
-    @Inject
-    private CharacterBuffModule buffModule;
+    @Inject private CharacterBuffModule buffModule;
 
     private CharacterModel _selected;
 

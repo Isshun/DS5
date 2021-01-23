@@ -47,25 +47,26 @@ public class MainPanelController extends LuaController {
     @BindLua private UILabel lbArea;
     @BindLua private UILabel lbJobs;
 
-    private LuaController _currentPaneController;
+    private Pane last;
+
+    private enum Pane {CREW, BUILD, AREA, JOBS}
 
     @OnGameLayerInit
     public void layerInit() {
-//        openPane(crewController, lbCrew, maskCrew, focusCrew, RawColors.RAW_YELLOW);
-//        openPane(buildController, lbBuild, maskBuild, focusBuild, RawColors.RAW_BLUE);
-        openPane(areaPanelController, lbArea, maskArea, focusArea, RawColors.RAW_GREEN);
+        openCrew();
     }
 
     @Override
     public void onReloadUI() {
         gameSelectionManager.registerSelectionPre(this);
-        btCrew.getEvents().setOnClickListener(() -> openPane(crewController, lbCrew, maskCrew, focusCrew, RawColors.RAW_YELLOW));
-        btBuild.getEvents().setOnClickListener(() -> openPane(buildController, lbBuild, maskBuild, focusBuild, RawColors.RAW_BLUE));
-        btArea.getEvents().setOnClickListener(() -> openPane(areaPanelController, lbArea, maskArea, focusArea, RawColors.RAW_GREEN));
-        btJobs.getEvents().setOnClickListener(() -> openPane(jobController, lbJobs, maskJobs, focusJobs, RawColors.RAW_RED));
+        btCrew.getEvents().setOnClickListener(this::openCrew);
+        btBuild.getEvents().setOnClickListener(this::openBuild);
+        btArea.getEvents().setOnClickListener(this::openArea);
+        btJobs.getEvents().setOnClickListener(this::openJobs);
     }
 
     private void openPane(LuaController controller, UILabel label, View mask, View focus, int focusColor) {
+        setVisible(true);
         maskCrew.setVisible(true);
         maskBuild.setVisible(true);
         maskArea.setVisible(true);
@@ -82,42 +83,38 @@ public class MainPanelController extends LuaController {
         mask.setVisible(false);
         focus.setVisible(true);
         label.setTextColor(RawColors.RAW_BLUE_DARK_4);
-//        label.getStyle().setBackgroundColor(RawColors.RAW_BLUE_DARK_4);
-//        viewBorder.setRegularBackgroundColor(focusColor);
         viewBorder.getStyle().setBackgroundColor(focusColor);
-//        viewBorder.getStyle().setBackgroundFocusColor(focusColor);
 
         controller.getRootView().setVisible(true);
     }
 
-    @Override
-    public void onClickOnMap(GameEvent mouseEvent) {
-//        Cursor.setVisible(true);
-    }
-
-    public void addShortcut(String label, LuaController controller) {
-//        String id = mainGrid.getId() + "." + controller.getClass().getCanonicalName();
-//
-//        // Remove old entries and listeners if exists
-//        mainGrid.getViews().stream()
-//                .filter(view -> StringUtils.equals(view.getId(), id))
-//                .forEach(oldView -> uiManager.removeView(oldView));
-//
-//        UILabel uiLabel = (UILabel)mainGrid.createFromTemplate();
-//        uiLabel.setId(id);
-//        uiLabel.setText(label);
-//        uiLabel.setId(mainGrid.getId() + "." + label);
-//        uiLabel.getEvents().setOnClickListener((x, y) -> controller.getRootView().setVisible(true));
-    }
-
     public void openCrew() {
+        last = Pane.CREW;
         openPane(crewController, lbCrew, maskCrew, focusCrew, RawColors.RAW_YELLOW);
     }
 
-//    @GameShortcut(key = Input.Keys.F1)
-//    public void onRefreshUI() {
-//        DependencyManager.getInstance().getDependency(UIManager.class).refresh(this, "panel_main.lua");
-//        openPane(crewController, lbCrew, maskCrew, focusCrew, RawColors.RAW_YELLOW);
-//    }
+    public void openBuild() {
+        last = Pane.BUILD;
+        openPane(buildController, lbBuild, maskBuild, focusBuild, RawColors.RAW_BLUE);
+    }
+
+    public void openArea() {
+        last = Pane.AREA;
+        openPane(areaPanelController, lbArea, maskArea, focusArea, RawColors.RAW_GREEN);
+    }
+
+    public void openJobs() {
+        last = Pane.JOBS;
+        openPane(jobController, lbJobs, maskJobs, focusJobs, RawColors.RAW_RED);
+    }
+
+    public void openLast() {
+        switch (last) {
+            case CREW: openCrew(); break;
+            case BUILD: openBuild(); break;
+            case AREA: openArea(); break;
+            case JOBS: openJobs(); break;
+        }
+    }
 
 }

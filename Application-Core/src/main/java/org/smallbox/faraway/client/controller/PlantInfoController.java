@@ -13,9 +13,7 @@ import java.util.Queue;
 
 @GameObject
 public class PlantInfoController extends AbsInfoLuaController<PlantItem> {
-
-    @Inject
-    private PlantModule plantModule;
+    @Inject private PlantModule plantModule;
 
     @BindLua private UILabel lbLabel;
     @BindLua private UILabel lbJob;

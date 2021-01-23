@@ -23,15 +23,9 @@ import java.util.Optional;
 
 @ApplicationObject
 public class ModuleManager implements GameObserver {
-
-    @Inject
-    private GameManager gameManager;
-
-    @Inject
-    private DependencyManager dependencyManager;
-
-    @Inject
-    private Game game;
+    @Inject private GameManager gameManager;
+    @Inject private DependencyManager dependencyManager;
+    @Inject private Game game;
 
     public interface OnLoadModuleListener {
         void onLoadModule(String message);

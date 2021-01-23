@@ -18,9 +18,7 @@ import org.smallbox.faraway.modules.job.task.TechnicalTask;
 
 @GameObject
 public class StoreJobFactory {
-
-    @Inject
-    private ConsumableModule consumableModule;
+    @Inject private ConsumableModule consumableModule;
 
     public JobModel createJob(StorageArea storageArea, ConsumableItem consumable) {
         ItemInfo consumableInfo = consumable.getInfo();

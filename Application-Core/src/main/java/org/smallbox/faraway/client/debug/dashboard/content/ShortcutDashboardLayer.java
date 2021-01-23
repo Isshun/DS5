@@ -8,9 +8,7 @@ import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 
 @GameObject
 public class ShortcutDashboardLayer extends DashboardLayerBase {
-
-    @Inject
-    private ShortcutManager shortcutManager;
+    @Inject private ShortcutManager shortcutManager;
 
     @Override
     protected void onDraw(GDXRenderer renderer, int frame) {
