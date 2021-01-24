@@ -2,8 +2,8 @@ package org.smallbox.faraway.module.dev.controller;
 
 import org.hyperic.sigar.*;
 import org.smallbox.faraway.client.controller.LuaController;
-import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
-import org.smallbox.faraway.client.ui.engine.views.widgets.View;
+import org.smallbox.faraway.client.ui.widgets.UILabel;
+import org.smallbox.faraway.client.ui.widgets.View;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.lua.BindLua;
 

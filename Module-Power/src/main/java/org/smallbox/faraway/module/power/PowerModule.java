@@ -2,7 +2,7 @@
 //
 //import org.smallbox.faraway.core.engine.module.GameModule;
 //import org.smallbox.faraway.core.game.Game;
-//import org.smallbox.faraway.core.module.world.model.ParcelModel;
+//import org.smallbox.faraway.core.world.model.ParcelModel;
 //import UsableItem;
 //
 //import java.util.ArrayList;

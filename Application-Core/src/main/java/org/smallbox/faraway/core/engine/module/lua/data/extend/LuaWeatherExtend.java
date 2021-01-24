@@ -6,8 +6,8 @@ import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject
 import org.smallbox.faraway.core.engine.module.ModuleBase;
 import org.smallbox.faraway.core.engine.module.lua.data.DataExtendException;
 import org.smallbox.faraway.core.engine.module.lua.data.LuaExtend;
-import org.smallbox.faraway.core.game.Data;
-import org.smallbox.faraway.core.game.modelInfo.WeatherInfo;
+import org.smallbox.faraway.core.game.DataManager;
+import org.smallbox.faraway.game.weather.WeatherInfo;
 
 import java.io.File;
 
@@ -18,14 +18,14 @@ public class LuaWeatherExtend extends LuaExtend {
     public boolean accept(String type) { return "weather".equals(type); }
 
     @Override
-    public void extend(Data data, ModuleBase module, Globals globals, LuaValue value, File dataDirectory) throws DataExtendException {
+    public void extend(DataManager dataManager, ModuleBase module, Globals globals, LuaValue value, File dataDirectory) throws DataExtendException {
         String id = getString(value, "id", null);
 
-        WeatherInfo weatherInfo = data.weathers.get(id);
+        WeatherInfo weatherInfo = dataManager.weathers.get(id);
         if (weatherInfo == null) {
             weatherInfo = new WeatherInfo();
-            data.weathers.put(id, weatherInfo);
-            data.add(id, weatherInfo);
+            dataManager.weathers.put(id, weatherInfo);
+            dataManager.add(id, weatherInfo);
         }
 
         readWeather(weatherInfo, value);

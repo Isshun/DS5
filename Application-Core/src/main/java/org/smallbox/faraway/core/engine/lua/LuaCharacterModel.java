@@ -1,8 +1,8 @@
 package org.smallbox.faraway.core.engine.lua;
 
 import org.smallbox.faraway.common.ObjectModel;
-import org.smallbox.faraway.core.module.world.model.Parcel;
-import org.smallbox.faraway.modules.character.model.base.CharacterModel;
+import org.smallbox.faraway.game.world.Parcel;
+import org.smallbox.faraway.game.character.model.base.CharacterModel;
 
 public class LuaCharacterModel extends ObjectModel {
 //    public final int                id;

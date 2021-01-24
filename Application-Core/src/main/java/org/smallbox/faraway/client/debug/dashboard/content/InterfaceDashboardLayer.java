@@ -2,15 +2,15 @@ package org.smallbox.faraway.client.debug.dashboard.content;
 
 import org.smallbox.faraway.client.GameEventManager;
 import org.smallbox.faraway.client.debug.dashboard.DashboardLayerBase;
-import org.smallbox.faraway.client.render.BaseRendererManager;
-import org.smallbox.faraway.client.render.LayerManager;
+import org.smallbox.faraway.client.renderer.BaseRenderer;
+import org.smallbox.faraway.client.layer.LayerManager;
 import org.smallbox.faraway.client.selection.GameSelectionManager;
 import org.smallbox.faraway.client.ui.UIManager;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.game.Game;
-import org.smallbox.faraway.core.game.helper.WorldHelper;
-import org.smallbox.faraway.core.module.world.model.Parcel;
+import org.smallbox.faraway.game.world.WorldHelper;
+import org.smallbox.faraway.game.world.Parcel;
 
 @GameObject
 public class InterfaceDashboardLayer extends DashboardLayerBase {
@@ -21,7 +21,7 @@ public class InterfaceDashboardLayer extends DashboardLayerBase {
     @Inject private Game game;
 
     @Override
-    protected void onDraw(BaseRendererManager renderer, int frame) {
+    protected void onDraw(BaseRenderer renderer, int frame) {
         long heapSize = Runtime.getRuntime().totalMemory();
         long heapFreeSize = Runtime.getRuntime().freeMemory();
         drawDebug(renderer, "VIEWPORT", "Heap: " + ((heapSize - heapFreeSize) / 1000 / 1000) + "mb");

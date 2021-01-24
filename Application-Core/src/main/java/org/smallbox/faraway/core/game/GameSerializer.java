@@ -1,6 +1,6 @@
 package org.smallbox.faraway.core.game;
 
-import org.smallbox.faraway.core.module.world.SQLManager;
+import org.smallbox.faraway.core.save.SQLManager;
 import org.smallbox.faraway.util.log.Log;
 
 public abstract class GameSerializer {

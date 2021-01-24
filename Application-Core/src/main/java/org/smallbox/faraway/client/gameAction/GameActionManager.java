@@ -2,7 +2,7 @@ package org.smallbox.faraway.client.gameAction;
 
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
-import org.smallbox.faraway.client.ui.engine.Colors;
+import org.smallbox.faraway.client.ui.extra.Colors;
 import org.smallbox.faraway.common.ObjectModel;
 import org.smallbox.faraway.core.GameShortcut;
 import org.smallbox.faraway.core.dependencyInjector.DependencyManager;
@@ -12,12 +12,12 @@ import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnInit;
 import org.smallbox.faraway.core.dependencyInjector.gameAction.OnGameSelectAction;
 import org.smallbox.faraway.core.game.GameManager;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
-import org.smallbox.faraway.core.module.world.model.Parcel;
-import org.smallbox.faraway.modules.area.AreaModel;
-import org.smallbox.faraway.modules.area.AreaModule;
-import org.smallbox.faraway.modules.area.AreaTypeInfo;
-import org.smallbox.faraway.modules.building.BuildJobFactory;
-import org.smallbox.faraway.modules.job.JobModule;
+import org.smallbox.faraway.game.world.Parcel;
+import org.smallbox.faraway.game.area.AreaModel;
+import org.smallbox.faraway.game.area.AreaModule;
+import org.smallbox.faraway.game.area.AreaTypeInfo;
+import org.smallbox.faraway.game.building.BuildJobFactory;
+import org.smallbox.faraway.game.job.JobModule;
 import org.smallbox.faraway.util.log.Log;
 
 import java.lang.annotation.Annotation;

@@ -3,7 +3,7 @@
 //import org.smallbox.faraway.core.Application;
 //import org.smallbox.faraway.core.dependencyInjector.DependencyInjector;
 //import org.smallbox.faraway.core.game.Game;
-//import org.smallbox.faraway.core.game.save.GameInfo;
+//import org.smallbox.faraway.core.save.GameInfo;
 //import org.smallbox.faraway.core.game.GameManager;
 //
 //import java.util.ArrayList;

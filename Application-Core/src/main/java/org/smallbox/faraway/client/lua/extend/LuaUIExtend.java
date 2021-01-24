@@ -6,17 +6,20 @@ import org.luaj.vm2.LuaError;
 import org.luaj.vm2.LuaValue;
 import org.luaj.vm2.lib.jse.CoerceJavaToLua;
 import org.smallbox.faraway.client.ClientLuaModuleManager;
-import org.smallbox.faraway.client.RotateAnimation;
+import org.smallbox.faraway.client.asset.animation.RotateAnimation;
 import org.smallbox.faraway.client.lua.LuaControllerManager;
 import org.smallbox.faraway.client.lua.LuaStyleManager;
 import org.smallbox.faraway.client.ui.UIManager;
-import org.smallbox.faraway.client.ui.engine.OnFocusListener;
-import org.smallbox.faraway.client.ui.engine.views.*;
-import org.smallbox.faraway.client.ui.engine.views.widgets.FadeEffect;
+import org.smallbox.faraway.client.ui.event.OnFocusListener;
+import org.smallbox.faraway.client.ui.extra.*;
+import org.smallbox.faraway.client.ui.widgets.CompositeView;
+import org.smallbox.faraway.client.ui.widgets.FadeEffect;
+import org.smallbox.faraway.client.ui.RootView;
+import org.smallbox.faraway.client.ui.widgets.View;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.engine.module.ModuleBase;
 import org.smallbox.faraway.core.engine.module.lua.data.LuaExtend;
-import org.smallbox.faraway.core.game.Data;
+import org.smallbox.faraway.core.game.DataManager;
 import org.smallbox.faraway.util.log.Log;
 
 import java.io.File;
@@ -34,7 +37,7 @@ public abstract class LuaUIExtend extends LuaExtend {
     public abstract boolean accept(String type);
 
     @Override
-    public void extend(Data data, ModuleBase module, Globals globals, LuaValue value, File dataDirectory) {
+    public void extend(DataManager dataManager, ModuleBase module, Globals globals, LuaValue value, File dataDirectory) {
         String rootName =
                 StringUtils.isNotBlank(getString(value, "id", null)) ? getString(value, "id", null) :
                         StringUtils.isNotBlank(getString(value, "id", null)) ? getString(value, "id", null) : "";

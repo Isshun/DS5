@@ -9,16 +9,15 @@ import org.luaj.vm2.LuaValue;
 import org.smallbox.faraway.client.ClientLuaModuleManager;
 import org.smallbox.faraway.client.controller.LuaController;
 import org.smallbox.faraway.client.lua.LuaControllerManager;
-import org.smallbox.faraway.client.render.BaseRendererManager;
-import org.smallbox.faraway.client.ui.engine.OnClickListener;
-import org.smallbox.faraway.client.ui.engine.UIEventManager;
-import org.smallbox.faraway.client.ui.engine.views.Align;
-import org.smallbox.faraway.client.ui.engine.views.CompositeView;
-import org.smallbox.faraway.client.ui.engine.views.RootView;
-import org.smallbox.faraway.client.ui.engine.views.View;
-import org.smallbox.faraway.client.ui.engine.views.widgets.UIDropDown;
-import org.smallbox.faraway.client.ui.engine.views.widgets.UIFrame;
-import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
+import org.smallbox.faraway.client.renderer.BaseRenderer;
+import org.smallbox.faraway.client.ui.event.OnClickListener;
+import org.smallbox.faraway.client.ui.event.UIEventManager;
+import org.smallbox.faraway.client.ui.extra.Align;
+import org.smallbox.faraway.client.ui.widgets.CompositeView;
+import org.smallbox.faraway.client.ui.widgets.View;
+import org.smallbox.faraway.client.ui.widgets.UIDropDown;
+import org.smallbox.faraway.client.ui.widgets.UIFrame;
+import org.smallbox.faraway.client.ui.widgets.UILabel;
 import org.smallbox.faraway.core.GameShortcut;
 import org.smallbox.faraway.core.dependencyInjector.DependencyManager;
 import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject;
@@ -345,7 +344,7 @@ public class UIManager {
     }
 
     // TODO
-    public void draw(BaseRendererManager renderer, boolean gameRunning) {
+    public void draw(BaseRenderer renderer, boolean gameRunning) {
         OrthographicCamera camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         camera.zoom = 0.5f;
 

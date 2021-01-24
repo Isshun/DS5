@@ -1,13 +1,13 @@
 package org.smallbox.faraway.core.game;
 
-import org.smallbox.faraway.core.game.model.planet.PlanetInfo;
+import org.smallbox.faraway.game.planet.PlanetInfo;
 import org.smallbox.faraway.core.game.modelInfo.BindingInfo;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
-import org.smallbox.faraway.core.module.world.model.MapObjectModel;
-import org.smallbox.faraway.core.module.world.model.Parcel;
-import org.smallbox.faraway.core.module.world.model.StructureItem;
-import org.smallbox.faraway.modules.job.JobModel;
-import org.smallbox.faraway.modules.storage.StorageArea;
+import org.smallbox.faraway.core.world.model.MapObjectModel;
+import org.smallbox.faraway.game.world.Parcel;
+import org.smallbox.faraway.game.structure.StructureItem;
+import org.smallbox.faraway.game.job.JobModel;
+import org.smallbox.faraway.game.storage.StorageArea;
 
 public interface GameObserver {
     default void onObjectComplete(MapObjectModel mapObjectModel){}

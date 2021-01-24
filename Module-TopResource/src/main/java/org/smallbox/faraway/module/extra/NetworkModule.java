@@ -8,10 +8,10 @@
 //import org.smallbox.faraway.core.game.model.NetworkModel;
 //import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 //import org.smallbox.faraway.core.game.modelInfo.NetworkInfo;
-//import org.smallbox.faraway.core.module.world.model.MapObjectModel;
-//import org.smallbox.faraway.core.module.world.model.NetworkItem;
-//import org.smallbox.faraway.core.module.world.model.ParcelModel;
-//import org.smallbox.faraway.core.module.world.model.PlantModel;
+//import org.smallbox.faraway.core.world.model.MapObjectModel;
+//import org.smallbox.faraway.core.world.model.NetworkItem;
+//import org.smallbox.faraway.core.world.model.ParcelModel;
+//import org.smallbox.faraway.core.world.model.PlantModel;
 //import UsableItem;
 //import NetworkConnectionModel;
 //

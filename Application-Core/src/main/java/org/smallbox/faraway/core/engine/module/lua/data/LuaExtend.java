@@ -4,13 +4,13 @@ import org.luaj.vm2.Globals;
 import org.luaj.vm2.LuaValue;
 import org.smallbox.faraway.core.dependencyInjector.DependencyManager;
 import org.smallbox.faraway.core.engine.module.ModuleBase;
-import org.smallbox.faraway.core.game.Data;
+import org.smallbox.faraway.core.game.DataManager;
 
 import java.io.File;
 
 public abstract class LuaExtend {
     public abstract boolean accept(String type);
-    public abstract void extend(Data data, ModuleBase module, Globals globals, LuaValue value, File dataDirectory) throws DataExtendException;
+    public abstract void extend(DataManager dataManager, ModuleBase module, Globals globals, LuaValue value, File dataDirectory) throws DataExtendException;
 
     protected static boolean getBoolean(LuaValue value, String key, boolean defaultValue) {
         return !value.get(key).isnil() ? value.get(key).toboolean() : defaultValue;
@@ -128,7 +128,7 @@ public abstract class LuaExtend {
     protected <T> void readAsync(LuaValue value, String key, Class<T> cls, ReadCallback<T> callback) {
         LuaValue v = value.get(key);
         if (!v.isnil()) {
-            DependencyManager.getInstance().getDependency(Data.class).getAsync(v.tojstring(), cls, callback::onReadCallback);
+            DependencyManager.getInstance().getDependency(DataManager.class).getAsync(v.tojstring(), cls, callback::onReadCallback);
         }
     }
 

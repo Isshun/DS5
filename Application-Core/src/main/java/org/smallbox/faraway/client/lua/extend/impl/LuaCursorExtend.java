@@ -2,11 +2,11 @@ package org.smallbox.faraway.client.lua.extend.impl;
 
 import org.luaj.vm2.Globals;
 import org.luaj.vm2.LuaValue;
-import org.smallbox.faraway.client.ui.engine.views.widgets.UIFrame;
+import org.smallbox.faraway.client.ui.widgets.UIFrame;
 import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject;
 import org.smallbox.faraway.core.engine.module.ModuleBase;
 import org.smallbox.faraway.core.engine.module.lua.data.LuaExtend;
-import org.smallbox.faraway.core.game.Data;
+import org.smallbox.faraway.core.game.DataManager;
 
 import java.io.File;
 
@@ -19,7 +19,7 @@ public class LuaCursorExtend extends LuaExtend {
     }
 
     @Override
-    public void extend(Data data, ModuleBase module, Globals globals, LuaValue value, File dataDirectory) {
+    public void extend(DataManager dataManager, ModuleBase module, Globals globals, LuaValue value, File dataDirectory) {
         final UIFrame resItem = new UIFrame(module);
         resItem.setSize(32, 32);
         resItem.getStyle().setBackgroundColor(value.get("default").get("color").toint());

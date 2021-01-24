@@ -2,9 +2,9 @@ package org.smallbox.faraway.module.dev;
 
 import org.smallbox.faraway.client.ApplicationClient;
 import org.smallbox.faraway.client.controller.LuaController;
-import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
-import org.smallbox.faraway.client.ui.engine.views.widgets.UIList;
-import org.smallbox.faraway.client.ui.engine.views.widgets.View;
+import org.smallbox.faraway.client.ui.widgets.UILabel;
+import org.smallbox.faraway.client.ui.widgets.UIList;
+import org.smallbox.faraway.client.ui.widgets.View;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.lua.BindLua;
 

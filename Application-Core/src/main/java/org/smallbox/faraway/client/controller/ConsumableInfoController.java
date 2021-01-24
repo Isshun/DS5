@@ -4,17 +4,17 @@ import com.badlogic.gdx.Input;
 import org.smallbox.faraway.client.controller.annotation.BindLua;
 import org.smallbox.faraway.client.controller.annotation.BindLuaAction;
 import org.smallbox.faraway.client.selection.GameSelectionManager;
-import org.smallbox.faraway.client.ui.engine.UIEventManager;
-import org.smallbox.faraway.client.ui.engine.views.View;
-import org.smallbox.faraway.client.ui.engine.views.widgets.UIImage;
-import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
+import org.smallbox.faraway.client.ui.event.UIEventManager;
+import org.smallbox.faraway.client.ui.widgets.View;
+import org.smallbox.faraway.client.ui.widgets.UIImage;
+import org.smallbox.faraway.client.ui.widgets.UILabel;
 import org.smallbox.faraway.core.GameShortcut;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.dependencyInjector.gameAction.OnGameSelectAction;
-import org.smallbox.faraway.core.module.world.model.ConsumableItem;
-import org.smallbox.faraway.core.module.world.model.Parcel;
-import org.smallbox.faraway.modules.consumable.ConsumableModule;
+import org.smallbox.faraway.game.consumable.ConsumableItem;
+import org.smallbox.faraway.game.world.Parcel;
+import org.smallbox.faraway.game.consumable.ConsumableModule;
 
 import java.util.Queue;
 

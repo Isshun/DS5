@@ -5,7 +5,7 @@ import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
-import org.smallbox.faraway.core.module.world.WorldModule;
+import org.smallbox.faraway.core.world.WorldModule;
 import org.smallbox.faraway.module.job.JobModule;
 import org.smallbox.faraway.module.structure.StructureModule;
 

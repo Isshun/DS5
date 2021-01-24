@@ -1,8 +1,8 @@
 //package org.smallbox.faraway.core.engine.module.java;
 //
 //import org.smallbox.faraway.core.module.character.CharacterModule;
-//import org.smallbox.faraway.core.module.job.JobModule;
-//import org.smallbox.faraway.core.module.world.WorldModule;
+//import org.smallbox.faraway.core.job.JobModule;
+//import org.smallbox.faraway.core.world.WorldModule;
 //
 ///**
 // * Created by Alex

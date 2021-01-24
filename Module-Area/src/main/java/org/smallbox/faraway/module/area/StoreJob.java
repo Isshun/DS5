@@ -8,9 +8,9 @@ import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.module.area.model.StorageAreaModel;
 import org.smallbox.faraway.core.module.character.model.CharacterTalentExtra;
 import org.smallbox.faraway.core.module.character.model.base.CharacterModel;
-import org.smallbox.faraway.core.module.job.model.abs.JobModel;
-import org.smallbox.faraway.core.module.world.model.ConsumableItem;
-import org.smallbox.faraway.core.module.world.model.ParcelModel;
+import org.smallbox.faraway.game.job.model.abs.JobModel;
+import org.smallbox.faraway.core.world.model.ConsumableItem;
+import org.smallbox.faraway.core.world.model.ParcelModel;
 
 import java.util.Queue;
 import java.util.concurrent.LinkedBlockingQueue;

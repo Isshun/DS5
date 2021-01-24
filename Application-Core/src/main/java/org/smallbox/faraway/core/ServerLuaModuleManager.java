@@ -11,8 +11,8 @@ import org.smallbox.faraway.core.engine.module.lua.LuaDataModel;
 import org.smallbox.faraway.core.engine.module.lua.LuaExtendInterface;
 import org.smallbox.faraway.core.engine.module.lua.LuaModuleManager;
 import org.smallbox.faraway.core.engine.module.lua.luaModel.LuaApplicationModel;
-import org.smallbox.faraway.core.game.Data;
-import org.smallbox.faraway.core.game.service.applicationConfig.ApplicationConfig;
+import org.smallbox.faraway.core.game.DataManager;
+import org.smallbox.faraway.core.config.ApplicationConfig;
 
 import java.io.File;
 
@@ -20,7 +20,7 @@ import java.io.File;
 public class ServerLuaModuleManager extends LuaModuleManager {
     @Inject private ApplicationConfig applicationConfig;
     @Inject private LuaApplicationModel luaApplicationModel;
-    @Inject private Data data;
+    @Inject private DataManager dataManager;
 
     @Override
     protected Globals createGlobals(ModuleBase module, File dataDirectory) {
@@ -37,7 +37,7 @@ public class ServerLuaModuleManager extends LuaModuleManager {
         globals.get("main").call(
                 CoerceJavaToLua.coerce(luaApplicationModel),
                 CoerceJavaToLua.coerce((LuaExtendInterface) values -> {}),
-                CoerceJavaToLua.coerce(new LuaDataModel(data) {
+                CoerceJavaToLua.coerce(new LuaDataModel(dataManager) {
                     @Override
                     public void extend(LuaValue values) {
 //                        Log.debug("Load lua data: " + values.get("name").toString());

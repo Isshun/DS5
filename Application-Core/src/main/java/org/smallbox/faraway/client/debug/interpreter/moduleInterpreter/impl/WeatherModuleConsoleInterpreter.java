@@ -5,24 +5,24 @@ import org.smallbox.faraway.client.debug.interpreter.moduleInterpreter.ConsoleCo
 import org.smallbox.faraway.client.debug.interpreter.moduleInterpreter.ConsoleInterpreterBase;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
-import org.smallbox.faraway.core.game.Data;
-import org.smallbox.faraway.modules.weather.WeatherModule;
+import org.smallbox.faraway.core.game.DataManager;
+import org.smallbox.faraway.game.weather.WeatherModule;
 
 @GameObject
 public class WeatherModuleConsoleInterpreter extends ConsoleInterpreterBase {
     @Inject private WeatherModule weatherModule;
-    @Inject private Data data;
+    @Inject private DataManager dataManager;
 
     private int index;
 
     @ConsoleCommand("random")
     public void actionRandom() {
-        data.weathers.values().stream().skip(RandomUtils.nextInt(0, data.weathers.size() - 1)).findFirst().ifPresent(weatherInfo -> weatherModule.loadWeather(weatherInfo));
+        dataManager.weathers.values().stream().skip(RandomUtils.nextInt(0, dataManager.weathers.size() - 1)).findFirst().ifPresent(weatherInfo -> weatherModule.loadWeather(weatherInfo));
     }
 
     @ConsoleCommand("next")
     public void actionNext() {
-        data.weathers.values().stream().skip(index++ % data.weathers.size() - 1).findFirst().ifPresent(weatherInfo -> weatherModule.loadWeather(weatherInfo));
+        dataManager.weathers.values().stream().skip(index++ % dataManager.weathers.size() - 1).findFirst().ifPresent(weatherInfo -> weatherModule.loadWeather(weatherInfo));
     }
 
 }

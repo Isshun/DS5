@@ -2,13 +2,13 @@ package org.smallbox.faraway.client.menu.controller;
 
 import org.smallbox.faraway.client.controller.LuaController;
 import org.smallbox.faraway.client.controller.annotation.BindLuaAction;
-import org.smallbox.faraway.client.ui.engine.views.View;
+import org.smallbox.faraway.client.ui.widgets.View;
 import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.dependencyInjector.annotationEvent.AfterApplicationLayerInit;
 import org.smallbox.faraway.core.game.GameFactory;
 import org.smallbox.faraway.core.game.GameManager;
-import org.smallbox.faraway.core.game.service.applicationConfig.ApplicationConfig;
+import org.smallbox.faraway.core.config.ApplicationConfig;
 
 @ApplicationObject
 public class MenuCrewController extends LuaController {

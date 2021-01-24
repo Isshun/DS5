@@ -3,11 +3,11 @@ package org.smallbox.faraway.client.ui;
 import org.smallbox.faraway.client.GameClientObserver;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
-import org.smallbox.faraway.core.module.world.model.Parcel;
-import org.smallbox.faraway.core.module.world.model.StructureItem;
-import org.smallbox.faraway.modules.area.AreaModel;
-import org.smallbox.faraway.modules.character.model.base.CharacterModel;
-import org.smallbox.faraway.modules.plant.model.PlantItem;
+import org.smallbox.faraway.game.world.Parcel;
+import org.smallbox.faraway.game.structure.StructureItem;
+import org.smallbox.faraway.game.area.AreaModel;
+import org.smallbox.faraway.game.character.model.base.CharacterModel;
+import org.smallbox.faraway.game.plant.model.PlantItem;
 
 public class GameSelectionExtra {
     private Parcel _lastMoveParcel;

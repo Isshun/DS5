@@ -5,10 +5,10 @@ import org.apache.commons.lang3.ObjectUtils;
 import org.smallbox.faraway.client.debug.DebugService;
 import org.smallbox.faraway.client.debug.dashboard.DashboardLayerBase;
 import org.smallbox.faraway.client.debug.interpreter.DebugCommandInterpreterService;
-import org.smallbox.faraway.client.render.BaseRendererManager;
+import org.smallbox.faraway.client.renderer.BaseRenderer;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
-import org.smallbox.faraway.core.game.service.applicationConfig.ApplicationConfig;
+import org.smallbox.faraway.core.config.ApplicationConfig;
 import org.smallbox.faraway.util.log.Log;
 
 import java.util.ArrayList;
@@ -25,7 +25,7 @@ public class ConsoleDashboardLayer extends DashboardLayerBase {
     private int _index;
 
     @Override
-    public void    onDraw(BaseRendererManager renderer, int frame) {
+    public void    onDraw(BaseRenderer renderer, int frame) {
         int fontSize = applicationConfig.debug.logFontSize;
         int lineLength = applicationConfig.debug.logLineLength;
         int resolutionHeight = applicationConfig.getResolutionHeight();

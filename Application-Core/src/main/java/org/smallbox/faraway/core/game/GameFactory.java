@@ -1,18 +1,18 @@
 package org.smallbox.faraway.core.game;
 
 import com.google.gson.Gson;
-import org.smallbox.faraway.client.render.Viewport;
+import org.smallbox.faraway.client.renderer.Viewport;
 import org.smallbox.faraway.core.GameException;
 import org.smallbox.faraway.core.GameScenario;
 import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
-import org.smallbox.faraway.core.game.save.GameInfoFactory;
-import org.smallbox.faraway.modules.character.CharacterModule;
-import org.smallbox.faraway.modules.character.model.base.CharacterModel;
-import org.smallbox.faraway.modules.consumable.ConsumableModule;
-import org.smallbox.faraway.modules.item.ItemModule;
-import org.smallbox.faraway.modules.plant.PlantModule;
-import org.smallbox.faraway.modules.world.WorldModule;
+import org.smallbox.faraway.core.save.GameInfoFactory;
+import org.smallbox.faraway.game.character.CharacterModule;
+import org.smallbox.faraway.game.character.model.base.CharacterModel;
+import org.smallbox.faraway.game.consumable.ConsumableModule;
+import org.smallbox.faraway.game.item.ItemModule;
+import org.smallbox.faraway.game.plant.PlantModule;
+import org.smallbox.faraway.game.world.WorldModule;
 
 import java.io.FileReader;
 import java.util.Optional;
@@ -27,7 +27,7 @@ public class GameFactory {
     @Inject private PlantModule plantModule;
     @Inject private WorldModule worldModule;
     @Inject private Viewport viewport;
-    @Inject private Data data;
+    @Inject private DataManager dataManager;
 
     private GameScenario loadScenario(String scenarioPath) {
         try {
@@ -51,7 +51,7 @@ public class GameFactory {
                 Optional.ofNullable(scenario.consumables).ifPresent(consumables -> consumables.forEach(c -> consumableModule.addConsumable(c.name, c.quantity, c.x, c.y, c.z, c.stack)));
                 Optional.ofNullable(scenario.items).ifPresent(items -> items.forEach(i -> itemModule.addItem(i.name, true, i.x, i.y, i.z)));
                 Optional.ofNullable(scenario.plants).ifPresent(plants -> plants.forEach(i -> plantModule.addPlant(i.name, i.x, i.y, i.z)));
-                Optional.ofNullable(scenario.resources).ifPresent(resources -> resources.forEach(i -> worldModule.getParcel(i.x, i.y, i.z).setRockInfo(data.getItemInfo("base.granite"))));
+                Optional.ofNullable(scenario.resources).ifPresent(resources -> resources.forEach(i -> worldModule.getParcel(i.x, i.y, i.z).setRockInfo(dataManager.getItemInfo("base.granite"))));
                 if (scenario.centerOnMap != null && scenario.centerOnMap.length == 2) {
                     viewport.centerOnMap(scenario.centerOnMap[0], scenario.centerOnMap[1]);
                 }

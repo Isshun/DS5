@@ -1,7 +1,7 @@
 package org.smallbox.faraway.module.dev.controller.toolbox;
 
 import org.smallbox.faraway.client.controller.LuaController;
-import org.smallbox.faraway.client.ui.engine.views.widgets.UIList;
+import org.smallbox.faraway.client.ui.widgets.UIList;
 import org.smallbox.faraway.core.dependencyInjector.BindModule;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.lua.BindLua;

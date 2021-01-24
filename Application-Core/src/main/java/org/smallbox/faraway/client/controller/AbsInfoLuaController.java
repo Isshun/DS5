@@ -5,7 +5,7 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.smallbox.faraway.client.selection.GameSelectionManager;
 import org.smallbox.faraway.common.ObjectModel;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
-import org.smallbox.faraway.core.module.world.model.Parcel;
+import org.smallbox.faraway.game.world.Parcel;
 
 import java.util.Collection;
 import java.util.List;

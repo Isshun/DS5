@@ -2,18 +2,18 @@ package org.smallbox.faraway.client.debug.layer;
 
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
-import org.smallbox.faraway.client.render.BaseRendererManager;
-import org.smallbox.faraway.client.render.Viewport;
-import org.smallbox.faraway.client.render.layer.BaseMapLayer;
+import org.smallbox.faraway.client.renderer.BaseRenderer;
+import org.smallbox.faraway.client.renderer.Viewport;
+import org.smallbox.faraway.client.layer.BaseMapLayer;
 import org.smallbox.faraway.core.GameLayer;
 import org.smallbox.faraway.core.GameShortcut;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
-import org.smallbox.faraway.core.module.world.model.Parcel;
-import org.smallbox.faraway.modules.character.CharacterModule;
-import org.smallbox.faraway.modules.character.model.CharacterInventoryExtra;
-import org.smallbox.faraway.modules.character.model.base.CharacterModel;
-import org.smallbox.faraway.modules.character.model.base.CharacterPersonalsExtra;
+import org.smallbox.faraway.game.world.Parcel;
+import org.smallbox.faraway.game.character.CharacterModule;
+import org.smallbox.faraway.game.character.model.CharacterInventoryExtra;
+import org.smallbox.faraway.game.character.model.base.CharacterModel;
+import org.smallbox.faraway.game.character.model.base.CharacterPersonalsExtra;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -30,7 +30,7 @@ public class DebugCharacterLayer extends BaseMapLayer {
     private CharacterModel _character;
 
     @Override
-    public void    onDraw(BaseRendererManager renderer, Viewport viewport, double animProgress, int frame) {
+    public void    onDraw(BaseRenderer renderer, Viewport viewport, double animProgress, int frame) {
         _index = 0;
         renderer.drawRectangle(0, 0, 2000, 2000, BG_COLOR);
 
@@ -63,7 +63,7 @@ public class DebugCharacterLayer extends BaseMapLayer {
             toggleVisibility();
     }
 
-    private void drawDebug(BaseRendererManager renderer, String label, Object object) {
+    private void drawDebug(BaseRenderer renderer, String label, Object object) {
         renderer.drawText(12, (_index * 20) + 12, "[" + label.toUpperCase() + "] " + object, Color.BLACK, 18);
         renderer.drawText(11, (_index * 20) + 11, "[" + label.toUpperCase() + "] " + object, Color.BLACK, 18);
         renderer.drawText(10, (_index * 20) + 10, "[" + label.toUpperCase() + "] " + object, Color.WHITE, 18);

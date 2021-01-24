@@ -2,7 +2,7 @@ package org.smallbox.faraway.client.controller.character;
 
 import org.smallbox.faraway.client.controller.LuaController;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
-import org.smallbox.faraway.modules.character.model.base.CharacterModel;
+import org.smallbox.faraway.game.character.model.base.CharacterModel;
 
 @GameObject
 public class CharacterInfoInventoryController extends LuaController {

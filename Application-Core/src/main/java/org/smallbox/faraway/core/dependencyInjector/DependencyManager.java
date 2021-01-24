@@ -3,7 +3,7 @@ package org.smallbox.faraway.core.dependencyInjector;
 import org.reflections.Reflections;
 import org.smallbox.faraway.client.controller.LuaController;
 import org.smallbox.faraway.client.lua.LuaControllerManager;
-import org.smallbox.faraway.client.manager.ShortcutManager;
+import org.smallbox.faraway.client.shortcut.ShortcutManager;
 import org.smallbox.faraway.common.ObjectModel;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.GameException;

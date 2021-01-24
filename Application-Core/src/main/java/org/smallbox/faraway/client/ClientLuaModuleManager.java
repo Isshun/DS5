@@ -5,9 +5,9 @@ import org.luaj.vm2.LuaValue;
 import org.luaj.vm2.lib.jse.CoerceJavaToLua;
 import org.luaj.vm2.lib.jse.JsePlatform;
 import org.smallbox.faraway.client.lua.extend.LuaUIExtend;
-import org.smallbox.faraway.client.ui.engine.RawColors;
-import org.smallbox.faraway.client.ui.engine.views.CompositeView;
-import org.smallbox.faraway.client.ui.engine.views.View;
+import org.smallbox.faraway.client.ui.extra.RawColors;
+import org.smallbox.faraway.client.ui.widgets.CompositeView;
+import org.smallbox.faraway.client.ui.widgets.View;
 import org.smallbox.faraway.core.GameException;
 import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
@@ -16,8 +16,8 @@ import org.smallbox.faraway.core.engine.module.lua.LuaDataModel;
 import org.smallbox.faraway.core.engine.module.lua.LuaExtendInterface;
 import org.smallbox.faraway.core.engine.module.lua.LuaModuleManager;
 import org.smallbox.faraway.core.engine.module.lua.luaModel.LuaApplicationModel;
-import org.smallbox.faraway.core.game.Data;
-import org.smallbox.faraway.core.game.service.applicationConfig.ApplicationConfig;
+import org.smallbox.faraway.core.game.DataManager;
+import org.smallbox.faraway.core.config.ApplicationConfig;
 import org.smallbox.faraway.util.log.Log;
 
 import java.io.File;
@@ -27,7 +27,7 @@ import java.util.Optional;
 public class ClientLuaModuleManager extends LuaModuleManager {
     @Inject private ApplicationConfig applicationConfig;
     @Inject private LuaApplicationModel luaApplicationModel;
-    @Inject private Data data;
+    @Inject private DataManager dataManager;
 
     @Override
     protected Globals createGlobals(ModuleBase module, File dataDirectory) {
@@ -94,7 +94,7 @@ public class ClientLuaModuleManager extends LuaModuleManager {
                         }
                     }
                 }),
-                CoerceJavaToLua.coerce(new LuaDataModel(data) {
+                CoerceJavaToLua.coerce(new LuaDataModel(dataManager) {
                     @Override
                     public void extend(LuaValue values) {
                     }

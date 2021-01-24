@@ -2,7 +2,7 @@ package org.smallbox.faraway.core.game.modelInfo;
 
 import com.badlogic.gdx.graphics.Color;
 import org.apache.commons.lang3.StringUtils;
-import org.smallbox.faraway.core.module.world.model.ItemFilter;
+import org.smallbox.faraway.core.world.model.ItemFilter;
 
 import java.io.File;
 import java.util.ArrayList;

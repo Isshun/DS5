@@ -5,7 +5,7 @@
 //import org.smallbox.faraway.core.Application;
 //import org.smallbox.faraway.core.game.Game;
 //import org.smallbox.faraway.core.game.GameManager;
-//import org.smallbox.faraway.core.game.helper.WorldHelper;
+//import org.smallbox.faraway.game.world.WorldHelper;
 //import org.smallbox.faraway.modules.character.CharacterModule;
 //import org.smallbox.faraway.modules.consumable.ConsumableModule;
 //import org.smallbox.faraway.modules.item.ItemModule;

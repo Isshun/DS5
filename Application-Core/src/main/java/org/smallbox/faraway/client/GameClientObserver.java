@@ -1,9 +1,9 @@
 package org.smallbox.faraway.client;
 
-import org.smallbox.faraway.client.ui.engine.GameEvent;
+import org.smallbox.faraway.client.ui.event.GameEvent;
 import org.smallbox.faraway.core.engine.GameEventListener;
 import org.smallbox.faraway.core.game.GameObserver;
-import org.smallbox.faraway.core.module.world.model.Parcel;
+import org.smallbox.faraway.game.world.Parcel;
 
 import java.util.List;
 

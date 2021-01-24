@@ -4,10 +4,10 @@ import org.smallbox.faraway.client.gameContextMenu.GameContextMenuAction;
 import org.smallbox.faraway.client.selection.GameSelectionManager;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
-import org.smallbox.faraway.core.module.job.MoveJobFactory;
-import org.smallbox.faraway.core.module.world.model.Parcel;
-import org.smallbox.faraway.modules.character.model.base.CharacterModel;
-import org.smallbox.faraway.modules.job.JobModule;
+import org.smallbox.faraway.game.job.MoveJobFactory;
+import org.smallbox.faraway.game.world.Parcel;
+import org.smallbox.faraway.game.character.model.base.CharacterModel;
+import org.smallbox.faraway.game.job.JobModule;
 
 @GameObject
 public class MoveCharacterAction implements GameContextMenuAction {

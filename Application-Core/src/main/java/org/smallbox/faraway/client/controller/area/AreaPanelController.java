@@ -5,19 +5,19 @@ import org.smallbox.faraway.client.controller.MainPanelController;
 import org.smallbox.faraway.client.controller.annotation.BindLua;
 import org.smallbox.faraway.client.gameAction.GameActionManager;
 import org.smallbox.faraway.client.gameAction.GameActionMode;
-import org.smallbox.faraway.client.render.layer.area.AreaLayer;
+import org.smallbox.faraway.client.layer.area.AreaLayer;
 import org.smallbox.faraway.client.selection.GameSelectionManager;
-import org.smallbox.faraway.client.ui.engine.UIEventManager;
-import org.smallbox.faraway.client.ui.engine.views.CompositeView;
-import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
-import org.smallbox.faraway.client.ui.engine.views.widgets.UIList;
+import org.smallbox.faraway.client.ui.event.UIEventManager;
+import org.smallbox.faraway.client.ui.widgets.CompositeView;
+import org.smallbox.faraway.client.ui.widgets.UILabel;
+import org.smallbox.faraway.client.ui.widgets.UIList;
 import org.smallbox.faraway.core.dependencyInjector.DependencyManager;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.dependencyInjector.annotationEvent.AfterGameLayerInit;
-import org.smallbox.faraway.modules.area.AreaModel;
-import org.smallbox.faraway.modules.area.AreaModule;
-import org.smallbox.faraway.modules.area.AreaTypeInfo;
+import org.smallbox.faraway.game.area.AreaModel;
+import org.smallbox.faraway.game.area.AreaModule;
+import org.smallbox.faraway.game.area.AreaTypeInfo;
 
 import java.util.Comparator;
 

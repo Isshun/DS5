@@ -1,17 +1,17 @@
 package org.smallbox.faraway.client.debug.layer;
 
 import com.badlogic.gdx.graphics.Color;
-import org.smallbox.faraway.client.render.BaseRendererManager;
-import org.smallbox.faraway.client.render.LayerManager;
-import org.smallbox.faraway.client.render.Viewport;
-import org.smallbox.faraway.client.render.layer.BaseMapLayer;
+import org.smallbox.faraway.client.renderer.BaseRenderer;
+import org.smallbox.faraway.client.layer.LayerManager;
+import org.smallbox.faraway.client.renderer.Viewport;
+import org.smallbox.faraway.client.layer.BaseMapLayer;
 import org.smallbox.faraway.core.GameLayer;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
-import org.smallbox.faraway.core.game.helper.WorldHelper;
-import org.smallbox.faraway.core.module.path.PathManager;
-import org.smallbox.faraway.modules.character.CharacterModule;
-import org.smallbox.faraway.modules.world.WorldModule;
+import org.smallbox.faraway.game.world.WorldHelper;
+import org.smallbox.faraway.core.path.PathManager;
+import org.smallbox.faraway.game.character.CharacterModule;
+import org.smallbox.faraway.game.world.WorldModule;
 import org.smallbox.faraway.util.Constant;
 
 @GameObject
@@ -23,7 +23,7 @@ public class DebugPathLayer extends BaseMapLayer {
     @Inject private CharacterModule characterModule;
     @Inject private PathManager pathManager;
 
-    public void    onDraw(BaseRendererManager renderer, Viewport viewport, double animProgress, int frame) {
+    public void    onDraw(BaseRenderer renderer, Viewport viewport, double animProgress, int frame) {
         worldModule.getAll().stream()
                 .filter(viewport::hasParcel)
                 .forEach(parcel -> {

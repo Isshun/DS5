@@ -14,9 +14,9 @@
 //import org.smallbox.faraway.core.game.Game;
 //import org.smallbox.faraway.core.game.model.GameConfig;
 //import UsableItem;
-//import org.smallbox.faraway.core.module.world.model.ParcelModel;
-//import org.smallbox.faraway.core.module.world.model.resource.ResourceModel;
-//import org.smallbox.faraway.core.module.world.model.StructureItem;
+//import org.smallbox.faraway.core.world.model.ParcelModel;
+//import org.smallbox.faraway.core.world.model.resource.ResourceModel;
+//import org.smallbox.faraway.core.world.model.StructureItem;
 //import org.smallbox.faraway.core.engine.module.java.ModuleHelper;
 //import org.smallbox.faraway.util.Constant;
 //

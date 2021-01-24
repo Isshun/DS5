@@ -1,6 +1,6 @@
 package org.smallbox.faraway.client.gameContextMenu;
 
-import org.smallbox.faraway.core.module.world.model.Parcel;
+import org.smallbox.faraway.game.world.Parcel;
 
 public interface GameContextMenuAction {
     String getLabel();

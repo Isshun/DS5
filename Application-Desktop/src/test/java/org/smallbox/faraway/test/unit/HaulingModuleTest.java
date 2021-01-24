@@ -2,7 +2,7 @@
 //
 //import org.junit.Assert;
 //import org.junit.Test;
-//import org.smallbox.faraway.core.game.helper.WorldHelper;
+//import org.smallbox.faraway.game.world.WorldHelper;
 //import org.smallbox.faraway.modules.consumable.StorageArea;
 //import org.smallbox.faraway.test.technique.GameTestHelper;
 //import org.smallbox.faraway.test.technique.GuiTestBase;

@@ -2,16 +2,16 @@ package org.smallbox.faraway.client.controller.character;
 
 import org.smallbox.faraway.client.controller.LuaController;
 import org.smallbox.faraway.client.controller.annotation.BindLua;
-import org.smallbox.faraway.client.ui.engine.views.View;
-import org.smallbox.faraway.client.ui.engine.views.widgets.UIFrame;
-import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
-import org.smallbox.faraway.client.ui.engine.views.widgets.UIList;
+import org.smallbox.faraway.client.ui.widgets.View;
+import org.smallbox.faraway.client.ui.widgets.UIFrame;
+import org.smallbox.faraway.client.ui.widgets.UILabel;
+import org.smallbox.faraway.client.ui.widgets.UIList;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameTime;
-import org.smallbox.faraway.modules.character.CharacterTimetableExtra;
-import org.smallbox.faraway.modules.character.model.base.CharacterModel;
+import org.smallbox.faraway.game.character.CharacterTimetableExtra;
+import org.smallbox.faraway.game.character.model.base.CharacterModel;
 
 @GameObject
 public class CharacterInfoTimetableController extends LuaController {

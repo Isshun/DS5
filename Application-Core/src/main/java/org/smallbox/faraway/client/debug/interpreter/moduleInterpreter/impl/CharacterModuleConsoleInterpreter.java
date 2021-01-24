@@ -4,8 +4,8 @@ import org.smallbox.faraway.client.debug.interpreter.moduleInterpreter.ConsoleCo
 import org.smallbox.faraway.client.debug.interpreter.moduleInterpreter.ConsoleInterpreterBase;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
-import org.smallbox.faraway.modules.character.CharacterModule;
-import org.smallbox.faraway.modules.character.model.base.CharacterModel;
+import org.smallbox.faraway.game.character.CharacterModule;
+import org.smallbox.faraway.game.character.model.base.CharacterModel;
 
 import java.util.Collection;
 import java.util.List;

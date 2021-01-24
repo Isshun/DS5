@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<data version="1.0">
+<dataManager version="1.0">
     <struct type="Settings">
         <key>fileFormatVersion</key>
         <int>4</int>
@@ -129,7 +129,7 @@
         </struct>
         <key>dataFileNames</key>
         <map type="GFileNameMap">
-            <key>data</key>
+            <key>dataManager</key>
             <struct type="DataFile">
                 <key>name</key>
                 <filename>ball.atlas</filename>
@@ -254,4 +254,4 @@
         <key>exporterProperties</key>
         <map type="ExporterProperties"/>
     </struct>
-</data>
+</dataManager>

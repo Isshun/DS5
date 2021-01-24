@@ -3,7 +3,7 @@
 //import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 //import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 //import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
-//import org.smallbox.faraway.core.module.world.model.Parcel;
+//import org.smallbox.faraway.game.world.Parcel;
 //import org.smallbox.faraway.modules.area.AreaModel;
 //import org.smallbox.faraway.modules.area.AreaTypeInfo;
 //import org.smallbox.faraway.modules.dig.DigJobFactory;

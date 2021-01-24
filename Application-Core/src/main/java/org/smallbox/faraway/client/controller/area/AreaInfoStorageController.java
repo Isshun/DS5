@@ -6,22 +6,22 @@ import org.smallbox.faraway.client.controller.MainPanelController;
 import org.smallbox.faraway.client.controller.annotation.BindLua;
 import org.smallbox.faraway.client.controller.annotation.BindLuaAction;
 import org.smallbox.faraway.client.selection.GameSelectionManager;
-import org.smallbox.faraway.client.ui.engine.UIEventManager;
-import org.smallbox.faraway.client.ui.engine.views.CompositeView;
-import org.smallbox.faraway.client.ui.engine.views.View;
-import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
-import org.smallbox.faraway.client.ui.engine.views.widgets.UIList;
+import org.smallbox.faraway.client.ui.event.UIEventManager;
+import org.smallbox.faraway.client.ui.widgets.CompositeView;
+import org.smallbox.faraway.client.ui.widgets.View;
+import org.smallbox.faraway.client.ui.widgets.UILabel;
+import org.smallbox.faraway.client.ui.widgets.UIList;
 import org.smallbox.faraway.core.GameShortcut;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.dependencyInjector.gameAction.OnGameSelectAction;
-import org.smallbox.faraway.core.game.Data;
+import org.smallbox.faraway.core.game.DataManager;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
-import org.smallbox.faraway.core.module.world.model.Parcel;
-import org.smallbox.faraway.modules.area.AreaModel;
-import org.smallbox.faraway.modules.area.AreaModule;
-import org.smallbox.faraway.modules.storage.StorageArea;
-import org.smallbox.faraway.modules.storage.StorageModule;
+import org.smallbox.faraway.game.world.Parcel;
+import org.smallbox.faraway.game.area.AreaModel;
+import org.smallbox.faraway.game.area.AreaModule;
+import org.smallbox.faraway.game.storage.StorageArea;
+import org.smallbox.faraway.game.storage.StorageModule;
 
 import java.util.Comparator;
 import java.util.List;
@@ -33,7 +33,7 @@ import java.util.stream.Collectors;
 public class AreaInfoStorageController extends AbsInfoLuaController<AreaModel> {
     @Inject protected MainPanelController mainPanelController;
     @Inject protected GameSelectionManager gameSelectionManager;
-    @Inject private Data data;
+    @Inject private DataManager dataManager;
     @Inject private UIEventManager uiEventManager;
     @Inject private AreaModule areaModule;
     @Inject private StorageModule storageModule;
@@ -260,7 +260,7 @@ public class AreaInfoStorageController extends AbsInfoLuaController<AreaModel> {
 
         lbName.setText(area.getName());
 
-        Map<String, List<ItemInfo>> consumablesByCategory = data.consumables.stream().collect(Collectors.groupingBy(itemInfo -> itemInfo.category));
+        Map<String, List<ItemInfo>> consumablesByCategory = dataManager.consumables.stream().collect(Collectors.groupingBy(itemInfo -> itemInfo.category));
 
         consumablesByCategory.forEach((category, consumables) -> {
             CompositeView viewCategory = listAgreed.createFromTemplate(CompositeView.class);

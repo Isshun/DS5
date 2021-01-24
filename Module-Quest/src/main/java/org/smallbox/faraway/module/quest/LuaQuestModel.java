@@ -3,7 +3,7 @@
 //import org.smallbox.faraway.core.engine.lua.LuaCharacterModel;
 //import org.smallbox.faraway.core.engine.lua.LuaConsumableModel;
 //import org.smallbox.faraway.core.game.helper.WorldHelper;
-//import org.smallbox.faraway.core.module.world.model.ParcelModel;
+//import org.smallbox.faraway.core.world.model.ParcelModel;
 //
 ///**
 // * Created by Alex

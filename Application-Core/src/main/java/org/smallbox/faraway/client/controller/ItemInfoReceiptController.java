@@ -3,13 +3,13 @@ package org.smallbox.faraway.client.controller;
 import com.badlogic.gdx.Input;
 import org.apache.commons.collections4.CollectionUtils;
 import org.smallbox.faraway.client.controller.annotation.BindLua;
-import org.smallbox.faraway.client.ui.engine.views.widgets.UICheckBox;
-import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
-import org.smallbox.faraway.client.ui.engine.views.widgets.UIList;
+import org.smallbox.faraway.client.ui.widgets.UICheckBox;
+import org.smallbox.faraway.client.ui.widgets.UILabel;
+import org.smallbox.faraway.client.ui.widgets.UIList;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
-import org.smallbox.faraway.core.module.world.model.Parcel;
-import org.smallbox.faraway.modules.itemFactory.ItemFactoryModel;
+import org.smallbox.faraway.game.world.Parcel;
+import org.smallbox.faraway.game.itemFactory.ItemFactoryModel;
 
 import java.util.Queue;
 

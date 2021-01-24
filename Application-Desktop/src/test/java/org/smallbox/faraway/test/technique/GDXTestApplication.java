@@ -3,7 +3,7 @@
 //import org.smallbox.faraway.client.GDXApplication;
 //import org.smallbox.faraway.core.Application;
 //import org.smallbox.faraway.core.dependencyInjector.DependencyInjector;
-//import org.smallbox.faraway.core.module.world.SQLManager;
+//import org.smallbox.faraway.core.save.SQLManager;
 //import org.smallbox.faraway.core.task.TaskManager;
 //
 ///**

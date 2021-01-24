@@ -5,18 +5,18 @@ import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import org.apache.commons.lang3.StringUtils;
 import org.smallbox.faraway.client.controller.annotation.BindLua;
 import org.smallbox.faraway.client.controller.character.CharacterInfoController;
-import org.smallbox.faraway.client.font.FontManager;
+import org.smallbox.faraway.client.asset.font.FontManager;
 import org.smallbox.faraway.client.selection.GameSelectionManager;
-import org.smallbox.faraway.client.ui.engine.RawColors;
-import org.smallbox.faraway.client.ui.engine.views.CompositeView;
-import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
-import org.smallbox.faraway.client.ui.engine.views.widgets.UIList;
+import org.smallbox.faraway.client.ui.extra.RawColors;
+import org.smallbox.faraway.client.ui.widgets.CompositeView;
+import org.smallbox.faraway.client.ui.widgets.UILabel;
+import org.smallbox.faraway.client.ui.widgets.UIList;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
-import org.smallbox.faraway.modules.character.CharacterModule;
-import org.smallbox.faraway.modules.character.model.CharacterSkillExtra;
-import org.smallbox.faraway.modules.character.model.base.CharacterNeedsExtra;
-import org.smallbox.faraway.modules.characterNeed.CharacterNeedModule;
+import org.smallbox.faraway.game.character.CharacterModule;
+import org.smallbox.faraway.game.character.model.CharacterSkillExtra;
+import org.smallbox.faraway.game.character.model.base.CharacterNeedsExtra;
+import org.smallbox.faraway.game.characterNeed.CharacterNeedModule;
 
 import java.util.Comparator;
 

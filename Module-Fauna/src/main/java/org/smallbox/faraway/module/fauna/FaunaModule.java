@@ -3,7 +3,7 @@ package org.smallbox.faraway.module.fauna;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.game.Game;
-import org.smallbox.faraway.core.game.model.planet.RegionInfo;
+import org.smallbox.faraway.game.planet.RegionInfo;
 
 import java.util.ArrayList;
 import java.util.List;

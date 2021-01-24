@@ -1,7 +1,7 @@
 package org.smallbox.faraway.core.engine.module.lua;
 
-import org.smallbox.faraway.core.game.Data;
-import org.smallbox.faraway.core.game.model.planet.PlanetInfo;
+import org.smallbox.faraway.core.game.DataManager;
+import org.smallbox.faraway.game.planet.PlanetInfo;
 import org.smallbox.faraway.core.game.modelInfo.CategoryInfo;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.game.modelInfo.NetworkInfo;
@@ -14,10 +14,10 @@ public abstract class LuaDataModel implements LuaExtendInterface {
     public final List<CategoryInfo>    categories;
     public final List<PlanetInfo>      planets;
 
-    public LuaDataModel(Data data) {
-        this.networks = data.networks;
-        this.items = data.items;
-        this.categories = data.categories;
-        this.planets = data.planets;
+    public LuaDataModel(DataManager dataManager) {
+        this.networks = dataManager.networks;
+        this.items = dataManager.items;
+        this.categories = dataManager.categories;
+        this.planets = dataManager.planets;
     }
 }

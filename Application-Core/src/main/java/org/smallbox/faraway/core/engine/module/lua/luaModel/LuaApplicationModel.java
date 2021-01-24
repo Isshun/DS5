@@ -3,7 +3,7 @@ package org.smallbox.faraway.core.engine.module.lua.luaModel;
 import org.apache.commons.lang3.NotImplementedException;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.ServerLuaModuleManager;
-import org.smallbox.faraway.core.config.Config;
+import org.smallbox.faraway.core.config.ApplicationConfig;
 import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnInit;
@@ -14,8 +14,7 @@ import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameManager;
 import org.smallbox.faraway.core.game.GameTime;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
-import org.smallbox.faraway.core.game.service.applicationConfig.ApplicationConfig;
-import org.smallbox.faraway.core.module.world.model.MapObjectModel;
+import org.smallbox.faraway.core.world.model.MapObjectModel;
 
 import java.util.Collection;
 
@@ -36,7 +35,6 @@ public class LuaApplicationModel {
     public int year;
     public int screen_width;
     public int screen_height;
-    public Config config = new Config();
     public Collection<LuaModule> luaModules;
     public Collection<ModuleBase> modules;
     public Collection<ModuleBase> moduleThirds;

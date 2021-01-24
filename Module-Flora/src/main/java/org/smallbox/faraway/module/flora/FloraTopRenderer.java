@@ -5,8 +5,8 @@ import org.smallbox.faraway.core.dependencyInjector.BindModule;
 import org.smallbox.faraway.client.renderer.*;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
-import org.smallbox.faraway.core.module.world.model.MapObjectModel;
-import org.smallbox.faraway.core.module.world.model.ParcelModel;
+import org.smallbox.faraway.core.world.model.MapObjectModel;
+import org.smallbox.faraway.core.world.model.ParcelModel;
 
 public class FloraTopRenderer extends BaseRenderer {
 

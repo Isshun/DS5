@@ -1,10 +1,10 @@
 package org.smallbox.faraway.client.lua;
 
+import com.badlogic.gdx.graphics.Color;
 import com.steadystate.css.dom.CSSValueImpl;
 import com.steadystate.css.dom.RGBColorImpl;
-import org.smallbox.faraway.client.ui.engine.views.View;
+import org.smallbox.faraway.client.ui.widgets.View;
 import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject;
-import org.smallbox.faraway.core.engine.ColorUtils;
 import org.w3c.dom.css.CSSStyleDeclaration;
 
 import java.util.HashMap;
@@ -21,7 +21,7 @@ public class LuaStyleManager {
                 int r = Integer.parseInt(((RGBColorImpl)((CSSValueImpl)style.getPropertyCSSValue("background")).getValue()).getRed().toString());
                 int g = Integer.parseInt(((RGBColorImpl)((CSSValueImpl)style.getPropertyCSSValue("background")).getValue()).getGreen().toString());
                 int b = Integer.parseInt(((RGBColorImpl)((CSSValueImpl)style.getPropertyCSSValue("background")).getValue()).getBlue().toString());
-                view.getStyle().setBackgroundColor(ColorUtils.fromHex(r, g, b));
+                view.getStyle().setBackgroundColor(new Color(r / 255f, g / 255f, b / 255f, 1f));
             }
         }
     }

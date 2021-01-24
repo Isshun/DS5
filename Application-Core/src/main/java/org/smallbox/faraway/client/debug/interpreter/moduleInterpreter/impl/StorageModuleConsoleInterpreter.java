@@ -4,7 +4,7 @@ import org.smallbox.faraway.client.debug.interpreter.moduleInterpreter.ConsoleCo
 import org.smallbox.faraway.client.debug.interpreter.moduleInterpreter.ConsoleInterpreterBase;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
-import org.smallbox.faraway.modules.storage.StorageModule;
+import org.smallbox.faraway.game.storage.StorageModule;
 
 import java.util.Collection;
 import java.util.stream.Collectors;

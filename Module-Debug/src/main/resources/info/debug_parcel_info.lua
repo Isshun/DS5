@@ -3,7 +3,7 @@
 --ui:extend({
 --    type = "view",
 --    id = "info_parcel_2",
---    controller = "org.smallbox.faraway.core.module.world.controller.WorldInfoParcel2Controller",
+--    controller = "org.smallbox.faraway.core.world.controller.WorldInfoParcel2Controller",
 --    position = {0, 100},
 --    size = {200, 80},
 --    --background = 0x121c1e,

@@ -2,7 +2,7 @@ package org.smallbox.faraway.core.engine.lua;
 
 import org.smallbox.faraway.common.NotImplementedException;
 import org.smallbox.faraway.core.dependencyInjector.DependencyManager;
-import org.smallbox.faraway.core.game.Data;
+import org.smallbox.faraway.core.game.DataManager;
 
 public class LuaFactoryModel {
 
@@ -21,6 +21,6 @@ public class LuaFactoryModel {
     }
 
     public LuaConsumableModel createConsumable(String itemName, int quantity) {
-        return new LuaConsumableModel(DependencyManager.getInstance().getDependency(Data.class).getItemInfo(itemName), quantity);
+        return new LuaConsumableModel(DependencyManager.getInstance().getDependency(DataManager.class).getItemInfo(itemName), quantity);
     }
 }

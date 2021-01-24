@@ -2,8 +2,8 @@
 //
 //import org.junit.Assert;
 //import org.junit.Test;
-//import org.smallbox.faraway.core.game.helper.WorldHelper;
-//import org.smallbox.faraway.core.module.world.model.ConsumableItem;
+//import org.smallbox.faraway.game.world.WorldHelper;
+//import org.smallbox.faraway.game.consumable.ConsumableItem;
 //import org.smallbox.faraway.modules.consumable.StorageArea;
 //import org.smallbox.faraway.modules.job.JobModel;
 //import org.smallbox.faraway.modules.storing.BasicStoreJob;

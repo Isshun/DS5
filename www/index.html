@@ -21,7 +21,7 @@
         //<![CDATA[
         (function() {
             var shr = document.createElement('script');
-            shr.setAttribute('data-cfasync', 'false');
+            shr.setAttribute('dataManager-cfasync', 'false');
             shr.src = '//dsms0mj1bbhn4.cloudfront.net/assets/pub/shareaholic.js';
             shr.type = 'text/javascript'; shr.async = 'true';
             shr.onload = shr.onreadystatechange = function() {
@@ -36,7 +36,7 @@
         //]]>
     </script>
 </head>
-<body data-ng-app="app">
+<body dataManager-ng-app="app">
 
     <header id="site-header">
         <div class="container">
@@ -50,12 +50,12 @@
         </div>
     </header>
 
-    <section id="site-bar" data-ng-controller="BarController as bar">
+    <section id="site-bar" dataManager-ng-controller="BarController as bar">
         <div class="container">
-            <h1>{{bar.data.title}}</h1>
-            <p>{{bar.data.description}}</p>
+            <h1>{{bar.dataManager.title}}</h1>
+            <p>{{bar.dataManager.description}}</p>
         </div>
-        <div class="page-loader" data-ng-show="bar.data.loading"><div class="throbber"></div></div>
+        <div class="page-loader" dataManager-ng-show="bar.dataManager.loading"><div class="throbber"></div></div>
     </section>
 
     <section id="main">

@@ -2,16 +2,16 @@ package org.smallbox.faraway.client.controller;
 
 import com.badlogic.gdx.Input;
 import org.smallbox.faraway.client.controller.annotation.BindLua;
-import org.smallbox.faraway.client.ui.engine.views.CompositeView;
-import org.smallbox.faraway.client.ui.engine.views.widgets.UIFrame;
-import org.smallbox.faraway.client.ui.engine.views.widgets.UIList;
+import org.smallbox.faraway.client.ui.widgets.CompositeView;
+import org.smallbox.faraway.client.ui.widgets.UIFrame;
+import org.smallbox.faraway.client.ui.widgets.UIList;
 import org.smallbox.faraway.core.GameShortcut;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
-import org.smallbox.faraway.modules.character.CharacterModule;
-import org.smallbox.faraway.modules.job.JobCharacterStatus;
-import org.smallbox.faraway.modules.job.JobModel;
-import org.smallbox.faraway.modules.job.JobModule;
+import org.smallbox.faraway.game.character.CharacterModule;
+import org.smallbox.faraway.game.job.JobCharacterStatus;
+import org.smallbox.faraway.game.job.JobModel;
+import org.smallbox.faraway.game.job.JobModule;
 
 @GameObject
 public class JobController extends LuaController {

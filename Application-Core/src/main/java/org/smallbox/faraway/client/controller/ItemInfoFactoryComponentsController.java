@@ -2,18 +2,18 @@ package org.smallbox.faraway.client.controller;
 
 import org.smallbox.faraway.client.controller.annotation.BindLua;
 import org.smallbox.faraway.client.controller.annotation.BindLuaAction;
-import org.smallbox.faraway.client.ui.engine.views.View;
-import org.smallbox.faraway.client.ui.engine.views.widgets.UICheckBox;
-import org.smallbox.faraway.client.ui.engine.views.widgets.UIFrame;
-import org.smallbox.faraway.client.ui.engine.views.widgets.UIList;
+import org.smallbox.faraway.client.ui.widgets.View;
+import org.smallbox.faraway.client.ui.widgets.UICheckBox;
+import org.smallbox.faraway.client.ui.widgets.UIFrame;
+import org.smallbox.faraway.client.ui.widgets.UIList;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
-import org.smallbox.faraway.core.game.Data;
-import org.smallbox.faraway.modules.item.UsableItem;
+import org.smallbox.faraway.core.game.DataManager;
+import org.smallbox.faraway.game.item.UsableItem;
 
 @GameObject
 public class ItemInfoFactoryComponentsController extends LuaController {
-    @Inject private Data data;
+    @Inject private DataManager dataManager;
 
     @BindLua
     private UIList listComponents;

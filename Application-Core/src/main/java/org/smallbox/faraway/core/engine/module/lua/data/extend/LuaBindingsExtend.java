@@ -8,7 +8,7 @@ import org.smallbox.faraway.core.engine.GameEventListener;
 import org.smallbox.faraway.core.engine.module.ModuleBase;
 import org.smallbox.faraway.core.engine.module.lua.data.DataExtendException;
 import org.smallbox.faraway.core.engine.module.lua.data.LuaExtend;
-import org.smallbox.faraway.core.game.Data;
+import org.smallbox.faraway.core.game.DataManager;
 import org.smallbox.faraway.core.game.modelInfo.BindingInfo;
 
 import java.io.File;
@@ -22,7 +22,7 @@ public class LuaBindingsExtend extends LuaExtend {
     }
 
     @Override
-    public void extend(Data data, ModuleBase module, Globals globals, LuaValue value, File dataDirectory) throws DataExtendException {
+    public void extend(DataManager dataManager, ModuleBase module, Globals globals, LuaValue value, File dataDirectory) throws DataExtendException {
         try {
             // Read bindings
             BindingInfo bindingInfo = new BindingInfo();
@@ -43,7 +43,7 @@ public class LuaBindingsExtend extends LuaExtend {
             };
             bindingInfo.action = () -> value.get("on_action").call();
 
-            data.bindings.add(bindingInfo);
+            dataManager.bindings.add(bindingInfo);
         } catch (IllegalArgumentException e) {
             e.printStackTrace();
         }

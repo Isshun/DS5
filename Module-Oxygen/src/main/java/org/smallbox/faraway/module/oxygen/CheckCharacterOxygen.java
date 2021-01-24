@@ -1,11 +1,11 @@
 package org.smallbox.faraway.module.oxygen;
 
 import org.smallbox.faraway.core.module.character.model.base.CharacterModel;
-import org.smallbox.faraway.core.module.job.check.old.CharacterCheck;
-import org.smallbox.faraway.core.module.job.model.MoveJob;
-import org.smallbox.faraway.core.module.job.model.abs.JobModel;
+import org.smallbox.faraway.game.job.check.old.CharacterCheck;
+import org.smallbox.faraway.game.job.model.MoveJob;
+import org.smallbox.faraway.game.job.model.abs.JobModel;
 import org.smallbox.faraway.core.module.room.model.RoomModel;
-import org.smallbox.faraway.core.module.world.model.ParcelModel;
+import org.smallbox.faraway.core.world.model.ParcelModel;
 import org.smallbox.faraway.util.Log;
 import org.smallbox.faraway.module.room.RoomModule;
 

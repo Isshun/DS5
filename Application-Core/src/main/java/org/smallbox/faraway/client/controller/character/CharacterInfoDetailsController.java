@@ -2,13 +2,13 @@ package org.smallbox.faraway.client.controller.character;
 
 import org.smallbox.faraway.client.controller.LuaController;
 import org.smallbox.faraway.client.controller.annotation.BindLua;
-import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
-import org.smallbox.faraway.client.ui.engine.views.widgets.UIList;
+import org.smallbox.faraway.client.ui.widgets.UILabel;
+import org.smallbox.faraway.client.ui.widgets.UIList;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
-import org.smallbox.faraway.modules.character.model.base.CharacterModel;
-import org.smallbox.faraway.modules.characterBuff.BuffType;
-import org.smallbox.faraway.modules.characterBuff.CharacterBuffModule;
+import org.smallbox.faraway.game.character.model.base.CharacterModel;
+import org.smallbox.faraway.game.characterBuff.BuffType;
+import org.smallbox.faraway.game.characterBuff.CharacterBuffModule;
 
 @GameObject
 public class CharacterInfoDetailsController extends LuaController {

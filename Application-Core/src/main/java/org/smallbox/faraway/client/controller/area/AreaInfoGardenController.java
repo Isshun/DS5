@@ -3,17 +3,17 @@ package org.smallbox.faraway.client.controller.area;
 import org.smallbox.faraway.client.controller.AbsInfoLuaController;
 import org.smallbox.faraway.client.controller.annotation.BindLua;
 import org.smallbox.faraway.client.selection.GameSelectionManager;
-import org.smallbox.faraway.client.ui.engine.UIEventManager;
-import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
-import org.smallbox.faraway.client.ui.engine.views.widgets.UIList;
+import org.smallbox.faraway.client.ui.event.UIEventManager;
+import org.smallbox.faraway.client.ui.widgets.UILabel;
+import org.smallbox.faraway.client.ui.widgets.UIList;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
-import org.smallbox.faraway.core.game.Data;
-import org.smallbox.faraway.core.module.world.model.Parcel;
-import org.smallbox.faraway.modules.area.AreaModel;
-import org.smallbox.faraway.modules.area.AreaModule;
-import org.smallbox.faraway.modules.plant.GardenArea;
-import org.smallbox.faraway.modules.plant.PlantModule;
+import org.smallbox.faraway.core.game.DataManager;
+import org.smallbox.faraway.game.world.Parcel;
+import org.smallbox.faraway.game.area.AreaModel;
+import org.smallbox.faraway.game.area.AreaModule;
+import org.smallbox.faraway.game.plant.GardenArea;
+import org.smallbox.faraway.game.plant.PlantModule;
 
 import java.util.Queue;
 
@@ -28,7 +28,7 @@ public class AreaInfoGardenController extends AbsInfoLuaController<AreaModel> {
 
     @BindLua
     private UIList listPlants;
-    @Inject private Data data;
+    @Inject private DataManager dataManager;
     @Inject private AreaInfoController areaInfoController;
 
     @Override
@@ -41,7 +41,7 @@ public class AreaInfoGardenController extends AbsInfoLuaController<AreaModel> {
         setVisible(true);
 
         listPlants.removeAllViews();
-        data.items.stream()
+        dataManager.items.stream()
                 .filter(item -> "plant".equals(item.type))
                 .forEach(item ->
                         listPlants.addView(UILabel.create(null)

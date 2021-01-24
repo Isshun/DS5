@@ -2,16 +2,16 @@ package org.smallbox.faraway.client.debug.layer;
 
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
-import org.smallbox.faraway.client.render.BaseRendererManager;
-import org.smallbox.faraway.client.render.LayerManager;
-import org.smallbox.faraway.client.render.Viewport;
-import org.smallbox.faraway.client.render.layer.BaseMapLayer;
+import org.smallbox.faraway.client.renderer.BaseRenderer;
+import org.smallbox.faraway.client.layer.LayerManager;
+import org.smallbox.faraway.client.renderer.Viewport;
+import org.smallbox.faraway.client.layer.BaseMapLayer;
 import org.smallbox.faraway.core.GameLayer;
 import org.smallbox.faraway.core.GameShortcut;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
-import org.smallbox.faraway.modules.item.ItemModule;
-import org.smallbox.faraway.modules.job.JobModule;
+import org.smallbox.faraway.game.item.ItemModule;
+import org.smallbox.faraway.game.job.JobModule;
 
 import static org.smallbox.faraway.util.Constant.TILE_SIZE;
 
@@ -21,7 +21,7 @@ public class DebugItemLayer extends BaseMapLayer {
     @Inject private ItemModule itemModule;
     @Inject private JobModule jobModule;
 
-    public void    onDraw(BaseRendererManager renderer, Viewport viewport, double animProgress, int frame) {
+    public void    onDraw(BaseRenderer renderer, Viewport viewport, double animProgress, int frame) {
         itemModule.getAll()
                 .stream()
                 .filter(item -> item.getParcel().z == viewport.getFloor())

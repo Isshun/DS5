@@ -6,10 +6,10 @@ import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject
 import org.smallbox.faraway.core.engine.module.ModuleBase;
 import org.smallbox.faraway.core.engine.module.lua.data.DataExtendException;
 import org.smallbox.faraway.core.engine.module.lua.data.LuaExtend;
-import org.smallbox.faraway.core.game.Data;
-import org.smallbox.faraway.core.game.model.planet.PlanetInfo;
-import org.smallbox.faraway.core.game.model.planet.RegionInfo;
-import org.smallbox.faraway.core.game.modelInfo.WeatherInfo;
+import org.smallbox.faraway.core.game.DataManager;
+import org.smallbox.faraway.game.planet.PlanetInfo;
+import org.smallbox.faraway.game.planet.RegionInfo;
+import org.smallbox.faraway.game.weather.WeatherInfo;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -22,11 +22,11 @@ public class LuaPlanetExtend extends LuaExtend {
     public boolean accept(String type) { return "planet".equals(type); }
 
     @Override
-    public void extend(Data data, ModuleBase module, Globals globals, LuaValue value, File dataDirectory) throws DataExtendException {
+    public void extend(DataManager dataManager, ModuleBase module, Globals globals, LuaValue value, File dataDirectory) throws DataExtendException {
         String id = getString(value, "id", null);
 
         PlanetInfo planetInfo = null;
-        for (PlanetInfo info: data.planets) {
+        for (PlanetInfo info: dataManager.planets) {
             if (info.name != null && info.name.equals(id)) {
                 planetInfo = info;
             }
@@ -34,13 +34,13 @@ public class LuaPlanetExtend extends LuaExtend {
 
         if (planetInfo == null) {
             planetInfo = new PlanetInfo();
-            data.planets.add(planetInfo);
+            dataManager.planets.add(planetInfo);
         }
 
-        readPlanet(data, planetInfo, value);
+        readPlanet(dataManager, planetInfo, value);
     }
 
-    private void readPlanet(Data data, PlanetInfo planetInfo, LuaValue value) throws DataExtendException {
+    private void readPlanet(DataManager dataManager, PlanetInfo planetInfo, LuaValue value) throws DataExtendException {
         planetInfo.name = getString(value, "id", null);
         planetInfo.label = getString(value, "label", null);
         planetInfo.cls = getString(value, "class", null);
@@ -64,12 +64,12 @@ public class LuaPlanetExtend extends LuaExtend {
         if (!value.get("regions").isnil()) {
             planetInfo.regions = new ArrayList<>();
             for (int i = 1; i <= value.get("regions").length(); i++) {
-                readRegion(data, planetInfo, value.get("regions").get(i));
+                readRegion(dataManager, planetInfo, value.get("regions").get(i));
             }
         }
     }
 
-    private void readRegion(Data data, PlanetInfo planetInfo, LuaValue value) {
+    private void readRegion(DataManager dataManager, PlanetInfo planetInfo, LuaValue value) {
         RegionInfo regionInfo = new RegionInfo();
 
         regionInfo.planet = planetInfo;
@@ -124,7 +124,7 @@ public class LuaPlanetExtend extends LuaExtend {
             for (int i = 1; i <= value.get("weather").length(); i++) {
                 LuaValue luaWeather = value.get("weather").get(i);
                 RegionInfo.RegionWeather regionWeatherInfo = new RegionInfo.RegionWeather();
-                data.getAsync(luaWeather.get("id").toString(), WeatherInfo.class, weatherInfo -> regionWeatherInfo.info = weatherInfo);
+                dataManager.getAsync(luaWeather.get("id").toString(), WeatherInfo.class, weatherInfo -> regionWeatherInfo.info = weatherInfo);
                 regionWeatherInfo.frequency = new double[] {
                         luaWeather.get("frequency").get(1).todouble(),
                         luaWeather.get("frequency").get(2).todouble(),

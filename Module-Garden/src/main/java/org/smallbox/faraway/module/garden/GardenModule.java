@@ -4,8 +4,8 @@ import org.smallbox.faraway.core.dependencyInjector.BindModule;
 import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.JobHelper;
-import org.smallbox.faraway.core.module.job.model.GatherJob;
-import org.smallbox.faraway.core.module.world.model.PlantModel;
+import org.smallbox.faraway.game.job.model.GatherJob;
+import org.smallbox.faraway.core.world.model.PlantModel;
 import org.smallbox.faraway.module.area.AreaModule;
 
 public class GardenModule extends GameModule {

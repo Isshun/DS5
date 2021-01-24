@@ -2,7 +2,7 @@ package org.smallbox.faraway.core.game.model;
 
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.game.modelInfo.NetworkInfo;
-import org.smallbox.faraway.core.module.world.model.NetworkItem;
+import org.smallbox.faraway.core.world.model.NetworkItem;
 
 import java.util.Collection;
 import java.util.HashSet;

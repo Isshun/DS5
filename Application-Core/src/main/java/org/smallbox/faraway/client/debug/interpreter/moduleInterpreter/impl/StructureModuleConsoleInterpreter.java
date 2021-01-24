@@ -4,8 +4,8 @@ import org.smallbox.faraway.client.debug.interpreter.moduleInterpreter.ConsoleCo
 import org.smallbox.faraway.client.debug.interpreter.moduleInterpreter.ConsoleInterpreterBase;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
-import org.smallbox.faraway.modules.job.JobModel;
-import org.smallbox.faraway.modules.job.JobModule;
+import org.smallbox.faraway.game.job.JobModel;
+import org.smallbox.faraway.game.job.JobModule;
 
 import java.util.Collection;
 import java.util.stream.Collectors;

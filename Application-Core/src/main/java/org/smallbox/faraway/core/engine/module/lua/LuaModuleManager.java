@@ -4,8 +4,8 @@ import org.luaj.vm2.Globals;
 import org.luaj.vm2.LuaError;
 import org.luaj.vm2.LuaValue;
 import org.smallbox.faraway.client.ui.UIManager;
-import org.smallbox.faraway.client.ui.engine.views.CompositeView;
-import org.smallbox.faraway.client.ui.engine.views.View;
+import org.smallbox.faraway.client.ui.widgets.CompositeView;
+import org.smallbox.faraway.client.ui.widgets.View;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.GameException;
 import org.smallbox.faraway.core.dependencyInjector.DependencyManager;
@@ -14,7 +14,7 @@ import org.smallbox.faraway.core.engine.module.ModuleBase;
 import org.smallbox.faraway.core.engine.module.ModuleInfo;
 import org.smallbox.faraway.core.engine.module.lua.data.DataExtendException;
 import org.smallbox.faraway.core.engine.module.lua.data.LuaExtend;
-import org.smallbox.faraway.core.game.Data;
+import org.smallbox.faraway.core.game.DataManager;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameObserver;
 import org.smallbox.faraway.util.FileUtils;
@@ -42,7 +42,7 @@ public abstract class LuaModuleManager implements GameObserver {
 
     @Inject private DependencyManager dependencyManager;
     @Inject private UIManager uiManager;
-    @Inject private Data data;
+    @Inject private DataManager dataManager;
 
     private Globals globals;
 
@@ -104,7 +104,7 @@ public abstract class LuaModuleManager implements GameObserver {
         _extends = dependencyManager.getSubTypesOf(LuaExtend.class);
 
         // TODO: wrong emplacement
-        data.bindings.clear();
+        dataManager.bindings.clear();
 //        _luaApplication.bindings = new LuaTable();
 
         _luaEventListeners.clear();
@@ -166,7 +166,7 @@ public abstract class LuaModuleManager implements GameObserver {
 
         fixUISize();
 
-        data.fix();
+        dataManager.fix();
 
         Log.info("LOAD LUA !!!");
         _luaLoadListeners.forEach(LuaLoadListener::onLoad);
@@ -286,7 +286,7 @@ public abstract class LuaModuleManager implements GameObserver {
         if (optional.isPresent()) {
             Log.debug(LuaModuleManager.class, "Found lua extend: %s", optional.get().getClass());
             try {
-                optional.get().extend(data, module, globals, value, dataDirectory);
+                optional.get().extend(dataManager, module, globals, value, dataDirectory);
             } catch (DataExtendException e) {
                 if (!value.get("name").isnil()) {
                     Log.info("Error during extend " + value.get("name").toString());

@@ -7,7 +7,7 @@ import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject
 import org.smallbox.faraway.core.engine.module.ModuleBase;
 import org.smallbox.faraway.core.engine.module.lua.data.DataExtendException;
 import org.smallbox.faraway.core.engine.module.lua.data.LuaExtend;
-import org.smallbox.faraway.core.game.Data;
+import org.smallbox.faraway.core.game.DataManager;
 import org.smallbox.faraway.core.game.modelInfo.GraphicInfo;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.game.modelInfo.NetworkInfo;
@@ -40,13 +40,13 @@ public class LuaItemExtend extends LuaExtend {
     }
 
     @Override
-    public void extend(Data data, ModuleBase module, Globals globals, LuaValue value, File dataDirectory) throws DataExtendException {
+    public void extend(DataManager dataManager, ModuleBase module, Globals globals, LuaValue value, File dataDirectory) throws DataExtendException {
         String id = getString(value, "id", null);
 
         _cache.put(id, value);
 
         ItemInfo itemInfo = null;
-        for (ItemInfo info: data.items) {
+        for (ItemInfo info: dataManager.items) {
             if (info.name != null && info.name.equals(id)) {
                 itemInfo = info;
             }
@@ -55,22 +55,22 @@ public class LuaItemExtend extends LuaExtend {
         if (itemInfo == null) {
             itemInfo = new ItemInfo();
             itemInfo.dataDirectory = dataDirectory;
-            data.items.add(itemInfo);
-            data.add(id, itemInfo);
+            dataManager.items.add(itemInfo);
+            dataManager.add(id, itemInfo);
         }
 
         if (!value.get("parent").isnil()) {
             itemInfo.parentName = value.get("parent").toString();
             ItemInfo finalItemInfo = itemInfo;
-            data.getAsync(itemInfo.parentName, ItemInfo.class, parentItemInfo -> finalItemInfo.parent = parentItemInfo);
+            dataManager.getAsync(itemInfo.parentName, ItemInfo.class, parentItemInfo -> finalItemInfo.parent = parentItemInfo);
         }
 
-        readItem(data, itemInfo, value);
+        readItem(dataManager, itemInfo, value);
 
 //        Log.info("Extends item from lua: " + itemInfo.label);
     }
 
-    private void readItem(Data data, ItemInfo itemInfo, LuaValue value) throws DataExtendException {
+    private void readItem(DataManager dataManager, ItemInfo itemInfo, LuaValue value) throws DataExtendException {
         itemInfo.name = getString(value, "id", null);
         itemInfo.label = getString(value, "label", null);
         itemInfo.category = value.get("category").optjstring(null);
@@ -123,14 +123,14 @@ public class LuaItemExtend extends LuaExtend {
         itemInfo.permeability = getDouble(value, "permeability", 1);
 
         if (!value.get("liquid").isnil()) {
-            data.getAsync(value.get("liquid").get("surface").toString(), ItemInfo.class, surfaceInfo -> itemInfo.surface = surfaceInfo);
+            dataManager.getAsync(value.get("liquid").get("surface").toString(), ItemInfo.class, surfaceInfo -> itemInfo.surface = surfaceInfo);
         }
 
         if (!value.get("networks").isnil()) {
             itemInfo.networks = new ArrayList<>();
             for (int i = 1; i <= value.get("networks").length(); i++) {
                 ItemInfo.NetworkItemInfo networkItemInfo = new ItemInfo.NetworkItemInfo();
-                data.getAsync(getString(value.get("networks").get(i), "network", null), NetworkInfo.class, networkInfo -> networkItemInfo.network = networkInfo);
+                dataManager.getAsync(getString(value.get("networks").get(i), "network", null), NetworkInfo.class, networkInfo -> networkItemInfo.network = networkInfo);
                 networkItemInfo.distance = getInt(value.get("networks").get(i), "distance", 0);
                 itemInfo.networks.add(networkItemInfo);
             }
@@ -144,7 +144,7 @@ public class LuaItemExtend extends LuaExtend {
             if (!componentsValue.isnil()) {
                 for (int i = 1; i <= componentsValue.length(); i++) {
                     ItemInfo.ItemBuildInfo.ItemBuildComponentInfo componentInfo = new ItemInfo.ItemBuildInfo.ItemBuildComponentInfo();
-                    data.getAsync(componentsValue.get(i).get("item").toString(), ItemInfo.class, component -> componentInfo.component = component);
+                    dataManager.getAsync(componentsValue.get(i).get("item").toString(), ItemInfo.class, component -> componentInfo.component = component);
                     componentInfo.quantity = componentsValue.get(i).get("quantity").toint();
                     itemInfo.build.components.add(componentInfo);
 
@@ -179,7 +179,7 @@ public class LuaItemExtend extends LuaExtend {
         }
 
         if (!value.get("factory").isnil()) {
-            readFactoryValue(data, itemInfo, value.get("factory"));
+            readFactoryValue(dataManager, itemInfo, value.get("factory"));
         }
 
         // Effects on consumable
@@ -253,7 +253,7 @@ public class LuaItemExtend extends LuaExtend {
         }
     }
 
-    private void readFactoryValue(Data data, ItemInfo itemInfo, LuaValue value) {
+    private void readFactoryValue(DataManager dataManager, ItemInfo itemInfo, LuaValue value) {
         itemInfo.isFactory = true;
         itemInfo.factory = new ItemInfo.ItemInfoFactory();
 
@@ -275,7 +275,7 @@ public class LuaItemExtend extends LuaExtend {
         if (!value.get("receipts").isnil()) {
             itemInfo.factory.receiptGroups = new HashSet<>();
             for (int i = 1; i <= value.get("receipts").length(); i++) {
-                data.getAsync(value.get("receipts").get(i).get("receipt").tojstring(), ReceiptGroupInfo.class,
+                dataManager.getAsync(value.get("receipts").get(i).get("receipt").tojstring(), ReceiptGroupInfo.class,
                         receiptGroupInfo -> itemInfo.factory.receiptGroups.add(receiptGroupInfo));
             }
         }

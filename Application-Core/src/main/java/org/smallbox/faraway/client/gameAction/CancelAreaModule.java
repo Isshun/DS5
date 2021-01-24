@@ -5,7 +5,7 @@
 //import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 //import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnInit;
 //import org.smallbox.faraway.core.game.Game;
-//import org.smallbox.faraway.core.module.world.model.Parcel;
+//import org.smallbox.faraway.game.world.Parcel;
 //import org.smallbox.faraway.modules.area.AreaModule;
 //import org.smallbox.faraway.modules.area.AreaModuleBase;
 //import org.smallbox.faraway.modules.dig.DigJob;

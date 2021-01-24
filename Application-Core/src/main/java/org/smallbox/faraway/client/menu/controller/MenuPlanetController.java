@@ -4,23 +4,23 @@ import com.badlogic.gdx.Input;
 import org.smallbox.faraway.client.controller.LuaController;
 import org.smallbox.faraway.client.controller.annotation.BindLua;
 import org.smallbox.faraway.client.controller.annotation.BindLuaAction;
-import org.smallbox.faraway.client.ui.engine.Colors;
-import org.smallbox.faraway.client.ui.engine.views.CompositeView;
-import org.smallbox.faraway.client.ui.engine.views.View;
-import org.smallbox.faraway.client.ui.engine.views.widgets.UIGrid;
-import org.smallbox.faraway.client.ui.engine.views.widgets.UIImage;
-import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
-import org.smallbox.faraway.client.ui.engine.views.widgets.UIList;
+import org.smallbox.faraway.client.ui.extra.Colors;
+import org.smallbox.faraway.client.ui.widgets.CompositeView;
+import org.smallbox.faraway.client.ui.widgets.View;
+import org.smallbox.faraway.client.ui.widgets.UIGrid;
+import org.smallbox.faraway.client.ui.widgets.UIImage;
+import org.smallbox.faraway.client.ui.widgets.UILabel;
+import org.smallbox.faraway.client.ui.widgets.UIList;
 import org.smallbox.faraway.core.GameShortcut;
 import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.dependencyInjector.annotationEvent.AfterApplicationLayerInit;
-import org.smallbox.faraway.core.game.Data;
+import org.smallbox.faraway.core.game.DataManager;
 import org.smallbox.faraway.core.game.GameFactory;
 import org.smallbox.faraway.core.game.GameManager;
-import org.smallbox.faraway.core.game.model.planet.PlanetInfo;
+import org.smallbox.faraway.game.planet.PlanetInfo;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
-import org.smallbox.faraway.core.game.service.applicationConfig.ApplicationConfig;
+import org.smallbox.faraway.core.config.ApplicationConfig;
 
 @ApplicationObject
 public class MenuPlanetController extends LuaController {
@@ -29,7 +29,7 @@ public class MenuPlanetController extends LuaController {
     @Inject private ApplicationConfig applicationConfig;
     @Inject private MenuCrewController menuCrewController;
     @Inject private MenuMainController menuMainController;
-    @Inject private Data data;
+    @Inject private DataManager dataManager;
 
     @BindLua private UIList listPlanets;
     @BindLua private UIImage imgPlanet;
@@ -41,14 +41,14 @@ public class MenuPlanetController extends LuaController {
 
     @AfterApplicationLayerInit
     private void afterApplicationLayerInit() {
-        data.planets.forEach(planet -> {
+        dataManager.planets.forEach(planet -> {
             UILabel lbPlanet = listPlanets.createFromTemplate(UILabel.class);
             lbPlanet.setId(planet.name);
             lbPlanet.setText(planet.label);
             lbPlanet.getEvents().setOnClickListener(() -> selectPlanet(planet));
             listPlanets.addView(lbPlanet);
         });
-        selectPlanet(data.planets.get(0));
+        selectPlanet(dataManager.planets.get(0));
     }
 
     private void selectPlanet(PlanetInfo planet) {
@@ -72,7 +72,7 @@ public class MenuPlanetController extends LuaController {
                 UIGrid listResource = ((UIGrid)viewRegion.find("grid_info_resources"));
                 region.terrains.stream().filter(terrain -> terrain.resource != null).forEach(terrain -> {
                     UIImage viewResource = (UIImage)listResource.createFromTemplate();
-                    ItemInfo resourceInfo = data.getItemInfo(terrain.resource);
+                    ItemInfo resourceInfo = dataManager.getItemInfo(terrain.resource);
                     if (resourceInfo.hasIcon()) {
                         viewResource.setImage(resourceInfo.icon);
                     }
@@ -101,12 +101,12 @@ public class MenuPlanetController extends LuaController {
 
     @GameShortcut(key = Input.Keys.UP)
     public void onPressUp() {
-        selectPlanet(safePlanet(data.planets.indexOf(planet) - 1));
+        selectPlanet(safePlanet(dataManager.planets.indexOf(planet) - 1));
     }
 
     @GameShortcut(key = Input.Keys.DOWN)
     public void onPressDown() {
-        selectPlanet(safePlanet(data.planets.indexOf(planet) + 1));
+        selectPlanet(safePlanet(dataManager.planets.indexOf(planet) + 1));
     }
 
 //    @GameShortcut(key = Input.Keys.F1)
@@ -116,7 +116,7 @@ public class MenuPlanetController extends LuaController {
 //    }
 
     private PlanetInfo safePlanet(int index) {
-        return data.planets.get(Math.max(Math.min(index, data.planets.size()), 0));
+        return dataManager.planets.get(Math.max(Math.min(index, dataManager.planets.size()), 0));
     }
 
 }

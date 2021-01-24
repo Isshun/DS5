@@ -5,24 +5,24 @@ import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.smallbox.faraway.client.controller.annotation.BindLua;
 import org.smallbox.faraway.client.gameAction.GameActionManager;
-import org.smallbox.faraway.client.manager.SpriteManager;
+import org.smallbox.faraway.client.asset.SpriteManager;
 import org.smallbox.faraway.client.selection.GameSelectionManager;
-import org.smallbox.faraway.client.ui.engine.OnClickListener;
-import org.smallbox.faraway.client.ui.engine.UIEventManager;
-import org.smallbox.faraway.client.ui.engine.views.CompositeView;
-import org.smallbox.faraway.client.ui.engine.views.View;
-import org.smallbox.faraway.client.ui.engine.views.widgets.UIFrame;
-import org.smallbox.faraway.client.ui.engine.views.widgets.UIGrid;
-import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
+import org.smallbox.faraway.client.ui.event.OnClickListener;
+import org.smallbox.faraway.client.ui.event.UIEventManager;
+import org.smallbox.faraway.client.ui.widgets.CompositeView;
+import org.smallbox.faraway.client.ui.widgets.View;
+import org.smallbox.faraway.client.ui.widgets.UIFrame;
+import org.smallbox.faraway.client.ui.widgets.UIGrid;
+import org.smallbox.faraway.client.ui.widgets.UILabel;
 import org.smallbox.faraway.core.GameShortcut;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.dependencyInjector.annotationEvent.AfterGameLayerInit;
-import org.smallbox.faraway.core.game.Data;
+import org.smallbox.faraway.core.game.DataManager;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
-import org.smallbox.faraway.modules.item.ItemModule;
-import org.smallbox.faraway.modules.structure.StructureModule;
-import org.smallbox.faraway.modules.world.WorldModule;
+import org.smallbox.faraway.game.item.ItemModule;
+import org.smallbox.faraway.game.structure.StructureModule;
+import org.smallbox.faraway.game.world.WorldModule;
 
 import java.util.List;
 import java.util.Map;
@@ -39,7 +39,7 @@ public class BuildController extends LuaController {
     @Inject private MainPanelController mainPanelController;
     @Inject private SpriteManager spriteManager;
     @Inject private GameActionManager gameActionManager;
-    @Inject private Data data;
+    @Inject private DataManager dataManager;
 
     @BindLua private CompositeView listCategories;
     @BindLua private UILabel contentLabel;
@@ -54,7 +54,7 @@ public class BuildController extends LuaController {
         List<String> categories = List.of("structure", "furniture", "kitchen", "power", "industrial", "production", "other");
 
         // Build item map by category
-        itemsByCategory = data.getItems().stream()
+        itemsByCategory = dataManager.getItems().stream()
                 .filter(itemInfo -> StringUtils.equals(itemInfo.type, "item") || StringUtils.equals(itemInfo.type, "structure"))
                 .collect(Collectors.groupingBy(itemInfo -> categories.contains(itemInfo.category) ? itemInfo.category : "other"));
 

@@ -5,8 +5,8 @@ import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import org.smallbox.faraway.core.dependencyInjector.DependencyManager;
 import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject;
 import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnInit;
-import org.smallbox.faraway.core.game.service.applicationConfig.ApplicationConfig;
-import org.smallbox.faraway.core.game.service.applicationConfig.ApplicationConfigService;
+import org.smallbox.faraway.core.config.ApplicationConfig;
+import org.smallbox.faraway.core.config.ApplicationConfigService;
 import org.smallbox.faraway.util.Constant;
 
 @ApplicationObject

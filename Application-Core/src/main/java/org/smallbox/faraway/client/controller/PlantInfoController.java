@@ -1,13 +1,13 @@
 package org.smallbox.faraway.client.controller;
 
 import org.smallbox.faraway.client.controller.annotation.BindLua;
-import org.smallbox.faraway.client.ui.engine.views.View;
-import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
+import org.smallbox.faraway.client.ui.widgets.View;
+import org.smallbox.faraway.client.ui.widgets.UILabel;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
-import org.smallbox.faraway.core.module.world.model.Parcel;
-import org.smallbox.faraway.modules.plant.PlantModule;
-import org.smallbox.faraway.modules.plant.model.PlantItem;
+import org.smallbox.faraway.game.world.Parcel;
+import org.smallbox.faraway.game.plant.PlantModule;
+import org.smallbox.faraway.game.plant.model.PlantItem;
 
 import java.util.Queue;
 

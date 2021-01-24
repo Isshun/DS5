@@ -3,13 +3,13 @@ package org.smallbox.faraway.client.debug.layer;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import org.apache.commons.collections4.CollectionUtils;
-import org.smallbox.faraway.client.render.BaseRendererManager;
-import org.smallbox.faraway.client.render.Viewport;
-import org.smallbox.faraway.client.render.layer.BaseLayer;
+import org.smallbox.faraway.client.renderer.BaseRenderer;
+import org.smallbox.faraway.client.renderer.Viewport;
+import org.smallbox.faraway.client.layer.BaseLayer;
 import org.smallbox.faraway.client.ui.UIManager;
-import org.smallbox.faraway.client.ui.engine.UIEventManager;
-import org.smallbox.faraway.client.ui.engine.views.CompositeView;
-import org.smallbox.faraway.client.ui.engine.views.View;
+import org.smallbox.faraway.client.ui.event.UIEventManager;
+import org.smallbox.faraway.client.ui.widgets.CompositeView;
+import org.smallbox.faraway.client.ui.widgets.View;
 import org.smallbox.faraway.core.GameLayer;
 import org.smallbox.faraway.core.GameShortcut;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
@@ -21,7 +21,7 @@ public class DebugViewLayer extends BaseLayer {
     @Inject private UIManager uiManager;
     @Inject private UIEventManager uiEventManager;
 
-    public void    onDraw(BaseRendererManager renderer, Viewport viewport, double animProgress, int frame) {
+    public void    onDraw(BaseRenderer renderer, Viewport viewport, double animProgress, int frame) {
         uiManager.getRootViews().forEach(rootView -> drawViewRecurse(renderer, rootView.getView()));
 
 //        uiManager.getViews().stream()
@@ -36,7 +36,7 @@ public class DebugViewLayer extends BaseLayer {
 //                });
     }
 
-    private void drawViewRecurse(BaseRendererManager renderer, View view) {
+    private void drawViewRecurse(BaseRenderer renderer, View view) {
         if (view.isVisible()) {
             if (uiEventManager.hasClickListener(view)) {
                 renderer.drawRectangle(view.getGeometry().getFinalX(), view.getGeometry().getFinalY(), view.getWidth(), view.getHeight(), Color.YELLOW, false);

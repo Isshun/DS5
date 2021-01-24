@@ -3,12 +3,12 @@
 //import org.smallbox.faraway.client.controller.LuaController;
 //import org.smallbox.faraway.client.controller.TooltipController;
 //import org.smallbox.faraway.client.controller.annotation.BindLua;
-//import org.smallbox.faraway.client.render.Viewport;
-//import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
-//import org.smallbox.faraway.client.ui.engine.views.View;
+//import org.smallbox.faraway.client.renderer.Viewport;
+//import org.smallbox.faraway.client.ui.widgets.UILabel;
+//import org.smallbox.faraway.client.ui.widgets.View;
 //import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 //import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
-//import org.smallbox.faraway.core.module.world.model.ParcelModel;
+//import org.smallbox.faraway.core.world.model.ParcelModel;
 //import org.smallbox.faraway.modules.character.CharacterModule;
 //import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 //import org.smallbox.faraway.modules.world.WorldModule;
