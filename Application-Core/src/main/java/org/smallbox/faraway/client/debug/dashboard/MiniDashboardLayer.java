@@ -1,7 +1,7 @@
 package org.smallbox.faraway.client.debug.dashboard;
 
 import org.smallbox.faraway.client.debug.dashboard.content.ConsoleDashboardLayer;
-import org.smallbox.faraway.client.render.GDXRendererBase;
+import org.smallbox.faraway.client.render.BaseRendererManager;
 import org.smallbox.faraway.client.render.Viewport;
 import org.smallbox.faraway.client.render.layer.BaseLayer;
 import org.smallbox.faraway.core.GameLayer;
@@ -19,7 +19,7 @@ public class MiniDashboardLayer extends BaseLayer {
     }
 
     @Override
-    public void onDraw(GDXRendererBase renderer, Viewport viewport, double animProgress, int frame) {
+    public void onDraw(BaseRendererManager renderer, Viewport viewport, double animProgress, int frame) {
             consoleDashboardLayer.draw(renderer, frame);
     }
 

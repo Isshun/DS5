@@ -27,13 +27,13 @@ public class ConsumableLayer extends BaseMapLayer {
 
     @Inject private SpriteManager spriteManager;
     @Inject private ConsumableModule consumableModule;
-    @Inject private GDXRenderer gdxRenderer;
+    @Inject private MapRendererManager mapRendererManager;
 
     private final Queue<TagDraw> tags = new ConcurrentLinkedQueue<>();
 
     private abstract class TagDraw {
         public int frameLeft = 100;
-        public abstract void onTagdraw(GDXRendererBase renderer, Viewport viewport);
+        public abstract void onTagdraw(BaseRendererManager renderer, Viewport viewport);
     }
 
     @Override
@@ -54,7 +54,7 @@ public class ConsumableLayer extends BaseMapLayer {
     private void addTag(String text, Parcel parcel) {
         tags.add(new TagDraw() {
             @Override
-            public void onTagdraw(GDXRendererBase renderer, Viewport viewport) {
+            public void onTagdraw(BaseRendererManager renderer, Viewport viewport) {
                 UILabel.create(null)
                         .setText(text)
                         .setTextSize(12)
@@ -65,7 +65,7 @@ public class ConsumableLayer extends BaseMapLayer {
         });
     }
 
-    public void onDraw(GDXRendererBase renderer, Viewport viewport, double animProgress, int frame) {
+    public void onDraw(BaseRendererManager renderer, Viewport viewport, double animProgress, int frame) {
         consumableModule.getAll().stream()
                 .filter(item -> viewport.hasParcel(item.getParcel()))
                 .filter(item -> item.getTotalQuantity() > 0)

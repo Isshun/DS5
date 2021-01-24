@@ -1,7 +1,7 @@
 package org.smallbox.faraway.client.debug.dashboard.content;
 
 import org.smallbox.faraway.client.debug.dashboard.DashboardLayerBase;
-import org.smallbox.faraway.client.render.GDXRendererBase;
+import org.smallbox.faraway.client.render.BaseRendererManager;
 import org.smallbox.faraway.client.render.LayerManager;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
@@ -13,7 +13,7 @@ public class LayerDashboardLayer extends DashboardLayerBase {
     @Inject private Game game;
 
     @Override
-    protected void onDraw(GDXRendererBase renderer, int frame) {
+    protected void onDraw(BaseRendererManager renderer, int frame) {
         if (layerManager != null) {
             layerManager.getLayers().stream()
                     .sorted((o1, o2) -> (int)(o2.getCumulateTime() - o1.getCumulateTime()))

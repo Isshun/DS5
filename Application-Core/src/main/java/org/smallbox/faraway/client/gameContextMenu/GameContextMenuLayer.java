@@ -2,7 +2,7 @@ package org.smallbox.faraway.client.gameContextMenu;
 
 import com.badlogic.gdx.graphics.Color;
 import org.smallbox.faraway.client.manager.input.InputManager;
-import org.smallbox.faraway.client.render.GDXRendererBase;
+import org.smallbox.faraway.client.render.BaseRendererManager;
 import org.smallbox.faraway.client.render.LayerManager;
 import org.smallbox.faraway.client.render.Viewport;
 import org.smallbox.faraway.client.render.layer.BaseLayer;
@@ -20,11 +20,11 @@ public class GameContextMenuLayer extends BaseLayer {
     @Inject private InputManager inputManager;
 
     @Override
-    public void onDraw(GDXRendererBase renderer, Viewport viewport, double animProgress, int frame) {
+    public void onDraw(BaseRendererManager renderer, Viewport viewport, double animProgress, int frame) {
         Optional.ofNullable(gameContextMenuManager.getMenu()).ifPresent(menu -> menu.getEntries().forEach(entry -> displayEntry(renderer, entry)));
     }
 
-    private void displayEntry(GDXRendererBase renderer, GameContextMenuEntry entry) {
+    private void displayEntry(BaseRendererManager renderer, GameContextMenuEntry entry) {
         Color color = entry.contains(inputManager.getMouseX(), inputManager.getMouseY()) ? Colors.BLUE_LIGHT_2 : Color.WHITE;
         renderer.drawText(entry.getX() + 6, entry.getY() + 6, entry.getLabel(), Color.BLACK, 22);
         renderer.drawText(entry.getX() + 5, entry.getY() + 5, entry.getLabel(), color, 22);

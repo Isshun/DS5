@@ -41,8 +41,8 @@ public class LayerManager implements GameClientObserver {
     @Inject private UIManager uiManager;
     @Inject private Viewport viewport;
     @Inject private GameManager gameManager;
-    @Inject private GDXRenderer gdxRenderer;
-    @Inject private GDXRendererUI gdxRendererUI;
+    @Inject private MapRendererManager mapRendererManager;
+    @Inject private org.smallbox.faraway.client.render.UIRendererManager UIRendererManager;
     @Inject private WorldInputManager worldInputManager;
     @Inject private DependencyManager dependencyManager;
     @Inject private Game game;
@@ -125,7 +125,7 @@ public class LayerManager implements GameClientObserver {
 
         //noinspection Convert2streamapi
         if (_layers != null) {
-            _layers.forEach(render -> render.draw(render instanceof BaseMapLayer ? gdxRenderer : gdxRendererUI, viewport, animProgress, frame));
+            _layers.forEach(render -> render.draw(render instanceof BaseMapLayer ? mapRendererManager : UIRendererManager, viewport, animProgress, frame));
         }
 
         _frame++;

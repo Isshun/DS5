@@ -3,7 +3,7 @@ package org.smallbox.faraway.client.render.layer.ui;
 import com.badlogic.gdx.graphics.Color;
 import org.smallbox.faraway.client.GameEventManager;
 import org.smallbox.faraway.client.gameAction.GameActionManager;
-import org.smallbox.faraway.client.render.GDXRendererBase;
+import org.smallbox.faraway.client.render.BaseRendererManager;
 import org.smallbox.faraway.client.render.LayerManager;
 import org.smallbox.faraway.client.render.Viewport;
 import org.smallbox.faraway.client.render.layer.BaseMapLayer;
@@ -24,7 +24,7 @@ public class SelectionProjectionLayer extends BaseMapLayer {
     @Inject private Viewport viewport;
 
     @Override
-    public void onDraw(GDXRendererBase renderer, Viewport viewport, double animProgress, int frame) {
+    public void onDraw(BaseRendererManager renderer, Viewport viewport, double animProgress, int frame) {
         if (gameEventManager.isMousePressed()) {
             drawSelection(renderer,
                     gameEventManager.getMouseDownX(), gameEventManager.getMouseDownY(),
@@ -33,7 +33,7 @@ public class SelectionProjectionLayer extends BaseMapLayer {
         }
     }
 
-    private void drawSelection(GDXRendererBase renderer, int fromX, int fromY, int width, int height, Color color) {
+    private void drawSelection(BaseRendererManager renderer, int fromX, int fromY, int width, int height, Color color) {
         int fromMapX = Math.min(viewport.getWorldPosX(fromX), viewport.getWorldPosX(fromX + width));
         int fromMapY = Math.min(viewport.getWorldPosY(fromY), viewport.getWorldPosY(fromY + height));
         int toMapX = Math.max(viewport.getWorldPosX(fromX), viewport.getWorldPosX(fromX + width));

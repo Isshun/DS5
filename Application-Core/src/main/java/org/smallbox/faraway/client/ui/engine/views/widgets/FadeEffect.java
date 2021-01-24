@@ -2,7 +2,7 @@ package org.smallbox.faraway.client.ui.engine.views.widgets;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import org.smallbox.faraway.client.render.GDXRendererBase;
+import org.smallbox.faraway.client.render.BaseRendererManager;
 
 public class FadeEffect {
     private Sprite  _from;
@@ -20,7 +20,7 @@ public class FadeEffect {
         _durationLeft = _duration;
     }
 
-    public void draw(GDXRendererBase renderer, int x, int y) {
+    public void draw(BaseRendererManager renderer, int x, int y) {
         _durationLeft -= Gdx.graphics.getDeltaTime() * 1000;
 
         if (_from != null && _to != null) {

@@ -1,7 +1,7 @@
 package org.smallbox.faraway.client.render.layer.item;
 
 import org.smallbox.faraway.client.manager.SpriteManager;
-import org.smallbox.faraway.client.render.GDXRendererBase;
+import org.smallbox.faraway.client.render.BaseRendererManager;
 import org.smallbox.faraway.client.render.LayerManager;
 import org.smallbox.faraway.client.render.Viewport;
 import org.smallbox.faraway.client.render.layer.BaseMapLayer;
@@ -30,7 +30,7 @@ public class StructureBottomLayer extends BaseMapLayer {
     }
 
     @Override
-    public void onDraw(GDXRendererBase renderer, Viewport viewport, double animProgress, int frame) {
+    public void onDraw(BaseRendererManager renderer, Viewport viewport, double animProgress, int frame) {
     }
 
     @Override

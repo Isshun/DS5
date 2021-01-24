@@ -2,7 +2,7 @@ package org.smallbox.faraway.client.debug.layer;
 
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
-import org.smallbox.faraway.client.render.GDXRendererBase;
+import org.smallbox.faraway.client.render.BaseRendererManager;
 import org.smallbox.faraway.client.render.Viewport;
 import org.smallbox.faraway.client.render.layer.BaseMapLayer;
 import org.smallbox.faraway.core.GameLayer;
@@ -30,7 +30,7 @@ public class DebugCharacterLayer extends BaseMapLayer {
     private CharacterModel _character;
 
     @Override
-    public void    onDraw(GDXRendererBase renderer, Viewport viewport, double animProgress, int frame) {
+    public void    onDraw(BaseRendererManager renderer, Viewport viewport, double animProgress, int frame) {
         _index = 0;
         renderer.drawRectangle(0, 0, 2000, 2000, BG_COLOR);
 
@@ -63,7 +63,7 @@ public class DebugCharacterLayer extends BaseMapLayer {
             toggleVisibility();
     }
 
-    private void drawDebug(GDXRendererBase renderer, String label, Object object) {
+    private void drawDebug(BaseRendererManager renderer, String label, Object object) {
         renderer.drawText(12, (_index * 20) + 12, "[" + label.toUpperCase() + "] " + object, Color.BLACK, 18);
         renderer.drawText(11, (_index * 20) + 11, "[" + label.toUpperCase() + "] " + object, Color.BLACK, 18);
         renderer.drawText(10, (_index * 20) + 10, "[" + label.toUpperCase() + "] " + object, Color.WHITE, 18);

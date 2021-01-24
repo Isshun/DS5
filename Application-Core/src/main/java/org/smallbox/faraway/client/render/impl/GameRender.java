@@ -3,7 +3,7 @@ package org.smallbox.faraway.client.render.impl;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import org.smallbox.faraway.client.manager.input.InputManager;
-import org.smallbox.faraway.client.render.GDXRenderer;
+import org.smallbox.faraway.client.render.MapRendererManager;
 import org.smallbox.faraway.client.render.LayerManager;
 import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
@@ -16,7 +16,7 @@ public class GameRender {
     @Inject private GameManager gameManager;
     @Inject private LayerManager layerManager;
     @Inject private InputManager inputManager;
-    @Inject private GDXRenderer gdxRenderer;
+    @Inject private MapRendererManager mapRendererManager;
     @Inject private Game game;
 
     public void render() {
@@ -27,7 +27,7 @@ public class GameRender {
 
         // Render application
 //        gdxRenderer.clear();
-        gdxRenderer.refresh();
+        mapRendererManager.refresh();
 
         // Render game
         if (gameManager.isLoaded()) {

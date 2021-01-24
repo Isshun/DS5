@@ -1,7 +1,7 @@
 package org.smallbox.faraway.client.debug.layer;
 
 import com.badlogic.gdx.graphics.Color;
-import org.smallbox.faraway.client.render.GDXRendererBase;
+import org.smallbox.faraway.client.render.BaseRendererManager;
 import org.smallbox.faraway.client.render.LayerManager;
 import org.smallbox.faraway.client.render.Viewport;
 import org.smallbox.faraway.client.render.layer.BaseMapLayer;
@@ -23,7 +23,7 @@ public class DebugPathLayer extends BaseMapLayer {
     @Inject private CharacterModule characterModule;
     @Inject private PathManager pathManager;
 
-    public void    onDraw(GDXRendererBase renderer, Viewport viewport, double animProgress, int frame) {
+    public void    onDraw(BaseRendererManager renderer, Viewport viewport, double animProgress, int frame) {
         worldModule.getAll().stream()
                 .filter(viewport::hasParcel)
                 .forEach(parcel -> {

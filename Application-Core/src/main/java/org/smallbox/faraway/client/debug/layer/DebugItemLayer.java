@@ -2,7 +2,7 @@ package org.smallbox.faraway.client.debug.layer;
 
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
-import org.smallbox.faraway.client.render.GDXRendererBase;
+import org.smallbox.faraway.client.render.BaseRendererManager;
 import org.smallbox.faraway.client.render.LayerManager;
 import org.smallbox.faraway.client.render.Viewport;
 import org.smallbox.faraway.client.render.layer.BaseMapLayer;
@@ -21,7 +21,7 @@ public class DebugItemLayer extends BaseMapLayer {
     @Inject private ItemModule itemModule;
     @Inject private JobModule jobModule;
 
-    public void    onDraw(GDXRendererBase renderer, Viewport viewport, double animProgress, int frame) {
+    public void    onDraw(BaseRendererManager renderer, Viewport viewport, double animProgress, int frame) {
         itemModule.getAll()
                 .stream()
                 .filter(item -> item.getParcel().z == viewport.getFloor())

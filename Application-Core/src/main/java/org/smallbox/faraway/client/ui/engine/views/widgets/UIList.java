@@ -1,6 +1,6 @@
 package org.smallbox.faraway.client.ui.engine.views.widgets;
 
-import org.smallbox.faraway.client.render.GDXRendererBase;
+import org.smallbox.faraway.client.render.BaseRendererManager;
 import org.smallbox.faraway.client.ui.engine.views.CompositeView;
 import org.smallbox.faraway.client.ui.engine.views.View;
 import org.smallbox.faraway.core.engine.module.ModuleBase;
@@ -45,7 +45,7 @@ public class UIList extends CompositeView implements AutoCloseable {
     }
 
     @Override
-    public void draw(GDXRendererBase renderer, int x, int y) {
+    public void draw(BaseRendererManager renderer, int x, int y) {
         super.draw(renderer, x, y);
 
         if (_isVisible) {

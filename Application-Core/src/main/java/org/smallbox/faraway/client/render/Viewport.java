@@ -16,7 +16,7 @@ public class Viewport {
     @Inject private WorldCameraManager worldCameraManager;
     @Inject private ApplicationConfig applicationConfig;
     @Inject private GameManager gameManager;
-    @Inject private GDXRenderer gdxRenderer;
+    @Inject private MapRendererManager mapRendererManager;
     @Inject private Game game;
 
     private final static int ANIM_FRAME = 10;

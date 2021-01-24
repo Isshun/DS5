@@ -3,7 +3,7 @@ package org.smallbox.faraway.client.debug.dashboard;
 import com.badlogic.gdx.graphics.Color;
 import org.smallbox.faraway.client.debug.dashboard.content.*;
 import org.smallbox.faraway.client.debug.layer.*;
-import org.smallbox.faraway.client.render.GDXRendererBase;
+import org.smallbox.faraway.client.render.BaseRendererManager;
 import org.smallbox.faraway.client.render.Viewport;
 import org.smallbox.faraway.client.render.layer.BaseLayer;
 import org.smallbox.faraway.client.selection.GameSelectionManager;
@@ -104,7 +104,7 @@ public class DashboardLayer extends BaseLayer {
     }
 
     @Override
-    public void onDraw(GDXRendererBase renderer, Viewport viewport, double animProgress, int frame) {
+    public void onDraw(BaseRendererManager renderer, Viewport viewport, double animProgress, int frame) {
         if (isVisible()) {
             drawHeaders(renderer);
             drawDebugLayer(renderer);
@@ -131,7 +131,7 @@ public class DashboardLayer extends BaseLayer {
         return null;
     }
 
-    private void drawDebugLayer(GDXRendererBase renderer) {
+    private void drawDebugLayer(BaseRendererManager renderer) {
         int offset = 0;
         for (DashboardLayerButton button : debugLayers) {
             drawButton(renderer, (offset * 10) + 4, 54, " [" + button.label.toUpperCase() + "] ", button.layer.isVisible());
@@ -139,7 +139,7 @@ public class DashboardLayer extends BaseLayer {
         }
     }
 
-    private void drawHeaders(GDXRendererBase renderer) {
+    private void drawHeaders(BaseRendererManager renderer) {
         int offset = 0;
         for (DashboardMode dashboardMode : DashboardMode.values()) {
             drawButton(renderer, (offset * 10) + 4, 4, " [" + dashboardMode.name().toUpperCase() + "] ", this.dashboardMode == dashboardMode);
@@ -147,7 +147,7 @@ public class DashboardLayer extends BaseLayer {
         }
     }
 
-    private void drawButton(GDXRendererBase renderer, int x, int y, String label, boolean isActive) {
+    private void drawButton(BaseRendererManager renderer, int x, int y, String label, boolean isActive) {
         renderer.drawRectangle(x, y, label.length() * 10, 30, BUTTON_BG_COLOR, true);
         renderer.drawText(x + 2, y + 5, label, Color.BLACK, 18);
         renderer.drawText(x + 1, y + 6, label, Color.BLACK, 18);

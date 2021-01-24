@@ -1,7 +1,7 @@
 package org.smallbox.faraway.client.debug.dashboard.content;
 
 import org.smallbox.faraway.client.debug.dashboard.DashboardLayerBase;
-import org.smallbox.faraway.client.render.GDXRendererBase;
+import org.smallbox.faraway.client.render.BaseRendererManager;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.modules.item.ItemModule;
@@ -12,11 +12,11 @@ public class ItemDashboardLayer extends DashboardLayerBase {
     @Inject private ItemModule itemModule;
 
     @Override
-    protected void onDraw(GDXRendererBase renderer, int frame) {
+    protected void onDraw(BaseRendererManager renderer, int frame) {
         itemModule.getAll().forEach(item -> drawDebugItem(renderer, item));
     }
 
-    private void drawDebugItem(GDXRendererBase renderer, UsableItem item) {
+    private void drawDebugItem(BaseRendererManager renderer, UsableItem item) {
         StringBuilder sb = new StringBuilder();
         sb.append(item.getName()).append(" ").append(item.getParcel().x).append("x").append(item.getParcel().y);
 

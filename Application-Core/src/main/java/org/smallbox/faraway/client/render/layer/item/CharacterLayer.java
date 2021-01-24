@@ -12,8 +12,8 @@ import com.badlogic.gdx.math.Vector2;
 import org.smallbox.faraway.client.AssetManager;
 import org.smallbox.faraway.client.manager.SpriteManager;
 import org.smallbox.faraway.client.manager.input.InputManager;
-import org.smallbox.faraway.client.render.GDXRenderer;
-import org.smallbox.faraway.client.render.GDXRendererBase;
+import org.smallbox.faraway.client.render.MapRendererManager;
+import org.smallbox.faraway.client.render.BaseRendererManager;
 import org.smallbox.faraway.client.render.LayerManager;
 import org.smallbox.faraway.client.render.Viewport;
 import org.smallbox.faraway.client.render.layer.BaseMapLayer;
@@ -49,7 +49,7 @@ public class CharacterLayer extends BaseMapLayer {
     @Inject private SpriteManager spriteManager;
     @Inject private CharacterModule characterModule;
     @Inject private GameManager gameManager;
-    @Inject private GDXRenderer gdxRenderer;
+    @Inject private MapRendererManager mapRendererManager;
     @Inject private Viewport viewport;
     @Inject private Game game;
 
@@ -99,11 +99,11 @@ public class CharacterLayer extends BaseMapLayer {
     }
 
     @Override
-    public void onDraw(GDXRendererBase renderer, Viewport viewport, double animProgress, int frame) {
+    public void onDraw(BaseRendererManager renderer, Viewport viewport, double animProgress, int frame) {
         characterModule.getAll().forEach(character -> drawCharacter(renderer, viewport, character));
     }
 
-    private void drawCharacter(GDXRendererBase renderer, Viewport viewport, CharacterModel character) {
+    private void drawCharacter(BaseRendererManager renderer, Viewport viewport, CharacterModel character) {
         character.stateTime += Gdx.graphics.getDeltaTime(); // Accumulate elapsed animation time
 
         if (character.getParcel().z == viewport.getFloor()) {
@@ -144,7 +144,7 @@ public class CharacterLayer extends BaseMapLayer {
         return direction;
     }
 
-    private void doDraw(GDXRendererBase renderer, CharacterModel character, int posX, int posY, MovableModel.Direction dout) {
+    private void doDraw(BaseRendererManager renderer, CharacterModel character, int posX, int posY, MovableModel.Direction dout) {
 //        if (positionCommon.isAlive()) {
         drawCharacter(renderer, character, posX, posY, dout);
         drawLabel(renderer, character, posX, posY);
@@ -161,7 +161,7 @@ public class CharacterLayer extends BaseMapLayer {
     /**
      * Draw job
      */
-    private void drawJob(GDXRendererBase renderer, CharacterModel character, int posX, int posY) {
+    private void drawJob(BaseRendererManager renderer, CharacterModel character, int posX, int posY) {
         JobModel job = character.getJob();
         if (job != null) {
 
@@ -180,14 +180,14 @@ public class CharacterLayer extends BaseMapLayer {
     /**
      * Draw label
      */
-    private void drawLabel(GDXRendererBase renderer, CharacterModel character, int posX, int posY) {
+    private void drawLabel(BaseRendererManager renderer, CharacterModel character, int posX, int posY) {
         renderer.drawText(posX, posY - 8, character.getName(), Color.CHARTREUSE, 28);
     }
 
     /**
      * Draw characters
      */
-    private void drawCharacter(GDXRendererBase renderer, CharacterModel character, int posX, int posY, MovableModel.Direction direction) {
+    private void drawCharacter(BaseRendererManager renderer, CharacterModel character, int posX, int posY, MovableModel.Direction direction) {
         TextureRegion currentFrame = runningAnimation2.getKeyFrame(character.stateTime, true);
 
         Parcel parcelOver = WorldHelper.getParcel(viewport.getWorldPosX(inputManager.getMouseX()), viewport.getWorldPosY(inputManager.getMouseY()), viewport.getFloor());
@@ -233,13 +233,13 @@ public class CharacterLayer extends BaseMapLayer {
             });
         }
 
-        gdxRenderer.drawSprite(new Sprite(assetManager.get(key, Texture.class)), posX, posY);
+        mapRendererManager.drawSprite(new Sprite(assetManager.get(key, Texture.class)), posX, posY);
     }
 
     /**
      * Draw inventory
      */
-    private void drawInventory(GDXRendererBase renderer, CharacterModel character, int posX, int posY) {
+    private void drawInventory(BaseRendererManager renderer, CharacterModel character, int posX, int posY) {
         if (character.hasExtra(CharacterInventoryExtra.class)) {
             for (Map.Entry<ItemInfo, Integer> entry : character.getExtra(CharacterInventoryExtra.class).getAll().entrySet()) {
                 if (entry.getValue() > 0) {
@@ -270,7 +270,7 @@ public class CharacterLayer extends BaseMapLayer {
                 Vector2 v1 = path.myCatmull.valueAt(points[i], ((float) i) / ((float) k - 1));
                 Vector2 v2 = path.myCatmull.valueAt(points[i + 1], ((float) (i + 1)) / ((float) k - 1));
 
-                gdxRenderer.drawLine(
+                mapRendererManager.drawLine(
                         (int) (viewport.getPosX() + v1.x * Constant.TILE_SIZE + Constant.HALF_TILE_SIZE),
                         (int) (viewport.getPosY() + v1.y * Constant.TILE_SIZE + Constant.HALF_TILE_SIZE),
                         (int) (viewport.getPosX() + v2.x * Constant.TILE_SIZE + Constant.HALF_TILE_SIZE),

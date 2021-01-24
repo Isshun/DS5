@@ -4,7 +4,7 @@ import com.almworks.sqlite4java.SQLiteConnection;
 import com.almworks.sqlite4java.SQLiteException;
 import com.almworks.sqlite4java.SQLiteStatement;
 import org.apache.commons.lang3.StringUtils;
-import org.smallbox.faraway.client.render.GDXRenderer;
+import org.smallbox.faraway.client.render.MapRendererManager;
 import org.smallbox.faraway.client.render.Viewport;
 import org.smallbox.faraway.client.render.WorldCameraManager;
 import org.smallbox.faraway.core.GameException;
@@ -17,7 +17,7 @@ import org.smallbox.faraway.core.game.GenericGameSerializer;
 @GameObject
 public class GameInfoSerializer extends GenericGameSerializer {
     @Inject private WorldCameraManager worldCameraManager;
-    @Inject private GDXRenderer gdxRenderer;
+    @Inject private MapRendererManager mapRendererManager;
     @Inject private Viewport viewport;
     @Inject private Game game;
     @Inject private Data data;

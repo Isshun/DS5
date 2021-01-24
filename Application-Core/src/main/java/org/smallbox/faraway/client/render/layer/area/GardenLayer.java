@@ -3,7 +3,7 @@ package org.smallbox.faraway.client.render.layer.area;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import org.smallbox.faraway.client.manager.SpriteManager;
-import org.smallbox.faraway.client.render.GDXRendererBase;
+import org.smallbox.faraway.client.render.BaseRendererManager;
 import org.smallbox.faraway.client.render.LayerManager;
 import org.smallbox.faraway.client.render.Viewport;
 import org.smallbox.faraway.client.render.layer.BaseMapLayer;
@@ -53,7 +53,7 @@ public class GardenLayer extends BaseMapLayer {
     }
 
     @Override
-    public void    onDraw(GDXRendererBase renderer, Viewport viewport, double animProgress, int frame) {
+    public void    onDraw(BaseRendererManager renderer, Viewport viewport, double animProgress, int frame) {
         int fromX = -viewport.getPosX() / Constant.TILE_SIZE;
         int fromY = -viewport.getPosY() / Constant.TILE_SIZE;
         int toX = fromX + viewport.getWidth() / Constant.TILE_SIZE;

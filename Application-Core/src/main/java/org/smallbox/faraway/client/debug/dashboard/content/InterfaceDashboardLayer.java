@@ -2,7 +2,7 @@ package org.smallbox.faraway.client.debug.dashboard.content;
 
 import org.smallbox.faraway.client.GameEventManager;
 import org.smallbox.faraway.client.debug.dashboard.DashboardLayerBase;
-import org.smallbox.faraway.client.render.GDXRendererBase;
+import org.smallbox.faraway.client.render.BaseRendererManager;
 import org.smallbox.faraway.client.render.LayerManager;
 import org.smallbox.faraway.client.selection.GameSelectionManager;
 import org.smallbox.faraway.client.ui.UIManager;
@@ -21,7 +21,7 @@ public class InterfaceDashboardLayer extends DashboardLayerBase {
     @Inject private Game game;
 
     @Override
-    protected void onDraw(GDXRendererBase renderer, int frame) {
+    protected void onDraw(BaseRendererManager renderer, int frame) {
         long heapSize = Runtime.getRuntime().totalMemory();
         long heapFreeSize = Runtime.getRuntime().freeMemory();
         drawDebug(renderer, "VIEWPORT", "Heap: " + ((heapSize - heapFreeSize) / 1000 / 1000) + "mb");

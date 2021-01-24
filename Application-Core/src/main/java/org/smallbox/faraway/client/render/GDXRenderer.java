@@ -1,35 +1,38 @@
 package org.smallbox.faraway.client.render;
 
-import com.badlogic.gdx.math.Matrix4;
-import org.smallbox.faraway.client.ui.engine.views.View;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShaderProgram;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject;
-import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 
 @ApplicationObject
-public class GDXRenderer extends GDXRendererBase {
-    @Inject protected WorldCameraManager worldCameraManager;
+public class GDXRenderer {
+    public SpriteBatch _batch;
+    public ShapeRenderer _drawPixelShapeLayer;
+    public ShaderProgram shader;
 
     public void init() {
-        super.init();
-    }
+        _batch = new SpriteBatch();
+        _drawPixelShapeLayer = new ShapeRenderer();
+        _drawPixelShapeLayer.setProjectionMatrix(_batch.getProjectionMatrix());
 
-    public void refresh() {
-        worldCameraManager.update();
-        _batch.setProjectionMatrix(worldCameraManager.getCombinedProjection());
-    }
+        FileHandle vertexShader = Gdx.files.internal("data/shader/vertex.glsl");
+        FileHandle fragmentShader = Gdx.files.internal("data/shader/fragment.glsl");
 
-    @Override
-    protected Matrix4 getCombinedProjection() {
-        return worldCameraManager.getCombinedProjection();
-    }
+        shader = new ShaderProgram(vertexShader, fragmentShader);
+        if (!shader.isCompiled()) {
+            Gdx.app.log("Shader", shader.getLog());
+            Gdx.app.exit();
+        }
 
-    @Override
-    protected float getZoom() {
-        return worldCameraManager.getZoom();
-    }
+        _batch.setShader(shader);
 
-    public void draw(View view, int x, int y) {
-        view.draw(this, x, y);
+        shader.begin();
+        shader.setUniformi("u_texture", 0);
+        shader.setUniformi("u_mask", 1);
+        shader.end();
     }
 
 }

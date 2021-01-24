@@ -7,7 +7,7 @@ import org.smallbox.faraway.client.debug.DebugService;
 import org.smallbox.faraway.client.gameAction.GameActionManager;
 import org.smallbox.faraway.client.gameContextMenu.GameContextMenuManager;
 import org.smallbox.faraway.client.manager.ShortcutManager;
-import org.smallbox.faraway.client.render.GDXRenderer;
+import org.smallbox.faraway.client.render.MapRendererManager;
 import org.smallbox.faraway.client.render.Viewport;
 import org.smallbox.faraway.client.render.WorldCameraManager;
 import org.smallbox.faraway.client.selection.GameSelectionManager;
@@ -38,7 +38,7 @@ public class InputManager implements InputProcessor {
     @Inject private GameManager gameManager;
     @Inject private ShortcutManager shortcutManager;
     @Inject private Viewport viewport;
-    @Inject private GDXRenderer gdxRenderer;
+    @Inject private MapRendererManager mapRendererManager;
     @Inject private WorldCameraManager worldCameraManager;
 
     private GameEventListener.Modifier _modifier = GameEventListener.Modifier.NONE;

@@ -2,7 +2,7 @@ package org.smallbox.faraway.client.render.layer.ui;
 
 import com.badlogic.gdx.graphics.Color;
 import org.smallbox.faraway.client.manager.SpriteManager;
-import org.smallbox.faraway.client.render.GDXRendererBase;
+import org.smallbox.faraway.client.render.BaseRendererManager;
 import org.smallbox.faraway.client.render.LayerManager;
 import org.smallbox.faraway.client.render.Viewport;
 import org.smallbox.faraway.client.render.layer.BaseMapLayer;
@@ -20,7 +20,7 @@ public class JobLayer extends BaseMapLayer {
     @Inject private SpriteManager spriteManager;
     @Inject private JobModule jobModule;
 
-    public void onDraw(GDXRendererBase renderer, Viewport viewport, double animProgress, int frame) {
+    public void onDraw(BaseRendererManager renderer, Viewport viewport, double animProgress, int frame) {
 
         jobModule.getAll().forEach(job -> {
 

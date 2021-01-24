@@ -3,7 +3,7 @@ package org.smallbox.faraway.client.debug.layer;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import org.apache.commons.collections4.CollectionUtils;
-import org.smallbox.faraway.client.render.GDXRendererBase;
+import org.smallbox.faraway.client.render.BaseRendererManager;
 import org.smallbox.faraway.client.render.Viewport;
 import org.smallbox.faraway.client.render.layer.BaseLayer;
 import org.smallbox.faraway.client.ui.UIManager;
@@ -21,7 +21,7 @@ public class DebugViewLayer extends BaseLayer {
     @Inject private UIManager uiManager;
     @Inject private UIEventManager uiEventManager;
 
-    public void    onDraw(GDXRendererBase renderer, Viewport viewport, double animProgress, int frame) {
+    public void    onDraw(BaseRendererManager renderer, Viewport viewport, double animProgress, int frame) {
         uiManager.getRootViews().forEach(rootView -> drawViewRecurse(renderer, rootView.getView()));
 
 //        uiManager.getViews().stream()
@@ -36,7 +36,7 @@ public class DebugViewLayer extends BaseLayer {
 //                });
     }
 
-    private void drawViewRecurse(GDXRendererBase renderer, View view) {
+    private void drawViewRecurse(BaseRendererManager renderer, View view) {
         if (view.isVisible()) {
             if (uiEventManager.hasClickListener(view)) {
                 renderer.drawRectangle(view.getGeometry().getFinalX(), view.getGeometry().getFinalY(), view.getWidth(), view.getHeight(), Color.YELLOW, false);

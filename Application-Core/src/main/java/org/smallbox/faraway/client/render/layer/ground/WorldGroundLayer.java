@@ -2,8 +2,8 @@ package org.smallbox.faraway.client.render.layer.ground;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
-import org.smallbox.faraway.client.render.GDXRenderer;
-import org.smallbox.faraway.client.render.GDXRendererBase;
+import org.smallbox.faraway.client.render.MapRendererManager;
+import org.smallbox.faraway.client.render.BaseRendererManager;
 import org.smallbox.faraway.client.render.LayerManager;
 import org.smallbox.faraway.client.render.Viewport;
 import org.smallbox.faraway.client.render.layer.BaseMapLayer;
@@ -32,7 +32,7 @@ public class WorldGroundLayer extends BaseMapLayer {
     @Inject private WorldModule worldModule;
     @Inject private GameSelectionManager gameSelectionManager;
     @Inject private Viewport viewport;
-    @Inject private GDXRenderer gdxRenderer;
+    @Inject private MapRendererManager mapRendererManager;
 
     private int changeFloorTransition = -1;
 
@@ -52,7 +52,7 @@ public class WorldGroundLayer extends BaseMapLayer {
     }
 
     @Override
-    public void onDraw(GDXRendererBase renderer, Viewport viewport, double animProgress, int frame) {
+    public void onDraw(BaseRendererManager renderer, Viewport viewport, double animProgress, int frame) {
         int fromX = Math.max(viewport.getWorldPosX(0) - 1, 0);
         int fromY = Math.max(viewport.getWorldPosY(0) - 1, 0);
         int toX = Math.min(viewport.getWorldPosX(applicationConfig.getResolutionWidth()) + 2, worldModule.getWidth());
@@ -111,7 +111,7 @@ public class WorldGroundLayer extends BaseMapLayer {
         for (int x = fromX; x < toX; x++) {
             for (int y = fromY; y < toY; y++) {
                 if (changeFloorTransition > x + y * worldModule.getWidth()) {
-                    gdxRenderer.drawRectangleOnMap(x, y, Constant.TILE_SIZE, Constant.TILE_SIZE, Color.BLACK, 0, 0);
+                    mapRendererManager.drawRectangleOnMap(x, y, Constant.TILE_SIZE, Constant.TILE_SIZE, Color.BLACK, 0, 0);
                 }
             }
         }

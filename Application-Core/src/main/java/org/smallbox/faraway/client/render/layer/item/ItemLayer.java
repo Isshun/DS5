@@ -3,7 +3,7 @@ package org.smallbox.faraway.client.render.layer.item;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import org.smallbox.faraway.client.manager.SpriteManager;
-import org.smallbox.faraway.client.render.GDXRendererBase;
+import org.smallbox.faraway.client.render.BaseRendererManager;
 import org.smallbox.faraway.client.render.LayerManager;
 import org.smallbox.faraway.client.render.Viewport;
 import org.smallbox.faraway.client.render.layer.BaseMapLayer;
@@ -20,7 +20,7 @@ public class ItemLayer extends BaseMapLayer {
     @Inject private ItemModule itemModule;
     @Inject private SpriteManager spriteManager;
 
-    public void onDraw(GDXRendererBase renderer, Viewport viewport, double animProgress, int frame) {
+    public void onDraw(BaseRendererManager renderer, Viewport viewport, double animProgress, int frame) {
         itemModule.getAll().stream()
                 .filter(item -> viewport.hasParcel(item.getParcel()))
                 .forEach(item -> {

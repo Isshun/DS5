@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import org.apache.commons.lang3.StringUtils;
 import org.smallbox.faraway.client.AssetManager;
 import org.smallbox.faraway.client.controller.SystemInfoController;
-import org.smallbox.faraway.client.render.GDXRendererBase;
+import org.smallbox.faraway.client.render.BaseRendererManager;
 import org.smallbox.faraway.client.render.LayerManager;
 import org.smallbox.faraway.client.render.Viewport;
 import org.smallbox.faraway.client.render.layer.BaseLayer;
@@ -152,7 +152,7 @@ public class MinimapLayer extends BaseLayer {
         _dirty = true;
     }
 
-    public void onDraw(GDXRendererBase renderer, Viewport viewport, double animProgress, int frame) {
+    public void onDraw(BaseRendererManager renderer, Viewport viewport, double animProgress, int frame) {
         if (mainPanelController != null && mainPanelController.getRootView().isVisible()) {
 
             if (_dirty || _spriteMap == null) {
@@ -169,12 +169,12 @@ public class MinimapLayer extends BaseLayer {
         }
     }
 
-    private void drawUI(GDXRendererBase renderer) {
+    private void drawUI(BaseRendererManager renderer) {
         mainPanelController.getMapContainer().getViews().stream().filter(view -> !StringUtils.equals(view.getId(), "minimap"))
                 .forEach(view -> view.draw(renderer, view.getGeometry().getFinalX(), view.getGeometry().getFinalY()));
     }
 
-    private void drawViewport(GDXRendererBase renderer) {
+    private void drawViewport(BaseRendererManager renderer) {
         int x = _mainPosX + (int) ((Math.min(gameWidth - 38 - 1, Math.max(0, -viewport.getPosX() / TILE_SIZE))) * ratioX);
         int y = _mainPosY + (int) ((Math.min(gameHeight - 32 - 1, Math.max(0, -viewport.getPosY() / TILE_SIZE))) * ratioY);
         int rectWidth = (int) (38 * ratioX);
@@ -185,7 +185,7 @@ public class MinimapLayer extends BaseLayer {
         renderer.drawRectangle(x + rectWidth, y, 2, rectHeight + 2, COLOR_VIEWPORT);
     }
 
-    private void drawCharacters(GDXRendererBase renderer) {
+    private void drawCharacters(BaseRendererManager renderer) {
         characterModule.getAll().stream()
                 .filter(character -> character.getParcel().z == WorldHelper.getCurrentFloor())
                 .forEach(character -> renderer.drawRectangle(

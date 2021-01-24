@@ -5,8 +5,8 @@ import org.smallbox.faraway.client.RotateAnimation;
 import org.smallbox.faraway.client.controller.LuaController;
 import org.smallbox.faraway.client.font.FontManager;
 import org.smallbox.faraway.client.manager.SpriteManager;
-import org.smallbox.faraway.client.render.GDXRendererBase;
-import org.smallbox.faraway.client.render.GDXRendererUI;
+import org.smallbox.faraway.client.render.BaseRendererManager;
+import org.smallbox.faraway.client.render.UIRendererManager;
 import org.smallbox.faraway.client.ui.UIManager;
 import org.smallbox.faraway.client.ui.engine.UIEventManager;
 import org.smallbox.faraway.client.ui.engine.views.widgets.FadeEffect;
@@ -23,7 +23,7 @@ public abstract class View implements Comparable<View> {
     protected final ApplicationConfig applicationConfig = DependencyManager.getInstance().getDependency(ApplicationConfig.class);
     protected final SpriteManager spriteManager = DependencyManager.getInstance().getDependency(SpriteManager.class);
     protected final UIEventManager uiEventManager = DependencyManager.getInstance().getDependency(UIEventManager.class);
-    protected final GDXRendererUI gdxRenderer = DependencyManager.getInstance().getDependency(GDXRendererUI.class);
+    protected final UIRendererManager gdxRenderer = DependencyManager.getInstance().getDependency(UIRendererManager.class);
     protected final FontManager fontManager = DependencyManager.getInstance().getDependency(FontManager.class);
     protected final UIManager uiManager = DependencyManager.getInstance().getDependency(UIManager.class);
     protected final Data data = DependencyManager.getInstance().getDependency(Data.class);
@@ -239,7 +239,7 @@ public abstract class View implements Comparable<View> {
         return view.hashCode() - hashCode();
     }
 
-    public void draw(GDXRendererBase renderer, int x, int y) {
+    public void draw(BaseRendererManager renderer, int x, int y) {
         if (_isVisible) {
             geometry.setFinalX(getAlignedX() + geometry.getMarginLeft() + x);
             geometry.setFinalY(getAlignedY() + geometry.getMarginTop() + y);

@@ -2,7 +2,7 @@ package org.smallbox.faraway.client.render.layer.ui;
 
 import com.badlogic.gdx.graphics.Color;
 import org.smallbox.faraway.GpuMemUtils;
-import org.smallbox.faraway.client.render.GDXRendererBase;
+import org.smallbox.faraway.client.render.BaseRendererManager;
 import org.smallbox.faraway.client.render.Viewport;
 import org.smallbox.faraway.client.render.layer.BaseLayer;
 import org.smallbox.faraway.core.GameLayer;
@@ -19,7 +19,7 @@ public class FPSLayer extends BaseLayer {
     @Inject private ApplicationConfig applicationConfig;
 
 
-    public void onDraw(GDXRendererBase renderer, Viewport viewport, double animProgress, int frame) {
+    public void onDraw(BaseRendererManager renderer, Viewport viewport, double animProgress, int frame) {
         long heapSize = Runtime.getRuntime().totalMemory();
         long heapFreeSize = Runtime.getRuntime().freeMemory();
 

@@ -2,7 +2,7 @@ package org.smallbox.faraway.client.ui.engine.views.widgets;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
-import org.smallbox.faraway.client.render.GDXRendererBase;
+import org.smallbox.faraway.client.render.BaseRendererManager;
 import org.smallbox.faraway.client.ui.engine.views.Align;
 import org.smallbox.faraway.client.ui.engine.views.View;
 import org.smallbox.faraway.core.engine.ColorUtils;
@@ -228,7 +228,7 @@ public class UILabel extends View {
     }
 
     @Override
-    public void draw(GDXRendererBase renderer, int x, int y) {
+    public void draw(BaseRendererManager renderer, int x, int y) {
         super.draw(renderer, x, y);
 
         if (_isVisible) {

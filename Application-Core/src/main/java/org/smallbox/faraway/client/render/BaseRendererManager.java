@@ -20,20 +20,20 @@ import org.smallbox.faraway.util.Constant;
 
 import static org.smallbox.faraway.util.Constant.TILE_SIZE;
 
-public abstract class GDXRendererBase {
+public abstract class BaseRendererManager {
     @Inject protected LayerManager layerManager;
     @Inject protected ApplicationConfig applicationConfig;
     @Inject protected FontManager fontManager;
     @Inject protected AssetManager assetManager;
-    @Inject protected GDXRendererBaseBase gdxRendererBaseBase;
+    @Inject protected GDXRenderer gdxRenderer;
     @Inject protected Viewport viewport;
 
     public SpriteBatch _batch;
     public ShapeRenderer _drawPixelShapeLayer;
 
     public void init() {
-        _batch = gdxRendererBaseBase._batch;
-        _drawPixelShapeLayer = gdxRendererBaseBase._drawPixelShapeLayer;
+        _batch = gdxRenderer._batch;
+        _drawPixelShapeLayer = gdxRenderer._drawPixelShapeLayer;
     }
 
     public void clear() {

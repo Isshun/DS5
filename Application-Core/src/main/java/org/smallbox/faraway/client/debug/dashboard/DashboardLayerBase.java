@@ -3,7 +3,7 @@ package org.smallbox.faraway.client.debug.dashboard;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.utils.Array;
 import org.smallbox.faraway.client.AssetManager;
-import org.smallbox.faraway.client.render.GDXRendererBase;
+import org.smallbox.faraway.client.render.BaseRendererManager;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 
 import java.util.ArrayList;
@@ -17,7 +17,7 @@ public abstract class DashboardLayerBase {
     private long page = 0;
     private static final int ITEM_PER_PAGE = 50;
 
-    public void draw(GDXRendererBase renderer, int frame) {
+    public void draw(BaseRendererManager renderer, int frame) {
         index = 0;
 
         onDraw(renderer, frame);
@@ -29,9 +29,9 @@ public abstract class DashboardLayerBase {
         }
     }
 
-    protected abstract void onDraw(GDXRendererBase renderer, int frame);
+    protected abstract void onDraw(BaseRendererManager renderer, int frame);
 
-    protected void drawDebug(GDXRendererBase renderer, String label, Object object) {
+    protected void drawDebug(BaseRendererManager renderer, String label, Object object) {
         if (index > page * ITEM_PER_PAGE && index < (page + 1) * ITEM_PER_PAGE) {
             renderer.drawText(12, (index % ITEM_PER_PAGE * 20) + 132, "[" + label.toUpperCase() + "] " + object, Color.BLACK, 18);
             renderer.drawText(11, (index % ITEM_PER_PAGE * 20) + 131, "[" + label.toUpperCase() + "] " + object, Color.BLACK, 18);

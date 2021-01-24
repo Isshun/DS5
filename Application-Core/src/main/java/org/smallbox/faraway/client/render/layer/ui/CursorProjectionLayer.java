@@ -3,7 +3,7 @@ package org.smallbox.faraway.client.render.layer.ui;
 import org.smallbox.faraway.client.gameAction.GameActionManager;
 import org.smallbox.faraway.client.gameAction.GameActionMode;
 import org.smallbox.faraway.client.manager.input.InputManager;
-import org.smallbox.faraway.client.render.GDXRendererBase;
+import org.smallbox.faraway.client.render.BaseRendererManager;
 import org.smallbox.faraway.client.render.LayerManager;
 import org.smallbox.faraway.client.render.Viewport;
 import org.smallbox.faraway.client.render.layer.BaseMapLayer;
@@ -22,7 +22,7 @@ public class CursorProjectionLayer extends BaseMapLayer {
     @Inject private InputManager inputManager;
 
     @Override
-    public void onDraw(GDXRendererBase renderer, Viewport viewport, double animProgress, int frame) {
+    public void onDraw(BaseRendererManager renderer, Viewport viewport, double animProgress, int frame) {
         if (gameActionManager.getMode() != GameActionMode.NONE) {
             renderer.drawCadreOnMap(
                     viewport.getWorldPosX(inputManager.getMouseX()),

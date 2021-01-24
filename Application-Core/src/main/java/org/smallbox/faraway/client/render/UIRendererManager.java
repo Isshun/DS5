@@ -7,7 +7,7 @@ import org.smallbox.faraway.client.ui.engine.views.View;
 import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject;
 
 @ApplicationObject
-public class GDXRendererUI extends GDXRendererBase {
+public class UIRendererManager extends BaseRendererManager {
     private OrthographicCamera _camera;
 
     public void init() {

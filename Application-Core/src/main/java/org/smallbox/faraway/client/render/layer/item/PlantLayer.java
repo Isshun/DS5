@@ -1,7 +1,7 @@
 package org.smallbox.faraway.client.render.layer.item;
 
 import org.smallbox.faraway.client.manager.SpriteManager;
-import org.smallbox.faraway.client.render.GDXRendererBase;
+import org.smallbox.faraway.client.render.BaseRendererManager;
 import org.smallbox.faraway.client.render.LayerManager;
 import org.smallbox.faraway.client.render.Viewport;
 import org.smallbox.faraway.client.render.layer.BaseMapLayer;
@@ -17,7 +17,7 @@ public class PlantLayer extends BaseMapLayer {
     @Inject private PlantModule plantModule;
     @Inject private SpriteManager spriteManager;
 
-    public void onDraw(GDXRendererBase renderer, Viewport viewport, double animProgress, int frame) {
+    public void onDraw(BaseRendererManager renderer, Viewport viewport, double animProgress, int frame) {
         plantModule.getAll().stream()
                 .filter(item -> viewport.hasParcel(item.getParcel()))
                 .forEach(plant -> drawPlant(renderer, plant));
@@ -26,7 +26,7 @@ public class PlantLayer extends BaseMapLayer {
 //        tags.forEach(draw -> draw.onTagDraw(layer, viewport));
     }
 
-    private void drawPlant(GDXRendererBase renderer, PlantItem plant) {
+    private void drawPlant(BaseRendererManager renderer, PlantItem plant) {
         renderer.drawSpriteOnMap(spriteManager.getNewSprite(plant.getGraphic(), getTileForMaturity(plant)), plant.getParcel()
         );
     }

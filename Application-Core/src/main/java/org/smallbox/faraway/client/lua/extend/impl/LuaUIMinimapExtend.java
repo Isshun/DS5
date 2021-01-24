@@ -2,7 +2,7 @@ package org.smallbox.faraway.client.lua.extend.impl;
 
 import org.luaj.vm2.LuaValue;
 import org.smallbox.faraway.client.lua.extend.LuaUIExtend;
-import org.smallbox.faraway.client.render.GDXRendererBase;
+import org.smallbox.faraway.client.render.BaseRendererManager;
 import org.smallbox.faraway.client.render.layer.ui.MinimapLayer;
 import org.smallbox.faraway.client.ui.engine.views.View;
 import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject;
@@ -26,7 +26,7 @@ public class LuaUIMinimapExtend extends LuaUIExtend {
     protected View createViewFromType(ModuleBase module, LuaValue value) {
         return new View(module) {
             @Override
-            public void draw(GDXRendererBase renderer, int x, int y) {
+            public void draw(BaseRendererManager renderer, int x, int y) {
                 if (_isVisible && minimapLayer.getSprite() != null) {
                     geometry.setFinalX(getAlignedX() + geometry.getMarginLeft() + x);
                     geometry.setFinalY(geometry.getY() + geometry.getMarginTop() + y);

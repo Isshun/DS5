@@ -3,7 +3,7 @@ package org.smallbox.faraway.client.render.layer;
 import com.badlogic.gdx.graphics.Color;
 import org.smallbox.faraway.client.GameClientObserver;
 import org.smallbox.faraway.client.manager.SpriteManager;
-import org.smallbox.faraway.client.render.GDXRendererBase;
+import org.smallbox.faraway.client.render.BaseRendererManager;
 import org.smallbox.faraway.client.render.Viewport;
 import org.smallbox.faraway.client.selection.GameSelectionManager;
 import org.smallbox.faraway.common.ObjectModel;
@@ -64,7 +64,7 @@ public abstract class BaseLayer implements GameObserver, GameClientObserver {
         _isVisible = getClass().getAnnotation(GameLayer.class).visible();
     }
 
-    protected void drawSelection(GDXRendererBase renderer, SpriteManager spriteManager, ObjectModel object, int posX, int posY, int width, int height, int offsetX, int offsetY) {
+    protected void drawSelection(BaseRendererManager renderer, SpriteManager spriteManager, ObjectModel object, int posX, int posY, int width, int height, int offsetX, int offsetY) {
         if (gameSelectionManager.selectContains(object)) {
             if (_selectionOffset > 2) {
                 _selectionChange = -0.2;
@@ -81,7 +81,7 @@ public abstract class BaseLayer implements GameObserver, GameClientObserver {
         }
     }
 
-    protected void drawSelectionOnMap(GDXRendererBase renderer, SpriteManager spriteManager, Viewport viewport, ObjectModel object, int mapX, int mapY, int width, int height, int offsetX, int offsetY) {
+    protected void drawSelectionOnMap(BaseRendererManager renderer, SpriteManager spriteManager, Viewport viewport, ObjectModel object, int mapX, int mapY, int width, int height, int offsetX, int offsetY) {
         drawSelection(renderer, spriteManager, object, viewport.getPosX() + (mapX * Constant.TILE_SIZE), viewport.getPosY() + (mapY * Constant.TILE_SIZE), width, height, offsetX, offsetY);
     }
 
@@ -101,9 +101,9 @@ public abstract class BaseLayer implements GameObserver, GameClientObserver {
     }
 
 //    protected void onRenderUpdate() {}
-    protected void onDraw(GDXRendererBase renderer, Viewport viewport, double animProgress, int frame) {}
+    protected void onDraw(BaseRendererManager renderer, Viewport viewport, double animProgress, int frame) {}
 
-    public final void draw(GDXRendererBase renderer, Viewport viewport, double animProgress, int frame) {
+    public final void draw(BaseRendererManager renderer, Viewport viewport, double animProgress, int frame) {
         if (isVisible()) {
             long time2 = System.nanoTime() / 1000;
 
