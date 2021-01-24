@@ -1,10 +1,9 @@
 package org.smallbox.faraway.game.room.model;
 
 import com.badlogic.gdx.graphics.Color;
-import org.smallbox.faraway.core.GameException;
+import org.smallbox.faraway.util.GameException;
 import org.smallbox.faraway.core.world.model.ItemFilter;
 import org.smallbox.faraway.core.world.model.MapObjectModel;
-import org.smallbox.faraway.game.area.AreaModule;
 import org.smallbox.faraway.game.character.model.base.CharacterModel;
 import org.smallbox.faraway.game.world.ObjectModel;
 import org.smallbox.faraway.game.world.Parcel;

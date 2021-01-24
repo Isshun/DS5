@@ -3,17 +3,18 @@ package org.smallbox.faraway.client.debug.dashboard;
 import com.badlogic.gdx.graphics.Color;
 import org.smallbox.faraway.client.debug.dashboard.content.*;
 import org.smallbox.faraway.client.debug.layer.*;
+import org.smallbox.faraway.client.layer.BaseLayer;
+import org.smallbox.faraway.client.layer.GameLayer;
 import org.smallbox.faraway.client.renderer.BaseRenderer;
 import org.smallbox.faraway.client.renderer.Viewport;
-import org.smallbox.faraway.client.layer.BaseLayer;
 import org.smallbox.faraway.client.selection.GameSelectionManager;
-import org.smallbox.faraway.client.layer.GameLayer;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnInit;
-import org.smallbox.faraway.core.game.Game;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 import java.util.function.BiConsumer;
 
 @GameObject
@@ -52,18 +53,9 @@ public class DashboardLayer extends BaseLayer {
     private static final Color BG_COLOR = new Color(0f, 0f, 0f, 0.5f);
     private static final Color BUTTON_BG_COLOR = new Color(0f, 0.5f, 0.7f, 0.5f);
 
-    private long _lastUpdate;
-
-    private final Map<String, String> _data = new HashMap<>();
     private DashboardMode dashboardMode = DashboardMode.CONSOLE;
     private List<BiConsumer<Integer, Integer>> buttons;
     private List<DashboardLayerButton> debugLayers;
-
-    {
-        _data.put("Cursor screen position", "");
-        _data.put("Cursor world position", "");
-        _data.put("Parcel isWalkable", "");
-    }
 
     @OnInit
     public void init() {
@@ -150,11 +142,6 @@ public class DashboardLayer extends BaseLayer {
         renderer.drawText(x + 2, y + 5, label, Color.BLACK, 18);
         renderer.drawText(x + 1, y + 6, label, Color.BLACK, 18);
         renderer.drawText(x, y + 7, label, isActive ? Color.CORAL : Color.WHITE, 18);
-    }
-
-    @Override
-    public void onGameUpdate(Game game) {
-        _lastUpdate = System.currentTimeMillis();
     }
 
     public void pageUp() {

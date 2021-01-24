@@ -2,7 +2,7 @@ package org.smallbox.faraway.game.character.model.base;
 
 import org.smallbox.faraway.GameTask;
 import org.smallbox.faraway.game.character.CharacterPositionCommon;
-import org.smallbox.faraway.core.GameException;
+import org.smallbox.faraway.util.GameException;
 import org.smallbox.faraway.core.game.model.MovableModel;
 import org.smallbox.faraway.game.character.CharacterInfo;
 import org.smallbox.faraway.game.world.Parcel;

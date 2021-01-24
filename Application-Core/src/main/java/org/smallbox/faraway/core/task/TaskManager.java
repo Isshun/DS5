@@ -1,8 +1,9 @@
 package org.smallbox.faraway.core.task;
 
+import com.badlogic.gdx.Gdx;
 import org.smallbox.faraway.core.Application;
-import org.smallbox.faraway.core.GameException;
 import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject;
+import org.smallbox.faraway.util.GameException;
 import org.smallbox.faraway.util.log.Log;
 
 import java.util.Arrays;
@@ -45,7 +46,7 @@ public class TaskManager {
 //        }
 
         // TODO: no bg thread during early dev
-        Application.runOnMainThread(() -> runTask(task));
+        Gdx.app.postRunnable(() -> runTask(task));
     }
 
     private void runTask(Task task) {
@@ -74,7 +75,7 @@ public class TaskManager {
     private void exitWithError(Throwable throwable) {
         running = false;
         loadExecutor.shutdown();
-        Application.exitWithError();
+        Application.setRunning(false);
     }
 
     public Collection<Task> getLoadTasks() {

@@ -16,9 +16,9 @@ import org.smallbox.faraway.client.layer.LayerManager;
 import org.smallbox.faraway.client.renderer.extra.DrawCallback;
 import org.smallbox.faraway.client.renderer.extra.DrawFontCallback;
 import org.smallbox.faraway.client.renderer.extra.TextStyle;
+import org.smallbox.faraway.core.config.ApplicationConfig;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.game.modelInfo.GraphicInfo;
-import org.smallbox.faraway.core.config.ApplicationConfig;
 import org.smallbox.faraway.game.world.Parcel;
 import org.smallbox.faraway.util.Constant;
 

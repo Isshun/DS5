@@ -19,11 +19,12 @@ import org.smallbox.faraway.util.log.Log;
 @GameObject
 @GameLayer(level = LayerManager.PARTICLE_LAYER_LEVEL, visible = true)
 public class ParticleLayer extends BaseLayer {
+    @Inject private WeatherModule weatherModule;
+    @Inject private AssetManager assetManager;
+    @Inject private Game game;
+
     private ParticleEffect effect;
     private String name;
-    @Inject private WeatherModule weatherModule;
-    @Inject private Game game;
-    @Inject private AssetManager assetManager;
 
     @Override
     public void onDraw(BaseRenderer renderer, Viewport viewport, double animProgress, int frame) {

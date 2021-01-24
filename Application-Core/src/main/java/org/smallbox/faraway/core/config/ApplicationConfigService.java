@@ -1,7 +1,7 @@
 package org.smallbox.faraway.core.config;
 
 import com.google.gson.Gson;
-import org.smallbox.faraway.core.GameException;
+import org.smallbox.faraway.util.GameException;
 import org.smallbox.faraway.core.dependencyInjector.DependencyManager;
 import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;

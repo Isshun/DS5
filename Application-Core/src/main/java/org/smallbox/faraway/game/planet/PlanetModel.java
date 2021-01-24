@@ -1,6 +1,6 @@
 package org.smallbox.faraway.game.planet;
 
-import org.smallbox.faraway.core.GameException;
+import org.smallbox.faraway.util.GameException;
 import org.smallbox.faraway.util.Constant;
 
 import java.util.Collection;

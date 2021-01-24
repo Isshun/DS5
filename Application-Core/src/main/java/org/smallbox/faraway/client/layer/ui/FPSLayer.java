@@ -1,7 +1,6 @@
 package org.smallbox.faraway.client.layer.ui;
 
 import com.badlogic.gdx.graphics.Color;
-import org.smallbox.faraway.GpuMemUtils;
 import org.smallbox.faraway.client.renderer.BaseRenderer;
 import org.smallbox.faraway.client.renderer.Viewport;
 import org.smallbox.faraway.client.layer.BaseLayer;
@@ -15,7 +14,6 @@ import org.smallbox.faraway.core.config.ApplicationConfig;
 @GameLayer(level = 999, visible = true)
 public class FPSLayer extends BaseLayer {
     @Inject private Game game;
-    @Inject private GpuMemUtils gpuMemUtils;
     @Inject private ApplicationConfig applicationConfig;
 
 

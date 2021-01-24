@@ -2,7 +2,7 @@ package org.smallbox.faraway.game.job;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.smallbox.faraway.core.Application;
-import org.smallbox.faraway.core.GameException;
+import org.smallbox.faraway.util.GameException;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.module.SuperGameModule;

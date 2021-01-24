@@ -109,10 +109,10 @@ public class MainPanelController extends LuaController {
 
     public void openLast() {
         switch (last) {
-            case CREW: openCrew(); break;
-            case BUILD: openBuild(); break;
-            case AREA: openArea(); break;
-            case JOBS: openJobs(); break;
+            case CREW -> openCrew();
+            case BUILD -> openBuild();
+            case AREA -> openArea();
+            case JOBS -> openJobs();
         }
     }
 

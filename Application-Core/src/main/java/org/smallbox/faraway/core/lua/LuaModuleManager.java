@@ -7,7 +7,7 @@ import org.smallbox.faraway.client.ui.UIManager;
 import org.smallbox.faraway.client.ui.widgets.CompositeView;
 import org.smallbox.faraway.client.ui.widgets.View;
 import org.smallbox.faraway.core.Application;
-import org.smallbox.faraway.core.GameException;
+import org.smallbox.faraway.util.GameException;
 import org.smallbox.faraway.core.dependencyInjector.DependencyManager;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.module.ModuleBase;

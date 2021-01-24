@@ -1,7 +1,7 @@
 package org.smallbox.faraway.core.save;
 
 import org.json.JSONObject;
-import org.smallbox.faraway.core.GameException;
+import org.smallbox.faraway.util.GameException;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

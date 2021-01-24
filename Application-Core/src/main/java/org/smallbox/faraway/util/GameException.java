@@ -1,4 +1,4 @@
-package org.smallbox.faraway.core;
+package org.smallbox.faraway.util;
 
 public class GameException extends RuntimeException {
 

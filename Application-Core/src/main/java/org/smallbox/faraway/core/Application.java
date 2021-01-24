@@ -22,14 +22,17 @@ public class Application {
 
     public static boolean isLoaded = false;
 
-    public static void          addTask(Runnable runnable) { Gdx.app.postRunnable(runnable); }
-    public static void          setRunning(boolean isRunning) {
+    public static void addTask(Runnable runnable) {
+        Gdx.app.postRunnable(runnable);
+    }
+
+    public static void setRunning(boolean isRunning) {
         if (!isRunning && Gdx.app != null) {
             Gdx.app.exit();
         }
     }
 
-    public static void          addObserver(GameObserver observer) {
+    public static void addObserver(GameObserver observer) {
         assert observer != null;
 
         _observers.add(observer);
@@ -42,28 +45,13 @@ public class Application {
             e.printStackTrace();
         }
     }
+
     public static void notifyClient(Consumer<GameClientObserver> action) {
-        Application.getObservers().forEach(observer -> {
+        _observers.forEach(observer -> {
             if (observer instanceof GameClientObserver) {
                 action.accept((GameClientObserver) observer);
             }
         });
     }
 
-    public static void exitWithError() {
-        Gdx.app.exit();
-    }
-
-    public static Queue<GameObserver> getObservers() {
-        return _observers;
-    }
-
-    public static void runOnMainThread(Runnable runnable) {
-        if (Gdx.app != null) {
-            Gdx.app.postRunnable(runnable);
-        } else {
-            runnable.run();
-        }
-
-    }
 }

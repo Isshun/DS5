@@ -1,7 +1,7 @@
 package org.smallbox.faraway.game.world;
 
 import com.badlogic.gdx.math.MathUtils;
-import org.smallbox.faraway.core.GameException;
+import org.smallbox.faraway.util.GameException;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.save.GameInfo;
 import org.smallbox.faraway.game.consumable.ConsumableItem;

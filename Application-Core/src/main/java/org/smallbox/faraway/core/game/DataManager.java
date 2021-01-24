@@ -1,7 +1,7 @@
 package org.smallbox.faraway.core.game;
 
 import org.codehaus.groovy.runtime.metaclass.ConcurrentReaderHashMap;
-import org.smallbox.faraway.core.GameException;
+import org.smallbox.faraway.util.GameException;
 import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject;
 import org.smallbox.faraway.game.character.CharacterInfo;
 import org.smallbox.faraway.game.planet.PlanetInfo;

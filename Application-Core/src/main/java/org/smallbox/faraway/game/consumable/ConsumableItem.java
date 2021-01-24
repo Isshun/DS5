@@ -1,6 +1,6 @@
 package org.smallbox.faraway.game.consumable;
 
-import org.smallbox.faraway.core.GameException;
+import org.smallbox.faraway.util.GameException;
 import org.smallbox.faraway.game.world.WorldHelper;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.world.model.ItemFilter;

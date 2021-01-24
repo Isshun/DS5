@@ -1,6 +1,6 @@
 //package org.smallbox.faraway.modules.job.check.joy;
 //
-//import org.smallbox.faraway.core.GameException;
+//import org.smallbox.faraway.util.GameException;
 //import org.smallbox.faraway.modules.area.AreaModel;
 //import org.smallbox.faraway.modules.job.check.old.CharacterCheck;
 //import org.smallbox.faraway.modules.job.model.MoveJob;

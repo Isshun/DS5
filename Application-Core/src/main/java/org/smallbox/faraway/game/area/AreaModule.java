@@ -1,6 +1,6 @@
 package org.smallbox.faraway.game.area;
 
-import org.smallbox.faraway.core.GameException;
+import org.smallbox.faraway.util.GameException;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.module.SuperGameModule;
 import org.smallbox.faraway.game.world.Parcel;

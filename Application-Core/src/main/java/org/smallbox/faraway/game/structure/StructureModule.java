@@ -1,6 +1,6 @@
 package org.smallbox.faraway.game.structure;
 
-import org.smallbox.faraway.core.GameException;
+import org.smallbox.faraway.util.GameException;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.game.DataManager;
@@ -9,7 +9,6 @@ import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.module.SuperGameModule;
 import org.smallbox.faraway.core.path.PathManager;
 import org.smallbox.faraway.core.world.model.MapObjectModel;
-import org.smallbox.faraway.game.area.AreaModule;
 import org.smallbox.faraway.game.building.BuildJobFactory;
 import org.smallbox.faraway.game.consumable.ConsumableModule;
 import org.smallbox.faraway.game.job.JobModel;

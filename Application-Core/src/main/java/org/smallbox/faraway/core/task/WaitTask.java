@@ -1,6 +1,6 @@
 package org.smallbox.faraway.core.task;
 
-import org.smallbox.faraway.core.GameException;
+import org.smallbox.faraway.util.GameException;
 
 import java.util.function.Supplier;
 
