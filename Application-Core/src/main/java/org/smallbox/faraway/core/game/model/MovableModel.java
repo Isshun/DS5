@@ -1,6 +1,6 @@
 package org.smallbox.faraway.core.game.model;
 
-import org.smallbox.faraway.common.ObjectModel;
+import org.smallbox.faraway.game.world.ObjectModel;
 import org.smallbox.faraway.game.world.Parcel;
 import org.smallbox.faraway.game.job.JobModel;
 

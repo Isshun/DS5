@@ -1,7 +1,7 @@
 package org.smallbox.faraway.client.ui.extra;
 
 import org.smallbox.faraway.client.ui.widgets.View;
-import org.smallbox.faraway.common.ObjectModel;
+import org.smallbox.faraway.game.world.ObjectModel;
 
 import java.util.Collection;
 

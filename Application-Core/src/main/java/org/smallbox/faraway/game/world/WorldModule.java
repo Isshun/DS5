@@ -3,7 +3,7 @@ package org.smallbox.faraway.game.world;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
-import org.smallbox.faraway.core.engine.module.GenericGameModule;
+import org.smallbox.faraway.core.module.GenericGameModule;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.model.MovableModel.Direction;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;

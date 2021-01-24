@@ -12,7 +12,7 @@ import org.smallbox.faraway.client.ui.event.UIEventManager;
 import org.smallbox.faraway.client.ui.extra.*;
 import org.smallbox.faraway.core.config.ApplicationConfig;
 import org.smallbox.faraway.core.dependencyInjector.DependencyManager;
-import org.smallbox.faraway.core.engine.module.ModuleBase;
+import org.smallbox.faraway.core.module.ModuleBase;
 import org.smallbox.faraway.core.game.DataManager;
 
 public abstract class View implements Comparable<View> {

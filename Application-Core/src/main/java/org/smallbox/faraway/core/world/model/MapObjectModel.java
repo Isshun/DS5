@@ -1,6 +1,6 @@
 package org.smallbox.faraway.core.world.model;
 
-import org.smallbox.faraway.common.ObjectModel;
+import org.smallbox.faraway.game.world.ObjectModel;
 import org.smallbox.faraway.core.game.modelInfo.GraphicInfo;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.game.consumable.ConsumableItem;

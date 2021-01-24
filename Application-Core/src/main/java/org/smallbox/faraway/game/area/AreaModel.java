@@ -1,8 +1,8 @@
 package org.smallbox.faraway.game.area;
 
 import org.smallbox.faraway.client.gameAction.OnSelectParcelListener;
-import org.smallbox.faraway.common.ObjectModel;
-import org.smallbox.faraway.common.UUIDUtils;
+import org.smallbox.faraway.game.world.ObjectModel;
+import org.smallbox.faraway.util.UUIDUtils;
 import org.smallbox.faraway.game.world.SurroundedPattern;
 import org.smallbox.faraway.game.world.WorldHelper;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;

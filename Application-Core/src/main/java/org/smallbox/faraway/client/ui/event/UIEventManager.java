@@ -1,7 +1,7 @@
 package org.smallbox.faraway.client.ui.event;
 
 import com.badlogic.gdx.Input;
-import org.smallbox.faraway.client.EventManager;
+import org.smallbox.faraway.client.input.EventManager;
 import org.smallbox.faraway.client.input.InputManager;
 import org.smallbox.faraway.client.layer.LayerManager;
 import org.smallbox.faraway.client.selection.GameSelectionManager;

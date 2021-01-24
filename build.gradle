@@ -38,16 +38,10 @@ allprojects {
     }
 }
 
-project(":Application-Common") {
-    apply plugin: "java-library"
-
-}
-
 project(":Application-Core") {
     apply plugin: "java-library"
 
     dependencies {
-        implementation project(":Application-Common")
         implementation project(":Core-PathFinding")
 //    compile project(":Core-PathFinding")
 //    compile project(":Core-Debug")
@@ -110,20 +104,5 @@ project(":Application-Desktop") {
         api "com.badlogicgames.gdx:gdx-tools:$gdxVersion"
 
         api "com.esotericsoftware.kryo:kryo5:5.0.2"
-    }
-}
-
-project(":Application-Common") {
-    apply plugin: "java-library"
-
-    dependencies {
-        compile "com.badlogicgames.gdx:gdx:$gdxVersion"
-        compile "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
-        compile "com.badlogicgames.box2dlights:box2dlights:$box2DLightsVersion"
-        compile "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
-        compile "com.badlogicgames.gdx:gdx-ai:$aiVersion"
-
-        compile group: 'com.esotericsoftware.kryo', name: 'kryo5', version: '5.0.2'
-        compile 'org.json:json:20180130'
     }
 }

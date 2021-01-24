@@ -3,9 +3,9 @@ package org.smallbox.faraway.module.quest;
 import org.luaj.vm2.Globals;
 import org.luaj.vm2.LuaValue;
 import org.luaj.vm2.lib.jse.CoerceJavaToLua;
-import org.smallbox.faraway.core.engine.module.ModuleBase;
-import org.smallbox.faraway.core.engine.module.lua.data.DataExtendException;
-import org.smallbox.faraway.core.engine.module.lua.data.LuaExtend;
+import org.smallbox.faraway.core.module.ModuleBase;
+import org.smallbox.faraway.core.lua.data.DataExtendException;
+import org.smallbox.faraway.core.lua.data.LuaExtend;
 import org.smallbox.faraway.util.Log;
 
 import java.io.File;

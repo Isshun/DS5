@@ -6,7 +6,7 @@
 //import org.smallbox.faraway.client.renderer.GDXRenderer;
 //import org.smallbox.faraway.core.game.model.GameConfig;
 //import org.smallbox.faraway.core.world.model.ParcelModel;
-//import org.smallbox.faraway.core.engine.module.java.ModuleHelper;
+//import org.smallbox.faraway.core.module.java.ModuleHelper;
 //import org.smallbox.faraway.util.Constant;
 //import UIManager;
 //import UILabel;

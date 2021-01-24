@@ -1,6 +1,6 @@
 package org.smallbox.faraway.game.plant.model;
 
-import org.smallbox.faraway.GameSerializer;
+import org.smallbox.faraway.core.save.GameSerializer;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.world.model.MapObjectModel;
 import org.smallbox.faraway.game.job.JobModel;

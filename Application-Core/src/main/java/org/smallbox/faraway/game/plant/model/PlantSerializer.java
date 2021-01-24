@@ -1,7 +1,7 @@
 package org.smallbox.faraway.game.plant.model;
 
 import org.json.JSONObject;
-import org.smallbox.faraway.core.ModelSerializer;
+import org.smallbox.faraway.core.save.ModelSerializer;
 
 public class PlantSerializer implements ModelSerializer<PlantItem> {
 

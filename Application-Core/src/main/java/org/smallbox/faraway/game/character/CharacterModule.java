@@ -2,12 +2,12 @@ package org.smallbox.faraway.game.character;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.smallbox.faraway.GameTaskManager;
-import org.smallbox.faraway.common.UUIDUtils;
+import org.smallbox.faraway.util.UUIDUtils;
 import org.smallbox.faraway.core.GameException;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnInit;
-import org.smallbox.faraway.core.engine.module.SuperGameModule;
+import org.smallbox.faraway.core.module.SuperGameModule;
 import org.smallbox.faraway.core.game.DataManager;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.game.world.WorldHelper;

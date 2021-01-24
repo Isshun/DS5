@@ -1,6 +1,6 @@
 package org.smallbox.faraway.game.itemFactory;
 
-import org.smallbox.faraway.common.ObjectModel;
+import org.smallbox.faraway.game.world.ObjectModel;
 import org.smallbox.faraway.core.dependencyInjector.DependencyManager;
 import org.smallbox.faraway.core.game.DataManager;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;

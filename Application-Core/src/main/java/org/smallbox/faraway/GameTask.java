@@ -1,6 +1,6 @@
 package org.smallbox.faraway;
 
-import org.smallbox.faraway.common.UUIDUtils;
+import org.smallbox.faraway.util.UUIDUtils;
 
 public abstract class GameTask {
     public final long id;

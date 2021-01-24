@@ -10,7 +10,7 @@ import org.smallbox.faraway.client.layer.BaseMapLayer;
 import org.smallbox.faraway.client.layer.ground.impl.GroundTileGenerator;
 import org.smallbox.faraway.client.layer.ground.impl.RockTileGenerator;
 import org.smallbox.faraway.client.selection.GameSelectionManager;
-import org.smallbox.faraway.core.GameLayer;
+import org.smallbox.faraway.client.layer.GameLayer;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnGameStart;

@@ -9,7 +9,7 @@ import org.smallbox.faraway.client.ui.widgets.View;
 import org.smallbox.faraway.client.ui.widgets.UIFrame;
 import org.smallbox.faraway.client.ui.widgets.UILabel;
 import org.smallbox.faraway.client.ui.widgets.UIList;
-import org.smallbox.faraway.core.GameShortcut;
+import org.smallbox.faraway.client.shortcut.GameShortcut;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.game.Game;

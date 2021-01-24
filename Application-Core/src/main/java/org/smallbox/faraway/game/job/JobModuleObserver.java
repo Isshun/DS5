@@ -1,6 +1,6 @@
 package org.smallbox.faraway.game.job;
 
-import org.smallbox.faraway.core.engine.module.ModuleObserver;
+import org.smallbox.faraway.core.module.ModuleObserver;
 
 public interface JobModuleObserver extends ModuleObserver {
     default void onJobComplete(JobModel job) {}

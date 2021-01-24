@@ -2,7 +2,7 @@ package org.smallbox.faraway.game.characterDisease;
 
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
-import org.smallbox.faraway.core.engine.module.SuperGameModule2;
+import org.smallbox.faraway.core.module.SuperGameModule2;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.game.character.CharacterModule;
 import org.smallbox.faraway.game.character.CharacterModuleObserver;

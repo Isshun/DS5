@@ -1,9 +1,9 @@
 package org.smallbox.faraway.game.itemFactory;
 
-import org.smallbox.faraway.core.ModuleInfoAnnotation;
+import org.smallbox.faraway.core.module.ModuleInfoAnnotation;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
-import org.smallbox.faraway.core.engine.module.SuperGameModule;
+import org.smallbox.faraway.core.module.SuperGameModule;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.game.modelInfo.ReceiptGroupInfo;

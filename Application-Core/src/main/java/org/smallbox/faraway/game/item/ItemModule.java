@@ -1,15 +1,14 @@
 package org.smallbox.faraway.game.item;
 
-import org.smallbox.faraway.common.NotImplementedException;
+import org.smallbox.faraway.core.GameException;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
-import org.smallbox.faraway.core.engine.module.SuperGameModule;
 import org.smallbox.faraway.core.game.DataManager;
 import org.smallbox.faraway.core.game.Game;
-import org.smallbox.faraway.game.world.WorldHelper;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
+import org.smallbox.faraway.core.module.SuperGameModule;
 import org.smallbox.faraway.core.world.model.MapObjectModel;
-import org.smallbox.faraway.game.world.Parcel;
+import org.smallbox.faraway.game.area.AreaModule;
 import org.smallbox.faraway.game.building.BasicDumpJob;
 import org.smallbox.faraway.game.building.BuildJobFactory;
 import org.smallbox.faraway.game.consumable.ConsumableModule;
@@ -18,6 +17,8 @@ import org.smallbox.faraway.game.job.JobModel;
 import org.smallbox.faraway.game.job.JobModule;
 import org.smallbox.faraway.game.job.JobModuleObserver;
 import org.smallbox.faraway.game.structure.StructureModule;
+import org.smallbox.faraway.game.world.Parcel;
+import org.smallbox.faraway.game.world.WorldHelper;
 import org.smallbox.faraway.game.world.WorldModule;
 import org.smallbox.faraway.util.log.Log;
 
@@ -113,7 +114,7 @@ public class ItemModule extends SuperGameModule<UsableItem, ItemModuleObserver> 
      * @param item to build
      */
     private void launchBuild(UsableItem item) {
-        throw new NotImplementedException();
+        throw new GameException(AreaModule.class, "Not implemented");
     }
 
     public void addItem(UsableItem item) {

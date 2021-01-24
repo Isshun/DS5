@@ -13,7 +13,7 @@ import org.smallbox.faraway.client.renderer.Viewport;
 import org.smallbox.faraway.client.layer.BaseLayer;
 import org.smallbox.faraway.client.ui.extra.Colors;
 import org.smallbox.faraway.client.ui.widgets.View;
-import org.smallbox.faraway.core.GameLayer;
+import org.smallbox.faraway.client.layer.GameLayer;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.dependencyInjector.annotationEvent.AfterGameLayerInit;

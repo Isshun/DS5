@@ -1,14 +1,13 @@
 package org.smallbox.faraway.client.layer;
 
 import com.badlogic.gdx.graphics.Color;
-import org.smallbox.faraway.client.GameClientObserver;
+import org.smallbox.faraway.client.input.GameClientObserver;
 import org.smallbox.faraway.client.asset.SpriteManager;
 import org.smallbox.faraway.client.renderer.BaseRenderer;
 import org.smallbox.faraway.client.renderer.Viewport;
 import org.smallbox.faraway.client.selection.GameSelectionManager;
-import org.smallbox.faraway.common.ObjectModel;
+import org.smallbox.faraway.game.world.ObjectModel;
 import org.smallbox.faraway.core.GameException;
-import org.smallbox.faraway.core.GameLayer;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameObserver;

@@ -2,7 +2,7 @@ package org.smallbox.faraway.game.job;
 
 import com.badlogic.gdx.graphics.Color;
 import org.smallbox.faraway.client.asset.sound.SoundManager;
-import org.smallbox.faraway.common.ObjectModel;
+import org.smallbox.faraway.game.world.ObjectModel;
 import org.smallbox.faraway.core.GameException;
 import org.smallbox.faraway.core.dependencyInjector.DependencyManager;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;

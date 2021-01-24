@@ -1,6 +1,6 @@
 package org.smallbox.faraway.game.structure;
 
-import org.smallbox.faraway.core.engine.module.ModuleObserver;
+import org.smallbox.faraway.core.module.ModuleObserver;
 import org.smallbox.faraway.game.world.Parcel;
 
 public interface StructureModuleObserver extends ModuleObserver {

@@ -3,8 +3,7 @@ package org.smallbox.faraway.client.ui.widgets;
 import com.badlogic.gdx.graphics.Color;
 import org.smallbox.faraway.client.renderer.BaseRenderer;
 import org.smallbox.faraway.client.ui.extra.Align;
-import org.smallbox.faraway.core.engine.ColorUtils;
-import org.smallbox.faraway.core.engine.module.ModuleBase;
+import org.smallbox.faraway.core.module.ModuleBase;
 
 public class UIMultiCheckBox extends View {
     public static final int    REGULAR = 0;

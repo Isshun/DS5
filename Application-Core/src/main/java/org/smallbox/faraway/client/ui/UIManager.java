@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import org.apache.commons.collections4.CollectionUtils;
 import org.luaj.vm2.LuaValue;
-import org.smallbox.faraway.client.ClientLuaModuleManager;
+import org.smallbox.faraway.client.lua.ClientLuaModuleManager;
 import org.smallbox.faraway.client.controller.LuaController;
 import org.smallbox.faraway.client.lua.LuaControllerManager;
 import org.smallbox.faraway.client.renderer.BaseRenderer;
@@ -18,7 +18,7 @@ import org.smallbox.faraway.client.ui.widgets.View;
 import org.smallbox.faraway.client.ui.widgets.UIDropDown;
 import org.smallbox.faraway.client.ui.widgets.UIFrame;
 import org.smallbox.faraway.client.ui.widgets.UILabel;
-import org.smallbox.faraway.core.GameShortcut;
+import org.smallbox.faraway.client.shortcut.GameShortcut;
 import org.smallbox.faraway.core.dependencyInjector.DependencyManager;
 import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
@@ -35,8 +35,8 @@ import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.stream.Collectors;
 
-import static org.smallbox.faraway.core.engine.GameEventListener.Action;
-import static org.smallbox.faraway.core.engine.GameEventListener.Modifier;
+import static org.smallbox.faraway.client.input.GameEventListener.Action;
+import static org.smallbox.faraway.client.input.GameEventListener.Modifier;
 
 @ApplicationObject
 public class UIManager {

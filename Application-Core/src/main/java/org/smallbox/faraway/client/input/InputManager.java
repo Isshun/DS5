@@ -2,7 +2,6 @@ package org.smallbox.faraway.client.input;
 
 import com.badlogic.gdx.InputProcessor;
 import org.apache.commons.collections4.CollectionUtils;
-import org.smallbox.faraway.client.GameEventManager;
 import org.smallbox.faraway.client.debug.DebugService;
 import org.smallbox.faraway.client.gameAction.GameActionManager;
 import org.smallbox.faraway.client.gameContextMenu.GameContextMenuManager;
@@ -17,7 +16,6 @@ import org.smallbox.faraway.client.ui.event.UIEventManager;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
-import org.smallbox.faraway.core.engine.GameEventListener;
 import org.smallbox.faraway.core.game.GameManager;
 import org.smallbox.faraway.game.world.WorldHelper;
 import org.smallbox.faraway.game.world.Parcel;

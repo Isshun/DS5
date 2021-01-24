@@ -7,7 +7,7 @@ import org.smallbox.faraway.client.renderer.BaseRenderer;
 import org.smallbox.faraway.client.renderer.Viewport;
 import org.smallbox.faraway.client.layer.BaseLayer;
 import org.smallbox.faraway.client.selection.GameSelectionManager;
-import org.smallbox.faraway.core.GameLayer;
+import org.smallbox.faraway.client.layer.GameLayer;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnInit;
@@ -24,7 +24,6 @@ public class DashboardLayer extends BaseLayer {
     @Inject private CharacterDashboardLayer characterDashboardLayer;
     @Inject private ConsoleDashboardLayer consoleDashboardLayer;
     @Inject private ConsumableDashboardLayer consumableDashboardLayer;
-    @Inject private TaskDashboardLayer taskDashboardLayer;
     @Inject private ItemDashboardLayer itemDashboardLayer;
     @Inject private PlantDashboardLayer plantDashboardLayer;
     @Inject private ModuleDashboardLayer moduleDashboardLayer;
@@ -115,7 +114,6 @@ public class DashboardLayer extends BaseLayer {
     private DashboardLayerBase currentDashboard() {
         switch (dashboardMode) {
             case CONSOLE: return consoleDashboardLayer;
-            case TASKS: return taskDashboardLayer;
             case CONSUMABLE: return consumableDashboardLayer;
             case ITEM: return itemDashboardLayer;
             case PLANT: return plantDashboardLayer;

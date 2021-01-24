@@ -1,6 +1,6 @@
 package org.smallbox.faraway.game.character.model;
 
-import org.smallbox.faraway.GameSerializer;
+import org.smallbox.faraway.core.save.GameSerializer;
 import org.smallbox.faraway.game.character.CharacterSerializer;
 import org.smallbox.faraway.game.character.CharacterInfo;
 import org.smallbox.faraway.game.world.Parcel;

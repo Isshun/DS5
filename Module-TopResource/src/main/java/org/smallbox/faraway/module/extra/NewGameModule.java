@@ -1,7 +1,7 @@
 package org.smallbox.faraway.module.extra;
 
 import org.smallbox.faraway.core.Application;
-import org.smallbox.faraway.core.engine.module.GameModule;
+import org.smallbox.faraway.core.module.GameModule;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.game.planet.PlanetInfo;
 import org.smallbox.faraway.game.planet.RegionInfo;

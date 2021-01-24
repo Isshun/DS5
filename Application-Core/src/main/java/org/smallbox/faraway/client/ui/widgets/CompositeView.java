@@ -3,7 +3,7 @@ package org.smallbox.faraway.client.ui.widgets;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.smallbox.faraway.client.ui.extra.TemplateCallback;
-import org.smallbox.faraway.core.engine.module.ModuleBase;
+import org.smallbox.faraway.core.module.ModuleBase;
 
 import java.util.Collection;
 import java.util.Optional;

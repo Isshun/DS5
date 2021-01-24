@@ -1,7 +1,7 @@
 package org.smallbox.faraway.client.ui.widgets;
 
 import org.smallbox.faraway.client.renderer.BaseRenderer;
-import org.smallbox.faraway.core.engine.module.ModuleBase;
+import org.smallbox.faraway.core.module.ModuleBase;
 
 public class UIDropDown extends CompositeView {
     private int     _count;

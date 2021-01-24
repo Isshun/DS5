@@ -4,7 +4,7 @@ import org.smallbox.faraway.client.debug.dashboard.DashboardLayerBase;
 import org.smallbox.faraway.client.renderer.BaseRenderer;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
-import org.smallbox.faraway.core.engine.module.AbsGameModule;
+import org.smallbox.faraway.core.module.AbsGameModule;
 import org.smallbox.faraway.core.game.Game;
 
 import java.util.Comparator;

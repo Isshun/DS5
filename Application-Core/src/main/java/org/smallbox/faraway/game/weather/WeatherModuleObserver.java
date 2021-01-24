@@ -1,6 +1,6 @@
 package org.smallbox.faraway.game.weather;
 
-import org.smallbox.faraway.core.engine.module.ModuleObserver;
+import org.smallbox.faraway.core.module.ModuleObserver;
 
 public interface WeatherModuleObserver extends ModuleObserver {
     default void onWeatherChange(WeatherInfo weather) {}

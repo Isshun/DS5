@@ -4,8 +4,8 @@
 //import org.luaj.vm2.LuaValue;
 //import org.luaj.vm2.lib.jse.CoerceJavaToLua;
 //import org.smallbox.faraway.core.engine.lua.LuaGameModel;
-//import org.smallbox.faraway.core.engine.module.GameModule;
-//import org.smallbox.faraway.core.engine.module.lua.LuaModuleManager;
+//import org.smallbox.faraway.core.module.GameModule;
+//import org.smallbox.faraway.core.lua.LuaModuleManager;
 //import org.smallbox.faraway.core.game.Game;
 //
 //import java.util.ArrayList;

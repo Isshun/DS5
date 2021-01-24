@@ -1,6 +1,6 @@
 package org.smallbox.faraway.client.debug.dashboard.content;
 
-import org.smallbox.faraway.client.GameEventManager;
+import org.smallbox.faraway.client.input.GameEventManager;
 import org.smallbox.faraway.client.debug.dashboard.DashboardLayerBase;
 import org.smallbox.faraway.client.renderer.BaseRenderer;
 import org.smallbox.faraway.client.layer.LayerManager;

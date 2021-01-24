@@ -1,6 +1,6 @@
 package org.smallbox.faraway.game.characterBuff;
 
-import org.smallbox.faraway.common.ObjectModel;
+import org.smallbox.faraway.game.world.ObjectModel;
 import org.smallbox.faraway.game.character.model.base.CharacterModel;
 
 import java.time.LocalDateTime;

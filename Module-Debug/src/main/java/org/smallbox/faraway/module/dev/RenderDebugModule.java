@@ -1,6 +1,6 @@
 //package org.smallbox.faraway.module.dev;
 //
-//import org.smallbox.faraway.core.engine.module.GameModule;
+//import org.smallbox.faraway.core.module.GameModule;
 //import org.smallbox.faraway.client.renderer.BaseRenderer;
 //import org.smallbox.faraway.client.renderer.MainRenderer;
 //import org.smallbox.faraway.core.game.Game;

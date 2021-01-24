@@ -2,7 +2,7 @@ package org.smallbox.faraway.game.item;
 
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
-import org.smallbox.faraway.core.engine.module.SuperGameModule;
+import org.smallbox.faraway.core.module.SuperGameModule;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.config.ApplicationConfig;
 import org.smallbox.faraway.core.path.PathManager;

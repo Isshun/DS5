@@ -1,7 +1,7 @@
 package org.smallbox.faraway.module.garden;
 
 import org.smallbox.faraway.core.dependencyInjector.BindModule;
-import org.smallbox.faraway.core.engine.module.GameModule;
+import org.smallbox.faraway.core.module.GameModule;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.JobHelper;
 import org.smallbox.faraway.game.job.model.GatherJob;

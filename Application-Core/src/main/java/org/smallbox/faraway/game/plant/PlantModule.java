@@ -4,7 +4,7 @@ import org.smallbox.faraway.GameTaskManager;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnInit;
-import org.smallbox.faraway.core.engine.module.GenericGameModule;
+import org.smallbox.faraway.core.module.GenericGameModule;
 import org.smallbox.faraway.core.game.DataManager;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.game.world.WorldHelper;

@@ -2,7 +2,6 @@ package org.smallbox.faraway.game.world;
 
 import com.badlogic.gdx.ai.pfa.Connection;
 import com.badlogic.gdx.utils.Array;
-import org.smallbox.faraway.common.ParcelCommon;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.game.modelInfo.NetworkInfo;
 import org.smallbox.faraway.core.path.graph.ParcelConnection;

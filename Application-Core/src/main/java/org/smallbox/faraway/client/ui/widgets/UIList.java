@@ -1,7 +1,7 @@
 package org.smallbox.faraway.client.ui.widgets;
 
 import org.smallbox.faraway.client.renderer.BaseRenderer;
-import org.smallbox.faraway.core.engine.module.ModuleBase;
+import org.smallbox.faraway.core.module.ModuleBase;
 
 import java.util.ConcurrentModificationException;
 import java.util.List;

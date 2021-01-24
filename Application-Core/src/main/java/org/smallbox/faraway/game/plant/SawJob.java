@@ -11,7 +11,7 @@
 //import org.smallbox.faraway.core.path.PathManager;
 //import org.smallbox.faraway.core.world.model.ParcelModel;
 //import org.smallbox.faraway.core.world.model.resource.ResourceModel;
-//import org.smallbox.faraway.core.engine.module.java.ModuleHelper;
+//import org.smallbox.faraway.core.module.java.ModuleHelper;
 //import org.smallbox.faraway.util.log.Log;
 //import org.smallbox.faraway.util.Utils;
 //

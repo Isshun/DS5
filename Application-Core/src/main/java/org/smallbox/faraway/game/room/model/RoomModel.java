@@ -1,13 +1,13 @@
 package org.smallbox.faraway.game.room.model;
 
 import com.badlogic.gdx.graphics.Color;
-import org.smallbox.faraway.common.NotImplementedException;
-import org.smallbox.faraway.common.ObjectModel;
-import org.smallbox.faraway.core.engine.ColorUtils;
+import org.smallbox.faraway.core.GameException;
 import org.smallbox.faraway.core.world.model.ItemFilter;
 import org.smallbox.faraway.core.world.model.MapObjectModel;
-import org.smallbox.faraway.game.world.Parcel;
+import org.smallbox.faraway.game.area.AreaModule;
 import org.smallbox.faraway.game.character.model.base.CharacterModel;
+import org.smallbox.faraway.game.world.ObjectModel;
+import org.smallbox.faraway.game.world.Parcel;
 
 import java.util.*;
 
@@ -195,7 +195,7 @@ public class RoomModel extends ObjectModel {
      * @return
      */
     public MapObjectModel find(ItemFilter filter) {
-        throw new NotImplementedException();
+        throw new GameException(RoomModel.class, "Not implemented");
 
 //        for (ParcelModel area: _parcels) {
 //            UsableItem item = area.getItem();

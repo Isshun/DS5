@@ -5,8 +5,8 @@
 //import org.smallbox.faraway.core.world.model.*;
 //import UsableItem;
 //import org.smallbox.faraway.core.world.model.resource.ResourceModel;
-//import org.smallbox.faraway.core.engine.module.GameModule;
-//import org.smallbox.faraway.core.engine.module.java.ModuleHelper;
+//import org.smallbox.faraway.core.module.GameModule;
+//import org.smallbox.faraway.core.module.java.ModuleHelper;
 //
 //import java.util.ArrayList;
 //import java.util.List;

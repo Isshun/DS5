@@ -4,8 +4,7 @@ import com.badlogic.gdx.graphics.Color;
 import org.smallbox.faraway.client.renderer.BaseRenderer;
 import org.smallbox.faraway.client.ui.event.OnCheckListener;
 import org.smallbox.faraway.client.ui.extra.Align;
-import org.smallbox.faraway.core.engine.ColorUtils;
-import org.smallbox.faraway.core.engine.module.ModuleBase;
+import org.smallbox.faraway.core.module.ModuleBase;
 
 public class UICheckBox extends View {
     public static final int    REGULAR = 0;

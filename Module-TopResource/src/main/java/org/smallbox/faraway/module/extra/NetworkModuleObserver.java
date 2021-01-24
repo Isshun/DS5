@@ -1,6 +1,6 @@
 package org.smallbox.faraway.module.extra;
 
-import org.smallbox.faraway.core.engine.module.ModuleObserver;
+import org.smallbox.faraway.core.module.ModuleObserver;
 import org.smallbox.faraway.core.world.model.NetworkItem;
 
 public interface NetworkModuleObserver extends ModuleObserver {

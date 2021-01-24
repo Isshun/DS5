@@ -1,7 +1,7 @@
 package org.smallbox.faraway.core;
 
 import com.badlogic.gdx.Gdx;
-import org.smallbox.faraway.client.GameClientObserver;
+import org.smallbox.faraway.client.input.GameClientObserver;
 import org.smallbox.faraway.core.game.GameObserver;
 import org.smallbox.faraway.core.game.GameObserverPriority;
 

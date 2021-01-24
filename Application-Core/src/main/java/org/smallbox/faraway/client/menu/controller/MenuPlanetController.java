@@ -11,7 +11,7 @@ import org.smallbox.faraway.client.ui.widgets.UIGrid;
 import org.smallbox.faraway.client.ui.widgets.UIImage;
 import org.smallbox.faraway.client.ui.widgets.UILabel;
 import org.smallbox.faraway.client.ui.widgets.UIList;
-import org.smallbox.faraway.core.GameShortcut;
+import org.smallbox.faraway.client.shortcut.GameShortcut;
 import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.dependencyInjector.annotationEvent.AfterApplicationLayerInit;

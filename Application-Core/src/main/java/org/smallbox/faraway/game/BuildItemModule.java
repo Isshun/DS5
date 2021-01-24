@@ -1,7 +1,7 @@
 //package org.smallbox.faraway.modules;
 //
-//import org.smallbox.faraway.core.engine.module.GameModule;
-//import org.smallbox.faraway.core.engine.module.ModuleObserver;
+//import org.smallbox.faraway.core.module.GameModule;
+//import org.smallbox.faraway.core.module.ModuleObserver;
 //import org.smallbox.faraway.core.world.model.BuildableMapObject;
 //import org.smallbox.faraway.core.world.model.MapObjectModel;
 //import org.smallbox.faraway.modules.building.BuildJob;

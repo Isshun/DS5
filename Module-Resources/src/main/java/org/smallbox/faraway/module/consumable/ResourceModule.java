@@ -1,7 +1,7 @@
 package org.smallbox.faraway.module.consumable;
 
 import org.smallbox.faraway.core.BindModule;
-import org.smallbox.faraway.core.engine.module.GameModule;
+import org.smallbox.faraway.core.module.GameModule;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;

@@ -1,7 +1,7 @@
 package org.smallbox.faraway.module.music;
 
 import com.badlogic.gdx.audio.Music;
-import org.smallbox.faraway.core.engine.module.GameModule;
+import org.smallbox.faraway.core.module.GameModule;
 import org.smallbox.faraway.core.game.Game;
 
 public class MusicModule extends GameModule {

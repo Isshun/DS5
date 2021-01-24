@@ -1,14 +1,14 @@
 package org.smallbox.faraway.client.layer;
 
 import com.badlogic.gdx.Input;
-import org.smallbox.faraway.client.GameClientObserver;
+import org.smallbox.faraway.client.input.GameClientObserver;
 import org.smallbox.faraway.client.input.InputManager;
 import org.smallbox.faraway.client.input.WorldInputManager;
 import org.smallbox.faraway.client.renderer.MapRenderer;
 import org.smallbox.faraway.client.renderer.UIRenderer;
 import org.smallbox.faraway.client.renderer.Viewport;
 import org.smallbox.faraway.client.ui.UIManager;
-import org.smallbox.faraway.core.GameShortcut;
+import org.smallbox.faraway.client.shortcut.GameShortcut;
 import org.smallbox.faraway.core.dependencyInjector.DependencyManager;
 import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;

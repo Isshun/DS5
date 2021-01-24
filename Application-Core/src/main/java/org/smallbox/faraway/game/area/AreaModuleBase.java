@@ -1,7 +1,7 @@
 package org.smallbox.faraway.game.area;
 
 import org.smallbox.faraway.client.gameAction.GameActionAreaListener;
-import org.smallbox.faraway.core.engine.module.SuperGameModule;
+import org.smallbox.faraway.core.module.SuperGameModule;
 import org.smallbox.faraway.game.world.Parcel;
 
 import java.util.List;

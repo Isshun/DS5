@@ -3,7 +3,6 @@ package org.smallbox.faraway.core.game;
 import com.google.gson.Gson;
 import org.smallbox.faraway.client.renderer.Viewport;
 import org.smallbox.faraway.core.GameException;
-import org.smallbox.faraway.core.GameScenario;
 import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.save.GameInfoFactory;

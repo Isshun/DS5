@@ -1,7 +1,7 @@
 package org.smallbox.faraway.client.controller;
 
 import com.badlogic.gdx.Gdx;
-import org.smallbox.faraway.client.GameClientObserver;
+import org.smallbox.faraway.client.input.GameClientObserver;
 import org.smallbox.faraway.client.ui.widgets.CompositeView;
 
 public abstract class LuaController implements GameClientObserver {

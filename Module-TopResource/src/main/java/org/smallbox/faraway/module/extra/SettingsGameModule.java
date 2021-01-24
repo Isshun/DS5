@@ -1,7 +1,7 @@
 package org.smallbox.faraway.module.extra;
 
 import org.luaj.vm2.LuaValue;
-import org.smallbox.faraway.core.engine.module.GameModule;
+import org.smallbox.faraway.core.module.GameModule;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.util.Log;
 

@@ -7,7 +7,7 @@ import org.smallbox.faraway.client.renderer.*;
 import org.smallbox.faraway.client.renderer.extra.TextStyle;
 import org.smallbox.faraway.client.renderer.extra.TextStyleBuilder;
 import org.smallbox.faraway.client.ui.widgets.UILabel;
-import org.smallbox.faraway.core.GameLayer;
+import org.smallbox.faraway.client.layer.GameLayer;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.game.Game;

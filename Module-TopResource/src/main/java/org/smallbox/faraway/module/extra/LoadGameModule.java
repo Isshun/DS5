@@ -2,7 +2,7 @@ package org.smallbox.faraway.module.extra;
 
 import org.json.JSONObject;
 import org.smallbox.faraway.core.Application;
-import org.smallbox.faraway.core.engine.module.ApplicationModule;
+import org.smallbox.faraway.core.module.ApplicationModule;
 import org.smallbox.faraway.core.game.GameInfo;
 import org.smallbox.faraway.util.FileUtils;
 import org.smallbox.faraway.util.Log;

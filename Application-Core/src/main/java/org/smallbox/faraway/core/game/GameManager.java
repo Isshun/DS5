@@ -3,7 +3,7 @@ package org.smallbox.faraway.core.game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import org.smallbox.faraway.core.Application;
-import org.smallbox.faraway.core.GameShortcut;
+import org.smallbox.faraway.client.shortcut.GameShortcut;
 import org.smallbox.faraway.core.dependencyInjector.DependencyManager;
 import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;

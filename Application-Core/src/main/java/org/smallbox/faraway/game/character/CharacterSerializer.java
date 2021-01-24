@@ -1,7 +1,7 @@
 package org.smallbox.faraway.game.character;
 
 import org.json.JSONObject;
-import org.smallbox.faraway.core.ModelSerializer;
+import org.smallbox.faraway.core.save.ModelSerializer;
 import org.smallbox.faraway.game.character.model.HumanModel;
 
 public class CharacterSerializer implements ModelSerializer<HumanModel> {

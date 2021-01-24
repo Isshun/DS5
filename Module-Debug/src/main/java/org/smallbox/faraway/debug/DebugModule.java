@@ -4,7 +4,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.smallbox.faraway.client.ApplicationClient;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.dependencyInjector.BindModule;
-import org.smallbox.faraway.core.engine.module.GameModule;
+import org.smallbox.faraway.core.module.GameModule;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.world.model.ParcelModel;

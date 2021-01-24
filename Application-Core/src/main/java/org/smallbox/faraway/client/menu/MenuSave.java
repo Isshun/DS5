@@ -1,7 +1,7 @@
 //package org.smallbox.faraway.ui;
 //
 //import org.smallbox.faraway.core.engine.Color;
-//import org.smallbox.faraway.core.engine.GameEventListener;
+//import org.smallbox.faraway.client.input.GameEventListener;
 //import org.smallbox.faraway.client.layer.GDXLayer;
 //import org.smallbox.faraway.client.layer.Viewport;
 //import org.smallbox.faraway.core.game.Game;

@@ -1,6 +1,6 @@
 package org.smallbox.faraway.core.dependencyInjector.gameAction;
 
-import org.smallbox.faraway.common.ObjectModel;
+import org.smallbox.faraway.game.world.ObjectModel;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

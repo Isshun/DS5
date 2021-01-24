@@ -2,7 +2,7 @@ package org.smallbox.faraway.core.save;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.smallbox.faraway.core.GameScenario;
+import org.smallbox.faraway.core.game.GameScenario;
 import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.game.DataManager;

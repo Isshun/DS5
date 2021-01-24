@@ -2,7 +2,7 @@ package org.smallbox.faraway.client.ui;
 
 import org.smallbox.faraway.client.renderer.BaseRenderer;
 import org.smallbox.faraway.client.ui.widgets.CompositeView;
-import org.smallbox.faraway.core.engine.module.ModuleBase;
+import org.smallbox.faraway.core.module.ModuleBase;
 
 public class RootView {
 
