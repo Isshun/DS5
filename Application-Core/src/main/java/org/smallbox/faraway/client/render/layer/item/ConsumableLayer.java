@@ -2,7 +2,7 @@ package org.smallbox.faraway.client.render.layer.item;
 
 import org.smallbox.faraway.client.manager.SpriteManager;
 import org.smallbox.faraway.client.render.*;
-import org.smallbox.faraway.client.render.layer.BaseLayer;
+import org.smallbox.faraway.client.render.layer.BaseMapLayer;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
 import org.smallbox.faraway.core.GameLayer;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
@@ -22,8 +22,8 @@ import static com.badlogic.gdx.graphics.Color.WHITE;
 
 @GameObject
 @GameLayer(level = LayerManager.CONSUMABLE_LAYER_LEVEL, visible = true)
-public class ConsumableLayer extends BaseLayer {
-    private final static TextStyle consumableQuantityStyle = TextStyleBuilder.build("sui", 8, WHITE).autoScale(true).shadow(1).get();
+public class ConsumableLayer extends BaseMapLayer {
+    private final static TextStyle consumableQuantityStyle = TextStyleBuilder.build("sui", 12, WHITE).autoScale(true).shadow(2).get();
 
     @Inject private SpriteManager spriteManager;
     @Inject private ConsumableModule consumableModule;
@@ -33,7 +33,7 @@ public class ConsumableLayer extends BaseLayer {
 
     private abstract class TagDraw {
         public int frameLeft = 100;
-        public abstract void onTagDraw(GDXRenderer renderer, Viewport viewport);
+        public abstract void onTagdraw(GDXRendererBase renderer, Viewport viewport);
     }
 
     @Override
@@ -54,7 +54,7 @@ public class ConsumableLayer extends BaseLayer {
     private void addTag(String text, Parcel parcel) {
         tags.add(new TagDraw() {
             @Override
-            public void onTagDraw(GDXRenderer renderer, Viewport viewport) {
+            public void onTagdraw(GDXRendererBase renderer, Viewport viewport) {
                 UILabel.create(null)
                         .setText(text)
                         .setTextSize(12)
@@ -65,7 +65,7 @@ public class ConsumableLayer extends BaseLayer {
         });
     }
 
-    public void onDraw(GDXRenderer renderer, Viewport viewport, double animProgress, int frame) {
+    public void onDraw(GDXRendererBase renderer, Viewport viewport, double animProgress, int frame) {
         consumableModule.getAll().stream()
                 .filter(item -> viewport.hasParcel(item.getParcel()))
                 .filter(item -> item.getTotalQuantity() > 0)
@@ -80,7 +80,7 @@ public class ConsumableLayer extends BaseLayer {
 //                    renderer.drawTextOnMap(consumable.getParcel().x, consumable.getParcel().y, stringQuantity, 30, Color.WHITE, 1, 51, true);
 
 //                    renderer.drawTextOnMapUI(parcel.x, parcel.y, stringQuantity, (int) (8 * (4 - gdxRenderer.getZoom())), Color.WHITE, offsetX, offsetY + 50, false, true);
-                    renderer.drawTextOnMapUI(stringQuantity, consumableQuantityStyle, parcel, offsetX, offsetX + 50);
+                    renderer.drawTextOnMap(stringQuantity, consumableQuantityStyle, parcel, offsetX, offsetX + 50);
 
                     drawSelectionOnMap(renderer, spriteManager, viewport, consumable, parcel.x, parcel.y, 20, 20, 6, 6);
                 });

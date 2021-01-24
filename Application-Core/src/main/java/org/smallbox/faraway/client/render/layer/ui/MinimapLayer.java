@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import org.apache.commons.lang3.StringUtils;
 import org.smallbox.faraway.client.AssetManager;
 import org.smallbox.faraway.client.controller.SystemInfoController;
-import org.smallbox.faraway.client.render.GDXRenderer;
+import org.smallbox.faraway.client.render.GDXRendererBase;
 import org.smallbox.faraway.client.render.LayerManager;
 import org.smallbox.faraway.client.render.Viewport;
 import org.smallbox.faraway.client.render.layer.BaseLayer;
@@ -60,7 +60,6 @@ public class MinimapLayer extends BaseLayer {
     @Inject private SystemInfoController mainPanelController;
     @Inject private GameManager gameManager;
     @Inject private AssetManager assetManager;
-    @Inject private GDXRenderer gdxRenderer;
     @Inject private Game game;
 
     private List<MinimapRule> rules = Arrays.asList(
@@ -153,7 +152,7 @@ public class MinimapLayer extends BaseLayer {
         _dirty = true;
     }
 
-    public void onDraw(GDXRenderer renderer, Viewport viewport, double animProgress, int frame) {
+    public void onDraw(GDXRendererBase renderer, Viewport viewport, double animProgress, int frame) {
         if (mainPanelController != null && mainPanelController.getRootView().isVisible()) {
 
             if (_dirty || _spriteMap == null) {
@@ -166,30 +165,30 @@ public class MinimapLayer extends BaseLayer {
 
             drawViewport(renderer);
             drawCharacters(renderer);
-            drawUI();
+            drawUI(renderer);
         }
     }
 
-    private void drawUI() {
+    private void drawUI(GDXRendererBase renderer) {
         mainPanelController.getMapContainer().getViews().stream().filter(view -> !StringUtils.equals(view.getId(), "minimap"))
-                .forEach(view -> view.draw(gdxRenderer, view.getGeometry().getFinalX(), view.getGeometry().getFinalY()));
+                .forEach(view -> view.draw(renderer, view.getGeometry().getFinalX(), view.getGeometry().getFinalY()));
     }
 
-    private void drawViewport(GDXRenderer renderer) {
+    private void drawViewport(GDXRendererBase renderer) {
         int x = _mainPosX + (int) ((Math.min(gameWidth - 38 - 1, Math.max(0, -viewport.getPosX() / TILE_SIZE))) * ratioX);
         int y = _mainPosY + (int) ((Math.min(gameHeight - 32 - 1, Math.max(0, -viewport.getPosY() / TILE_SIZE))) * ratioY);
         int rectWidth = (int) (38 * ratioX);
         int rectHeight = (int) (32 * ratioY);
-        renderer.drawPixelUI(x, y, rectWidth, 2, COLOR_VIEWPORT);
-        renderer.drawPixelUI(x, y, 2, rectHeight, COLOR_VIEWPORT);
-        renderer.drawPixelUI(x, y + rectHeight, rectWidth, 2, COLOR_VIEWPORT);
-        renderer.drawPixelUI(x + rectWidth, y, 2, rectHeight + 2, COLOR_VIEWPORT);
+        renderer.drawPixel(x, y, rectWidth, 2, COLOR_VIEWPORT);
+        renderer.drawPixel(x, y, 2, rectHeight, COLOR_VIEWPORT);
+        renderer.drawPixel(x, y + rectHeight, rectWidth, 2, COLOR_VIEWPORT);
+        renderer.drawPixel(x + rectWidth, y, 2, rectHeight + 2, COLOR_VIEWPORT);
     }
 
-    private void drawCharacters(GDXRenderer renderer) {
+    private void drawCharacters(GDXRendererBase renderer) {
         characterModule.getAll().stream()
                 .filter(character -> character.getParcel().z == WorldHelper.getCurrentFloor())
-                .forEach(character -> renderer.drawPixelUI(
+                .forEach(character -> renderer.drawPixel(
                         (int) (_mainPosX + (character.getParcel().x * ratioX)),
                         (int) (_mainPosY + (character.getParcel().y * ratioY)),
                         3,

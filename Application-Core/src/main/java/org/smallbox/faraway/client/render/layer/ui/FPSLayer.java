@@ -2,7 +2,7 @@ package org.smallbox.faraway.client.render.layer.ui;
 
 import com.badlogic.gdx.graphics.Color;
 import org.smallbox.faraway.GpuMemUtils;
-import org.smallbox.faraway.client.render.GDXRenderer;
+import org.smallbox.faraway.client.render.GDXRendererBase;
 import org.smallbox.faraway.client.render.Viewport;
 import org.smallbox.faraway.client.render.layer.BaseLayer;
 import org.smallbox.faraway.core.GameLayer;
@@ -19,7 +19,7 @@ public class FPSLayer extends BaseLayer {
     @Inject private ApplicationConfig applicationConfig;
 
 
-    public void onDraw(GDXRenderer renderer, Viewport viewport, double animProgress, int frame) {
+    public void onDraw(GDXRendererBase renderer, Viewport viewport, double animProgress, int frame) {
         long heapSize = Runtime.getRuntime().totalMemory();
         long heapFreeSize = Runtime.getRuntime().freeMemory();
 
@@ -27,10 +27,10 @@ public class FPSLayer extends BaseLayer {
 //        List<String> wmiClassesList = WMI4Java.get().namespace("root/WMI").listClasses();
 //        Map<String, String> wmiObjectProperties2 = WMI4Java.get().getWMIObject("win32_process");
 //        Map<String, String> wmiObjectProperties = WMI4Java.get().getWMIObject("Win32_PerfFormattedData_PerfProc_Process");
-        renderer.drawTextUI(applicationConfig.getResolutionWidth() - 530, applicationConfig.getResolutionHeight() - 80 + 10, 12, Color.WHITE, "Heap: " + (heapSize - heapFreeSize) / 1000 / 1000);
-        renderer.drawTextUI(applicationConfig.getResolutionWidth() - 530, applicationConfig.getResolutionHeight() - 80 + 25, 12, Color.WHITE, "T " + game.getTick());
-        renderer.drawTextUI(applicationConfig.getResolutionWidth() - 530, applicationConfig.getResolutionHeight() - 80 + 40, 12, Color.WHITE, "F " + frame);
-        renderer.drawPixelUI(applicationConfig.getResolutionWidth() - 530 + frame / 5 % 32, applicationConfig.getResolutionHeight() - 80 + 55, 2, 2, Color.WHITE);
+        renderer.drawText(applicationConfig.getResolutionWidth() - 530, applicationConfig.getResolutionHeight() - 80 + 10, 12, Color.WHITE, "Heap: " + (heapSize - heapFreeSize) / 1000 / 1000);
+        renderer.drawText(applicationConfig.getResolutionWidth() - 530, applicationConfig.getResolutionHeight() - 80 + 25, 12, Color.WHITE, "T " + game.getTick());
+        renderer.drawText(applicationConfig.getResolutionWidth() - 530, applicationConfig.getResolutionHeight() - 80 + 40, 12, Color.WHITE, "F " + frame);
+        renderer.drawPixel(applicationConfig.getResolutionWidth() - 530 + frame / 5 % 32, applicationConfig.getResolutionHeight() - 80 + 55, 2, 2, Color.WHITE);
     }
 
 }

@@ -3,10 +3,10 @@ package org.smallbox.faraway.client.render.layer.area;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import org.smallbox.faraway.client.manager.SpriteManager;
-import org.smallbox.faraway.client.render.GDXRenderer;
+import org.smallbox.faraway.client.render.GDXRendererBase;
 import org.smallbox.faraway.client.render.LayerManager;
 import org.smallbox.faraway.client.render.Viewport;
-import org.smallbox.faraway.client.render.layer.BaseLayer;
+import org.smallbox.faraway.client.render.layer.BaseMapLayer;
 import org.smallbox.faraway.core.GameLayer;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
@@ -23,7 +23,7 @@ import static org.smallbox.faraway.util.Constant.TILE_SIZE;
 
 @GameObject
 @GameLayer(level = LayerManager.ROOM_LAYER_LEVEL, visible = true)
-public class RoomLayer extends BaseLayer {
+public class RoomLayer extends BaseMapLayer {
     @Inject private SpriteManager spriteManager;
     @Inject private RoomModule roomModule;
 
@@ -63,7 +63,7 @@ public class RoomLayer extends BaseLayer {
     }
 
     @Override
-    public void    onDraw(GDXRenderer renderer, Viewport viewport, double animProgress, int frame) {
+    public void    onDraw(GDXRendererBase renderer, Viewport viewport, double animProgress, int frame) {
         int fromX = -viewport.getPosX() / Constant.TILE_SIZE;
         int fromY = -viewport.getPosY() / Constant.TILE_SIZE;
         int toX = fromX + viewport.getWidth() / Constant.TILE_SIZE;

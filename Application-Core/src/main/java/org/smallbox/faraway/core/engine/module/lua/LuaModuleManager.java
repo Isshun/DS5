@@ -21,7 +21,10 @@ import org.smallbox.faraway.util.FileUtils;
 import org.smallbox.faraway.util.Utils;
 import org.smallbox.faraway.util.log.Log;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.Collection;
 import java.util.Optional;
 import java.util.Queue;

@@ -2,6 +2,7 @@ package org.smallbox.faraway.client.debug.dashboard.content;
 
 import org.smallbox.faraway.client.debug.dashboard.DashboardLayerBase;
 import org.smallbox.faraway.client.render.GDXRenderer;
+import org.smallbox.faraway.client.render.GDXRendererBase;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
@@ -16,7 +17,7 @@ public class ConsumableDashboardLayer extends DashboardLayerBase {
     @Inject private ConsumableModule consumableModule;
 
     @Override
-    protected void onDraw(GDXRenderer renderer, int frame) {
+    protected void onDraw(GDXRendererBase renderer, int frame) {
         if (consumableModule != null && consumableModule.getAll() != null) {
             Map<ItemInfo, Integer> consumables = new HashMap<>();
             consumableModule.getAll().forEach(consumable -> {

@@ -6,6 +6,8 @@ import org.smallbox.faraway.client.font.FontManager;
 import org.smallbox.faraway.client.manager.BackgroundMusicManager;
 import org.smallbox.faraway.client.manager.SpriteManager;
 import org.smallbox.faraway.client.render.GDXRenderer;
+import org.smallbox.faraway.client.render.GDXRendererBaseBase;
+import org.smallbox.faraway.client.render.GDXRendererUI;
 import org.smallbox.faraway.client.render.impl.MainRender;
 import org.smallbox.faraway.client.render.terrain.TerrainManager;
 import org.smallbox.faraway.core.Application;
@@ -46,7 +48,9 @@ public class GDXApplication extends ApplicationAdapter {
         TaskManager taskManager = di.getDependency(TaskManager.class);
         taskManager.addLoadTask("Calling dependency injector", false, di::injectApplicationDependencies);
         taskManager.addLoadTask("Generate fonts", true, () -> di.getDependency(FontManager.class).generateFonts());
+        taskManager.addLoadTask("Create layer", true, () -> di.getDependency(GDXRendererBaseBase.class).init());
         taskManager.addLoadTask("Create layer", true, () -> di.getDependency(GDXRenderer.class).init());
+        taskManager.addLoadTask("Create layer", true, () -> di.getDependency(GDXRendererUI.class).init());
         taskManager.addLoadTask("Launch DB thread", false, () -> taskManager.launchBackgroundThread(di.getDependency(SQLManager.class)::update, 16));
         taskManager.addLoadTask("Launch DB thread", false, () -> taskManager.launchBackgroundThread(di.getDependency(GpuMemUtils.class)::getTextureGpuSize, 1000));
         taskManager.addLoadTask("Load modules", false, () -> di.getDependency(ModuleManager.class).loadModules(null));

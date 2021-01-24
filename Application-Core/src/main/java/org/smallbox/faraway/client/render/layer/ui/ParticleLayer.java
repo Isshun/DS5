@@ -4,7 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import org.apache.commons.lang3.StringUtils;
 import org.smallbox.faraway.client.AssetManager;
-import org.smallbox.faraway.client.render.GDXRenderer;
+import org.smallbox.faraway.client.render.GDXRendererBase;
 import org.smallbox.faraway.client.render.LayerManager;
 import org.smallbox.faraway.client.render.Viewport;
 import org.smallbox.faraway.client.render.layer.BaseLayer;
@@ -26,7 +26,7 @@ public class ParticleLayer extends BaseLayer {
     @Inject private AssetManager assetManager;
 
     @Override
-    public void onDraw(GDXRenderer renderer, Viewport viewport, double animProgress, int frame) {
+    public void onDraw(GDXRendererBase renderer, Viewport viewport, double animProgress, int frame) {
         loadEffect(weatherModule.getWeather().particle);
 
         if (effect != null) {

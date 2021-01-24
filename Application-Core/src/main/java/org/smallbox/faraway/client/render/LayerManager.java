@@ -5,6 +5,7 @@ import org.smallbox.faraway.client.GameClientObserver;
 import org.smallbox.faraway.client.manager.input.InputManager;
 import org.smallbox.faraway.client.manager.input.WorldInputManager;
 import org.smallbox.faraway.client.render.layer.BaseLayer;
+import org.smallbox.faraway.client.render.layer.BaseMapLayer;
 import org.smallbox.faraway.client.ui.UIManager;
 import org.smallbox.faraway.core.GameShortcut;
 import org.smallbox.faraway.core.dependencyInjector.DependencyManager;
@@ -41,6 +42,7 @@ public class LayerManager implements GameClientObserver {
     @Inject private Viewport viewport;
     @Inject private GameManager gameManager;
     @Inject private GDXRenderer gdxRenderer;
+    @Inject private GDXRendererUI gdxRendererUI;
     @Inject private WorldInputManager worldInputManager;
     @Inject private DependencyManager dependencyManager;
     @Inject private Game game;
@@ -95,7 +97,7 @@ public class LayerManager implements GameClientObserver {
             _animationProgress = 1 - ((double) (game.getNextUpdate() - System.currentTimeMillis()) / game.getTickInterval());
         }
 
-        layerManager.draw(gdxRenderer, viewport, _animationProgress, _frame);
+        layerManager.draw(viewport, _animationProgress, _frame);
 
         // Move viewport
         if (game.isRunning()) {
@@ -118,12 +120,12 @@ public class LayerManager implements GameClientObserver {
         _frame++;
     }
 
-    public void draw(GDXRenderer renderer, Viewport viewport, double animProgress, int frame) {
+    public void draw(Viewport viewport, double animProgress, int frame) {
         long time = System.currentTimeMillis();
 
         //noinspection Convert2streamapi
         if (_layers != null) {
-            _layers.forEach(render -> render.draw(renderer, viewport, animProgress, frame));
+            _layers.forEach(render -> render.draw(render instanceof BaseMapLayer ? gdxRenderer : gdxRendererUI, viewport, animProgress, frame));
         }
 
         _frame++;

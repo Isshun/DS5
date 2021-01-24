@@ -1,11 +1,11 @@
 package org.smallbox.faraway.client.ui.engine.views;
 
-import org.smallbox.faraway.client.font.FontManager;
 import org.smallbox.faraway.client.RotateAnimation;
 import org.smallbox.faraway.client.controller.LuaController;
+import org.smallbox.faraway.client.font.FontManager;
 import org.smallbox.faraway.client.manager.SpriteManager;
-import org.smallbox.faraway.client.render.GDXRenderer;
 import org.smallbox.faraway.client.render.GDXRendererBase;
+import org.smallbox.faraway.client.render.GDXRendererUI;
 import org.smallbox.faraway.client.ui.UIManager;
 import org.smallbox.faraway.client.ui.engine.UIEventManager;
 import org.smallbox.faraway.client.ui.engine.views.widgets.FadeEffect;
@@ -20,7 +20,7 @@ public abstract class View implements Comparable<View> {
     // Inject all dependency to view once for all, waiting for a clever solution
     protected final SpriteManager spriteManager = DependencyManager.getInstance().getDependency(SpriteManager.class);
     protected final UIEventManager uiEventManager = DependencyManager.getInstance().getDependency(UIEventManager.class);
-    protected final GDXRenderer gdxRenderer = DependencyManager.getInstance().getDependency(GDXRenderer.class);
+    protected final GDXRendererUI gdxRenderer = DependencyManager.getInstance().getDependency(GDXRendererUI.class);
     protected final FontManager fontManager = DependencyManager.getInstance().getDependency(FontManager.class);
     protected final UIManager uiManager = DependencyManager.getInstance().getDependency(UIManager.class);
     protected final Data data = DependencyManager.getInstance().getDependency(Data.class);
@@ -242,17 +242,17 @@ public abstract class View implements Comparable<View> {
             geometry.setFinalY(getAlignedY() + geometry.getMarginTop() + y);
 
             if (style._backgroundFocusColor != null && _isFocus) {
-                renderer.drawPixelUI(geometry.getFinalX(), geometry.getFinalY(), getWidth(), getHeight(), style._backgroundFocusColor);
+                renderer.drawPixel(geometry.getFinalX(), geometry.getFinalY(), getWidth(), getHeight(), style._backgroundFocusColor);
             } else if (style._backgroundColor != null) {
-                renderer.drawPixelUI(geometry.getFinalX(), geometry.getFinalY(), getWidth(), getHeight(), style._backgroundColor);
+                renderer.drawPixel(geometry.getFinalX(), geometry.getFinalY(), getWidth(), getHeight(), style._backgroundColor);
             }
 
             if (style._borderColor != null) {
-                renderer.drawRectangleUI(geometry.getFinalX(), geometry.getFinalY(), getWidth(), getHeight(), style._borderColor, false);
+                renderer.drawRectangle(geometry.getFinalX(), geometry.getFinalY(), getWidth(), getHeight(), style._borderColor, false);
             }
 
             if (Config.onDebugView) {
-                renderer.drawTextUI(
+                renderer.drawText(
                         getAlignedX() + x + geometry.getOffsetX() + geometry.getPaddingLeft() + geometry.getMarginLeft(),
                         getAlignedY() + y + geometry.getOffsetY() + geometry.getPaddingTop() + geometry.getMarginTop(),
                         12,

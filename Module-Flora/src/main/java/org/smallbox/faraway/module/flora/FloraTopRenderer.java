@@ -45,7 +45,7 @@ public class FloraTopRenderer extends BaseRenderer {
     }
 
     @Override
-    public void onDraw(GDXRenderer renderer, Viewport viewport, double animProgress) {
+    public void onDraw(GDXRendererBase renderer, Viewport viewport, double animProgress) {
     }
 
     @Override

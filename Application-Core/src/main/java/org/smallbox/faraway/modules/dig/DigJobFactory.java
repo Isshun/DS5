@@ -12,7 +12,6 @@ import org.smallbox.faraway.core.module.world.model.Parcel;
 import org.smallbox.faraway.modules.character.model.CharacterSkillExtra;
 import org.smallbox.faraway.modules.consumable.ConsumableModule;
 import org.smallbox.faraway.modules.job.task.ActionTask;
-import org.smallbox.faraway.modules.job.task.MoveTask;
 import org.smallbox.faraway.modules.job.task.TechnicalTask;
 
 import static org.smallbox.faraway.modules.job.JobTaskReturn.TASK_COMPLETED;

@@ -3,9 +3,10 @@ package org.smallbox.faraway.client.render.layer.ground;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import org.smallbox.faraway.client.render.GDXRenderer;
+import org.smallbox.faraway.client.render.GDXRendererBase;
 import org.smallbox.faraway.client.render.LayerManager;
 import org.smallbox.faraway.client.render.Viewport;
-import org.smallbox.faraway.client.render.layer.BaseLayer;
+import org.smallbox.faraway.client.render.layer.BaseMapLayer;
 import org.smallbox.faraway.client.render.layer.ground.impl.GroundTileGenerator;
 import org.smallbox.faraway.client.render.layer.ground.impl.RockTileGenerator;
 import org.smallbox.faraway.client.selection.GameSelectionManager;
@@ -24,7 +25,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 @GameObject
 @GameLayer(level = LayerManager.WORLD_GROUND_LAYER_LEVEL, visible = true)
-public class WorldGroundLayer extends BaseLayer {
+public class WorldGroundLayer extends BaseMapLayer {
     @Inject private GroundTileGenerator groundTileGenerator;
     @Inject private RockTileGenerator rockTileGenerator;
     @Inject private ApplicationConfig applicationConfig;
@@ -51,7 +52,7 @@ public class WorldGroundLayer extends BaseLayer {
     }
 
     @Override
-    public void onDraw(GDXRenderer renderer, Viewport viewport, double animProgress, int frame) {
+    public void onDraw(GDXRendererBase renderer, Viewport viewport, double animProgress, int frame) {
         int fromX = Math.max(viewport.getWorldPosX(0) - 1, 0);
         int fromY = Math.max(viewport.getWorldPosY(0) - 1, 0);
         int toX = Math.min(viewport.getWorldPosX(applicationConfig.getResolutionWidth()) + 2, worldModule.getWidth());
@@ -70,7 +71,7 @@ public class WorldGroundLayer extends BaseLayer {
                 }
 
                 if (parcel != null && gameSelectionManager.getSelected().contains(parcel)) {
-                    renderer.drawRectangleOnMap(parcel.x, parcel.y, Constant.TILE_SIZE - 8, Constant.TILE_SIZE - 8, Color.WHITE, false, 4, 4);
+                    renderer.drawCadreOnMap(parcel.x, parcel.y, Constant.TILE_SIZE - 8, Constant.TILE_SIZE - 8, Color.WHITE, 4, 4, 4);
                 }
             }
         }
@@ -89,7 +90,7 @@ public class WorldGroundLayer extends BaseLayer {
         for (int x = fromX; x < toX; x++) {
             for (int y = fromY; y < toY; y++) {
                 if (changeFloorTransition > x + y * worldModule.getWidth()) {
-                    gdxRenderer.drawRectangleOnMap(x, y, Constant.TILE_SIZE, Constant.TILE_SIZE, Color.BLACK, true, 0, 0);
+                    gdxRenderer.drawRectangleOnMap(x, y, Constant.TILE_SIZE, Constant.TILE_SIZE, Color.BLACK, 0, 0);
                 }
             }
         }

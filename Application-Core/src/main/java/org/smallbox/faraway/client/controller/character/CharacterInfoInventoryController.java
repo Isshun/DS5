@@ -1,10 +1,6 @@
 package org.smallbox.faraway.client.controller.character;
 
-import com.badlogic.gdx.Input;
 import org.smallbox.faraway.client.controller.LuaController;
-import org.smallbox.faraway.client.ui.UIManager;
-import org.smallbox.faraway.core.GameShortcut;
-import org.smallbox.faraway.core.dependencyInjector.DependencyManager;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 

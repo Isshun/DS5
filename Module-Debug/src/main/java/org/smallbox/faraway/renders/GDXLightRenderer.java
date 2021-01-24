@@ -75,7 +75,7 @@
 //    }
 //
 //    @Override
-//    public void onDraw(GDXRenderer renderer, Viewport viewport, double animProgress) {
+//    public void onDraw(GDXRendererBase renderer, Viewport viewport, double animProgress) {
 //        if (_needRefresh) {
 //            _needRefresh = false;
 //            init();

@@ -5,7 +5,7 @@ import org.apache.commons.lang3.ObjectUtils;
 import org.smallbox.faraway.client.debug.DebugService;
 import org.smallbox.faraway.client.debug.dashboard.DashboardLayerBase;
 import org.smallbox.faraway.client.debug.interpreter.DebugCommandInterpreterService;
-import org.smallbox.faraway.client.render.GDXRenderer;
+import org.smallbox.faraway.client.render.GDXRendererBase;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.game.service.applicationConfig.ApplicationConfig;
@@ -25,7 +25,7 @@ public class ConsoleDashboardLayer extends DashboardLayerBase {
     private int _index;
 
     @Override
-    public void    onDraw(GDXRenderer renderer, int frame) {
+    public void    onDraw(GDXRendererBase renderer, int frame) {
         int fontSize = applicationConfig.debug.logFontSize;
         int lineLength = applicationConfig.debug.logLineLength;
         int resolutionHeight = applicationConfig.getResolutionHeight();
@@ -57,16 +57,16 @@ public class ConsoleDashboardLayer extends DashboardLayerBase {
                 color = Color.GRAY;
             }
 
-            renderer.drawTextUI(12, posY - 1, fontSize, Color.BLACK, text);
-            renderer.drawTextUI(11, posY - 2, fontSize, Color.BLACK, text);
-            renderer.drawTextUI(10, posY - 3, fontSize, color, text);
+            renderer.drawText(12, posY - 1, fontSize, Color.BLACK, text);
+            renderer.drawText(11, posY - 2, fontSize, Color.BLACK, text);
+            renderer.drawText(10, posY - 3, fontSize, color, text);
 
             _index++;
         });
 
-        renderer.drawTextUI(12, resolutionHeight - 25, fontSize, Color.BLACK, "> " + ObjectUtils.firstNonNull(debugCommandInterpreterService.getCommandInput(), "") + prefix);
-        renderer.drawTextUI(11, resolutionHeight - 24, fontSize, Color.BLACK, "> " + ObjectUtils.firstNonNull(debugCommandInterpreterService.getCommandInput(), "") + prefix);
-        renderer.drawTextUI(10, resolutionHeight - 23, fontSize, Color.WHITE, "> " + ObjectUtils.firstNonNull(debugCommandInterpreterService.getCommandInput(), "") + prefix);
+        renderer.drawText(12, resolutionHeight - 25, fontSize, Color.BLACK, "> " + ObjectUtils.firstNonNull(debugCommandInterpreterService.getCommandInput(), "") + prefix);
+        renderer.drawText(11, resolutionHeight - 24, fontSize, Color.BLACK, "> " + ObjectUtils.firstNonNull(debugCommandInterpreterService.getCommandInput(), "") + prefix);
+        renderer.drawText(10, resolutionHeight - 23, fontSize, Color.WHITE, "> " + ObjectUtils.firstNonNull(debugCommandInterpreterService.getCommandInput(), "") + prefix);
     }
 
 }

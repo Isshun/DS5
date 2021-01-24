@@ -4,7 +4,6 @@ import com.badlogic.gdx.assets.AssetLoaderParameters;
 import com.badlogic.gdx.graphics.Pixmap;
 
 import static org.smallbox.faraway.client.render.terrain.TerrainMaskLoaderParameters.Type.*;
-import static org.smallbox.faraway.client.render.terrain.TerrainMaskLoaderParameters.Type.INNER_BOTTOM_RIGHT;
 
 public class TerrainMaskLoaderParameters extends AssetLoaderParameters<Pixmap> {
 

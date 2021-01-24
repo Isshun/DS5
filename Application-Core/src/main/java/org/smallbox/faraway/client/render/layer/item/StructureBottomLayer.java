@@ -1,10 +1,10 @@
 package org.smallbox.faraway.client.render.layer.item;
 
 import org.smallbox.faraway.client.manager.SpriteManager;
-import org.smallbox.faraway.client.render.GDXRenderer;
+import org.smallbox.faraway.client.render.GDXRendererBase;
 import org.smallbox.faraway.client.render.LayerManager;
 import org.smallbox.faraway.client.render.Viewport;
-import org.smallbox.faraway.client.render.layer.BaseLayer;
+import org.smallbox.faraway.client.render.layer.BaseMapLayer;
 import org.smallbox.faraway.core.GameLayer;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
@@ -14,7 +14,7 @@ import org.smallbox.faraway.modules.structure.StructureModule;
 
 @GameObject
 @GameLayer(level = LayerManager.WORLD_TOP_LAYER_LEVEL, visible = true)
-public class StructureBottomLayer extends BaseLayer {
+public class StructureBottomLayer extends BaseMapLayer {
     @Inject private StructureModule _structureModule;
     @Inject private SpriteManager spriteManager;
 
@@ -30,7 +30,7 @@ public class StructureBottomLayer extends BaseLayer {
     }
 
     @Override
-    public void onDraw(GDXRenderer renderer, Viewport viewport, double animProgress, int frame) {
+    public void onDraw(GDXRendererBase renderer, Viewport viewport, double animProgress, int frame) {
     }
 
     @Override

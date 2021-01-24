@@ -43,7 +43,7 @@
 //    }
 //
 //    @Override
-//    public void onDraw(GDXRenderer renderer, Viewport viewport, double animProgress) {
+//    public void onDraw(GDXRendererBase renderer, Viewport viewport, double animProgress) {
 //        UILabel lbDebug = new UILabel();
 //        lbDebug.setTextSize(14);
 //        lbDebug.setTextColor(Color.WHITE);

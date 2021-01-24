@@ -1,6 +1,6 @@
 package org.smallbox.faraway.client.ui.engine.views.widgets;
 
-import org.smallbox.faraway.client.render.GDXRenderer;
+import org.smallbox.faraway.client.render.GDXRendererBase;
 import org.smallbox.faraway.client.ui.engine.views.Align;
 import org.smallbox.faraway.client.ui.engine.views.CompositeView;
 import org.smallbox.faraway.client.ui.engine.views.View;
@@ -24,7 +24,7 @@ public class UIFrame extends CompositeView {
     }
 
     @Override
-    public void draw(GDXRenderer renderer, int x, int y) {
+    public void draw(GDXRendererBase renderer, int x, int y) {
         super.draw(renderer, x, y);
 
         if (_isVisible) {

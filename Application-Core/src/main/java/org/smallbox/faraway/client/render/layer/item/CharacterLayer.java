@@ -13,9 +13,10 @@ import org.smallbox.faraway.client.AssetManager;
 import org.smallbox.faraway.client.manager.SpriteManager;
 import org.smallbox.faraway.client.manager.input.InputManager;
 import org.smallbox.faraway.client.render.GDXRenderer;
+import org.smallbox.faraway.client.render.GDXRendererBase;
 import org.smallbox.faraway.client.render.LayerManager;
 import org.smallbox.faraway.client.render.Viewport;
-import org.smallbox.faraway.client.render.layer.BaseLayer;
+import org.smallbox.faraway.client.render.layer.BaseMapLayer;
 import org.smallbox.faraway.client.ui.engine.Colors;
 import org.smallbox.faraway.common.CharacterCommon;
 import org.smallbox.faraway.common.CharacterPositionCommon;
@@ -42,7 +43,7 @@ import java.util.Optional;
 
 @GameObject
 @GameLayer(level = LayerManager.CHARACTER_LAYER_LEVEL, visible = true)
-public class CharacterLayer extends BaseLayer {
+public class CharacterLayer extends BaseMapLayer {
     @Inject private AssetManager assetManager;
     @Inject private InputManager inputManager;
     @Inject private SpriteManager spriteManager;
@@ -98,11 +99,11 @@ public class CharacterLayer extends BaseLayer {
     }
 
     @Override
-    public void onDraw(GDXRenderer renderer, Viewport viewport, double animProgress, int frame) {
+    public void onDraw(GDXRendererBase renderer, Viewport viewport, double animProgress, int frame) {
         characterModule.getAll().forEach(character -> drawCharacter(renderer, viewport, character));
     }
 
-    private void drawCharacter(GDXRenderer renderer, Viewport viewport, CharacterModel character) {
+    private void drawCharacter(GDXRendererBase renderer, Viewport viewport, CharacterModel character) {
         character.stateTime += Gdx.graphics.getDeltaTime(); // Accumulate elapsed animation time
 
         if (character.getParcel().z == viewport.getFloor()) {
@@ -143,7 +144,7 @@ public class CharacterLayer extends BaseLayer {
         return direction;
     }
 
-    private void doDraw(GDXRenderer renderer, CharacterModel character, int posX, int posY, MovableModel.Direction dout) {
+    private void doDraw(GDXRendererBase renderer, CharacterModel character, int posX, int posY, MovableModel.Direction dout) {
 //        if (positionCommon.isAlive()) {
         drawCharacter(renderer, character, posX, posY, dout);
         drawLabel(renderer, character, posX, posY);
@@ -160,7 +161,7 @@ public class CharacterLayer extends BaseLayer {
     /**
      * Draw job
      */
-    private void drawJob(GDXRenderer renderer, CharacterModel character, int posX, int posY) {
+    private void drawJob(GDXRendererBase renderer, CharacterModel character, int posX, int posY) {
         JobModel job = character.getJob();
         if (job != null) {
 
@@ -179,14 +180,14 @@ public class CharacterLayer extends BaseLayer {
     /**
      * Draw label
      */
-    private void drawLabel(GDXRenderer renderer, CharacterModel character, int posX, int posY) {
+    private void drawLabel(GDXRendererBase renderer, CharacterModel character, int posX, int posY) {
         renderer.drawText(posX, posY - 8, 28, com.badlogic.gdx.graphics.Color.CHARTREUSE, character.getName());
     }
 
     /**
      * Draw characters
      */
-    private void drawCharacter(GDXRenderer renderer, CharacterModel character, int posX, int posY, MovableModel.Direction direction) {
+    private void drawCharacter(GDXRendererBase renderer, CharacterModel character, int posX, int posY, MovableModel.Direction direction) {
         TextureRegion currentFrame = runningAnimation2.getKeyFrame(character.stateTime, true);
 
         Parcel parcelOver = WorldHelper.getParcel(viewport.getWorldPosX(inputManager.getMouseX()), viewport.getWorldPosY(inputManager.getMouseY()), viewport.getFloor());
@@ -238,7 +239,7 @@ public class CharacterLayer extends BaseLayer {
     /**
      * Draw inventory
      */
-    private void drawInventory(GDXRenderer renderer, CharacterModel character, int posX, int posY) {
+    private void drawInventory(GDXRendererBase renderer, CharacterModel character, int posX, int posY) {
         if (character.hasExtra(CharacterInventoryExtra.class)) {
             for (Map.Entry<ItemInfo, Integer> entry : character.getExtra(CharacterInventoryExtra.class).getAll().entrySet()) {
                 if (entry.getValue() > 0) {

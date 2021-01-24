@@ -1,6 +1,6 @@
 package org.smallbox.faraway.client.ui.engine.views.widgets;
 
-import org.smallbox.faraway.client.render.GDXRenderer;
+import org.smallbox.faraway.client.render.GDXRendererBase;
 import org.smallbox.faraway.client.ui.engine.views.CompositeView;
 import org.smallbox.faraway.client.ui.engine.views.View;
 import org.smallbox.faraway.core.engine.module.ModuleBase;
@@ -60,7 +60,7 @@ public class UIDropDown extends CompositeView {
     }
 
     @Override
-    public void draw(GDXRenderer renderer, int x, int y) {
+    public void draw(GDXRendererBase renderer, int x, int y) {
         super.draw(renderer, x, y);
 
         if (_isVisible) {
@@ -70,7 +70,7 @@ public class UIDropDown extends CompositeView {
         }
     }
 
-    public void drawDropDown(GDXRenderer renderer, int x, int y) {
+    public void drawDropDown(GDXRendererBase renderer, int x, int y) {
         if (_isVisible) {
             if (_isOpen) {
                 int offsetY = getHeight();

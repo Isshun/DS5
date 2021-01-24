@@ -1,6 +1,6 @@
 package org.smallbox.faraway.client.ui.engine.views;
 
-import org.smallbox.faraway.client.render.GDXRenderer;
+import org.smallbox.faraway.client.render.GDXRendererBase;
 import org.smallbox.faraway.core.engine.module.ModuleBase;
 
 public class RootView {
@@ -23,7 +23,7 @@ public class RootView {
         return null;
     }
 
-    public void draw(GDXRenderer renderer, int x, int y) {
+    public void draw(GDXRendererBase renderer, int x, int y) {
         _view.draw(renderer, x, y);
     }
 

@@ -1,13 +1,11 @@
 package org.smallbox.faraway.client.render;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.*;
-import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Matrix4;
 import org.smallbox.faraway.client.AssetManager;
@@ -31,42 +29,15 @@ public abstract class GDXRendererBase {
     @Inject protected FontManager fontManager;
     @Inject protected AssetManager assetManager;
     @Inject protected Viewport viewport;
+    @Inject protected GDXRendererBaseBase gdxRendererBaseBase;
 
     public SpriteBatch _batch;
-    public OrthographicCamera _camera;
-    public OrthographicCamera _cameraUI;
     public ShapeRenderer _drawPixelShapeLayer;
-    public ShaderProgram shader;
+    public OrthographicCamera _camera;
 
     public void init() {
-        _batch = new SpriteBatch();
-        _drawPixelShapeLayer = new ShapeRenderer();
-        _drawPixelShapeLayer.setProjectionMatrix(_batch.getProjectionMatrix());
-
-        _camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        _camera.setToOrtho(true, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        _camera.zoom = 1.5f;
-
-        _cameraUI = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        _cameraUI.setToOrtho(true, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        _cameraUI.zoom = 1f;
-
-        FileHandle vertexShader = Gdx.files.internal("data/shader/vertex.glsl");
-        FileHandle fragmentShader = Gdx.files.internal("data/shader/fragment.glsl");
-
-        shader = new ShaderProgram(vertexShader, fragmentShader);
-        if (!shader.isCompiled()) {
-            Gdx.app.log("Shader", shader.getLog());
-            Gdx.app.exit();
-        }
-
-        _batch.setShader(shader);
-
-        shader.begin();
-        shader.setUniformi("u_texture", 0);
-        shader.setUniformi("u_mask", 1);
-        shader.end();
-
+        _batch = gdxRendererBaseBase._batch;
+        _drawPixelShapeLayer = gdxRendererBaseBase._drawPixelShapeLayer;
     }
 
     public float getUiScale() {
@@ -95,10 +66,6 @@ public abstract class GDXRendererBase {
 
     public int getHeight() {
         return Gdx.graphics.getHeight();
-    }
-
-    public void drawUI(Sprite sprite, int x, int y) {
-        draw(x, y, sprite, _cameraUI);
     }
 
     public void draw(Sprite sprite, int x, int y) {
@@ -161,10 +128,6 @@ public abstract class GDXRendererBase {
         }
     }
 
-    public void drawRegionUI(int x, int y, Sprite sprite) {
-        drawRegion(x, y, sprite, _cameraUI);
-    }
-
     public void drawRegion(int x, int y, Sprite sprite) {
         drawRegion(x, y, sprite, _camera);
     }
@@ -173,8 +136,6 @@ public abstract class GDXRendererBase {
         if (sprite != null) {
             _batch.begin();
             _batch.setProjectionMatrix(camera.combined);
-//            sprite.setPosition(x, y);
-//            sprite.drawPixel(_batch);
             _batch.draw(sprite, x, y);
             _batch.end();
         }
@@ -183,74 +144,48 @@ public abstract class GDXRendererBase {
     public void draw(Sprite sprite) {
         if (sprite != null) {
             Gdx.gl.glEnable(GL20.GL_BLEND);
-//            Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
-
             _batch.begin();
+            _batch.setProjectionMatrix(_camera.combined);
             sprite.draw(_batch);
             _batch.end();
             Gdx.gl.glBlendEquation(GL20.GL_FUNC_ADD);
         }
     }
 
-    public void drawUI(Sprite sprite) {
-        if (sprite != null) {
-            _batch.begin();
-            _batch.setProjectionMatrix(_cameraUI.combined);
-            sprite.draw(_batch);
-            _batch.end();
-        }
-    }
-
-    public void drawUI(Texture texture, int x, int y) {
-        if (texture != null) {
-            _batch.begin();
-            _batch.setProjectionMatrix(_cameraUI.combined);
-            _batch.draw(texture, x, y);
-            _batch.end();
-        }
-    }
-
     public void draw(DrawCallback callback) {
         _batch.begin();
+        _batch.setProjectionMatrix(_camera.combined);
         callback.onDraw(_batch);
         _batch.end();
     }
 
-    public void drawFontUI(DrawFontCallback callback, int fontSize, boolean outlined, String font) {
-        drawFont(callback, fontSize, _cameraUI, outlined, font);
-    }
-
-    private void drawFont(DrawFontCallback callback, int fontSize, OrthographicCamera camera, boolean outlined, String font) {
+    public void drawFont(DrawFontCallback callback, int fontSize, boolean outlined, String font) {
         _batch.begin();
-        _batch.setProjectionMatrix(camera.combined);
+        _batch.setProjectionMatrix(_camera.combined);
         fontSize *= getUiScale();
         callback.onDraw(_batch, outlined ? fontManager.getOutlinedFont(font, fontSize) : fontManager.getFont(font, fontSize));
         _batch.end();
     }
 
-    public void drawTextUI(int x, int y, int textSize, Color color, String string, String font, boolean outlined, int shadow) {
-        drawText(x, y, textSize, color, string, _cameraUI, outlined, font, shadow);
-    }
-
-    public void drawTextUI(int x, int y, int textSize, Color color, String string) {
-        drawText(x, y, textSize, color, string, _cameraUI, false, "font3", 0);
-    }
-
     public void drawText(int x, int y, int textSize, Color color, String string, boolean outlined) {
-        drawText(x, y, textSize, color, string, _camera, outlined, "font3", 0);
+        drawText(x, y, textSize, color, string, outlined, "font3", 0);
     }
 
     public void drawText(int x, int y, int textSize, Color color, String string) {
-        drawText(x, y, textSize, color, string, _camera, false, "font3", 0);
+        drawText(x, y, textSize, color, string, false, "font3", 0);
     }
 
-    private void drawText(int x, int y, int textSize, Color color, String string, OrthographicCamera camera, boolean outlined, String font, int shadow) {
+    public void drawText(int x, int y, int textSize, Color color, String text, String font, boolean outlined, int shadow) {
+        drawText(x, y, textSize, color, text, false, font, shadow);
+    }
+
+    private void drawText(int x, int y, int textSize, Color color, String string, boolean outlined, String font, int shadow) {
         textSize *= getUiScale();
 
         if (string != null) {
             _batch.begin();
 //            _cameraUI.updateGame();
-            _batch.setProjectionMatrix(camera.combined);
+            _batch.setProjectionMatrix(_camera.combined);
 
             if (shadow != 0) {
                 if (outlined) {
@@ -277,10 +212,6 @@ public abstract class GDXRendererBase {
 
     public void drawPixel(int x, int y, int width, int height, Color color) {
         drawPixel(x, y, width, height, color, _camera);
-    }
-
-    public void drawPixelUI(int x, int y, int width, int height, Color color) {
-        drawPixel(x, y, width, height, color, _cameraUI);
     }
 
     public void drawLine(float x1, float y1, float x2, float y2, Color color) {
@@ -316,18 +247,10 @@ public abstract class GDXRendererBase {
         }
     }
 
-    public void drawRectangleUI(int x, int y, int width, int height, Color color, boolean filled) {
-        drawRectangle(x, y, width, height, color, filled, _cameraUI);
-    }
-
     public void drawRectangle(int x, int y, int width, int height, Color color, boolean filled) {
-        drawRectangle(x, y, width, height, color, filled, _camera);
-    }
-
-    private void drawRectangle(int x, int y, int width, int height, Color color, boolean filled, OrthographicCamera camera) {
         if (color != null) {
             Gdx.gl.glEnable(GL20.GL_BLEND);
-            _drawPixelShapeLayer.setProjectionMatrix(camera.combined);
+            _drawPixelShapeLayer.setProjectionMatrix(_camera.combined);
             _drawPixelShapeLayer.begin(filled ? ShapeRenderer.ShapeType.Filled : ShapeRenderer.ShapeType.Line);
             _drawPixelShapeLayer.setColor(color);
             _drawPixelShapeLayer.rect(x, y, width, height);
@@ -348,17 +271,22 @@ public abstract class GDXRendererBase {
         }
     }
 
-    public void drawRectangleOnMap(int x, int y, int width, int height, Color color, boolean filled, int offsetX, int offsetY) {
+    public void drawCadreOnMap(int x, int y, int width, int height, Color color, int thickness, int offsetX, int offsetY) {
+        drawRectangleOnMap(x, y, width, thickness, color, offsetX, offsetY);
+        drawRectangleOnMap(x, y, thickness, height, color, offsetX, offsetY);
+        drawRectangleOnMap(x, y, width, thickness, color, offsetX, Constant.TILE_SIZE - offsetY - thickness);
+        drawRectangleOnMap(x, y, thickness, height, color, Constant.TILE_SIZE - offsetX - thickness, offsetY);
+    }
+
+    public void drawRectangleOnMap(int x, int y, int width, int height, Color color, int offsetX, int offsetY) {
         if (color != null) {
-            drawRectangleUI(
-                    (int) (layerManager.getViewport().getPosX() * (1 / _camera.zoom) + (x * Constant.TILE_SIZE * (1 / _camera.zoom)) + offsetX)
-                            + (int) (applicationConfig.screen.resolution[0] / 2 - (applicationConfig.screen.resolution[0] / 2 / _camera.zoom)),
-                    (int) (layerManager.getViewport().getPosY() * (1 / _camera.zoom) + (y * Constant.TILE_SIZE * (1 / _camera.zoom)) + offsetY)
-                            + (int) (applicationConfig.screen.resolution[1] / 2 - (applicationConfig.screen.resolution[1] / 2 / _camera.zoom)),
-                    (int) (width * (1 / _camera.zoom)),
-                    (int) (height * (1 / _camera.zoom)),
+            drawRectangle(
+                    mapToScreenX(x, offsetX),
+                    mapToScreenY(y, offsetY),
+                    width,
+                    height,
                     color,
-                    filled
+                    true
             );
         }
     }
@@ -383,7 +311,7 @@ public abstract class GDXRendererBase {
             matrix.translate(x * layerManager.getViewport().getScale(), y * layerManager.getViewport().getScale(), 0);
 //            matrix.scale(Application.gameManager.getGame().getViewport().getScale(), Application.gameManager.getGame().getViewport().getScale(), 1f);
 
-            cache.setProjectionMatrix(_cameraUI.combined);
+            cache.setProjectionMatrix(_camera.combined);
             cache.setTransformMatrix(matrix);
             cache.begin();
             cache.draw(cacheId);
@@ -409,36 +337,28 @@ public abstract class GDXRendererBase {
         drawTextOnMap(x, y, string, size, color, 0, 0);
     }
 
-    public void drawTextOnMap(Parcel parcel, String string, int size, Color color, int offsetX, int offsetY) {
-        drawTextOnMap(parcel.x, parcel.y, string, size, color, offsetX, offsetY);
-    }
-
-    private int mapToScreenXUI(int mapX, int offsetX) {
-        return (int) ((mapToScreenX(mapX, offsetX) / _camera.zoom) + ((applicationConfig.getResolutionWidth() - (applicationConfig.getResolutionWidth() / _camera.zoom)) / 2));
-    }
-
-    private int mapToScreenYUI(int mapY, int offsetY) {
-        return (int) ((mapToScreenY(mapY, offsetY) / _camera.zoom) + ((applicationConfig.getResolutionHeight() - (applicationConfig.getResolutionHeight() / _camera.zoom)) / 2));
-    }
-
-    private int mapToScreenX(int mapX, int offsetX) {
-        return layerManager.getViewport().getPosX() + (mapX * Constant.TILE_SIZE) + offsetX;
-    }
-
-    private int mapToScreenY(int mapY, int offsetY) {
-        return layerManager.getViewport().getPosY() + (mapY * Constant.TILE_SIZE) + offsetY;
-    }
-
-    public void drawTextOnMapUI(String text, TextStyle style, Parcel parcel, int offsetX, int offsetY) {
-        drawTextUI(
-                mapToScreenXUI(parcel.x, offsetX),
-                mapToScreenYUI(parcel.y, offsetY),
+    public void drawTextOnMap(String text, TextStyle style, Parcel parcel, int offsetX, int offsetY) {
+        drawText(
+                mapToScreenX(parcel.x, offsetX),
+                mapToScreenY(parcel.y, offsetY),
                 (int)(style.size * (style.autoScale ? 4 - _camera.zoom : 1)),
                 style.color,
                 text,
                 style.font,
                 style.outline != 0,
                 style.shadow);
+    }
+
+    public void drawTextOnMap(Parcel parcel, String string, int size, Color color, int offsetX, int offsetY) {
+        drawTextOnMap(parcel.x, parcel.y, string, size, color, offsetX, offsetY);
+    }
+
+    protected int mapToScreenX(int mapX, int offsetX) {
+        return layerManager.getViewport().getPosX() + (mapX * Constant.TILE_SIZE) + offsetX;
+    }
+
+    protected int mapToScreenY(int mapY, int offsetY) {
+        return layerManager.getViewport().getPosY() + (mapY * Constant.TILE_SIZE) + offsetY;
     }
 
     public void drawTextOnMap(int x, int y, String string, int size, Color color, int offsetX, int offsetY, boolean outlined) {

@@ -9,7 +9,7 @@ import org.luaj.vm2.LuaValue;
 import org.smallbox.faraway.client.ClientLuaModuleManager;
 import org.smallbox.faraway.client.controller.LuaController;
 import org.smallbox.faraway.client.lua.LuaControllerManager;
-import org.smallbox.faraway.client.render.GDXRenderer;
+import org.smallbox.faraway.client.render.GDXRendererBase;
 import org.smallbox.faraway.client.ui.engine.OnClickListener;
 import org.smallbox.faraway.client.ui.engine.UIEventManager;
 import org.smallbox.faraway.client.ui.engine.views.Align;
@@ -345,7 +345,7 @@ public class UIManager {
     }
 
     // TODO
-    public void draw(GDXRenderer renderer, boolean gameRunning) {
+    public void draw(GDXRendererBase renderer, boolean gameRunning) {
         OrthographicCamera camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         camera.zoom = 0.5f;
 

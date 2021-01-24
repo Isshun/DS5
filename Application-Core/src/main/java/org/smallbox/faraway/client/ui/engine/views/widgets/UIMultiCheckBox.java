@@ -1,7 +1,7 @@
 package org.smallbox.faraway.client.ui.engine.views.widgets;
 
 import com.badlogic.gdx.graphics.Color;
-import org.smallbox.faraway.client.render.GDXRenderer;
+import org.smallbox.faraway.client.render.GDXRendererBase;
 import org.smallbox.faraway.client.ui.engine.views.Align;
 import org.smallbox.faraway.client.ui.engine.views.View;
 import org.smallbox.faraway.core.engine.ColorUtils;
@@ -198,7 +198,7 @@ public class UIMultiCheckBox extends View {
     }
 
     @Override
-    public void draw(GDXRenderer renderer, int x, int y) {
+    public void draw(GDXRendererBase renderer, int x, int y) {
         super.draw(renderer, x, y);
 
         if (_isVisible) {

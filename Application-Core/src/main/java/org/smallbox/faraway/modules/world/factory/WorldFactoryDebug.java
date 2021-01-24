@@ -3,7 +3,7 @@ package org.smallbox.faraway.modules.world.factory;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import org.smallbox.faraway.client.AssetManager;
-import org.smallbox.faraway.client.render.GDXRenderer;
+import org.smallbox.faraway.client.render.GDXRendererBase;
 import org.smallbox.faraway.client.render.Viewport;
 import org.smallbox.faraway.client.render.layer.BaseLayer;
 import org.smallbox.faraway.core.GameLayer;
@@ -50,7 +50,7 @@ public class WorldFactoryDebug extends BaseLayer {
     }
 
     @Override
-    protected void onDraw(GDXRenderer renderer, Viewport viewport, double animProgress, int frame) {
-        renderer.drawUI(texture, 100, 0);
+    protected void onDraw(GDXRendererBase renderer, Viewport viewport, double animProgress, int frame) {
+//        renderer.draw(texture, 100, 0);
     }
 }

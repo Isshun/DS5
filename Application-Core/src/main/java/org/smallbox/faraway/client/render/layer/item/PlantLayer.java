@@ -1,10 +1,10 @@
 package org.smallbox.faraway.client.render.layer.item;
 
 import org.smallbox.faraway.client.manager.SpriteManager;
-import org.smallbox.faraway.client.render.GDXRenderer;
+import org.smallbox.faraway.client.render.GDXRendererBase;
 import org.smallbox.faraway.client.render.LayerManager;
 import org.smallbox.faraway.client.render.Viewport;
-import org.smallbox.faraway.client.render.layer.BaseLayer;
+import org.smallbox.faraway.client.render.layer.BaseMapLayer;
 import org.smallbox.faraway.core.GameLayer;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
@@ -13,11 +13,11 @@ import org.smallbox.faraway.modules.plant.model.PlantItem;
 
 @GameObject
 @GameLayer(level = LayerManager.PLANT_LAYER_LEVEL, visible = true)
-public class PlantLayer extends BaseLayer {
+public class PlantLayer extends BaseMapLayer {
     @Inject private PlantModule plantModule;
     @Inject private SpriteManager spriteManager;
 
-    public void onDraw(GDXRenderer renderer, Viewport viewport, double animProgress, int frame) {
+    public void onDraw(GDXRendererBase renderer, Viewport viewport, double animProgress, int frame) {
         plantModule.getAll().stream()
                 .filter(item -> viewport.hasParcel(item.getParcel()))
                 .forEach(plant -> drawPlant(renderer, plant));
@@ -26,7 +26,7 @@ public class PlantLayer extends BaseLayer {
 //        tags.forEach(draw -> draw.onTagDraw(layer, viewport));
     }
 
-    private void drawPlant(GDXRenderer renderer, PlantItem plant) {
+    private void drawPlant(GDXRendererBase renderer, PlantItem plant) {
         renderer.drawSpriteOnMap(plant.getParcel(),
                 spriteManager.getNewSprite(plant.getGraphic(), getTileForMaturity(plant)));
     }

@@ -3,10 +3,10 @@ package org.smallbox.faraway.client.render.layer.item;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import org.smallbox.faraway.client.manager.SpriteManager;
-import org.smallbox.faraway.client.render.GDXRenderer;
+import org.smallbox.faraway.client.render.GDXRendererBase;
 import org.smallbox.faraway.client.render.LayerManager;
 import org.smallbox.faraway.client.render.Viewport;
-import org.smallbox.faraway.client.render.layer.BaseLayer;
+import org.smallbox.faraway.client.render.layer.BaseMapLayer;
 import org.smallbox.faraway.core.GameLayer;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
@@ -16,7 +16,7 @@ import org.smallbox.faraway.modules.structure.StructureModule;
 
 @GameObject
 @GameLayer(level = LayerManager.STRUCTURE_LAYER_LEVEL, visible = true)
-public class StructureTopLayer extends BaseLayer {
+public class StructureTopLayer extends BaseMapLayer {
     @Inject private SpriteManager spriteManager;
     @Inject private StructureModule structureModule;
 
@@ -43,7 +43,7 @@ public class StructureTopLayer extends BaseLayer {
 //    }
 
     @Override
-    public void onDraw(GDXRenderer renderer, Viewport viewport, double animProgress, int frame) {
+    public void onDraw(GDXRendererBase renderer, Viewport viewport, double animProgress, int frame) {
         structureModule.getAll().stream()
                 .filter(structure -> viewport.hasParcel(structure.getParcel()))
                 .forEach(structure -> {

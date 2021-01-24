@@ -2,7 +2,7 @@ package org.smallbox.faraway.client.ui.engine.views.widgets;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
-import org.smallbox.faraway.client.render.GDXRenderer;
+import org.smallbox.faraway.client.render.GDXRendererBase;
 import org.smallbox.faraway.client.ui.engine.views.Align;
 import org.smallbox.faraway.client.ui.engine.views.View;
 import org.smallbox.faraway.core.engine.ColorUtils;
@@ -228,7 +228,7 @@ public class UILabel extends View {
     }
 
     @Override
-    public void draw(GDXRenderer renderer, int x, int y) {
+    public void draw(GDXRendererBase renderer, int x, int y) {
         super.draw(renderer, x, y);
 
         if (_isVisible) {
@@ -257,7 +257,7 @@ public class UILabel extends View {
             }
 
 //            renderer.drawPixel(getAlignedX() + x + _offsetX + _paddingLeft + _marginLeft, getAlignedY() + y + _offsetY + _paddingTop + _marginTop, _textSize, _gdxTextColor, _text);
-            renderer.drawFontUI((batch, font) -> {
+            renderer.drawFont((batch, font) -> {
                 int finalX = getAlignedX() + x + geometry.getOffsetX() + geometry.getPaddingLeft() + geometry.getMarginLeft();
                 int finalY = getAlignedY() + y + geometry.getOffsetY() + geometry.getPaddingTop() + geometry.getMarginTop();
 

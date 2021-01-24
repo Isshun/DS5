@@ -2,10 +2,10 @@ package org.smallbox.faraway.client.debug.layer;
 
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
+import org.smallbox.faraway.client.render.GDXRendererBase;
 import org.smallbox.faraway.client.render.LayerManager;
 import org.smallbox.faraway.client.render.Viewport;
-import org.smallbox.faraway.client.render.layer.BaseLayer;
-import org.smallbox.faraway.client.render.GDXRenderer;
+import org.smallbox.faraway.client.render.layer.BaseMapLayer;
 import org.smallbox.faraway.core.GameLayer;
 import org.smallbox.faraway.core.GameShortcut;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
@@ -14,10 +14,10 @@ import org.smallbox.faraway.modules.world.WorldModule;
 
 @GameObject
 @GameLayer(level = LayerManager.CONSUMABLE_LAYER_LEVEL + 1, visible = false)
-public class DebugGroundLayer extends BaseLayer {
+public class DebugGroundLayer extends BaseMapLayer {
     @Inject private WorldModule worldModule;
 
-    public void    onDraw(GDXRenderer renderer, Viewport viewport, double animProgress, int frame) {
+    public void    onDraw(GDXRendererBase renderer, Viewport viewport, double animProgress, int frame) {
         worldModule.getAll().stream()
                 .filter(parcel -> parcel.z == viewport.getFloor())
                 .forEach(parcel -> {

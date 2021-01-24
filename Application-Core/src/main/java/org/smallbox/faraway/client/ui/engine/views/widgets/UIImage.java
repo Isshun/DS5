@@ -3,7 +3,7 @@ package org.smallbox.faraway.client.ui.engine.views.widgets;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.utils.GdxRuntimeException;
-import org.smallbox.faraway.client.render.GDXRenderer;
+import org.smallbox.faraway.client.render.GDXRendererBase;
 import org.smallbox.faraway.client.ui.engine.views.View;
 import org.smallbox.faraway.core.engine.module.ModuleBase;
 import org.smallbox.faraway.core.game.modelInfo.GraphicInfo;
@@ -58,7 +58,7 @@ public class UIImage extends View {
     }
 
     @Override
-    public void draw(GDXRenderer renderer, int x, int y) {
+    public void draw(GDXRendererBase renderer, int x, int y) {
         super.draw(renderer, x, y);
 
         if (_isVisible) {
@@ -88,7 +88,7 @@ public class UIImage extends View {
                 if (_textureHeight != 0) {
                     _sprite.getTexture().setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.ClampToEdge);
                     _sprite.setRegion(_textureX, _textureY, _textureWidth, _textureHeight);
-                    renderer.drawRegionUI(geometry.getFinalX(), geometry.getFinalY(), _sprite);
+                    renderer.drawRegion(geometry.getFinalX(), geometry.getFinalY(), _sprite);
 //                    renderer.drawRegion(_x + x, _y + y, _sprite);
                 }
 
@@ -98,7 +98,7 @@ public class UIImage extends View {
                     } else if (_animation != null) {
                         _animation.draw(renderer, _sprite, geometry.getFinalX(), geometry.getFinalY());
                     } else {
-                        renderer.drawUI(_sprite, geometry.getFinalX(), geometry.getFinalY());
+                        renderer.draw(_sprite, geometry.getFinalX(), geometry.getFinalY());
 //                        renderer.draw(_x + x, _y + y, _sprite);
                     }
                 }

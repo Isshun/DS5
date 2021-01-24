@@ -5,8 +5,7 @@ import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.GL20;
 import org.smallbox.faraway.client.manager.ShortcutManager;
-import org.smallbox.faraway.client.menu.controller.MenuMainController;
-import org.smallbox.faraway.client.render.GDXRenderer;
+import org.smallbox.faraway.client.render.GDXRendererUI;
 import org.smallbox.faraway.client.ui.UIManager;
 import org.smallbox.faraway.client.ui.engine.views.CompositeView;
 import org.smallbox.faraway.client.ui.engine.views.RootView;
@@ -16,7 +15,7 @@ import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 
 @ApplicationObject
 public class MenuRender {
-    @Inject private GDXRenderer gdxRenderer;
+    @Inject private GDXRendererUI gdxRendererUI;
     @Inject private ShortcutManager shortcutManager;
     @Inject private UIManager uiManager;
 
@@ -42,9 +41,9 @@ public class MenuRender {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         // Render application
-        gdxRenderer.clear();
-        gdxRenderer.refresh();
-        uiManager.getMenuViews().forEach((name, view) -> view.draw(gdxRenderer, 0, 0));
+        gdxRendererUI.clear();
+        gdxRendererUI.refresh();
+        uiManager.getMenuViews().forEach((name, view) -> view.draw(gdxRendererUI, 0, 0));
     }
 
     private boolean clickOn(View view, int screenX, int screenY) {

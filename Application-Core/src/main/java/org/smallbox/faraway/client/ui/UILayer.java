@@ -1,8 +1,8 @@
 package org.smallbox.faraway.client.ui;
 
+import org.smallbox.faraway.client.render.GDXRendererBase;
 import org.smallbox.faraway.client.render.Viewport;
 import org.smallbox.faraway.client.render.layer.BaseLayer;
-import org.smallbox.faraway.client.render.GDXRenderer;
 import org.smallbox.faraway.client.ui.engine.views.View;
 import org.smallbox.faraway.core.GameLayer;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
@@ -16,7 +16,7 @@ public class UILayer extends BaseLayer {
     @Inject private UIManager uiManager;
 
     @Override
-    protected void onDraw(GDXRenderer renderer, Viewport viewport, double animProgress, int frame) {
+    protected void onDraw(GDXRendererBase renderer, Viewport viewport, double animProgress, int frame) {
         uiManager.draw(renderer, true);
 
         if (_debugView != null) {

@@ -3,10 +3,10 @@ package org.smallbox.faraway.client.render.layer.item;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import org.smallbox.faraway.client.manager.SpriteManager;
-import org.smallbox.faraway.client.render.GDXRenderer;
+import org.smallbox.faraway.client.render.GDXRendererBase;
 import org.smallbox.faraway.client.render.LayerManager;
 import org.smallbox.faraway.client.render.Viewport;
-import org.smallbox.faraway.client.render.layer.BaseLayer;
+import org.smallbox.faraway.client.render.layer.BaseMapLayer;
 import org.smallbox.faraway.core.GameLayer;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
@@ -16,11 +16,11 @@ import org.smallbox.faraway.modules.item.UsableItem;
 
 @GameObject
 @GameLayer(level = LayerManager.ITEM_LAYER_LEVEL, visible = true)
-public class ItemLayer extends BaseLayer {
+public class ItemLayer extends BaseMapLayer {
     @Inject private ItemModule itemModule;
     @Inject private SpriteManager spriteManager;
 
-    public void onDraw(GDXRenderer renderer, Viewport viewport, double animProgress, int frame) {
+    public void onDraw(GDXRendererBase renderer, Viewport viewport, double animProgress, int frame) {
         itemModule.getAll().stream()
                 .filter(item -> viewport.hasParcel(item.getParcel()))
                 .forEach(item -> {
@@ -28,8 +28,8 @@ public class ItemLayer extends BaseLayer {
                     renderer.drawSpriteOnMap(item.getParcel(), getItemSprite(item));
 
                     if (item.getFactory() != null && item.getFactory().getCraftJob() != null) {
-                        renderer.drawRectangleOnMap(parcel.x, parcel.y, (int) (32 * item.getFactory().getCraftJob().getProgress()), 6, Color.BLUE, true, 0, 0);
-                        renderer.drawRectangleOnMap(parcel.x, parcel.y, 32, 6, Color.CHARTREUSE, false, 0, 0);
+                        renderer.drawRectangleOnMap(parcel.x, parcel.y, (int) (32 * item.getFactory().getCraftJob().getProgress()), 6, Color.BLUE, 0, 0);
+                        renderer.drawCadreOnMap(parcel.x, parcel.y, 32, 6, Color.CHARTREUSE, 4, 0, 0);
                     }
 
                     if (item.getHealth() < item.getMaxHealth()) {

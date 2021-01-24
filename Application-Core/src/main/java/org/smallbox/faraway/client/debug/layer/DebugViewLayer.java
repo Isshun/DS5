@@ -3,7 +3,7 @@ package org.smallbox.faraway.client.debug.layer;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import org.apache.commons.collections4.CollectionUtils;
-import org.smallbox.faraway.client.render.GDXRenderer;
+import org.smallbox.faraway.client.render.GDXRendererBase;
 import org.smallbox.faraway.client.render.Viewport;
 import org.smallbox.faraway.client.render.layer.BaseLayer;
 import org.smallbox.faraway.client.ui.UIManager;
@@ -21,7 +21,7 @@ public class DebugViewLayer extends BaseLayer {
     @Inject private UIManager uiManager;
     @Inject private UIEventManager uiEventManager;
 
-    public void    onDraw(GDXRenderer renderer, Viewport viewport, double animProgress, int frame) {
+    public void    onDraw(GDXRendererBase renderer, Viewport viewport, double animProgress, int frame) {
         uiManager.getRootViews().forEach(rootView -> drawViewRecurse(renderer, rootView.getView()));
 
 //        uiManager.getViews().stream()
@@ -36,16 +36,16 @@ public class DebugViewLayer extends BaseLayer {
 //                });
     }
 
-    private void drawViewRecurse(GDXRenderer renderer, View view) {
+    private void drawViewRecurse(GDXRendererBase renderer, View view) {
         if (view.isVisible()) {
             if (uiEventManager.hasClickListener(view)) {
-                renderer.drawRectangleUI(view.getGeometry().getFinalX(), view.getGeometry().getFinalY(), view.getWidth(), view.getHeight(), Color.YELLOW, false);
-                renderer.drawTextUI(view.getGeometry().getFinalX() + 3, view.getGeometry().getFinalY() + 3, 12, Color.BLACK, view.getPath());
-                renderer.drawTextUI(view.getGeometry().getFinalX() + 2, view.getGeometry().getFinalY() + 2, 12, Color.YELLOW, view.getPath());
+                renderer.drawRectangle(view.getGeometry().getFinalX(), view.getGeometry().getFinalY(), view.getWidth(), view.getHeight(), Color.YELLOW, false);
+                renderer.drawText(view.getGeometry().getFinalX() + 3, view.getGeometry().getFinalY() + 3, 12, Color.BLACK, view.getPath());
+                renderer.drawText(view.getGeometry().getFinalX() + 2, view.getGeometry().getFinalY() + 2, 12, Color.YELLOW, view.getPath());
             } else {
-                renderer.drawRectangleUI(view.getGeometry().getFinalX(), view.getGeometry().getFinalY(), view.getWidth(), view.getHeight(), uiEventManager.hasClickListener(view) ? Color.YELLOW : Color.SALMON, false);
-                renderer.drawTextUI(view.getGeometry().getFinalX() + 3, view.getGeometry().getFinalY() + 3, 12, Color.BLACK, view.getPath());
-                renderer.drawTextUI(view.getGeometry().getFinalX() + 2, view.getGeometry().getFinalY() + 2, 12, Color.RED, view.getPath());
+                renderer.drawRectangle(view.getGeometry().getFinalX(), view.getGeometry().getFinalY(), view.getWidth(), view.getHeight(), uiEventManager.hasClickListener(view) ? Color.YELLOW : Color.SALMON, false);
+                renderer.drawText(view.getGeometry().getFinalX() + 3, view.getGeometry().getFinalY() + 3, 12, Color.BLACK, view.getPath());
+                renderer.drawText(view.getGeometry().getFinalX() + 2, view.getGeometry().getFinalY() + 2, 12, Color.RED, view.getPath());
             }
 //            renderer.drawText(view.getFinalX(), view.getFinalY() + 10, 12, Color.RED, view.getPath());
 //            renderer.drawText(view.getFinalX(), view.getFinalY() + 20, 12, Color.RED, "size: " + view.getViews().size());

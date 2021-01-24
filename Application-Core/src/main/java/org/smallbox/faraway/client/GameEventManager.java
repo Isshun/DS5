@@ -33,6 +33,14 @@ public class GameEventManager implements EventManager {
         return _mouseY;
     }
 
+    public int getMouseOffsetX() {
+        return _mouseX - _mouseDownX;
+    }
+
+    public int getMouseOffsetY() {
+        return _mouseY - _mouseDownY;
+    }
+
     public int getMouseDownX() {
         return _mouseDownX;
     }
