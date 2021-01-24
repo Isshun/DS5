@@ -179,16 +179,16 @@ public class MinimapLayer extends BaseLayer {
         int y = _mainPosY + (int) ((Math.min(gameHeight - 32 - 1, Math.max(0, -viewport.getPosY() / TILE_SIZE))) * ratioY);
         int rectWidth = (int) (38 * ratioX);
         int rectHeight = (int) (32 * ratioY);
-        renderer.drawPixel(x, y, rectWidth, 2, COLOR_VIEWPORT);
-        renderer.drawPixel(x, y, 2, rectHeight, COLOR_VIEWPORT);
-        renderer.drawPixel(x, y + rectHeight, rectWidth, 2, COLOR_VIEWPORT);
-        renderer.drawPixel(x + rectWidth, y, 2, rectHeight + 2, COLOR_VIEWPORT);
+        renderer.drawRectangle(x, y, rectWidth, 2, COLOR_VIEWPORT);
+        renderer.drawRectangle(x, y, 2, rectHeight, COLOR_VIEWPORT);
+        renderer.drawRectangle(x, y + rectHeight, rectWidth, 2, COLOR_VIEWPORT);
+        renderer.drawRectangle(x + rectWidth, y, 2, rectHeight + 2, COLOR_VIEWPORT);
     }
 
     private void drawCharacters(GDXRendererBase renderer) {
         characterModule.getAll().stream()
                 .filter(character -> character.getParcel().z == WorldHelper.getCurrentFloor())
-                .forEach(character -> renderer.drawPixel(
+                .forEach(character -> renderer.drawRectangle(
                         (int) (_mainPosX + (character.getParcel().x * ratioX)),
                         (int) (_mainPosY + (character.getParcel().y * ratioY)),
                         3,

@@ -64,7 +64,7 @@ public class MenuRender {
         gdxRendererUI.refresh();
 
         if (sprite != null) {
-            gdxRendererUI.draw(sprite);
+            gdxRendererUI.drawSprite(sprite);
             sprite.scale(0.00001f);
             sprite.translate(0.02f, 0.035f);
         }

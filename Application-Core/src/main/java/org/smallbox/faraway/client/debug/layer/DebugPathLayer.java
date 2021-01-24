@@ -28,32 +28,32 @@ public class DebugPathLayer extends BaseMapLayer {
                 .filter(viewport::hasParcel)
                 .forEach(parcel -> {
                     // Border
-                    renderer.drawCadreOnMap(parcel.x, parcel.y, Constant.TILE_SIZE - 1, Constant.TILE_SIZE - 1, parcel.isWalkable() ? GREEN : RED, 4, 0, 0);
+                    renderer.drawCadreOnMap(parcel, Constant.TILE_SIZE - 1, Constant.TILE_SIZE - 1, parcel.isWalkable() ? GREEN : RED, 4, 0, 0);
 
                     Color color;
 
                     // Top
                     color = pathManager.hasConnection(parcel, WorldHelper.getParcel(parcel.x, parcel.y - 1, parcel.z)) ? GREEN : RED;
-                    renderer.drawRectangleOnMap(parcel.x, parcel.y, 1, 6, color, Constant.HALF_TILE_SIZE, 0);
+                    renderer.drawRectangleOnMap(parcel, 1, 6, color, Constant.HALF_TILE_SIZE, 0);
 
                     // Bottom
                     color = pathManager.hasConnection(parcel, WorldHelper.getParcel(parcel.x, parcel.y + 1, parcel.z)) ? GREEN : RED;
-                    renderer.drawRectangleOnMap(parcel.x, parcel.y, 1, 6, color, Constant.HALF_TILE_SIZE, 26);
+                    renderer.drawRectangleOnMap(parcel, 1, 6, color, Constant.HALF_TILE_SIZE, 26);
 
                     // Left
                     color = pathManager.hasConnection(parcel, WorldHelper.getParcel(parcel.x - 1, parcel.y, parcel.z)) ? GREEN : RED;
-                    renderer.drawRectangleOnMap(parcel.x, parcel.y, 6, 1, color, 0, Constant.HALF_TILE_SIZE);
+                    renderer.drawRectangleOnMap(parcel, 6, 1, color, 0, Constant.HALF_TILE_SIZE);
 
                     // Right
                     color = pathManager.hasConnection(parcel, WorldHelper.getParcel(parcel.x + 1, parcel.y, parcel.z)) ? GREEN : RED;
-                    renderer.drawRectangleOnMap(parcel.x, parcel.y, 6, 1, color, 26, Constant.HALF_TILE_SIZE);
+                    renderer.drawRectangleOnMap(parcel, 6, 1, color, 26, Constant.HALF_TILE_SIZE);
                 });
 
         characterModule.getAll().stream()
                 .filter(characterModel -> characterModel.getPath() != null)
                 .forEach(character -> character.getPath().getNodes().forEach(parcel -> {
-                    renderer.drawCircleOnMap(parcel.x, parcel.y, 5, Color.BLACK, true, Constant.HALF_TILE_SIZE, Constant.HALF_TILE_SIZE);
-                    renderer.drawCircleOnMap(parcel.x, parcel.y, 4, Color.WHITE, true, Constant.HALF_TILE_SIZE, Constant.HALF_TILE_SIZE);
+                    renderer.drawCircleOnMap(parcel, 5, Color.BLACK, true, Constant.HALF_TILE_SIZE, Constant.HALF_TILE_SIZE);
+                    renderer.drawCircleOnMap(parcel, 4, Color.WHITE, true, Constant.HALF_TILE_SIZE, Constant.HALF_TILE_SIZE);
                 }));
     }
 

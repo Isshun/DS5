@@ -2,11 +2,13 @@ package org.smallbox.faraway.client.render;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.math.Matrix4;
 import org.smallbox.faraway.client.ui.engine.views.View;
 import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject;
 
 @ApplicationObject
 public class GDXRendererUI extends GDXRendererBase {
+    private OrthographicCamera _camera;
 
     public void init() {
         super.init();
@@ -18,6 +20,16 @@ public class GDXRendererUI extends GDXRendererBase {
 
     public void refresh() {
         _camera.update();
+    }
+
+    @Override
+    protected Matrix4 getCombinedProjection() {
+        return _camera.combined;
+    }
+
+    @Override
+    protected float getZoom() {
+        return 1f;
     }
 
     public void draw(View view, int x, int y) {

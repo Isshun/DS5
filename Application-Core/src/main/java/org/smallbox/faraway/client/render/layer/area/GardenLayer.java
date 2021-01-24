@@ -59,14 +59,14 @@ public class GardenLayer extends BaseMapLayer {
         int toX = fromX + viewport.getWidth() / Constant.TILE_SIZE;
         int toY = fromY + viewport.getHeight() / Constant.TILE_SIZE;
 
-        gardenModule.getAreas().stream().flatMap(area -> area.getParcels().stream()).forEach(parcel -> renderer.drawTextureOnMap(parcel.x, parcel.y, _regions[0]));
+        gardenModule.getAreas().stream().flatMap(area -> area.getParcels().stream()).forEach(parcel -> renderer.drawTextureRegionOnMap(parcel, _regions[0]));
 
         if (_mode == Mode.ADD) {
-            renderer.drawText(_mouseX - 20, _mouseY - 20, 16, Color.CHARTREUSE, "Add " + _cls.getAnnotation(AreaTypeInfo.class).label() + " area");
+            renderer.drawText(_mouseX - 20, _mouseY - 20, "Add " + _cls.getAnnotation(AreaTypeInfo.class).label() + " area", Color.CHARTREUSE, 16);
         }
 
         if (_mode == Mode.SUB) {
-            renderer.drawText(_mouseX - 20, _mouseY - 20, 16, Color.CHARTREUSE, "Sub " + _cls.getAnnotation(AreaTypeInfo.class).label() + " area");
+            renderer.drawText(_mouseX - 20, _mouseY - 20, "Sub " + _cls.getAnnotation(AreaTypeInfo.class).label() + " area", Color.CHARTREUSE, 16);
         }
     }
 

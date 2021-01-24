@@ -1,6 +1,5 @@
 package org.smallbox.faraway.client.render;
 
-import org.smallbox.faraway.common.ParcelCommon;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
@@ -14,10 +13,11 @@ import org.smallbox.faraway.util.log.Log;
 
 @GameObject
 public class Viewport {
+    @Inject private WorldCameraManager worldCameraManager;
     @Inject private ApplicationConfig applicationConfig;
-    @Inject private Game game;
     @Inject private GameManager gameManager;
     @Inject private GDXRenderer gdxRenderer;
+    @Inject private Game game;
 
     private final static int ANIM_FRAME = 10;
     public final static float[] ZOOM_LEVELS = new float[]{
@@ -117,14 +117,14 @@ public class Viewport {
     }
 
     public int getWorldPosX(int x) {
-        double viewportOffset = (getPosX() / gdxRenderer.getZoom() + applicationConfig.getResolutionWidth() / 2f - x) / (Constant.TILE_SIZE / gdxRenderer.getZoom());
-        double cameraOffset = (gdxRenderer.getCamera().position.x / Constant.TILE_SIZE);
+        double viewportOffset = (getPosX() / worldCameraManager.getZoom() + applicationConfig.getResolutionWidth() / 2f - x) / (Constant.TILE_SIZE / worldCameraManager.getZoom());
+        double cameraOffset = (worldCameraManager.getPosition().x / Constant.TILE_SIZE);
         return (int) (cameraOffset - viewportOffset);
     }
 
     public int getWorldPosY(int y) {
-        double viewportOffset = (getPosY() / gdxRenderer.getZoom() + applicationConfig.getResolutionHeight() / 2f - y) / (Constant.TILE_SIZE / gdxRenderer.getZoom());
-        double cameraOffset = (gdxRenderer.getCamera().position.y / Constant.TILE_SIZE);
+        double viewportOffset = (getPosY() / worldCameraManager.getZoom() + applicationConfig.getResolutionHeight() / 2f - y) / (Constant.TILE_SIZE / worldCameraManager.getZoom());
+        double cameraOffset = (worldCameraManager.getPosition().y / Constant.TILE_SIZE);
         return (int) (cameraOffset - viewportOffset);
     }
 

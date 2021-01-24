@@ -71,14 +71,14 @@ public class RoomLayer extends BaseMapLayer {
 
         roomModule.getRooms().forEach(Room ->
                 Room.getParcels().forEach(parcel ->
-                        renderer.drawTextureOnMap(parcel.x, parcel.y, getTexture(Room.getClass()))));
+                        renderer.drawTextureRegionOnMap(parcel, getTexture(Room.getClass()))));
 
         if (_mode == Mode.ADD) {
-            renderer.drawText(_mouseX - 20, _mouseY - 20, 16, Color.CHARTREUSE, "Add " + _cls.getAnnotation(RoomTypeInfo.class).label() + " Room");
+            renderer.drawText(_mouseX - 20, _mouseY - 20, "Add " + _cls.getAnnotation(RoomTypeInfo.class).label() + " Room", Color.CHARTREUSE, 16);
         }
 
         if (_mode == Mode.SUB) {
-            renderer.drawText(_mouseX - 20, _mouseY - 20, 16, Color.CHARTREUSE, "Sub " + _cls.getAnnotation(RoomTypeInfo.class).label() + " Room");
+            renderer.drawText(_mouseX - 20, _mouseY - 20, "Sub " + _cls.getAnnotation(RoomTypeInfo.class).label() + " Room", Color.CHARTREUSE, 16);
         }
     }
 

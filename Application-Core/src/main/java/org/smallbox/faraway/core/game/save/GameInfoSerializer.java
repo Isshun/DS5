@@ -6,6 +6,7 @@ import com.almworks.sqlite4java.SQLiteStatement;
 import org.apache.commons.lang3.StringUtils;
 import org.smallbox.faraway.client.render.GDXRenderer;
 import org.smallbox.faraway.client.render.Viewport;
+import org.smallbox.faraway.client.render.WorldCameraManager;
 import org.smallbox.faraway.core.GameException;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
@@ -15,6 +16,7 @@ import org.smallbox.faraway.core.game.GenericGameSerializer;
 
 @GameObject
 public class GameInfoSerializer extends GenericGameSerializer {
+    @Inject private WorldCameraManager worldCameraManager;
     @Inject private GDXRenderer gdxRenderer;
     @Inject private Viewport viewport;
     @Inject private Game game;
@@ -30,7 +32,7 @@ public class GameInfoSerializer extends GenericGameSerializer {
         insert(db, "camera_x", viewport.getPosX());
         insert(db, "camera_y", viewport.getPosY());
         insert(db, "camera_z", viewport.getFloor());
-        insert(db, "zoom", gdxRenderer.getZoom());
+        insert(db, "zoom", worldCameraManager.getZoom());
     }
 
     private void insert(SQLiteConnection db, String key, Object value) throws SQLiteException {
@@ -50,7 +52,7 @@ public class GameInfoSerializer extends GenericGameSerializer {
 
     @Override
     public void onLoad(SQLiteConnection db) throws SQLiteException {
-        gdxRenderer.setZoom(readFloat(db, "zoom"));
+        worldCameraManager.setZoom(readFloat(db, "zoom"));
         viewport.setPositionX(readInt(db, "camera_x"));
         viewport.setPositionY(readInt(db, "camera_y"));
         viewport.setFloor(readInt(db, "camera_z"));

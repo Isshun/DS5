@@ -65,7 +65,7 @@ public class WorldGroundLayer extends BaseMapLayer {
                 if (parcel != null) {
 
                     if (parcel.hasGround()) {
-                        renderer.drawTextureOnMap(cachedGrounds.computeIfAbsent(parcel, p -> groundTileGenerator.getTexture(p)), parcel);
+                        renderer.drawTextureOnMap(parcel, cachedGrounds.computeIfAbsent(parcel, p -> groundTileGenerator.getTexture(p)));
                     } else {
                         for (int z = 0; z < 100; z++) {
                             Parcel bottomParcel = worldModule.getParcel(x, y, parcel.z - z);
@@ -73,11 +73,11 @@ public class WorldGroundLayer extends BaseMapLayer {
 
                                 // Draw bottom parcel
                                 if (bottomParcel != null && (bottomParcel.hasRock() || bottomParcel.hasGround())) {
-                                    renderer.drawTextureOnMap(cachedGrounds.computeIfAbsent(bottomParcel, p -> groundTileGenerator.getTexture(p)), bottomParcel);
+                                    renderer.drawTextureOnMap(bottomParcel, cachedGrounds.computeIfAbsent(bottomParcel, p -> groundTileGenerator.getTexture(p)));
                                 }
 
                                 // Draw shadow
-                                renderer.drawRectangleOnMap(parcel.x, parcel.y, Constant.TILE_SIZE, Constant.TILE_SIZE, new Color((int)((1 - Math.exp(z * -0.5)) * 255)), 0, 0);
+                                renderer.drawRectangleOnMap(parcel, Constant.TILE_SIZE, Constant.TILE_SIZE, new Color((int)((1 - Math.exp(z * -0.5)) * 255)), 0, 0);
 
                                 break;
                             }
@@ -85,11 +85,11 @@ public class WorldGroundLayer extends BaseMapLayer {
                     }
 
                     if (parcel.hasRock()) {
-                        renderer.drawTextureOnMap(cachedRocks.computeIfAbsent(parcel, p -> rockTileGenerator.getTexture(p)), parcel);
+                        renderer.drawTextureOnMap(parcel, cachedRocks.computeIfAbsent(parcel, p -> rockTileGenerator.getTexture(p)));
                     }
 
                     if (gameSelectionManager.getSelected().contains(parcel)) {
-                        renderer.drawCadreOnMap(parcel.x, parcel.y, Constant.TILE_SIZE - 8, Constant.TILE_SIZE - 8, Color.WHITE, 4, 4, 4);
+                        renderer.drawCadreOnMap(parcel, Constant.TILE_SIZE - 8, Constant.TILE_SIZE - 8, Color.WHITE, 4, 4, 4);
                     }
 
                 }

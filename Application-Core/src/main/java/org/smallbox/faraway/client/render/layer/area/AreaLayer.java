@@ -70,14 +70,14 @@ public class AreaLayer extends BaseMapLayer {
 
         areaModule.getAreas().forEach(area ->
                 area.getParcels().forEach(parcel ->
-                        renderer.drawTextureOnMap(parcel.x, parcel.y, getTexture(area.getClass()))));
+                        renderer.drawTextureRegionOnMap(parcel, getTexture(area.getClass()))));
 
         if (_mode == Mode.ADD) {
-            renderer.drawText(_mouseX - 20, _mouseY - 20, 16, Color.CHARTREUSE, "Add " + _cls.getAnnotation(AreaTypeInfo.class).label() + " area");
+            renderer.drawText(_mouseX - 20, _mouseY - 20, "Add " + _cls.getAnnotation(AreaTypeInfo.class).label() + " area", Color.CHARTREUSE, 16);
         }
 
         if (_mode == Mode.SUB) {
-            renderer.drawText(_mouseX - 20, _mouseY - 20, 16, Color.CHARTREUSE, "Sub " + _cls.getAnnotation(AreaTypeInfo.class).label() + " area");
+            renderer.drawText(_mouseX - 20, _mouseY - 20, "Sub " + _cls.getAnnotation(AreaTypeInfo.class).label() + " area", Color.CHARTREUSE, 16);
         }
     }
 

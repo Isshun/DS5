@@ -30,7 +30,7 @@ public class LuaUIMinimapExtend extends LuaUIExtend {
                 if (_isVisible && minimapLayer.getSprite() != null) {
                     geometry.setFinalX(getAlignedX() + geometry.getMarginLeft() + x);
                     geometry.setFinalY(geometry.getY() + geometry.getMarginTop() + y);
-                    renderer.draw(minimapLayer.getSprite());
+                    renderer.drawSprite(minimapLayer.getSprite());
                 }
             }
 

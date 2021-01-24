@@ -12,6 +12,8 @@ import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.modules.world.WorldModule;
 
+import static org.smallbox.faraway.util.Constant.TILE_SIZE;
+
 @GameObject
 @GameLayer(level = LayerManager.CONSUMABLE_LAYER_LEVEL + 1, visible = false)
 public class DebugGroundLayer extends BaseMapLayer {
@@ -22,18 +24,18 @@ public class DebugGroundLayer extends BaseMapLayer {
                 .filter(parcel -> parcel.z == viewport.getFloor())
                 .forEach(parcel -> {
                     if (parcel.getGroundInfo() != null) {
-                        renderer.drawPixelOnMap(parcel.x, parcel.y, Color.CORAL);
+                        renderer.drawRectangleOnMap(parcel, TILE_SIZE, TILE_SIZE, Color.CORAL, 0, 0);
 
-                        renderer.drawTextOnMap(parcel, parcel.getGroundInfo().label, 14, Color.BLACK, 1, 1);
-                        renderer.drawTextOnMap(parcel, parcel.getGroundInfo().label, 14, Color.WHITE);
+                        renderer.drawTextOnMap(parcel, parcel.getGroundInfo().label, Color.BLACK, 14, 1, 1);
+                        renderer.drawTextOnMap(parcel, parcel.getGroundInfo().label, Color.WHITE, 14, 0, 0);
 
                         if (parcel.getRockInfo() != null) {
-                            renderer.drawTextOnMap(parcel, parcel.getRockInfo().label, 14, Color.BLACK, 1, 10);
-                            renderer.drawTextOnMap(parcel, parcel.getRockInfo().label, 14, Color.WHITE, 0, 9);
+                            renderer.drawTextOnMap(parcel, parcel.getRockInfo().label, Color.BLACK, 14, 1, 10);
+                            renderer.drawTextOnMap(parcel, parcel.getRockInfo().label, Color.WHITE, 14, 0, 9);
                         }
 
-                        renderer.drawTextOnMap(parcel, String.valueOf(parcel.z), 8, Color.BLACK, 1, 20);
-                        renderer.drawTextOnMap(parcel, String.valueOf(parcel.z), 8, Color.WHITE, 0, 19);
+                        renderer.drawTextOnMap(parcel, String.valueOf(parcel.z), Color.BLACK, 8, 1, 20);
+                        renderer.drawTextOnMap(parcel, String.valueOf(parcel.z), Color.WHITE, 8, 0, 19);
                     }
 
                 });

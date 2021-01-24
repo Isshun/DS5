@@ -257,7 +257,7 @@ public class UILabel extends View {
             }
 
 //            renderer.drawPixel(getAlignedX() + x + _offsetX + _paddingLeft + _marginLeft, getAlignedY() + y + _offsetY + _paddingTop + _marginTop, _textSize, _gdxTextColor, _text);
-            renderer.drawFont((batch, font) -> {
+            renderer.drawText((batch, font) -> {
                 int finalX = getAlignedX() + x + geometry.getOffsetX() + geometry.getPaddingLeft() + geometry.getMarginLeft();
                 int finalY = getAlignedY() + y + geometry.getOffsetY() + geometry.getPaddingTop() + geometry.getMarginTop();
 

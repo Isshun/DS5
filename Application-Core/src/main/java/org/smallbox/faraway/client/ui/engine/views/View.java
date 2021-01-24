@@ -1,5 +1,6 @@
 package org.smallbox.faraway.client.ui.engine.views;
 
+import com.badlogic.gdx.Gdx;
 import org.smallbox.faraway.client.RotateAnimation;
 import org.smallbox.faraway.client.controller.LuaController;
 import org.smallbox.faraway.client.font.FontManager;
@@ -13,11 +14,13 @@ import org.smallbox.faraway.core.config.Config;
 import org.smallbox.faraway.core.dependencyInjector.DependencyManager;
 import org.smallbox.faraway.core.engine.module.ModuleBase;
 import org.smallbox.faraway.core.game.Data;
+import org.smallbox.faraway.core.game.service.applicationConfig.ApplicationConfig;
 
 public abstract class View implements Comparable<View> {
     public final static int FILL = -2;
 
     // Inject all dependency to view once for all, waiting for a clever solution
+    protected final ApplicationConfig applicationConfig = DependencyManager.getInstance().getDependency(ApplicationConfig.class);
     protected final SpriteManager spriteManager = DependencyManager.getInstance().getDependency(SpriteManager.class);
     protected final UIEventManager uiEventManager = DependencyManager.getInstance().getDependency(UIEventManager.class);
     protected final GDXRendererUI gdxRenderer = DependencyManager.getInstance().getDependency(GDXRendererUI.class);
@@ -242,9 +245,9 @@ public abstract class View implements Comparable<View> {
             geometry.setFinalY(getAlignedY() + geometry.getMarginTop() + y);
 
             if (style._backgroundFocusColor != null && _isFocus) {
-                renderer.drawPixel(geometry.getFinalX(), geometry.getFinalY(), getWidth(), getHeight(), style._backgroundFocusColor);
+                renderer.drawRectangle(geometry.getFinalX(), geometry.getFinalY(), getWidth(), getHeight(), style._backgroundFocusColor);
             } else if (style._backgroundColor != null) {
-                renderer.drawPixel(geometry.getFinalX(), geometry.getFinalY(), getWidth(), getHeight(), style._backgroundColor);
+                renderer.drawRectangle(geometry.getFinalX(), geometry.getFinalY(), getWidth(), getHeight(), style._backgroundColor);
             }
 
             if (style._borderColor != null) {
@@ -255,9 +258,8 @@ public abstract class View implements Comparable<View> {
                 renderer.drawText(
                         getAlignedX() + x + geometry.getOffsetX() + geometry.getPaddingLeft() + geometry.getMarginLeft(),
                         getAlignedY() + y + geometry.getOffsetY() + geometry.getPaddingTop() + geometry.getMarginTop(),
-                        12,
-                        com.badlogic.gdx.graphics.Color.CYAN,
-                        _id);
+                        _id, com.badlogic.gdx.graphics.Color.CYAN, 12
+                );
             }
         }
     }
@@ -327,10 +329,10 @@ public abstract class View implements Comparable<View> {
         // Alignement par rapport à l'écran
         else {
             if (_horizontalAlign == HorizontalAlign.CENTER) {
-                return (gdxRenderer.getWidth() / 2) - (getWidth() / 2) + geometry.getX();
+                return (Gdx.graphics.getWidth() / 2) - (getWidth() / 2) + geometry.getX();
             }
             if (_horizontalAlign == HorizontalAlign.RIGHT) {
-                return gdxRenderer.getWidth() - getWidth() - geometry.getX();
+                return Gdx.graphics.getWidth() - getWidth() - geometry.getX();
             }
         }
 
@@ -352,10 +354,10 @@ public abstract class View implements Comparable<View> {
         // Alignement par rapport à l'écran
         else {
             if (_verticalAlign == VerticalAlign.CENTER) {
-                return (gdxRenderer.getHeight() / 2) - (getHeight() / 2) + geometry.getY();
+                return (Gdx.graphics.getHeight() / 2) - (getHeight() / 2) + geometry.getY();
             }
             if (_verticalAlign == VerticalAlign.BOTTOM) {
-                return gdxRenderer.getHeight() - geometry.getY();
+                return Gdx.graphics.getHeight() - geometry.getY();
             }
         }
 

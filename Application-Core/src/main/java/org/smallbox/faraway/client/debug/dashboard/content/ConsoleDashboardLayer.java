@@ -57,16 +57,16 @@ public class ConsoleDashboardLayer extends DashboardLayerBase {
                 color = Color.GRAY;
             }
 
-            renderer.drawText(12, posY - 1, fontSize, Color.BLACK, text);
-            renderer.drawText(11, posY - 2, fontSize, Color.BLACK, text);
-            renderer.drawText(10, posY - 3, fontSize, color, text);
+            renderer.drawText(12, posY - 1, text, Color.BLACK, fontSize);
+            renderer.drawText(11, posY - 2, text, Color.BLACK, fontSize);
+            renderer.drawText(10, posY - 3, text, color, fontSize);
 
             _index++;
         });
 
-        renderer.drawText(12, resolutionHeight - 25, fontSize, Color.BLACK, "> " + ObjectUtils.firstNonNull(debugCommandInterpreterService.getCommandInput(), "") + prefix);
-        renderer.drawText(11, resolutionHeight - 24, fontSize, Color.BLACK, "> " + ObjectUtils.firstNonNull(debugCommandInterpreterService.getCommandInput(), "") + prefix);
-        renderer.drawText(10, resolutionHeight - 23, fontSize, Color.WHITE, "> " + ObjectUtils.firstNonNull(debugCommandInterpreterService.getCommandInput(), "") + prefix);
+        renderer.drawText(12, resolutionHeight - 25, "> " + ObjectUtils.firstNonNull(debugCommandInterpreterService.getCommandInput(), "") + prefix, Color.BLACK, fontSize);
+        renderer.drawText(11, resolutionHeight - 24, "> " + ObjectUtils.firstNonNull(debugCommandInterpreterService.getCommandInput(), "") + prefix, Color.BLACK, fontSize);
+        renderer.drawText(10, resolutionHeight - 23, "> " + ObjectUtils.firstNonNull(debugCommandInterpreterService.getCommandInput(), "") + prefix, Color.WHITE, fontSize);
     }
 
 }

@@ -32,7 +32,7 @@ public class DebugCharacterLayer extends BaseMapLayer {
     @Override
     public void    onDraw(GDXRendererBase renderer, Viewport viewport, double animProgress, int frame) {
         _index = 0;
-        renderer.drawPixel(0, 0, 2000, 2000, BG_COLOR);
+        renderer.drawRectangle(0, 0, 2000, 2000, BG_COLOR);
 
         if (_character != null) {
             if (_character.hasExtra(CharacterPersonalsExtra.class)) {
@@ -64,9 +64,9 @@ public class DebugCharacterLayer extends BaseMapLayer {
     }
 
     private void drawDebug(GDXRendererBase renderer, String label, Object object) {
-        renderer.drawText(12, (_index * 20) + 12, 18, Color.BLACK, "[" + label.toUpperCase() + "] " + object);
-        renderer.drawText(11, (_index * 20) + 11, 18, Color.BLACK, "[" + label.toUpperCase() + "] " + object);
-        renderer.drawText(10, (_index * 20) + 10, 18, Color.WHITE, "[" + label.toUpperCase() + "] " + object);
+        renderer.drawText(12, (_index * 20) + 12, "[" + label.toUpperCase() + "] " + object, Color.BLACK, 18);
+        renderer.drawText(11, (_index * 20) + 11, "[" + label.toUpperCase() + "] " + object, Color.BLACK, 18);
+        renderer.drawText(10, (_index * 20) + 10, "[" + label.toUpperCase() + "] " + object, Color.WHITE, 18);
         _index++;
     }
 }

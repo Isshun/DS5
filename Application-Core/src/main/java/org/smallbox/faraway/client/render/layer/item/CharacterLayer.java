@@ -172,7 +172,7 @@ public class CharacterLayer extends BaseMapLayer {
             }
 
             if (job.getMainLabel() != null) {
-                renderer.drawText(posX, posY + 16, 12, com.badlogic.gdx.graphics.Color.YELLOW, job.getMainLabel());
+                renderer.drawText(posX, posY + 16, job.getMainLabel(), Color.YELLOW, 12);
             }
         }
     }
@@ -181,7 +181,7 @@ public class CharacterLayer extends BaseMapLayer {
      * Draw label
      */
     private void drawLabel(GDXRendererBase renderer, CharacterModel character, int posX, int posY) {
-        renderer.drawText(posX, posY - 8, 28, com.badlogic.gdx.graphics.Color.CHARTREUSE, character.getName());
+        renderer.drawText(posX, posY - 8, character.getName(), Color.CHARTREUSE, 28);
     }
 
     /**
@@ -209,7 +209,7 @@ public class CharacterLayer extends BaseMapLayer {
         if (parcelOver == character.getParcel()) {
             drawOverlay(currentFrame, posX, posY);
         } else {
-            renderer.draw(currentFrame, posX, posY);
+            renderer.drawTextureRegion(currentFrame, posX, posY);
         }
     }
 
@@ -233,7 +233,7 @@ public class CharacterLayer extends BaseMapLayer {
             });
         }
 
-        gdxRenderer.draw(new Sprite(assetManager.get(key, Texture.class)), posX, posY);
+        gdxRenderer.drawSprite(new Sprite(assetManager.get(key, Texture.class)), posX, posY);
     }
 
     /**
@@ -243,7 +243,7 @@ public class CharacterLayer extends BaseMapLayer {
         if (character.hasExtra(CharacterInventoryExtra.class)) {
             for (Map.Entry<ItemInfo, Integer> entry : character.getExtra(CharacterInventoryExtra.class).getAll().entrySet()) {
                 if (entry.getValue() > 0) {
-                    renderer.draw(spriteManager.getNewSprite(entry.getKey()), posX, posY + 2);
+                    renderer.drawSprite(spriteManager.getNewSprite(entry.getKey()), posX, posY + 2);
                 }
             }
         }

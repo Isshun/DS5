@@ -9,6 +9,7 @@ import org.smallbox.faraway.client.gameContextMenu.GameContextMenuManager;
 import org.smallbox.faraway.client.manager.ShortcutManager;
 import org.smallbox.faraway.client.render.GDXRenderer;
 import org.smallbox.faraway.client.render.Viewport;
+import org.smallbox.faraway.client.render.WorldCameraManager;
 import org.smallbox.faraway.client.selection.GameSelectionManager;
 import org.smallbox.faraway.client.ui.UIManager;
 import org.smallbox.faraway.client.ui.engine.GameEvent;
@@ -38,6 +39,7 @@ public class InputManager implements InputProcessor {
     @Inject private ShortcutManager shortcutManager;
     @Inject private Viewport viewport;
     @Inject private GDXRenderer gdxRenderer;
+    @Inject private WorldCameraManager worldCameraManager;
 
     private GameEventListener.Modifier _modifier = GameEventListener.Modifier.NONE;
     private int _lastPosX;
@@ -253,20 +255,20 @@ public class InputManager implements InputProcessor {
     public boolean scrolled(float amountX, float amountY) {
 
         if (amountY < 0) {
+            worldCameraManager.zoomIn();
 
 //            // Passe l'evenement à l'ui manager
 //            if (uiManager.onMouseEvent(GameEventListener.Action.RELEASED, Buttons.FORWARD, _lastPosX, _lastPosY, false)) {
 //                return true;
 //            }
 
-            gdxRenderer.zoomIn();
 
             return true;
         }
 
         if (amountY > 0) {
+            worldCameraManager.zoomOut();
 
-            gdxRenderer.zoomOut();
 //            // Passe l'evenement à l'ui manager
 //            if (uiManager.onMouseEvent(GameEventListener.Action.RELEASED, Buttons.BACK, _lastPosX, _lastPosY, false)) {
 //                return true;

@@ -13,6 +13,8 @@ import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.modules.item.ItemModule;
 import org.smallbox.faraway.modules.job.JobModule;
 
+import static org.smallbox.faraway.util.Constant.TILE_SIZE;
+
 @GameObject
 @GameLayer(level = LayerManager.CONSUMABLE_LAYER_LEVEL + 1, visible = false)
 public class DebugItemLayer extends BaseMapLayer {
@@ -26,16 +28,16 @@ public class DebugItemLayer extends BaseMapLayer {
                 .forEach(item -> {
                     for (int i = 0; i < item.getWidth(); i++) {
                         for (int j = 0; j < item.getHeight(); j++) {
-                            renderer.drawPixelOnMap(item.getParcel().x + i, item.getParcel().y + j, Color.CYAN);
+                            renderer.drawRectangleOnMap(item.getParcel(), TILE_SIZE, TILE_SIZE, Color.CYAN, i, i);
                         }
                     }
 
-                    renderer.drawTextOnMap(item.getParcel().x, item.getParcel().y, "[" + item.getId() + "] " + item.getLabel(), 14, Color.BLACK, 1, 1);
-                    renderer.drawTextOnMap(item.getParcel().x, item.getParcel().y, "[" + item.getId() + "] " + item.getLabel(), 14, Color.WHITE);
+                    renderer.drawTextOnMap(item.getParcel(), "[" + item.getId() + "] " + item.getLabel(), Color.BLACK, 14, 1, 1);
+                    renderer.drawTextOnMap(item.getParcel(), "[" + item.getId() + "] " + item.getLabel(), Color.WHITE, 14, 0, 0);
 
                     if (item.getFactory() != null) {
-                        renderer.drawTextOnMap(item.getParcel().x, item.getParcel().y, item.getFactory().getMessage(), 14, Color.BLACK, 1, 17);
-                        renderer.drawTextOnMap(item.getParcel().x, item.getParcel().y, item.getFactory().getMessage(), 14, Color.WHITE, 0, 16);
+                        renderer.drawTextOnMap(item.getParcel(), item.getFactory().getMessage(), Color.BLACK, 14, 1, 17);
+                        renderer.drawTextOnMap(item.getParcel(), item.getFactory().getMessage(), Color.WHITE, 14, 0, 16);
                     }
                 });
     }

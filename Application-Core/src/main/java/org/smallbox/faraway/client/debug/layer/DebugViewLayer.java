@@ -40,12 +40,12 @@ public class DebugViewLayer extends BaseLayer {
         if (view.isVisible()) {
             if (uiEventManager.hasClickListener(view)) {
                 renderer.drawRectangle(view.getGeometry().getFinalX(), view.getGeometry().getFinalY(), view.getWidth(), view.getHeight(), Color.YELLOW, false);
-                renderer.drawText(view.getGeometry().getFinalX() + 3, view.getGeometry().getFinalY() + 3, 12, Color.BLACK, view.getPath());
-                renderer.drawText(view.getGeometry().getFinalX() + 2, view.getGeometry().getFinalY() + 2, 12, Color.YELLOW, view.getPath());
+                renderer.drawText(view.getGeometry().getFinalX() + 3, view.getGeometry().getFinalY() + 3, view.getPath(), Color.BLACK, 12);
+                renderer.drawText(view.getGeometry().getFinalX() + 2, view.getGeometry().getFinalY() + 2, view.getPath(), Color.YELLOW, 12);
             } else {
                 renderer.drawRectangle(view.getGeometry().getFinalX(), view.getGeometry().getFinalY(), view.getWidth(), view.getHeight(), uiEventManager.hasClickListener(view) ? Color.YELLOW : Color.SALMON, false);
-                renderer.drawText(view.getGeometry().getFinalX() + 3, view.getGeometry().getFinalY() + 3, 12, Color.BLACK, view.getPath());
-                renderer.drawText(view.getGeometry().getFinalX() + 2, view.getGeometry().getFinalY() + 2, 12, Color.RED, view.getPath());
+                renderer.drawText(view.getGeometry().getFinalX() + 3, view.getGeometry().getFinalY() + 3, view.getPath(), Color.BLACK, 12);
+                renderer.drawText(view.getGeometry().getFinalX() + 2, view.getGeometry().getFinalY() + 2, view.getPath(), Color.RED, 12);
             }
 //            renderer.drawText(view.getFinalX(), view.getFinalY() + 10, 12, Color.RED, view.getPath());
 //            renderer.drawText(view.getFinalX(), view.getFinalY() + 20, 12, Color.RED, "size: " + view.getViews().size());

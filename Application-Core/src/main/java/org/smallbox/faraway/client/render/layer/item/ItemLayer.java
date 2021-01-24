@@ -25,23 +25,23 @@ public class ItemLayer extends BaseMapLayer {
                 .filter(item -> viewport.hasParcel(item.getParcel()))
                 .forEach(item -> {
                     Parcel parcel = item.getParcel();
-                    renderer.drawSpriteOnMap(item.getParcel(), getItemSprite(item));
+                    renderer.drawSpriteOnMap(getItemSprite(item), item.getParcel());
 
                     if (item.getFactory() != null && item.getFactory().getCraftJob() != null) {
-                        renderer.drawRectangleOnMap(parcel.x, parcel.y, (int) (32 * item.getFactory().getCraftJob().getProgress()), 6, Color.BLUE, 0, 0);
-                        renderer.drawCadreOnMap(parcel.x, parcel.y, 32, 6, Color.CHARTREUSE, 4, 0, 0);
+                        renderer.drawRectangleOnMap(parcel, (int) (32 * item.getFactory().getCraftJob().getProgress()), 6, Color.BLUE, 0, 0);
+                        renderer.drawCadreOnMap(parcel, 32, 6, Color.CHARTREUSE, 4, 0, 0);
                     }
 
                     if (item.getHealth() < item.getMaxHealth()) {
-                        renderer.drawTextOnMap(parcel.x, parcel.y, item.getHealth() + "/" + item.getMaxHealth(), 14, Color.CHARTREUSE, 0, 0);
+                        renderer.drawTextOnMap(parcel, item.getHealth() + "/" + item.getMaxHealth(), Color.CHARTREUSE, 14, 0, 0);
                     }
 
                     if (!item.isComplete() && item.isComplete()) {
-                        renderer.drawTextOnMap(parcel.x, parcel.y, "to build", 14, Color.CHARTREUSE, 0, 0);
+                        renderer.drawTextOnMap(parcel, "to build", Color.CHARTREUSE, 14, 0, 0);
                     }
 
                     if (!item.isComplete()) {
-                        renderer.drawTextOnMap(parcel.x, parcel.y, "to build", 14, Color.CHARTREUSE, 0, 0);
+                        renderer.drawTextOnMap(parcel, "to build", Color.CHARTREUSE, 14, 0, 0);
                     }
 
                     drawSelectionOnMap(renderer, spriteManager, viewport, item, item.getParcel().x, item.getParcel().y, item.getWidth() * 32, item.getHeight() * 32, 0, 0);

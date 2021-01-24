@@ -1,50 +1,31 @@
 package org.smallbox.faraway.client.render;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Camera;
-import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.math.Matrix4;
 import org.smallbox.faraway.client.ui.engine.views.View;
 import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject;
-import org.smallbox.faraway.util.log.Log;
+import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 
 @ApplicationObject
 public class GDXRenderer extends GDXRendererBase {
+    @Inject protected WorldCameraManager worldCameraManager;
 
     public void init() {
         super.init();
-
-        _camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        _camera.setToOrtho(true, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        _camera.zoom = 1.5f;
-    }
-
-    public float getZoom() {
-        return _camera.zoom;
-    }
-
-    public void setZoom(float zoom) {
-        _camera.zoom = zoom;
-    }
-
-    public Camera getCamera() {
-        return _camera;
     }
 
     public void refresh() {
-        _camera.update();
-        _batch.setProjectionMatrix(_camera.combined);
+        worldCameraManager.update();
+        _batch.setProjectionMatrix(worldCameraManager.getCombinedProjection());
     }
 
-    public void zoomOut() {
-        _camera.zoom = Math.min(_camera.zoom + ZOOM_INTERVAL, MAX_ZOOM_OUT);
-        viewport.refresh();
-        Log.info("Set zoom: " + _camera.zoom);
+    @Override
+    protected Matrix4 getCombinedProjection() {
+        return worldCameraManager.getCombinedProjection();
     }
 
-    public void zoomIn() {
-        _camera.zoom = Math.max(_camera.zoom - ZOOM_INTERVAL, MAX_ZOOM_IN);
-        viewport.refresh();
-        Log.info("Set zoom: " + _camera.zoom);
+    @Override
+    protected float getZoom() {
+        return worldCameraManager.getZoom();
     }
 
     public void draw(View view, int x, int y) {

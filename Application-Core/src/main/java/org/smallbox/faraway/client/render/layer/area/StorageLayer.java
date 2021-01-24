@@ -61,23 +61,15 @@ public class StorageLayer extends BaseMapLayer {
         int toX = fromX + viewport.getWidth() / Constant.TILE_SIZE;
         int toY = fromY + viewport.getHeight() / Constant.TILE_SIZE;
 
-        storageModule.getAreas().stream().flatMap(area -> area.getParcels().stream()).forEach(parcel -> renderer.drawTextureOnMap(parcel.x, parcel.y, _regions[0]));
+        storageModule.getAreas().stream().flatMap(area -> area.getParcels().stream()).forEach(parcel -> renderer.drawTextureRegionOnMap(parcel, _regions[0]));
 
         if (_mode == Mode.ADD) {
-            renderer.drawText(_mouseX - 20, _mouseY - 20, 16, Color.CHARTREUSE, "Add " + _cls.getAnnotation(AreaTypeInfo.class).label() + " area");
+            renderer.drawText(_mouseX - 20, _mouseY - 20, "Add " + _cls.getAnnotation(AreaTypeInfo.class).label() + " area", Color.CHARTREUSE, 16);
         }
 
         if (_mode == Mode.SUB) {
-            renderer.drawText(_mouseX - 20, _mouseY - 20, 16, Color.CHARTREUSE, "Sub " + _cls.getAnnotation(AreaTypeInfo.class).label() + " area");
+            renderer.drawText(_mouseX - 20, _mouseY - 20, "Sub " + _cls.getAnnotation(AreaTypeInfo.class).label() + " area", Color.CHARTREUSE, 16);
         }
-    }
-
-    private TextureRegion getTexture(Class<? extends AreaModel> cls) {
-        if (!_textureByClass.containsKey(cls)) {
-            _textureByClass.put(cls, _regions[Math.min(_textureByClass.size(), 4)]);
-        }
-
-        return _textureByClass.get(cls);
     }
 
     public boolean isMandatory() {

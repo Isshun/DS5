@@ -26,8 +26,8 @@ public class GameContextMenuLayer extends BaseLayer {
 
     private void displayEntry(GDXRendererBase renderer, GameContextMenuEntry entry) {
         Color color = entry.contains(inputManager.getMouseX(), inputManager.getMouseY()) ? Colors.BLUE_LIGHT_2 : Color.WHITE;
-        renderer.drawText(entry.getX() + 6, entry.getY() + 6, 22, Color.BLACK, entry.getLabel());
-        renderer.drawText(entry.getX() + 5, entry.getY() + 5, 22, color, entry.getLabel());
+        renderer.drawText(entry.getX() + 6, entry.getY() + 6, entry.getLabel(), Color.BLACK, 22);
+        renderer.drawText(entry.getX() + 5, entry.getY() + 5, entry.getLabel(), color, 22);
     }
 
 }

@@ -23,9 +23,9 @@ public abstract class DashboardLayerBase {
         onDraw(renderer, frame);
 
         if (index > 0) {
-            renderer.drawText(12, 112, 18, Color.BLACK, page + "/" + max / ITEM_PER_PAGE);
-            renderer.drawText(11, 111, 18, Color.BLACK, page + "/" + max / ITEM_PER_PAGE);
-            renderer.drawText(10, 110, 18, Color.WHITE, page + "/" + max / ITEM_PER_PAGE);
+            renderer.drawText(12, 112, page + "/" + max / ITEM_PER_PAGE, Color.BLACK, 18);
+            renderer.drawText(11, 111, page + "/" + max / ITEM_PER_PAGE, Color.BLACK, 18);
+            renderer.drawText(10, 110, page + "/" + max / ITEM_PER_PAGE, Color.WHITE, 18);
         }
     }
 
@@ -33,9 +33,9 @@ public abstract class DashboardLayerBase {
 
     protected void drawDebug(GDXRendererBase renderer, String label, Object object) {
         if (index > page * ITEM_PER_PAGE && index < (page + 1) * ITEM_PER_PAGE) {
-            renderer.drawText(12, (index % ITEM_PER_PAGE * 20) + 132, 18, Color.BLACK, "[" + label.toUpperCase() + "] " + object);
-            renderer.drawText(11, (index % ITEM_PER_PAGE * 20) + 131, 18, Color.BLACK, "[" + label.toUpperCase() + "] " + object);
-            renderer.drawText(10, (index % ITEM_PER_PAGE * 20) + 130, 18, Color.WHITE, "[" + label.toUpperCase() + "] " + object);
+            renderer.drawText(12, (index % ITEM_PER_PAGE * 20) + 132, "[" + label.toUpperCase() + "] " + object, Color.BLACK, 18);
+            renderer.drawText(11, (index % ITEM_PER_PAGE * 20) + 131, "[" + label.toUpperCase() + "] " + object, Color.BLACK, 18);
+            renderer.drawText(10, (index % ITEM_PER_PAGE * 20) + 130, "[" + label.toUpperCase() + "] " + object, Color.WHITE, 18);
         }
         max = Math.max(max, index++);
     }

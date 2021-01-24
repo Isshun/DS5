@@ -30,11 +30,11 @@ public class ParticleLayer extends BaseLayer {
         loadEffect(weatherModule.getWeather().particle);
 
         if (effect != null) {
-            renderer.getBatch().begin();
-            effect.draw(renderer.getBatch());
-            renderer.getBatch().end();
+            renderer.draw(batch -> {
+                effect.draw(batch);
+                effect.update(Gdx.graphics.getDeltaTime());
+            });
 
-            effect.update(Gdx.graphics.getDeltaTime());
             if (effect.isComplete()) {
                 effect.reset();
             }

@@ -149,9 +149,9 @@ public class DashboardLayer extends BaseLayer {
 
     private void drawButton(GDXRendererBase renderer, int x, int y, String label, boolean isActive) {
         renderer.drawRectangle(x, y, label.length() * 10, 30, BUTTON_BG_COLOR, true);
-        renderer.drawText(x + 2, y + 5, 18, Color.BLACK, label);
-        renderer.drawText(x + 1, y + 6, 18, Color.BLACK, label);
-        renderer.drawText(x, y + 7, 18, isActive ? Color.CORAL : Color.WHITE, label);
+        renderer.drawText(x + 2, y + 5, label, Color.BLACK, 18);
+        renderer.drawText(x + 1, y + 6, label, Color.BLACK, 18);
+        renderer.drawText(x, y + 7, label, isActive ? Color.CORAL : Color.WHITE, 18);
     }
 
     @Override

@@ -71,7 +71,7 @@ public class UIImage extends View {
                         _sprite = spriteManager.getIcon(_path);
                         _sprite.setRegion(0, 0, geometry.getOriginWidth(), geometry.getOriginHeight());
                         _sprite.setSize(geometry.getOriginWidth(), geometry.getOriginHeight());
-                        _sprite.setScale(renderer.getUiScale(), renderer.getUiScale());
+                        _sprite.setScale((float) applicationConfig.uiScale);
                         _sprite.flip(false, true);
                     } catch (GdxRuntimeException e) {
 //                e.printStackTrace();
@@ -88,7 +88,7 @@ public class UIImage extends View {
                 if (_textureHeight != 0) {
                     _sprite.getTexture().setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.ClampToEdge);
                     _sprite.setRegion(_textureX, _textureY, _textureWidth, _textureHeight);
-                    renderer.drawRegion(geometry.getFinalX(), geometry.getFinalY(), _sprite);
+                    renderer.drawSprite(_sprite, geometry.getFinalX(), geometry.getFinalY());
 //                    renderer.drawRegion(_x + x, _y + y, _sprite);
                 }
 
@@ -98,7 +98,7 @@ public class UIImage extends View {
                     } else if (_animation != null) {
                         _animation.draw(renderer, _sprite, geometry.getFinalX(), geometry.getFinalY());
                     } else {
-                        renderer.draw(_sprite, geometry.getFinalX(), geometry.getFinalY());
+                        renderer.drawSprite(_sprite, geometry.getFinalX(), geometry.getFinalY());
 //                        renderer.draw(_x + x, _y + y, _sprite);
                     }
                 }

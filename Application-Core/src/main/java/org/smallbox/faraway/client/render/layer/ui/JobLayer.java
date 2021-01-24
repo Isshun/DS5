@@ -28,8 +28,8 @@ public class JobLayer extends BaseMapLayer {
 
                 if (job instanceof StoreJob) {
                     if (((StoreJob)job).sourceConsumable.getFreeQuantity() > 0) {
-                        renderer.drawSpriteOnMap(((StoreJob)job).sourceConsumable.getParcel(), spriteManager.getIcon("graphics/jobs/ic_store.png"));
-                        renderer.drawTextOnMap(job.getTargetParcel(), "store", 10, Color.CHARTREUSE, 0, 0);
+                        renderer.drawSpriteOnMap(spriteManager.getIcon("graphics/jobs/ic_store.png"), ((StoreJob)job).sourceConsumable.getParcel());
+                        renderer.drawTextOnMap(job.getTargetParcel(), "store", Color.CHARTREUSE, 10, 0, 0);
                     }
                 }
 
@@ -39,8 +39,8 @@ public class JobLayer extends BaseMapLayer {
 //            }
 
                 if (job instanceof BuildJob) {
-                    renderer.drawSpriteOnMap(job.getTargetParcel(), spriteManager.getIcon("graphics/jobs/ic_build.png"));
-                    renderer.drawTextOnMap(job.getTargetParcel(), "building", 10, Color.CHARTREUSE, 0, 0);
+                    renderer.drawSpriteOnMap(spriteManager.getIcon("graphics/jobs/ic_build.png"), job.getTargetParcel());
+                    renderer.drawTextOnMap(job.getTargetParcel(), "building", Color.CHARTREUSE, 10, 0, 0);
                 }
 
 //            if (job instanceof BasicCraftJob) {
@@ -52,18 +52,18 @@ public class JobLayer extends BaseMapLayer {
                     if (job instanceof DigJob) {
 
                         if (job.getTargetParcel().z == viewport.getFloor()) {
-                            renderer.drawSpriteOnMap(job.getTargetParcel(), spriteManager.getIcon("[base]/graphics/jobs/ic_mining.png"));
+                            renderer.drawSpriteOnMap(spriteManager.getIcon("[base]/graphics/jobs/ic_mining.png"), job.getTargetParcel());
                         } else if (job.getTargetParcel().z == viewport.getFloor() - 1) {
-                            renderer.drawSpriteOnMap(job.getTargetParcel(), spriteManager.getIcon("[base]/graphics/jobs/ic_mining_under.png"));
+                            renderer.drawSpriteOnMap(spriteManager.getIcon("[base]/graphics/jobs/ic_mining_under.png"), job.getTargetParcel());
                         }
 
                     } else {
-                        renderer.drawSpriteOnMap(job.getTargetParcel(), spriteManager.getIcon(job.getIcon()));
+                        renderer.drawSpriteOnMap(spriteManager.getIcon(job.getIcon()), job.getTargetParcel());
                     }
                 }
 
                 if (job.getColor() != null) {
-                    renderer.drawTextOnMap(job.getTargetParcel(), "gather", 14, job.getColor(), 0, 0);
+                    renderer.drawTextOnMap(job.getTargetParcel(), "gather", job.getColor(), 14, 0, 0);
                 }
 
             }

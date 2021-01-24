@@ -23,7 +23,7 @@ public class CursorLayer extends BaseLayer {
     @Override
     public void onDraw(GDXRendererBase renderer, Viewport viewport, double animProgress, int frame) {
         if (gameActionManager.getMode() != GameActionMode.NONE) {
-            renderer.drawText(inputManager.getMouseX() + 10, inputManager.getMouseY() - 10, 22, gameActionManager.getActionColor(), gameActionManager.getActionLabel(), "sui", false, 2);
+            renderer.drawText(inputManager.getMouseX() + 10, inputManager.getMouseY() - 10, gameActionManager.getActionLabel(), gameActionManager.getActionColor(), 22, false, "sui", 2);
         }
     }
 

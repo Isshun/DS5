@@ -208,8 +208,8 @@ public class UICheckBox extends View {
                 geometry.setOffsetY((getHeight() - getContentHeight()) / 2);
             }
 
-            renderer.drawText(getAlignedX() + x + geometry.getOffsetX() + geometry.getPaddingLeft() + geometry.getMarginLeft(), getAlignedY() + y + geometry.getOffsetY() + geometry.getPaddingTop() + geometry.getMarginTop(), _textSize, _textColor, _checked ? "[x]" : "[ ]");
-            renderer.drawText(getAlignedX() + x + geometry.getOffsetX() + geometry.getPaddingLeft() + geometry.getMarginLeft() + 32, getAlignedY() + y + geometry.getOffsetY() + geometry.getPaddingTop() + geometry.getMarginTop(), _textSize, _textColor, _string);
+            renderer.drawText(getAlignedX() + x + geometry.getOffsetX() + geometry.getPaddingLeft() + geometry.getMarginLeft(), getAlignedY() + y + geometry.getOffsetY() + geometry.getPaddingTop() + geometry.getMarginTop(), _checked ? "[x]" : "[ ]", _textColor, _textSize);
+            renderer.drawText(getAlignedX() + x + geometry.getOffsetX() + geometry.getPaddingLeft() + geometry.getMarginLeft() + 32, getAlignedY() + y + geometry.getOffsetY() + geometry.getPaddingTop() + geometry.getMarginTop(), _string, _textColor, _textSize);
         }
     }
 
