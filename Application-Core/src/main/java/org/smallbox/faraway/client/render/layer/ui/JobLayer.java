@@ -5,19 +5,20 @@ import org.smallbox.faraway.client.manager.SpriteManager;
 import org.smallbox.faraway.client.render.GDXRendererBase;
 import org.smallbox.faraway.client.render.LayerManager;
 import org.smallbox.faraway.client.render.Viewport;
-import org.smallbox.faraway.client.render.layer.BaseLayer;
+import org.smallbox.faraway.client.render.layer.BaseMapLayer;
 import org.smallbox.faraway.core.GameLayer;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.modules.building.BuildJob;
+import org.smallbox.faraway.modules.dig.DigJob;
 import org.smallbox.faraway.modules.job.JobModule;
 import org.smallbox.faraway.modules.storage.StoreJob;
 
 @GameObject
 @GameLayer(level = LayerManager.JOB_LAYER_LEVEL, visible = true)
-public class JobLayer extends BaseLayer {
-    @Inject private JobModule jobModule;
+public class JobLayer extends BaseMapLayer {
     @Inject private SpriteManager spriteManager;
+    @Inject private JobModule jobModule;
 
     public void onDraw(GDXRendererBase renderer, Viewport viewport, double animProgress, int frame) {
 
@@ -48,11 +49,21 @@ public class JobLayer extends BaseLayer {
 //            }
 
                 if (job.getIcon() != null) {
-                    renderer.drawSpriteOnMap(job.getTargetParcel(), spriteManager.getIcon(job.getIcon()));
+                    if (job instanceof DigJob) {
+
+                        if (job.getTargetParcel().z == viewport.getFloor()) {
+                            renderer.drawSpriteOnMap(job.getTargetParcel(), spriteManager.getIcon("[base]/graphics/jobs/ic_mining.png"));
+                        } else if (job.getTargetParcel().z == viewport.getFloor() - 1) {
+                            renderer.drawSpriteOnMap(job.getTargetParcel(), spriteManager.getIcon("[base]/graphics/jobs/ic_mining_under.png"));
+                        }
+
+                    } else {
+                        renderer.drawSpriteOnMap(job.getTargetParcel(), spriteManager.getIcon(job.getIcon()));
+                    }
                 }
 
                 if (job.getColor() != null) {
-                    renderer.drawTextOnMap(job.getTargetParcel(), "gather", 10, job.getColor(), 0, 0);
+                    renderer.drawTextOnMap(job.getTargetParcel(), "gather", 14, job.getColor(), 0, 0);
                 }
 
             }

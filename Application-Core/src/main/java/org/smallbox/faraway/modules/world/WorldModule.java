@@ -150,6 +150,10 @@ public class WorldModule extends GenericGameModule<Parcel> {
                 return WorldHelper.getParcel(parcel.x - 1, parcel.y + 1, parcel.z);
             case BOTTOM_RIGHT:
                 return WorldHelper.getParcel(parcel.x + 1, parcel.y + 1, parcel.z);
+            case UNDER:
+                return WorldHelper.getParcel(parcel.x, parcel.y, parcel.z - 1);
+            case OVER:
+                return WorldHelper.getParcel(parcel.x, parcel.y, parcel.z + 1);
         }
         return null;
     }

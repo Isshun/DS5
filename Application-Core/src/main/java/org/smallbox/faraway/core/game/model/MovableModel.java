@@ -15,6 +15,8 @@ public abstract class MovableModel extends ObjectModel {
         BOTTOM_LEFT,
         TOP_RIGHT,
         TOP_LEFT,
+        UNDER,
+        OVER,
         NONE
     }
 

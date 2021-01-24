@@ -1,8 +1,10 @@
 package org.smallbox.faraway.client.menu.controller;
 
 import org.smallbox.faraway.client.controller.LuaController;
+import org.smallbox.faraway.client.controller.annotation.BindLua;
 import org.smallbox.faraway.client.controller.annotation.BindLuaAction;
 import org.smallbox.faraway.client.ui.engine.views.View;
+import org.smallbox.faraway.client.ui.engine.views.widgets.UIImage;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
@@ -20,6 +22,8 @@ public class MenuMainController extends LuaController {
     @Inject private ApplicationConfig applicationConfig;
     @Inject private MenuSettingsController menuSettingsController;
     @Inject private MenuPlanetController menuPlanetController;
+
+    @BindLua private UIImage imgBg;
 
     @AfterApplicationLayerInit
     private void afterApplicationLayerInit() {

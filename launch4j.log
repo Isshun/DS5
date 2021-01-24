@@ -1,0 +1,16 @@
+
+
+Version:	3.12
+CmdLine:	C:\Users\Alex\IdeaProjects\DS5\void.exe --l4j-debug
+WOW64:		yes
+Working dir:	C:\Users\Alex\IdeaProjects\DS5\.
+Java min ver:	
+Java max ver:	
+Bundled JRE:	C:\Program Files\Java\openjdk-15.0.2_windows-x64_bin\jdk-15.0.2
+Check launcher:	C:\Program Files\Java\openjdk-15.0.2_windows-x64_bin\jdk-15.0.2\bin\javaw.exe (OK)
+Heap -Xms:	Requested 1000 MB / 0%, Available: 14444 MB, Heap size: 1000 MB
+Heap -Xmx:	Requested 2000 MB / 0%, Available: 14444 MB, Heap size: 2000 MB
+Launcher:	C:\Program Files\Java\openjdk-15.0.2_windows-x64_bin\jdk-15.0.2\bin\javaw.exe
+Launcher args:	-Xms1000m -Xmx2000m -jar "C:\Users\Alex\IdeaProjects\DS5\void.exe"
+Args length:	66/32768 chars
+Exit code:	0

@@ -28,6 +28,7 @@ public class CaveGenerator {
         caveMasks.add(assetManager.createPixmapFromTexture("data/worldFactory/cave_mask_0.png"));
         caveMasks.add(assetManager.createPixmapFromTexture("data/worldFactory/cave_mask_1.png"));
         caveMasks.add(assetManager.createPixmapFromTexture("data/worldFactory/cave_mask_2.png"));
+        caveMasks.add(assetManager.createPixmapFromTexture("data/worldFactory/cave_mask_3.png"));
     }
 
     public void addCave(List<Parcel> parcels, int size, int floors, int offsetX, int offsetY, int offsetZ) {
@@ -42,7 +43,7 @@ public class CaveGenerator {
 
         Pixmap caveMask = caveMasks.get(new Random().nextInt(caveMasks.size()));
 
-        for (int z = 0; z < floors; z++) {
+        for (int z = floors; z >= 0; z--) {
             for (int x = 0; x < size; x++) {
                 for (int y = 0; y < size; y++) {
                     float noiseValue = noise.GetNoise(x, y) + 0.5f;
@@ -66,6 +67,11 @@ public class CaveGenerator {
                         if (parcel != null) {
                             parcel.setRockInfo(null);
                             parcel.setGroundInfo(data.getItemInfo("base.ground.rock"));
+                        }
+
+                        Parcel topParcel = worldFactory.safeParcel(parcels, offsetX + x, offsetY + y, z + 1);
+                        if (topParcel != null && !topParcel.hasRock()) {
+                            topParcel.setGroundInfo(null);
                         }
                     }
 

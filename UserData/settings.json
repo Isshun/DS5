@@ -1,6 +1,6 @@
 {
   "debug": {
-    "actionOnLoad": "LAST_SAVE",
+    "actionOnLoad": "",
     "scenario": "data/scenarios/test1.json",
     "log": true,
     "logFontSize": 16,

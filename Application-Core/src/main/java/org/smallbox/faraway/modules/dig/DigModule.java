@@ -24,6 +24,7 @@ public class DigModule extends AreaModuleBase<DigAction> {
     @Inject private AreaModule areaModule;
     @Inject private DigJobFactory digJobFactory;
     @Inject private GameActionManager gameActionManager;
+    @Inject private DigUnderAction digUnderAction;
     @Inject private DigAction digAction;
 
     @OnInit
@@ -53,7 +54,7 @@ public class DigModule extends AreaModuleBase<DigAction> {
 
     @GameShortcut(key = Input.Keys.G)
     public void digMode() {
-        gameActionManager.setAreaAction(GameActionMode.ADD_AREA, digAction);
+        gameActionManager.setAreaAction(GameActionMode.ADD_AREA, gameActionManager.getAction() == digAction ? digUnderAction : digAction);
     }
 
 }

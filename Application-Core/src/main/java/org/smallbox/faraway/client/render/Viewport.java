@@ -174,17 +174,10 @@ public class Viewport {
 //        _floor = z;
 //    }
 
-    public boolean hasParcel(ParcelCommon parcel) {
-        return parcel != null
-                && parcel.z == _floor
-                && parcel.x >= _worldX && parcel.x <= _worldX + 50
-                && parcel.y >= _worldY && parcel.y <= _worldY + 50;
-    }
-
+    // TODO
     public boolean hasParcel(Parcel parcel) {
-        return true;
-//        return parcel != null
-//                && parcel.z == _floor
+        return parcel != null
+                && parcel.z == _floor;
 //                && parcel.x >= _worldX && parcel.x <= _worldX + 50
 //                && parcel.y >= _worldY && parcel.y <= _worldY + 50;
     }

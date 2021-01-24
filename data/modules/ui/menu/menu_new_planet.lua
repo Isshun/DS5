@@ -29,7 +29,7 @@ ui:extend({
             -- Left pane
             { type = "view", background = blue_dark_4, size = {left_pane_width, max_height}, position = {0, 0}, views = {
                 { type = "list", id = "list_planets", template = {
-                    { type = "label", text_color = 0x000000ff, text_size = 24, padding = 20, size = {300, 42}},
+                    { type = "label", text_font = "font3", text_color = 0x000000ff, text_size = 24, padding = 20, size = {300, 42}},
                 }},
 
                 { type = "label", id = "bt_back", text = "Back", padding = 16, text_size = 22,
@@ -45,7 +45,7 @@ ui:extend({
             { type = "view", background = blue_dark_3, size = {right_pane_width, max_height}, position = {left_pane_width, 0}, views = {
 
                 { type = "list", id = "info_planet", position = {20, 0}, views = {
-                    { type = "label", id = "lb_info_name", text_color = blue_light_3, text_size = 60, padding = {20, 0, 0, 0}},
+                    { type = "label", id = "lb_info_name", text_font = "font3", text_color = blue_light_3, text_size = 60, padding = {20, 0, 0, 0}},
 
                     -- Regions
                     { type = "list", id = "list_info_regions", template = {

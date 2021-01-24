@@ -4,6 +4,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import org.smallbox.faraway.client.AssetManager;
 import org.smallbox.faraway.client.manager.ShortcutManager;
 import org.smallbox.faraway.client.render.GDXRendererUI;
 import org.smallbox.faraway.client.ui.UIManager;
@@ -12,12 +15,16 @@ import org.smallbox.faraway.client.ui.engine.views.RootView;
 import org.smallbox.faraway.client.ui.engine.views.View;
 import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
+import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnInit;
 
 @ApplicationObject
 public class MenuRender {
     @Inject private GDXRendererUI gdxRendererUI;
     @Inject private ShortcutManager shortcutManager;
     @Inject private UIManager uiManager;
+    @Inject private AssetManager assetManager;
+
+    private Sprite sprite;
 
     private final InputProcessor _menuInputAdapter = new InputAdapter() {
         public boolean touchUp (int screenX, int screenY, int pointer, int button) {
@@ -35,6 +42,18 @@ public class MenuRender {
         }
     };
 
+    @OnInit
+    public void init() {
+        assetManager.load("data/background/17520.jpg", Texture.class);
+        assetManager.finishLoading();
+
+        sprite = new Sprite(assetManager.get("data/background/17520.jpg", Texture.class));
+        sprite.flip(false, true);
+        sprite.setScale(1.1f);
+        sprite.setPosition(0, 0);
+
+    }
+
     public void render() {
         Gdx.input.setInputProcessor(_menuInputAdapter);
         Gdx.gl.glClearColor(.07f, 0.1f, 0.12f, 1);
@@ -43,6 +62,13 @@ public class MenuRender {
         // Render application
         gdxRendererUI.clear();
         gdxRendererUI.refresh();
+
+        if (sprite != null) {
+            gdxRendererUI.draw(sprite);
+            sprite.scale(0.00001f);
+            sprite.translate(0.02f, 0.035f);
+        }
+
         uiManager.getMenuViews().forEach((name, view) -> view.draw(gdxRendererUI, 0, 0));
     }
 

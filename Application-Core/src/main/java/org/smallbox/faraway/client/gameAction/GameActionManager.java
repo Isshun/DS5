@@ -95,6 +95,10 @@ public class GameActionManager extends GameManager {
         return actionLabel;
     }
 
+    public OnSelectParcelListener getAction() {
+        return areaAction;
+    }
+
     public void selectParcels(List<Parcel> parcelList) {
         if (areaAction != null) {
             parcelList.forEach(parcel -> areaAction.onParcelSelected(parcel));
