@@ -5,6 +5,7 @@ import org.smallbox.faraway.client.RotateAnimation;
 import org.smallbox.faraway.client.controller.LuaController;
 import org.smallbox.faraway.client.manager.SpriteManager;
 import org.smallbox.faraway.client.render.GDXRenderer;
+import org.smallbox.faraway.client.render.GDXRendererBase;
 import org.smallbox.faraway.client.ui.UIManager;
 import org.smallbox.faraway.client.ui.engine.UIEventManager;
 import org.smallbox.faraway.client.ui.engine.views.widgets.FadeEffect;
@@ -235,7 +236,7 @@ public abstract class View implements Comparable<View> {
         return view.hashCode() - hashCode();
     }
 
-    public void draw(GDXRenderer renderer, int x, int y) {
+    public void draw(GDXRendererBase renderer, int x, int y) {
         if (_isVisible) {
             geometry.setFinalX(getAlignedX() + geometry.getMarginLeft() + x);
             geometry.setFinalY(getAlignedY() + geometry.getMarginTop() + y);

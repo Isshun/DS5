@@ -1,5 +1,6 @@
 package org.smallbox.faraway.core.game;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.GameShortcut;
@@ -38,37 +39,41 @@ public class GameManager implements GameObserver {
     }
 
     public void createGame(GameInfo gameInfo, GameListener listener) {
-        long time = System.currentTimeMillis();
+        Gdx.app.postRunnable(() -> {
+            long time = System.currentTimeMillis();
 
-        File gameDirectory = FileUtils.getSaveDirectory(gameInfo.name);
-        if (!gameDirectory.mkdirs()) {
-            Log.info("Unable to createGame game onSave directory");
-            return;
-        }
+            File gameDirectory = FileUtils.getSaveDirectory(gameInfo.name);
+            if (!gameDirectory.mkdirs()) {
+                Log.info("Unable to createGame game onSave directory");
+                return;
+            }
 
-        phase1(gameInfo);
-        worldFactory.buildMap();
+            phase1(gameInfo);
+            worldFactory.buildMap();
 //        worldFactory.createLandSite(game);
 //        gameSaveManager.saveGame(_game, gameInfo, GameInfo.Type.INIT);
-        phase2(listener);
+            phase2(listener);
 
-        Log.info("Create new game (" + (System.currentTimeMillis() - time) + "ms)");
+            Log.info("Create new game (" + (System.currentTimeMillis() - time) + "ms)");
+        });
     }
 
     public void loadGame(GameInfo gameInfo, GameSaveInfo gameSaveInfo, GameListener listener) {
-        try {
-            long time = System.currentTimeMillis();
+        Gdx.app.postRunnable(() -> {
+            try {
+                long time = System.currentTimeMillis();
 
-            phase1(gameInfo);
+                phase1(gameInfo);
 
-            gameLoadManager.load(FileUtils.getSaveDirectory(gameInfo.name), gameSaveInfo.filename, () -> {
-                phase2(listener);
-                Log.info("Load game (" + (System.currentTimeMillis() - time) + "ms)");
-            });
+                gameLoadManager.load(FileUtils.getSaveDirectory(gameInfo.name), gameSaveInfo.filename, () -> {
+                    phase2(listener);
+                    Log.info("Load game (" + (System.currentTimeMillis() - time) + "ms)");
+                });
 
-        } catch (Exception e) {
-            Log.error(e);
-        }
+            } catch (Exception e) {
+                Log.error(e);
+            }
+        });
     }
 
     private void phase1(GameInfo gameInfo) {

@@ -62,11 +62,11 @@ public class WorldGroundLayer extends BaseLayer {
                 Parcel parcel = worldModule.getParcel(x, y, floor);
 
                 if (parcel != null && parcel.hasGround()) {
-                    renderer.drawOnMap(cachedGrounds.computeIfAbsent(parcel, p -> groundTileGenerator.getTexture(p)), parcel);
+                    renderer.drawTextureOnMap(cachedGrounds.computeIfAbsent(parcel, p -> groundTileGenerator.getTexture(p)), parcel);
                 }
 
                 if (parcel != null && parcel.hasRock()) {
-                    renderer.drawOnMap(cachedRocks.computeIfAbsent(parcel, p -> rockTileGenerator.getTexture(p)), parcel);
+                    renderer.drawTextureOnMap(cachedRocks.computeIfAbsent(parcel, p -> rockTileGenerator.getTexture(p)), parcel);
                 }
 
                 if (parcel != null && gameSelectionManager.getSelected().contains(parcel)) {

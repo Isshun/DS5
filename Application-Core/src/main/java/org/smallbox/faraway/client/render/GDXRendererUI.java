@@ -8,15 +8,10 @@ import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject
 import org.smallbox.faraway.util.log.Log;
 
 @ApplicationObject
-public class GDXRenderer extends GDXRendererBase {
+public class GDXRendererUI extends GDXRendererBase {
 
     public void init() {
         super.init();
-
-        _camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        _camera.setToOrtho(true, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        _camera.zoom = 1.5f;
-
         _cameraUI = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         _cameraUI.setToOrtho(true, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         _cameraUI.zoom = 1f;

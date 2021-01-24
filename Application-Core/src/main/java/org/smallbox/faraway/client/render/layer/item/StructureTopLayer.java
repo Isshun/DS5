@@ -48,7 +48,7 @@ public class StructureTopLayer extends BaseLayer {
                 .filter(structure -> viewport.hasParcel(structure.getParcel()))
                 .forEach(structure -> {
 
-                    renderer.drawOnMap(structure.getParcel(), getSprite(structure));
+                    renderer.drawSpriteOnMap(structure.getParcel(), getSprite(structure));
 
                     if (structure.getHealth() < structure.getMaxHealth()) {
                         renderer.drawTextOnMap(structure.getParcel(), structure.getHealth() + "/" + structure.getMaxHealth(), 14, Color.CHARTREUSE, 0, 0);

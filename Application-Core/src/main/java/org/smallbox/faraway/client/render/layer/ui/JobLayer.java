@@ -27,7 +27,7 @@ public class JobLayer extends BaseLayer {
 
                 if (job instanceof StoreJob) {
                     if (((StoreJob)job).sourceConsumable.getFreeQuantity() > 0) {
-                        renderer.drawOnMap(((StoreJob)job).sourceConsumable.getParcel(), spriteManager.getIcon("graphics/jobs/ic_store.png"));
+                        renderer.drawSpriteOnMap(((StoreJob)job).sourceConsumable.getParcel(), spriteManager.getIcon("graphics/jobs/ic_store.png"));
                         renderer.drawTextOnMap(job.getTargetParcel(), "store", 10, Color.CHARTREUSE, 0, 0);
                     }
                 }
@@ -38,7 +38,7 @@ public class JobLayer extends BaseLayer {
 //            }
 
                 if (job instanceof BuildJob) {
-                    renderer.drawOnMap(job.getTargetParcel(), spriteManager.getIcon("graphics/jobs/ic_build.png"));
+                    renderer.drawSpriteOnMap(job.getTargetParcel(), spriteManager.getIcon("graphics/jobs/ic_build.png"));
                     renderer.drawTextOnMap(job.getTargetParcel(), "building", 10, Color.CHARTREUSE, 0, 0);
                 }
 
@@ -48,7 +48,7 @@ public class JobLayer extends BaseLayer {
 //            }
 
                 if (job.getIcon() != null) {
-                    renderer.drawOnMap(job.getTargetParcel(), spriteManager.getIcon(job.getIcon()));
+                    renderer.drawSpriteOnMap(job.getTargetParcel(), spriteManager.getIcon(job.getIcon()));
                 }
 
                 if (job.getColor() != null) {

@@ -27,7 +27,7 @@ public class PlantLayer extends BaseLayer {
     }
 
     private void drawPlant(GDXRenderer renderer, PlantItem plant) {
-        renderer.drawOnMap(plant.getParcel(),
+        renderer.drawSpriteOnMap(plant.getParcel(),
                 spriteManager.getNewSprite(plant.getGraphic(), getTileForMaturity(plant)));
     }
 

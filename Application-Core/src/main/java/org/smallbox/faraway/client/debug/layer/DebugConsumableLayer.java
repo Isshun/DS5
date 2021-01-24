@@ -22,7 +22,7 @@ public class DebugConsumableLayer extends BaseLayer {
     public void    onDraw(GDXRenderer renderer, Viewport viewport, double animProgress, int frame) {
         consumableModule.getAll()
                 .forEach(consumable -> {
-                    renderer.drawOnMap(consumable.getParcel().x, consumable.getParcel().y, consumableModule.hasLock(consumable) ? Color.CORAL : Color.CYAN);
+                    renderer.drawPixelOnMap(consumable.getParcel().x, consumable.getParcel().y, consumableModule.hasLock(consumable) ? Color.CORAL : Color.CYAN);
 
                     renderer.drawTextOnMap(consumable.getParcel().x, consumable.getParcel().y, consumable.getLabel(), 14, Color.BLACK, 1, 1);
                     renderer.drawTextOnMap(consumable.getParcel().x, consumable.getParcel().y, consumable.getLabel(), 14, Color.WHITE);

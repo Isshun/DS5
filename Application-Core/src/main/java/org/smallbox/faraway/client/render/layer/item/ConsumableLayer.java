@@ -1,10 +1,7 @@
 package org.smallbox.faraway.client.render.layer.item;
 
-import com.badlogic.gdx.graphics.Color;
 import org.smallbox.faraway.client.manager.SpriteManager;
-import org.smallbox.faraway.client.render.GDXRenderer;
-import org.smallbox.faraway.client.render.LayerManager;
-import org.smallbox.faraway.client.render.Viewport;
+import org.smallbox.faraway.client.render.*;
 import org.smallbox.faraway.client.render.layer.BaseLayer;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
 import org.smallbox.faraway.core.GameLayer;
@@ -20,9 +17,14 @@ import org.smallbox.faraway.util.Constant;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
+import static com.badlogic.gdx.graphics.Color.CYAN;
+import static com.badlogic.gdx.graphics.Color.WHITE;
+
 @GameObject
 @GameLayer(level = LayerManager.CONSUMABLE_LAYER_LEVEL, visible = true)
 public class ConsumableLayer extends BaseLayer {
+    private final static TextStyle consumableQuantityStyle = TextStyleBuilder.build("sui", 8, WHITE).autoScale(true).shadow(1).get();
+
     @Inject private SpriteManager spriteManager;
     @Inject private ConsumableModule consumableModule;
     @Inject private GDXRenderer gdxRenderer;
@@ -56,7 +58,7 @@ public class ConsumableLayer extends BaseLayer {
                 UILabel.create(null)
                         .setText(text)
                         .setTextSize(12)
-                        .setTextColor(Color.CYAN)
+                        .setTextColor(CYAN)
                         .draw(renderer, viewport.getScreenPosX(parcel.x), viewport.getScreenPosY(parcel.y));
                 frameLeft--;
             }
@@ -68,17 +70,19 @@ public class ConsumableLayer extends BaseLayer {
                 .filter(item -> viewport.hasParcel(item.getParcel()))
                 .filter(item -> item.getTotalQuantity() > 0)
                 .forEach(consumable -> {
+                    Parcel parcel = consumable.getParcel();
                     int offsetX = consumable.getStack() == 1 || consumable.getStack() == 3 ? Constant.HALF_TILE_SIZE : 0;
                     int offsetY = consumable.getStack() == 2 || consumable.getStack() == 3 ? Constant.HALF_TILE_SIZE : 0;
 
-                    renderer.drawOnMap(consumable.getParcel(), spriteManager.getNewSprite(consumable.getGraphic()), offsetX, offsetY);
+                    renderer.drawSpriteOnMap(parcel, spriteManager.getNewSprite(consumable.getGraphic()), offsetX, offsetY);
 //                    renderer.drawRectangleOnMap(consumable.getParcel().x, consumable.getParcel().y, 40, 10, new Color(0x75D0D4FF), true, 0, 0);
                     String stringQuantity = consumable.getTotalQuantity() >= 1000 ? consumable.getTotalQuantity() / 1000 + "k" : String.valueOf(consumable.getTotalQuantity());
 //                    renderer.drawTextOnMap(consumable.getParcel().x, consumable.getParcel().y, stringQuantity, 30, Color.WHITE, 1, 51, true);
 
-                    renderer.drawTextOnMapUI(consumable.getParcel().x, consumable.getParcel().y, stringQuantity, (int) (8 * (4 - gdxRenderer.getZoom())), Color.WHITE, offsetX, offsetY + 50, true);
+//                    renderer.drawTextOnMapUI(parcel.x, parcel.y, stringQuantity, (int) (8 * (4 - gdxRenderer.getZoom())), Color.WHITE, offsetX, offsetY + 50, false, true);
+                    renderer.drawTextOnMapUI(stringQuantity, consumableQuantityStyle, parcel, offsetX, offsetX + 50);
 
-                    drawSelectionOnMap(renderer, spriteManager, viewport, consumable, consumable.getParcel().x, consumable.getParcel().y, 20, 20, 6, 6);
+                    drawSelectionOnMap(renderer, spriteManager, viewport, consumable, parcel.x, parcel.y, 20, 20, 6, 6);
                 });
 
 //        tags.removeIf(draw -> draw.frameLeft < 0);

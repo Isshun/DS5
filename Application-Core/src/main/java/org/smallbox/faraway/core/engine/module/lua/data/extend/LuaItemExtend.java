@@ -13,6 +13,7 @@ import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.game.modelInfo.NetworkInfo;
 import org.smallbox.faraway.core.game.modelInfo.ReceiptGroupInfo;
 import org.smallbox.faraway.util.Constant;
+import org.smallbox.faraway.util.log.Log;
 
 import java.io.File;
 import java.util.*;
@@ -98,6 +99,7 @@ public class LuaItemExtend extends LuaExtend {
         }
 
         if (itemInfo.graphics.isEmpty()) {
+            Log.error("Unable to find graphic: " + itemInfo.name);
             GraphicInfo graphicInfo = new GraphicInfo("base", "/graphics/missing.png");
             graphicInfo.width = Constant.TILE_SIZE;
             graphicInfo.height = Constant.TILE_SIZE;

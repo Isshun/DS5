@@ -26,7 +26,7 @@ public class DebugItemLayer extends BaseLayer {
                 .forEach(item -> {
                     for (int i = 0; i < item.getWidth(); i++) {
                         for (int j = 0; j < item.getHeight(); j++) {
-                            renderer.drawOnMap(item.getParcel().x + i, item.getParcel().y + j, Color.CYAN);
+                            renderer.drawPixelOnMap(item.getParcel().x + i, item.getParcel().y + j, Color.CYAN);
                         }
                     }
 

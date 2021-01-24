@@ -293,7 +293,13 @@ public class SpriteManager {
                 Log.error(SpriteManager.class, "Unable to find " + path);
             }
         }
-        return assetManager.contains(path) ? assetManager.get(path) : assetManager.get("data/graphics/missing.png");
+
+        if (!assetManager.contains(path)) {
+            Log.error("Unable to find " + path);
+            return assetManager.get("data/graphics/missing.png");
+        }
+
+        return assetManager.get(path);
     }
 
     public Texture getTexture(GraphicInfo graphicInfo) {

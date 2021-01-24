@@ -25,7 +25,7 @@ public class ItemLayer extends BaseLayer {
                 .filter(item -> viewport.hasParcel(item.getParcel()))
                 .forEach(item -> {
                     Parcel parcel = item.getParcel();
-                    renderer.drawOnMap(item.getParcel(), getItemSprite(item));
+                    renderer.drawSpriteOnMap(item.getParcel(), getItemSprite(item));
 
                     if (item.getFactory() != null && item.getFactory().getCraftJob() != null) {
                         renderer.drawRectangleOnMap(parcel.x, parcel.y, (int) (32 * item.getFactory().getCraftJob().getProgress()), 6, Color.BLUE, true, 0, 0);

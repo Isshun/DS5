@@ -22,7 +22,7 @@ public class DebugGroundLayer extends BaseLayer {
                 .filter(parcel -> parcel.z == viewport.getFloor())
                 .forEach(parcel -> {
                     if (parcel.getGroundInfo() != null) {
-                        renderer.drawOnMap(parcel.x, parcel.y, Color.CORAL);
+                        renderer.drawPixelOnMap(parcel.x, parcel.y, Color.CORAL);
 
                         renderer.drawTextOnMap(parcel, parcel.getGroundInfo().label, 14, Color.BLACK, 1, 1);
                         renderer.drawTextOnMap(parcel, parcel.getGroundInfo().label, 14, Color.WHITE);
