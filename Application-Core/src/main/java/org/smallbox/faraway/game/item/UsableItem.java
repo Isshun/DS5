@@ -107,8 +107,8 @@ public class UsableItem extends BuildableMapObject {
     public void initSlots() {
         if (_info.slots != null) {
             _slots = _info.slots.stream()
-                    .filter(slot -> WorldHelper.getParcelOffset(_parcel, slot[0], slot[1]) != null)
-                    .map(slot -> new ItemSlot(this, WorldHelper.getParcelOffset(_parcel, slot[0], slot[1])))
+                    .filter(slot -> WorldHelper.getParcelOffset(_parcel, slot[0], slot[1], 0) != null)
+                    .map(slot -> new ItemSlot(this, WorldHelper.getParcelOffset(_parcel, slot[0], slot[1], 0)))
                     .collect(Collectors.toList());
         } else {
             _slots = Collections.singletonList(new ItemSlot(this, _parcel));

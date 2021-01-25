@@ -9,6 +9,9 @@ import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnInit;
 import org.smallbox.faraway.core.game.Game;
+import org.smallbox.faraway.game.dig.action.DigAction;
+import org.smallbox.faraway.game.dig.action.DigRampAction;
+import org.smallbox.faraway.game.dig.action.DigUnderAction;
 import org.smallbox.faraway.game.world.Parcel;
 import org.smallbox.faraway.game.area.AreaModule;
 import org.smallbox.faraway.game.area.AreaModuleBase;
@@ -25,6 +28,7 @@ public class DigModule extends AreaModuleBase<DigAction> {
     @Inject private DigJobFactory digJobFactory;
     @Inject private GameActionManager gameActionManager;
     @Inject private DigUnderAction digUnderAction;
+    @Inject private DigRampAction digRampAction;
     @Inject private DigAction digAction;
 
     @OnInit
@@ -44,7 +48,7 @@ public class DigModule extends AreaModuleBase<DigAction> {
         parcelInDigArea.stream()
                 .filter(parcel -> parcel.getRockInfo() != null)
                 .filter(parcel -> !CollectionUtils.containsAny(parcelInDigJob, parcel))
-                .forEach(parcel -> jobModule.add(digJobFactory.createJob(parcel)));
+                .forEach(parcel -> jobModule.add(digJobFactory.createJob(parcel, DigType.ROCK)));
     }
 
     @Override
@@ -54,7 +58,13 @@ public class DigModule extends AreaModuleBase<DigAction> {
 
     @GameShortcut(key = Input.Keys.G)
     public void digMode() {
-        gameActionManager.setAreaAction(GameActionMode.ADD_AREA, gameActionManager.getAction() == digAction ? digUnderAction : digAction);
+        if (gameActionManager.getAction() == digAction) {
+            gameActionManager.setAreaAction(GameActionMode.ADD_AREA, digUnderAction);
+        } else if (gameActionManager.getAction() == digUnderAction) {
+            gameActionManager.setAreaAction(GameActionMode.ADD_AREA, digRampAction);
+        } else {
+            gameActionManager.setAreaAction(GameActionMode.ADD_AREA, digAction);
+        }
     }
 
 }

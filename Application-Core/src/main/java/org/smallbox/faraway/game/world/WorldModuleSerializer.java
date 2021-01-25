@@ -2,6 +2,7 @@ package org.smallbox.faraway.game.world;
 
 import com.almworks.sqlite4java.SQLiteException;
 import com.almworks.sqlite4java.SQLiteStatement;
+import org.smallbox.faraway.core.game.model.MovableModel;
 import org.smallbox.faraway.util.GameException;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
@@ -27,12 +28,12 @@ public class WorldModuleSerializer extends GameSerializer {
     public void onSave(SQLManager sqlManager) {
         sqlManager.post(db -> {
             try {
-                db.exec("CREATE TABLE WorldModule_parcel (x INTEGER, y INTEGER, z INTEGER, ground TEXT, rock TEXT, plant INTEGER, item INTEGER, structure INTEGER, consumable INTEGER, liquid TEXT, liquid_value REAL)");
+                db.exec("CREATE TABLE WorldModule_parcel (x INTEGER, y INTEGER, z INTEGER, ground TEXT, rock TEXT, plant INTEGER, item INTEGER, structure INTEGER, consumable INTEGER, liquid TEXT, liquid_value REAL, ramp INTEGER)");
 //                db.exec("CREATE TABLE WorldModule_structure (id INTEGER, name TEXT, buildProgress INTEGER)");
                 db.exec("CREATE TABLE WorldModule_plant (_id INTEGER, name TEXT, maturity REAL, nourish REAL, seed INTEGER)");
 //                db.exec("CREATE TABLE WorldModule_consumable (id INTEGER, name TEXT, quantity INTEGER)");
 //                db.exec("CREATE TABLE WorldModule_network (x INTEGER, y INTEGER, z INTEGER, ground TEXT, rock TEXT, plant TEXT, item TEXT, structure TEXT)");
-                SQLiteStatement st = db.prepare("INSERT INTO WorldModule_parcel (x, y, z, ground, rock, plant, item, structure, consumable, liquid, liquid_value) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+                SQLiteStatement st = db.prepare("INSERT INTO WorldModule_parcel (x, y, z, ground, rock, plant, item, structure, consumable, liquid, liquid_value, ramp) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 //                SQLiteStatement stStructure = db.prepare("INSERT INTO WorldModule_structure (id, name, buildProgress) VALUES (?, ?, ?)");
                 SQLiteStatement stPlant = db.prepare("INSERT INTO WorldModule_plant (_id, name, maturity, nourish, seed) VALUES (?, ?, ?, ?, ?)");
 //                SQLiteStatement stConsumable = db.prepare("INSERT INTO WorldModule_consumable (id, name, quantity) VALUES (?, ?, ?)");
@@ -108,6 +109,8 @@ public class WorldModuleSerializer extends GameSerializer {
             st.bindNull(10);
         }
 
+        st.bind(12, parcel.hasRamp() ? 1 : 0);
+
         st.step();
         st.reset(false);
     }
@@ -119,7 +122,7 @@ public class WorldModuleSerializer extends GameSerializer {
             List<Parcel> parcelsList = new ArrayList<>();
 
             try {
-                SQLiteStatement st = db.prepare("SELECT x, y, z, ground, rock, plant, item, structure, consumable, liquid, liquid_value FROM WorldModule_parcel");
+                SQLiteStatement st = db.prepare("SELECT x, y, z, ground, rock, plant, item, structure, consumable, liquid, liquid_value, ramp FROM WorldModule_parcel");
                 SQLiteStatement stPlant = db.prepare("SELECT _id, name, maturity, nourish, seed FROM WorldModule_plant WHERE _id = ?");
                 try {
                     while (st.step()) {
@@ -159,6 +162,12 @@ public class WorldModuleSerializer extends GameSerializer {
                         if (!st.columnNull(9)) {
                             parcel.setLiquidInfo(dataManager.getItemInfo(st.columnString(9)), st.columnDouble(10));
                         }
+
+                        // Ramp
+                        if (st.columnInt(11) == 1) {
+                            parcel.setRamp(MovableModel.Direction.LEFT);
+                        }
+
                     }
                 } finally {
                     st.dispose();

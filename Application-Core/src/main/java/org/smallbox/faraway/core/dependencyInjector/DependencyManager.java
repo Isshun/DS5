@@ -179,7 +179,7 @@ public class DependencyManager {
             GameShortcut gameShortcut = method.getAnnotation(GameShortcut.class);
             if (gameShortcut != null) {
                 Log.debug(String.format("Try to inject %s to %s", method.getName(), host.getClass().getSimpleName()));
-                getDependency(ShortcutManager.class).addBinding(host.getClass().getName() + "." + method.getName(), gameShortcut.key(), () -> {
+                getDependency(ShortcutManager.class).addBinding(host.getClass().getSimpleName() + "." + method.getName(), gameShortcut.key(), () -> {
                     try {
                         method.invoke(host);
                     } catch (IllegalAccessException | InvocationTargetException e) {

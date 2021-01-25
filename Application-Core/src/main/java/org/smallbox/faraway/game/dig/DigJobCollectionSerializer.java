@@ -48,7 +48,7 @@ public class DigJobCollectionSerializer extends GenericGameCollectionSerializer<
         try {
             while (selectStatement.step()) {
                 Optional.ofNullable(WorldHelper.getParcel(selectStatement.columnInt(1), selectStatement.columnInt(2), selectStatement.columnInt(3)))
-                        .ifPresent(parcel -> jobModule.add(digJobFactory.createJob(parcel)));
+                        .ifPresent(parcel -> jobModule.add(digJobFactory.createJob(parcel, DigType.ROCK)));
             }
         } finally {
             selectStatement.dispose();

@@ -5,6 +5,8 @@ import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.game.job.task.ActionTask;
 import org.smallbox.faraway.game.job.task.MoveTask;
+import org.smallbox.faraway.game.world.SurroundedPattern;
+import org.smallbox.faraway.game.world.WorldHelper;
 
 import static org.smallbox.faraway.game.job.JobTaskReturn.TASK_COMPLETED;
 import static org.smallbox.faraway.game.job.JobTaskReturn.TASK_CONTINUE;
@@ -20,6 +22,7 @@ public class ConsumeJobFactory {
         job._consumable = consumable;
         job._lock = consumableModule.lock(job, consumable, 1);
         job._targetParcel = consumable.getParcel();
+        WorldHelper.getParcelAround(consumable.getParcel(), SurroundedPattern.SQUARE, job::addAcceptedParcel);
 
         job.setMainLabel("Consume " + consumable.getInfo().label);
 

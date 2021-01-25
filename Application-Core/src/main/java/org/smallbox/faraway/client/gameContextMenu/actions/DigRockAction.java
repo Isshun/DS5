@@ -3,6 +3,7 @@ package org.smallbox.faraway.client.gameContextMenu.actions;
 import org.smallbox.faraway.client.gameContextMenu.GameContextMenuAction;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
+import org.smallbox.faraway.game.dig.DigType;
 import org.smallbox.faraway.game.world.Parcel;
 import org.smallbox.faraway.game.dig.DigJobFactory;
 import org.smallbox.faraway.game.job.JobModule;
@@ -24,6 +25,6 @@ public class DigRockAction implements GameContextMenuAction {
 
     @Override
     public Runnable getRunnable(Parcel parcel, int mouseX, int mouseY) {
-        return () -> jobModule.add(digJobFactory.createJob(parcel));
+        return () -> jobModule.add(digJobFactory.createJob(parcel, DigType.ROCK));
     }
 }

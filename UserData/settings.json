@@ -1,6 +1,6 @@
 {
   "debug": {
-    "actionOnLoad": "NEW_GAME",
+    "actionOnLoad": "LAST_SAVE",
     "debugView": false,
     "scenario": "data/scenarios/test1.json",
     "log": true,

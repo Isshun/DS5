@@ -86,6 +86,7 @@ public class GDXApplication extends ApplicationAdapter {
 
     @Override
     public void dispose() {
+        DependencyManager.getInstance().getDependency(AssetManager.class).dispose();
         System.exit(0);
     }
 }

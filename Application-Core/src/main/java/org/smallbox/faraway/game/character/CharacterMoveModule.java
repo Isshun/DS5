@@ -5,6 +5,7 @@ import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.module.SuperGameModule2;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameManager;
+import org.smallbox.faraway.game.job.JobModel;
 import org.smallbox.faraway.game.world.WorldHelper;
 import org.smallbox.faraway.core.game.model.MovableModel;
 import org.smallbox.faraway.core.config.ApplicationConfig;
@@ -13,6 +14,7 @@ import org.smallbox.faraway.game.world.Parcel;
 import org.smallbox.faraway.game.character.model.PathModel;
 import org.smallbox.faraway.game.character.model.base.CharacterModel;
 import org.smallbox.faraway.util.Constant;
+import org.smallbox.faraway.util.GameException;
 import org.smallbox.faraway.util.MoveListener;
 import org.smallbox.faraway.util.log.Log;
 
@@ -48,29 +50,36 @@ public class CharacterMoveModule extends SuperGameModule2<CharacterModuleObserve
 //        characterModule.getAll().forEach(this::move);
     }
 
-    public CharacterMoveStatus move(CharacterModel character, Parcel parcel, boolean minusOne, float moveSpeed) {
+    public CharacterMoveStatus move(CharacterModel character, JobModel job) {
+        PathModel path = Optional.ofNullable(job.getStatusForCharacter(character)).map(jobStatus -> jobStatus.path).orElse(null);
 
-        // Character is already moving to this parcel
-        if (character.getPath() != null && character.getPath().getLastParcel() == parcel) {
+        // Check that path going to job's accepted parcels
+        if (path != null && !job.getAcceptedParcels().contains(path.getLastParcel())) {
+            Log.warning("Job containing outdated path");
+            path = pathManager.getPath(character.getParcel(), job.getAcceptedParcels());
+            job.getStatusForCharacter(character).path = path;
+        }
+
+        if (path != null) {
+
+            // Character is already moving on this path
+            if (character.getPath() == path) {
+                return CharacterMoveStatus.CONTINUE;
+            }
+
+            // Last move on this path
+            if (job.getAcceptedParcels().contains(character.getParcel())) {
+                return CharacterMoveStatus.COMPLETED;
+            }
+
+            // First move on this path
+            character.setPath(path);
+            job._targetParcel = path.getLastParcel();
+            path.setMoveSpeed(job.getMoveSpeed());
             return CharacterMoveStatus.CONTINUE;
         }
 
-        // Character is already on this parcel
-        if (character.getPath() == null && character.getParcel() == parcel) {
-            return CharacterMoveStatus.COMPLETED;
-        }
-
-        Log.info("Move character to " + parcel.x + "x" + parcel.y);
-        PathModel path = pathManager.getPath(character.getParcel(), parcel, false, false, minusOne);
-
-        // Path to parcel cannot be found
-        if (path == null) {
-            return CharacterMoveStatus.BLOCKED;
-        }
-
-        path.setMoveSpeed(moveSpeed);
-        character.setPath(path);
-        return CharacterMoveStatus.CONTINUE;
+        throw new GameException(CharacterMoveModule.class, "Try to move character for job but path didn't exists in JobCharacterStatus");
     }
 
     private void doMove(CharacterModel character) {
@@ -103,7 +112,6 @@ public class CharacterMoveModule extends SuperGameModule2<CharacterModuleObserve
             character.position.parcelZ = character.getParcel().z;
 
             Log.debug(getName() + " Move progress = " + character._moveProgress + ", " + character._moveProgress2);
-
         });
     }
 
@@ -129,6 +137,7 @@ public class CharacterMoveModule extends SuperGameModule2<CharacterModuleObserve
         // When path.next() return false, the move is completed
         else {
             character._path = null;
+            character._parcel = _path.getLastParcel();
 
             // TODO: is moveListener useful ?
             if (character._moveListener != null) {

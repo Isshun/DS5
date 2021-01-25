@@ -1,19 +1,20 @@
 package org.smallbox.faraway.game.plant;
 
 import com.badlogic.gdx.graphics.Color;
-import org.smallbox.faraway.util.GameException;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
-import org.smallbox.faraway.game.world.WorldHelper;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.path.PathManager;
-import org.smallbox.faraway.game.world.Parcel;
 import org.smallbox.faraway.game.character.model.CharacterSkillExtra;
 import org.smallbox.faraway.game.consumable.ConsumableModule;
 import org.smallbox.faraway.game.job.JobModel;
 import org.smallbox.faraway.game.job.task.MoveTask;
 import org.smallbox.faraway.game.job.task.TechnicalTask;
 import org.smallbox.faraway.game.plant.model.PlantItem;
+import org.smallbox.faraway.game.world.Parcel;
+import org.smallbox.faraway.game.world.SurroundedPattern;
+import org.smallbox.faraway.game.world.WorldHelper;
+import org.smallbox.faraway.util.GameException;
 
 @GameObject
 public class HarvestJobFactory {
@@ -31,6 +32,7 @@ public class HarvestJobFactory {
             job.setSkillType(CharacterSkillExtra.SkillType.GATHER);
             job.setIcon("[base]/graphics/jobs/ic_gather.png");
             job.setColor(Color.CHARTREUSE);
+            WorldHelper.getParcelAround(plant.getParcel(), SurroundedPattern.SQUARE, job::addAcceptedParcel);
 
             // Déplace le personnage à l'emplacement des composants
             job.addTask(new MoveTask("Move to plant", () -> consumableDropParcel));

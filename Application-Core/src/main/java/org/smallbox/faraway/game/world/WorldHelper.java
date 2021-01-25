@@ -322,9 +322,9 @@ public class WorldHelper {
         return null;
     }
 
-    public static Parcel getParcelOffset(Parcel parcel, int offsetX, int offsetY) {
-        if (inMapBounds(parcel.x + offsetX, parcel.y + offsetY, parcel.z)) {
-            return _parcels[parcel.x + offsetX][parcel.y + offsetY][parcel.z];
+    public static Parcel getParcelOffset(Parcel parcel, int offsetX, int offsetY, int offsetZ) {
+        if (inMapBounds(parcel.x + offsetX, parcel.y + offsetY, parcel.z + offsetZ)) {
+            return _parcels[parcel.x + offsetX][parcel.y + offsetY][parcel.z + offsetZ];
         }
         return null;
     }
@@ -365,6 +365,12 @@ public class WorldHelper {
         void onCallback(Parcel parcel);
     }
 
+    public static List<Parcel> getParcelAround(Parcel source, SurroundedPattern surroundedPattern) {
+        List<Parcel> parcels = new ArrayList<>();
+        getParcelAround(source, surroundedPattern, parcel -> true, parcels::add);
+        return parcels;
+    }
+
     public static void getParcelAround(Parcel source, SurroundedPattern surroundedPattern, ParcelCallback callback) {
         getParcelAround(source, surroundedPattern, parcel -> true, callback);
     }
@@ -372,7 +378,7 @@ public class WorldHelper {
     public static void getParcelAround(Parcel source, SurroundedPattern surroundedPattern, Predicate<Parcel> condition, ParcelCallback callback) {
 
         // Same parcel
-        if (surroundedPattern != SurroundedPattern.X_CROSS && surroundedPattern != SurroundedPattern.X_SQUARE) {
+        if (surroundedPattern != SurroundedPattern.X_CROSS && surroundedPattern != SurroundedPattern.X_SQUARE && surroundedPattern != SurroundedPattern.X_CROSS_3 && surroundedPattern != SurroundedPattern.X_SQUARE_3) {
             Optional.ofNullable(getParcel(source.x, source.y, source.z)).filter(condition).ifPresent(callback::onCallback);
         }
 
@@ -383,11 +389,17 @@ public class WorldHelper {
         Optional.ofNullable(getParcel(source.x, source.y + 1, source.z)).filter(condition).ifPresent(callback::onCallback);
 
         // Diagonal
-        if (surroundedPattern == SurroundedPattern.SQUARE || surroundedPattern == SurroundedPattern.X_SQUARE) {
+        if (surroundedPattern == SurroundedPattern.SQUARE || surroundedPattern == SurroundedPattern.X_SQUARE || surroundedPattern == SurroundedPattern.X_SQUARE_3) {
             Optional.ofNullable(getParcel(source.x - 1, source.y - 1, source.z)).filter(condition).ifPresent(callback::onCallback);
             Optional.ofNullable(getParcel(source.x + 1, source.y + 1, source.z)).filter(condition).ifPresent(callback::onCallback);
             Optional.ofNullable(getParcel(source.x - 1, source.y + 1, source.z)).filter(condition).ifPresent(callback::onCallback);
             Optional.ofNullable(getParcel(source.x + 1, source.y - 1, source.z)).filter(condition).ifPresent(callback::onCallback);
+        }
+
+        // Cross 3 - Add below and above parcels
+        if (surroundedPattern == SurroundedPattern.X_CROSS_3 || surroundedPattern == SurroundedPattern.X_SQUARE_3) {
+            Optional.ofNullable(getParcel(source.x, source.y, source.z - 1)).filter(condition).ifPresent(callback::onCallback);
+            Optional.ofNullable(getParcel(source.x, source.y, source.z + 1)).filter(condition).ifPresent(callback::onCallback);
         }
 
     }

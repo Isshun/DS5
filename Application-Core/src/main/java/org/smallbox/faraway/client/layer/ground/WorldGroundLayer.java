@@ -2,6 +2,7 @@ package org.smallbox.faraway.client.layer.ground;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
+import org.smallbox.faraway.client.asset.AssetManager;
 import org.smallbox.faraway.client.renderer.MapRenderer;
 import org.smallbox.faraway.client.renderer.BaseRenderer;
 import org.smallbox.faraway.client.layer.LayerManager;
@@ -30,6 +31,7 @@ public class WorldGroundLayer extends BaseMapLayer {
     @Inject private RockTileGenerator rockTileGenerator;
     @Inject private ApplicationConfig applicationConfig;
     @Inject private WorldModule worldModule;
+    @Inject private AssetManager assetManager;
     @Inject private GameSelectionManager gameSelectionManager;
     @Inject private Viewport viewport;
     @Inject private MapRenderer mapRenderer;
@@ -85,7 +87,12 @@ public class WorldGroundLayer extends BaseMapLayer {
                     }
 
                     if (parcel.hasRock()) {
-                        renderer.drawTextureOnMap(parcel, cachedRocks.computeIfAbsent(parcel, p -> rockTileGenerator.getTexture(p)));
+
+                        if (parcel.getRampDirection() != null) {
+                            renderer.drawTextOnMap(parcel, "RAMP", Color.BLACK, 32, 0, 0);
+                        } else {
+                            renderer.drawTextureOnMap(parcel, cachedRocks.computeIfAbsent(parcel, p -> rockTileGenerator.getTexture(p)));
+                        }
                     }
 
                     if (gameSelectionManager.getSelected().contains(parcel)) {

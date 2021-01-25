@@ -1,25 +1,28 @@
 package org.smallbox.faraway.client.controller;
 
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.Color;
 import org.apache.commons.collections4.CollectionUtils;
 import org.smallbox.faraway.client.controller.annotation.BindLua;
 import org.smallbox.faraway.client.controller.annotation.BindLuaAction;
 import org.smallbox.faraway.client.selection.GameSelectionManager;
-import org.smallbox.faraway.client.ui.event.UIEventManager;
-import org.smallbox.faraway.client.ui.widgets.View;
-import org.smallbox.faraway.client.ui.widgets.*;
 import org.smallbox.faraway.client.shortcut.GameShortcut;
+import org.smallbox.faraway.client.ui.event.UIEventManager;
+import org.smallbox.faraway.client.ui.widgets.UIImage;
+import org.smallbox.faraway.client.ui.widgets.UILabel;
+import org.smallbox.faraway.client.ui.widgets.UIList;
+import org.smallbox.faraway.client.ui.widgets.View;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.dependencyInjector.gameAction.OnGameSelectAction;
-import org.smallbox.faraway.game.world.Parcel;
+import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.game.item.ItemModule;
 import org.smallbox.faraway.game.item.UsableItem;
 import org.smallbox.faraway.game.itemFactory.ItemFactoryModel;
 import org.smallbox.faraway.game.job.JobModel;
+import org.smallbox.faraway.game.world.Parcel;
 
 import java.util.Collection;
+import java.util.Optional;
 import java.util.Queue;
 
 @GameObject
@@ -31,7 +34,9 @@ public class ItemInfoController extends AbsInfoLuaController<UsableItem> {
     @BindLua private UILabel lbName;
     @BindLua private UILabel lbHealth;
     @BindLua private View progressHealth;
+    @BindLua private View viewProgress;
 
+    @BindLua private View frameDurability;
     @BindLua private View frameContent;
     @BindLua private View frameWorkers;
     @BindLua private View frameComponents;
@@ -43,30 +48,60 @@ public class ItemInfoController extends AbsInfoLuaController<UsableItem> {
     @BindLua private UILabel lbFactoryJob;
 
     @BindLua private UILabel currentAction;
-    @BindLua private UIList listActions;
     @BindLua private UIList listWorkers;
     @BindLua private UIList listComponents;
     @BindLua private UIList listFactoryInventory;
     @BindLua private UIList listInventory;
 
     @BindLua private View frameBuild;
-    @BindLua private View buildingActions;
-    @BindLua private View regularActions;
-    @BindLua private UILabel progressBuild;
-    @BindLua private UIList listBuildComponents;
+    @BindLua private UILabel lbBuild;
     @BindLua private UIImage image;
     @Inject private ItemInfoReceiptController itemInfoReceiptController;
     @Inject private ItemInfoFactoryComponentsController itemInfoFactoryComponentsController;
     @Inject private ItemModule itemModule;
+
+    private UsableItem item;
 
     @Override
     public void onReloadUI() {
         gameSelectionManager.registerSelection(this);
     }
 
+    @Override
+    public void onGameLongUpdate(Game game) {
+
+        // Refresh inventory
+        if (item != null) {
+            refreshItem(item);
+        }
+
+    }
+
+    private void refreshItem(UsableItem item) {
+        refreshInventory(item);
+        refreshBuildProgress(item);
+    }
+
+    private void refreshBuildProgress(UsableItem item) {
+        frameBuild.setVisible(false);
+        frameDurability.setVisible(false);
+
+        if (item.isComplete()) {
+            frameDurability.setVisible(true);
+            lbHealth.setText(item.getHealth() + " / " + item.getMaxHealth());
+            progressHealth.getGeometry().setWidth(progressHealth.getGeometry().getFixedWidth() * item.getHealth() / item.getMaxHealth());
+        } else {
+            frameBuild.setVisible(true);
+            lbBuild.setText((int) (item.getBuildProgress() * 100) + "%");
+            viewProgress.getGeometry().setWidth((int) (viewProgress.getGeometry().getFixedWidth() * item.getBuildProgress()));
+        }
+    }
+
     @OnGameSelectAction(UsableItem.class)
     protected void onSelectItem(UsableItem item) {
         setVisible(true);
+
+        this.item = item;
 
         lbName.setText(item.getLabel());
         lbHealth.setText(item.getHealth() + " / " + item.getMaxHealth());
@@ -75,46 +110,26 @@ public class ItemInfoController extends AbsInfoLuaController<UsableItem> {
 
         if (!item.isComplete()) {
             frameBuild.setVisible(true);
-            buildingActions.setVisible(true);
-            regularActions.setVisible(false);
             displayBuildPane(item);
             return;
         } else {
             frameBuild.setVisible(false);
-            buildingActions.setVisible(false);
-            regularActions.setVisible(true);
         }
+//
+//        refreshActions(item);
+//        refreshBuilding(item);
+//        refreshJobs(item.getJobs());
+//        refreshInventory(item);
+//
+//        if (item.getFactory() != null) {
+//            itemInfoFactoryComponentsController.setItem(item);
+//            refreshFactory(item.getFactory());
+//        }
 
-        refreshActions(item);
-        refreshBuilding(item);
-        refreshJobs(item.getJobs());
-        refreshInventory(item);
-
-        if (item.getFactory() != null) {
-            itemInfoFactoryComponentsController.setItem(item);
-            refreshFactory(item.getFactory());
-        }
-
-        if (item.getInventory() != null) {
-            item.getInventory().forEach(consumable ->
-                    listInventory.addNextView(UILabel.create(null)
-                            .setText(consumable.getInfo().label)
-                            .setTextColor(0x9afbffff)
-                            .setSize(100, 20))
-            );
-            listInventory.switchViews();
-        }
     }
 
     private void displayBuildPane(UsableItem item) {
-        progressBuild.setText(String.format("%3d%%", (int) (item.getBuildProgress() * 100)));
 
-        item.getInfo().build.components.forEach(componentInfo ->
-                listBuildComponents.addNextView(UILabel.create(null)
-                        .setDashedString(componentInfo.component.label, item.getInventoryQuantity(componentInfo.component) + " / " + componentInfo.quantity, 42)
-                        .setTextColor(item.getInventoryQuantity(componentInfo.component) < componentInfo.quantity ? 0xabababff : 0x9afbffff)
-                        .setSize(100, 20)));
-        listBuildComponents.switchViews();
     }
 
     private void refreshFactory(ItemFactoryModel factory) {
@@ -148,11 +163,13 @@ public class ItemInfoController extends AbsInfoLuaController<UsableItem> {
     }
 
     private void refreshInventory(UsableItem item) {
-        listFactoryInventory.removeAllViews();
-        item.getInventory().forEach(consumable -> {
-            UILabel label = new UILabel(null);
-            label.setText(consumable.getInfo().label + " x " + consumable.getFreeQuantity());
-            listFactoryInventory.addView(label);
+        Optional.ofNullable(item.getInventory()).ifPresent(consumables -> {
+            consumables.forEach(consumable -> {
+                UILabel entryItem = listInventory.createFromTemplate(UILabel.class);
+                entryItem.setText(consumable.getInfo().label + " x" + consumable.getTotalQuantity());
+                listInventory.addNextView(entryItem);
+            });
+            listInventory.switchViews();
         });
     }
 
@@ -170,36 +187,36 @@ public class ItemInfoController extends AbsInfoLuaController<UsableItem> {
     }
 
     private void refreshActions(UsableItem item) {
-        listActions.removeAllViews();
-
-        if (item.getFactory() != null) {
-            item.getFactory().getReceiptGroups().forEach(receiptGroup -> {
-                UIFrame lineReceiptGroup = new UIFrame(null);
-                lineReceiptGroup.setSize(100, 20);
-
-                UIMultiCheckBox lbLabel = UIMultiCheckBox.create(null);
-                lbLabel.setText(receiptGroup.receiptGroupInfo.label);
-                lbLabel.setChecked(UIMultiCheckBox.Value.PARTIAL);
-                lbLabel.setSize(220, 20);
-                lineReceiptGroup.addView(lbLabel);
-
-                UILabel btInfo = UILabel.create(null);
-                btInfo.setText("[info]");
-                btInfo.getEvents().setOnClickListener(() -> itemInfoReceiptController.display(receiptGroup));
-                btInfo.setPosition(220, 0);
-                btInfo.setSize(50, 20);
-                btInfo.getStyle().setBackgroundColor(Color.CYAN);
-                lineReceiptGroup.addView(btInfo);
-
-                listActions.addView(lineReceiptGroup);
-
-                if (item.getFactory().hasRunningReceipt()) {
-                    currentAction.setText(item.getFactory().getRunningReceipt().receiptInfo.label);
-                } else {
-                    currentAction.setText("no running receipt");
-                }
-            });
-        }
+//        listActions.removeAllViews();
+//
+//        if (item.getFactory() != null) {
+//            item.getFactory().getReceiptGroups().forEach(receiptGroup -> {
+//                UIFrame lineReceiptGroup = new UIFrame(null);
+//                lineReceiptGroup.setSize(100, 20);
+//
+//                UIMultiCheckBox lbLabel = UIMultiCheckBox.create(null);
+//                lbLabel.setText(receiptGroup.receiptGroupInfo.label);
+//                lbLabel.setChecked(UIMultiCheckBox.Value.PARTIAL);
+//                lbLabel.setSize(220, 20);
+//                lineReceiptGroup.addView(lbLabel);
+//
+//                UILabel btInfo = UILabel.create(null);
+//                btInfo.setText("[info]");
+//                btInfo.getEvents().setOnClickListener(() -> itemInfoReceiptController.display(receiptGroup));
+//                btInfo.setPosition(220, 0);
+//                btInfo.setSize(50, 20);
+//                btInfo.getStyle().setBackgroundColor(Color.CYAN);
+//                lineReceiptGroup.addView(btInfo);
+//
+//                listActions.addView(lineReceiptGroup);
+//
+//                if (item.getFactory().hasRunningReceipt()) {
+//                    currentAction.setText(item.getFactory().getRunningReceipt().receiptInfo.label);
+//                } else {
+//                    currentAction.setText("no running receipt");
+//                }
+//            });
+//        }
 
         //        if (item.getFactory() != null) {
 //            item.getFactory().getCraftActions().entrySet().forEach(entry -> {

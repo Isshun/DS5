@@ -33,8 +33,12 @@ public class UIList extends CompositeView implements AutoCloseable {
             offset += subView.getHeight() + subView.getGeometry().getMarginTop() + subView.getGeometry().getMarginBottom();
         }
 
-        if (geometry.getFixedWidth() == -1 || geometry.getFixedHeight() == -1) {
-            setSize(getWidth(), offset);
+        if (geometry.getFixedWidth() == View.CONTENT) {
+            geometry.setWidth(getWidth());
+        }
+
+        if (geometry.getFixedHeight() == View.CONTENT) {
+            geometry.setHeight(offset);
         }
     }
 

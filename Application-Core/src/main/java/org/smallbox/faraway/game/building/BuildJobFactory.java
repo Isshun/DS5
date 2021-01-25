@@ -1,17 +1,18 @@
 package org.smallbox.faraway.game.building;
 
+import org.smallbox.faraway.core.config.ApplicationConfig;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
-import org.smallbox.faraway.core.config.ApplicationConfig;
 import org.smallbox.faraway.core.path.PathManager;
 import org.smallbox.faraway.core.world.model.BuildableMapObject;
-import org.smallbox.faraway.game.world.Parcel;
 import org.smallbox.faraway.game.character.model.CharacterSkillExtra;
 import org.smallbox.faraway.game.item.ItemModule;
 import org.smallbox.faraway.game.job.JobModel;
 import org.smallbox.faraway.game.job.task.ActionTask;
-import org.smallbox.faraway.game.job.task.MoveTask;
+import org.smallbox.faraway.game.world.Parcel;
+import org.smallbox.faraway.game.world.SurroundedPattern;
+import org.smallbox.faraway.game.world.WorldHelper;
 
 import static org.smallbox.faraway.game.job.JobTaskReturn.TASK_COMPLETED;
 import static org.smallbox.faraway.game.job.JobTaskReturn.TASK_CONTINUE;
@@ -36,8 +37,9 @@ public class BuildJobFactory {
                 receiptInfo -> receiptInfo.inputs.forEach(
                         inputInfo -> buildJob.addSubJob(bringItemJobFactory.createJob(buildJob, buildJob._mapObject, inputInfo.item, inputInfo.quantity))));
 
+        buildJob.setAcceptedParcel(WorldHelper.getParcelAround(targetParcel, SurroundedPattern.SQUARE));
+
         // Job
-        buildJob.addTask(new MoveTask("Move to parcel", () -> targetParcel));
         buildJob.addTask(new ActionTask("Build", (character, hourInterval, localDateTime) -> {
             buildJob._mapObject.actionBuild(1 / applicationConfig.game.buildTime * hourInterval);
             buildJob.setProgress(buildJob._mapObject.getBuildValue(), buildJob._mapObject.getBuildCost());
@@ -45,7 +47,7 @@ public class BuildJobFactory {
 
         // Close
         buildJob.addCloseTask(job -> removeUncompletedObject(buildJob._mapObject)); // Delete uncompleted object
-        buildJob.addCloseTask(job -> pathManager.refreshConnections(job.getTargetParcel())); // Refresh path manager
+        buildJob.addCloseTask(job -> pathManager.refreshConnections(targetParcel)); // Refresh path manager
 
         return buildJob;
     }

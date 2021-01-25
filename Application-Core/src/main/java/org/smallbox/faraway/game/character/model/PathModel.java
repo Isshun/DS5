@@ -7,7 +7,6 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import org.smallbox.faraway.core.path.spline.BezierPath;
 import org.smallbox.faraway.game.world.Parcel;
-import org.smallbox.faraway.util.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +15,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class PathModel {
 
-//    public final double[] _spline;
+    //    public final double[] _spline;
 //    public final double[] _c;
     public final List<Vector3> _curve;
     private final Parcel _lastParcelCharacter;
@@ -45,35 +44,17 @@ public class PathModel {
         return moveSpeed;
     }
 
-    public static class PathSection {
-        public final int length;
-        public final int dirX;
-        public final int dirY;
-        public final Parcel p1;
-        public final Parcel p2;
-        public long startTime;
-        public long lastTime;
-
-        public PathSection(Parcel p1, Parcel p2, int length) {
-            this.dirX = Utils.bound(-1, 1, p2.x - p1.x);
-            this.dirY = Utils.bound(-1, 1, p2.y - p1.y);
-            this.length = length;
-            this.p1 = p1;
-            this.p2 = p2;
-        }
-    }
-
     private Parcel _currentParcel;
     private final Parcel _firstParcel;
     private final Parcel _lastParcel;
-    private final int                         _length;
-    private int                         _index;
-    public GraphPath<Parcel>      _nodes;
-    private final Queue<PathSection>    _smooth = new ConcurrentLinkedQueue<>();
+    private final int _length;
+    private int _index;
+    public GraphPath<Parcel> graphPath;
+    private final Queue<PathSection> _smooth = new ConcurrentLinkedQueue<>();
 
-    public static PathModel create(GraphPath<Parcel> nodes, boolean minusOne) {
-        if (nodes != null) {
-            return new PathModel(nodes, minusOne);
+    public static PathModel create(GraphPath<Parcel> graphPath, boolean minusOne) {
+        if (graphPath != null) {
+            return new PathModel(graphPath, minusOne);
         }
         return null;
     }
@@ -82,12 +63,12 @@ public class PathModel {
         return _smooth;
     }
 
-    private PathModel(GraphPath<Parcel> nodes, boolean minusOne) {
-        _nodes = nodes;
+    private PathModel(GraphPath<Parcel> graphPath, boolean minusOne) {
+        this.graphPath = graphPath;
         this.minusOne = minusOne;
 
         List<Vector3> vector3List = new ArrayList<>();
-        nodes.forEach(parcel -> vector3List.add(new Vector3(parcel.x, parcel.y, 0)));
+        graphPath.forEach(parcel -> vector3List.add(new Vector3(parcel.x, parcel.y, 0)));
         BezierPath bezierPath = new BezierPath();
         bezierPath.SetControlPoints(vector3List);
         _curve = bezierPath.GetDrawingPoints1();
@@ -101,11 +82,11 @@ public class PathModel {
 //        CatmullRomSpline.calculate(out, t, dataSet, continuous, tmp);// stores in the vector out the point of the catmullRom path of the dataSet in the time t. Uses tmp as a temporary vector. if continuous is true, the path is a loop.
 //        CatmullRomSpline.derivative(out, t, dataSet, continuous, tmp); // the same as above, but stores the derivative of the time t in the vector out
 
-        int count = nodes.getCount();
+        int count = graphPath.getCount();
         Vector2[] vector2List = new Vector2[count + 2];
-        vector2List[0] = new Vector2(nodes.get(0).x, nodes.get(0).y);
+        vector2List[0] = new Vector2(graphPath.get(0).x, graphPath.get(0).y);
         for (int i = 0; i < count; i++) {
-            vector2List[i + 1] = new Vector2(nodes.get(i).x, nodes.get(i).y);
+            vector2List[i + 1] = new Vector2(graphPath.get(i).x, graphPath.get(i).y);
             vector2List[i + 2] = vector2List[i + 1];
         }
 
@@ -125,14 +106,14 @@ public class PathModel {
 //        _c = c;
 //        _spline = SplineFactory.createBezier (c,     32);
 
-        _currentParcel = nodes.getCount() > 0 ? nodes.get(0) : null;
-        _firstParcel = nodes.getCount() > 0 ? nodes.get(0) : null;
-        _lastParcel = nodes.getCount() > 0 ? nodes.get(nodes.getCount() - 1) : null;
-        _lastParcelCharacter = nodes.getCount() > 0 ? nodes.get(Math.max(nodes.getCount() - (minusOne ? 2 : 1), 0)) : null;
-        _length = nodes.getCount();
+        _currentParcel = graphPath.getCount() > 0 ? graphPath.get(0) : null;
+        _firstParcel = graphPath.getCount() > 0 ? graphPath.get(0) : null;
+        _lastParcel = graphPath.getCount() > 0 ? graphPath.get(graphPath.getCount() - 1) : null;
+        _lastParcelCharacter = graphPath.getCount() > 0 ? graphPath.get(Math.max(graphPath.getCount() - (minusOne ? 2 : 1), 0)) : null;
+        _length = graphPath.getCount();
         _index = 0;
 
-        Parcel p1 = nodes.get(0);
+        Parcel p1 = graphPath.get(0);
 //        int lastOffsetX = nodes.get(1).x - nodes.get(0).x;
 //        int lastOffsetY = nodes.get(1).y - nodes.get(0).y;
 //        int length = 1;
@@ -150,7 +131,7 @@ public class PathModel {
 //            }
 //        }
 
-        _smooth.add(new PathSection(p1, _lastParcel, nodes.getCount()));
+        _smooth.add(new PathSection(p1, _lastParcel, graphPath.getCount()));
     }
 
     private int dirY(int dir) {
@@ -182,34 +163,51 @@ public class PathModel {
     }
 
     private int getDir(Parcel p1, Parcel p2) {
-        if (p1.x < p2.x     &&  p1.y < p2.y)     return 1;
-        if (p1.x == p2.x    &&  p1.y < p2.y)    return 2;
-        if (p1.x > p2.x     &&  p1.y < p2.y)     return 3;
-        if (p1.x > p2.x     &&  p1.y == p2.y)    return 4;
-        if (p1.x > p2.x     &&  p1.y > p2.y)    return 5;
-        if (p1.x == p2.x     &&  p1.y > p2.y)    return 6;
-        if (p1.x < p2.x     &&  p1.y > p2.y)    return 7;
-        if (p1.x < p2.x     &&  p1.y == p2.y)    return 8;
+        if (p1.x < p2.x && p1.y < p2.y) return 1;
+        if (p1.x == p2.x && p1.y < p2.y) return 2;
+        if (p1.x > p2.x && p1.y < p2.y) return 3;
+        if (p1.x > p2.x && p1.y == p2.y) return 4;
+        if (p1.x > p2.x && p1.y > p2.y) return 5;
+        if (p1.x == p2.x && p1.y > p2.y) return 6;
+        if (p1.x < p2.x && p1.y > p2.y) return 7;
+        if (p1.x < p2.x && p1.y == p2.y) return 8;
         return 0;
     }
 
-    public int          getLength() { return _length; }
-    public Parcel getLastParcel() { return _lastParcel; }
-    public Parcel getFirstParcel() { return _firstParcel; }
-    public Parcel getCurrentParcel() { return _currentParcel; }
-    public int getIndex() { return _index; }
-    public GraphPath<Parcel> getNodes() { return _nodes; }
+    public int getLength() {
+        return _length;
+    }
+
+    public Parcel getLastParcel() {
+        return _lastParcel;
+    }
+
+    public Parcel getFirstParcel() {
+        return _firstParcel;
+    }
+
+    public Parcel getCurrentParcel() {
+        return _currentParcel;
+    }
+
+    public int getIndex() {
+        return _index;
+    }
+
+    public GraphPath<Parcel> getGraphPath() {
+        return graphPath;
+    }
 
     public boolean next() {
         if (++_index < _length - (minusOne ? 1 : 0)) {
-            _currentParcel = _nodes.get(_index);
+            _currentParcel = graphPath.get(_index);
             return true;
         }
         return false;
     }
 
     public boolean isValid() {
-        for (Parcel parcel: _nodes) {
+        for (Parcel parcel : graphPath) {
             if (!parcel.isWalkable()) {
                 return false;
             }

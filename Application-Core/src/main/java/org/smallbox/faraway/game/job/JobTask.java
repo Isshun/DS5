@@ -29,6 +29,11 @@ public class JobTask implements JobInterface {
         return onGetStatus(localDateTime);
     }
 
+    @Override
+    public JobTaskReturn onGetStatus(LocalDateTime localDateTime) {
+        return null;
+    }
+
     public interface JobTaskAction {
         void onExecuteTask(CharacterModel character, double hourInterval, LocalDateTime localDateTime);
     }

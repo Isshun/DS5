@@ -17,6 +17,7 @@ import org.smallbox.faraway.core.game.DataManager;
 
 public abstract class View implements Comparable<View> {
     public final static int FILL = -2;
+    public final static int CONTENT = -1;
 
     // Inject all dependency to view once for all, waiting for a clever solution
     protected final ApplicationConfig applicationConfig = DependencyManager.getInstance().getDependency(ApplicationConfig.class);

@@ -15,6 +15,7 @@ public class MoveJobFactory {
         JobModel job = new DigJob();
 
         job._targetParcel = targetParcel;
+        job.addAcceptedParcel(targetParcel);
         job.setMainLabel("Move");
         job.setCharacterRequire(character);
         job.setIcon("[base]/graphics/jobs/ic_mining.png");

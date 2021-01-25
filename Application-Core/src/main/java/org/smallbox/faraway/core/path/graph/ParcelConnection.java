@@ -7,6 +7,7 @@ import org.smallbox.faraway.game.world.Parcel;
 public class ParcelConnection implements Connection<Parcel> {
     private final Parcel _fromParcel;
     private final Parcel _toParcel;
+    private boolean walkable;
 
     public ParcelConnection(Parcel fromParcel, Parcel toParcel) {
         _fromParcel = fromParcel;

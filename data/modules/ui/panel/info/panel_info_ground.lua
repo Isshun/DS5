@@ -6,8 +6,9 @@ ui:extend({
     visible = false,
     size = {400, 940},
     views = {
-        { type = "view", background = 0x181818ff, views = {
-            { type = "view", size = {392, 932}, position = {4, 4}, background = 0x262626ff, views = {
+        { type = "view", background = blue_dark_3, views = {
+            { type = "view", size = {400 - 6, 940 - 6}, background = 0x181818ff, position = {3, 3}, views = {
+            { type = "view", size = {392, 932}, position = {1, 1}, background = 0x262626ff, views = {
                 { type = "label", visible = false, id = "lb_parcel", position = {200, 0}, text = "parcel", text_size = 16, text_color = 0x357f7fff, margin = {7, 5}},
                 { type = "label", id = "lb_position", position = {200, 0}, text_color = 0x357f7fff, text_size = 12, margin = {9, 12, 0, 12}, position = {270, 0}},
 
@@ -51,6 +52,7 @@ ui:extend({
 
                     }},
                 }},
+            }},
             }},
         }},
     }

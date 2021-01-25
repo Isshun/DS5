@@ -2,17 +2,18 @@ package org.smallbox.faraway.game.job;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.smallbox.faraway.core.Application;
-import org.smallbox.faraway.util.GameException;
+import org.smallbox.faraway.core.config.ApplicationConfig;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
-import org.smallbox.faraway.core.module.SuperGameModule;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameTime;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
-import org.smallbox.faraway.core.config.ApplicationConfig;
-import org.smallbox.faraway.game.world.Parcel;
+import org.smallbox.faraway.core.module.SuperGameModule;
+import org.smallbox.faraway.game.character.CharacterJobModule;
 import org.smallbox.faraway.game.consumable.ConsumableModule;
+import org.smallbox.faraway.game.world.Parcel;
 import org.smallbox.faraway.util.Constant;
+import org.smallbox.faraway.util.GameException;
 import org.smallbox.faraway.util.log.Log;
 
 import java.lang.reflect.InvocationTargetException;
@@ -27,6 +28,7 @@ import static org.smallbox.faraway.game.job.JobStatus.*;
 public class JobModule extends SuperGameModule<JobModel, JobModuleObserver> {
     private final BlockingQueue<JobModel>         _unordonnedJobs = new LinkedBlockingQueue<>();
 
+    @Inject private CharacterJobModule characterJobModule;
     @Inject private ConsumableModule consumableModule;
     @Inject private ApplicationConfig applicationConfig;
     @Inject private GameTime gameTime;
@@ -55,7 +57,7 @@ public class JobModule extends SuperGameModule<JobModel, JobModuleObserver> {
         modelList.removeIf(job -> job.hasReason(INVALID) || job.hasStatus(JOB_COMPLETE));
 
         // Run auto job
-        modelList.stream().filter(JobModel::isAuto).forEach(job -> job.action(null, getTickInterval() * game.getTickPerHour(), gameTime.now()));
+        modelList.stream().filter(JobModel::isAuto).forEach(job -> characterJobModule.actionJob(null, job, getTickInterval() * game.getTickPerHour()));
 
     }
 

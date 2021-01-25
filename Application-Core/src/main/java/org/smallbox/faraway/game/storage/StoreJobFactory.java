@@ -1,20 +1,21 @@
 package org.smallbox.faraway.game.storage;
 
 import com.badlogic.gdx.graphics.Color;
-import org.smallbox.faraway.util.GameException;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
-import org.smallbox.faraway.game.consumable.ConsumableItem;
-import org.smallbox.faraway.game.world.Parcel;
 import org.smallbox.faraway.game.character.model.CharacterInventoryExtra;
 import org.smallbox.faraway.game.character.model.CharacterSkillExtra;
 import org.smallbox.faraway.game.character.model.base.CharacterModel;
+import org.smallbox.faraway.game.consumable.ConsumableItem;
 import org.smallbox.faraway.game.consumable.ConsumableModule;
 import org.smallbox.faraway.game.dig.DigJobFactory;
 import org.smallbox.faraway.game.job.JobModel;
-import org.smallbox.faraway.game.job.task.MoveTask;
 import org.smallbox.faraway.game.job.task.TechnicalTask;
+import org.smallbox.faraway.game.world.Parcel;
+import org.smallbox.faraway.game.world.SurroundedPattern;
+import org.smallbox.faraway.game.world.WorldHelper;
+import org.smallbox.faraway.util.GameException;
 
 @GameObject
 public class StoreJobFactory {
@@ -42,11 +43,14 @@ public class StoreJobFactory {
             job.addInitTask(j -> job.targetConsumable = consumableModule.addConsumable(consumableInfo, 0, targetParcel)); // Create consumable with 0 quantity (to book parcel on storage area)
             job.addInitTask(j -> job.targetConsumable.setStoreJob(job)); // Set store job on source consumable
             job.addInitTask(j -> job.sourceConsumable.setStoreJob(job)); // Set store job on source consumable
+            job.addInitTask(j -> job.setAcceptedParcel(WorldHelper.getParcelAround(job.sourceConsumable.getParcel(), SurroundedPattern.SQUARE))); // Set store job on source consumable
 
             // Job
-            job.addTask(new MoveTask("Move to consumable", () -> job.sourceConsumable.getParcel())); // Move character to sourceConsumable
-            job.addTask(new TechnicalTask(j -> takeConsumable(job.sourceConsumable, job.getCharacter()))); // Move consumable to character's inventory
-            job.addTask(new MoveTask("Move to storage", () -> job.targetConsumable.getParcel())); // Apporte les composants à la zone de stockage
+            job.addTask(new TechnicalTask(j -> {
+                takeConsumable(job.sourceConsumable, job.getCharacter());
+                job.setAcceptedParcel(WorldHelper.getParcelAround(job.targetConsumable.getParcel(), SurroundedPattern.SQUARE));
+            }));
+
             job.addTask(new TechnicalTask(j -> dropConsumable(job.targetConsumable, job.getCharacter()))); // Ajoute les composants à la zone de stockage
 
             // Close

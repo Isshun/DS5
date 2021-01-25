@@ -7,8 +7,9 @@ ui:extend({
     size = {panel_width, 940},
     views = {
 
-        { type = "view", background = 0x181818ff, views = {
-            { type = "view", size = {392, 932}, position = {4, 4}, background = 0x262626ff, views = {
+        { type = "view", background = blue_dark_3, views = {
+            { type = "view", size = {400 - 6, 940 - 6}, background = 0x181818ff, position = {3, 3}, views = {
+                { type = "view", size = {392, 932}, position = {1, 1}, background = 0x262626ff, views = {
 
                 { type = "label", id = "lb_name", text_font = "font3", text = "ground", text_size = 26, text_color = 0xb4b4b4ff, margin = {20, 16} },
                 { type = "label", action = "onClose", text = "x", text_font = "whitrabt", outlined = false, text_color = 0x181818ff, background = 0xb4b4b4ff, text_size = 32, padding = {0, 5}, size = {26, 26}, position = {349, 15}},
@@ -28,6 +29,7 @@ ui:extend({
 
                 }},
 
+            }},
             }},
         }},
 

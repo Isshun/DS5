@@ -2,6 +2,7 @@ package org.smallbox.faraway.game.world;
 
 import com.badlogic.gdx.ai.pfa.Connection;
 import com.badlogic.gdx.utils.Array;
+import org.smallbox.faraway.core.game.model.MovableModel;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.game.modelInfo.NetworkInfo;
 import org.smallbox.faraway.core.path.graph.ParcelConnection;
@@ -34,9 +35,11 @@ public class Parcel extends ParcelCommon {
     private ItemInfo                        _groundInfo;
     public List<NetworkItem>                _networks;
     private ItemInfo                        _liquidInfo;
+    private List<Parcel> neighbors;
 
     private final Map<Class<? extends MapObjectModel>, MapObjectModel> _items = new ConcurrentHashMap<>();
     private boolean _connectionDirty;
+    private MovableModel.Direction rampDirection;
 
     public Parcel(int index, int x, int y, int z) {
         this.x = x;
@@ -138,12 +141,13 @@ public class Parcel extends ParcelCommon {
 
     public boolean          isWalkable() {
         // Check ground
-        if (_groundInfo == null || !_groundInfo.isWalkable) {
+        Parcel bottomParcel = WorldHelper.getParcelOffset(this, 0, 0, -1);
+        if ((_groundInfo == null || !_groundInfo.isWalkable) && ((bottomParcel == null || bottomParcel.getRampDirection() == null))) {
             return false;
         }
 
         // Check rock
-        if (_rockInfo != null) {
+        if (_rockInfo != null && rampDirection == null) {
             return false;
         }
 
@@ -225,4 +229,23 @@ public class Parcel extends ParcelCommon {
         return !_items.isEmpty();
     }
 
+    public void setRamp(MovableModel.Direction direction) {
+        rampDirection = direction;
+    }
+
+    public MovableModel.Direction getRampDirection() {
+        return rampDirection;
+    }
+
+    public void setNeighbors(List<Parcel> neighbors) {
+        this.neighbors = neighbors;
+    }
+
+    public List<Parcel> getNeighbors() {
+        return neighbors;
+    }
+
+    public boolean hasRamp() {
+        return rampDirection != null;
+    }
 }

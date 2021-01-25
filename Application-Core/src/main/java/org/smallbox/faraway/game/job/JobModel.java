@@ -2,19 +2,19 @@ package org.smallbox.faraway.game.job;
 
 import com.badlogic.gdx.graphics.Color;
 import org.smallbox.faraway.client.asset.sound.SoundManager;
-import org.smallbox.faraway.game.world.ObjectModel;
-import org.smallbox.faraway.util.GameException;
 import org.smallbox.faraway.core.dependencyInjector.DependencyManager;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo.ItemInfoAction;
 import org.smallbox.faraway.core.world.model.ItemFilter;
-import org.smallbox.faraway.game.world.Parcel;
 import org.smallbox.faraway.game.building.BuildJob;
 import org.smallbox.faraway.game.character.model.CharacterSkillExtra;
 import org.smallbox.faraway.game.character.model.base.CharacterModel;
 import org.smallbox.faraway.game.job.taskAction.PrerequisiteTaskAction;
 import org.smallbox.faraway.game.job.taskAction.TechnicalTaskAction;
 import org.smallbox.faraway.game.storage.StoreJob;
+import org.smallbox.faraway.game.world.ObjectModel;
+import org.smallbox.faraway.game.world.Parcel;
+import org.smallbox.faraway.util.GameException;
 import org.smallbox.faraway.util.log.Log;
 
 import java.time.LocalDateTime;
@@ -28,12 +28,21 @@ public class JobModel extends ObjectModel {
 
     public double _time;
     private String icon;
-    private long soundId;
+    public long soundId;
     private Color color;
     private final Collection<JobModel> subJob = new ConcurrentLinkedQueue<>();
     private boolean exactParcel;
     private boolean optional;
     private float moveSpeed = 1;
+    private final Collection<Parcel> acceptedParcels = new ConcurrentLinkedQueue<>();
+
+    public void addAcceptedParcel(Parcel acceptedParcel) {
+        this.acceptedParcels.add(acceptedParcel);
+    }
+
+    public Collection<Parcel> getAcceptedParcels() {
+        return acceptedParcels;
+    }
 
     public void setMoveSpeed(float moveSpeed) {
         this.moveSpeed = moveSpeed;
@@ -123,8 +132,8 @@ public class JobModel extends ObjectModel {
     protected CharacterModel character;
     protected CharacterModel    _characterRequire;
     protected JobAbortReason    _reason;
-    protected String            _label;
-    protected JobStatus status = JobStatus.JOB_INITIALIZED;
+    public String            _label;
+    public JobStatus status = JobStatus.JOB_INITIALIZED;
     protected String            _message;
     public Parcel _targetParcel;
     protected boolean           _isEntertainment;
@@ -132,7 +141,7 @@ public class JobModel extends ObjectModel {
     protected String            _mainLabel = "";
     protected Object            _data;
     protected boolean           _visible = true;
-    protected JobTaskReturn     _lastTaskReturn;
+    public JobTaskReturn     _lastTaskReturn;
     protected Map<CharacterModel, JobCharacterStatus> statusMap = new ConcurrentHashMap<>();
     private CharacterSkillExtra.SkillType skillType;
 
@@ -206,6 +215,11 @@ public class JobModel extends ObjectModel {
 
     public void start(CharacterModel character) {
         Log.debug("Start job " + this + " by " + (character != null ? character.getName() : "auto"));
+
+        // TODO: waiting that all jobs move to new logic
+        if (acceptedParcels.isEmpty()) {
+            acceptedParcels.add(_targetParcel);
+        }
 
         if (_isClose) {
             throw new GameException(JobModel.class, "Job is close");
@@ -293,7 +307,7 @@ public class JobModel extends ObjectModel {
 
     protected boolean onCheck() { return true; }
 
-    private final Queue<JobTask> _tasks = new ConcurrentLinkedQueue<>();
+    public final Queue<JobTask> _tasks = new ConcurrentLinkedQueue<>();
     private final Queue<TechnicalTaskAction> initTasks = new ConcurrentLinkedQueue<>();
     private final Queue<PrerequisiteTaskAction> prerequisiteTasks = new ConcurrentLinkedQueue<>();
     private final Queue<TechnicalTaskAction> closeTasks = new ConcurrentLinkedQueue<>();
@@ -318,6 +332,11 @@ public class JobModel extends ObjectModel {
         return this._reason == reason;
     }
 
+    public void setAcceptedParcel(Collection<Parcel> acceptedParcels) {
+        this.acceptedParcels.clear();
+        this.acceptedParcels.addAll(acceptedParcels);
+    }
+
     public interface ParcelCallback {
         Parcel getParcel();
     }
@@ -332,84 +351,6 @@ public class JobModel extends ObjectModel {
 
     public void addCloseTask(TechnicalTaskAction technicalTaskAction) {
         closeTasks.add(technicalTaskAction);
-    }
-
-    /**
-     * Execute les taches présentes dans le job
-     *
-     * @param character CharacterModel
-     */
-    public void action(CharacterModel character, double hourInterval, LocalDateTime currentTime) {
-
-        if (isClose()) {
-            throw new GameException(JobModel.class, "Cannot call action on finished job");
-        }
-
-        if (status != JobStatus.JOB_RUNNING) {
-            throw new GameException(JobModel.class, "Status must be JOB_RUNNING");
-        }
-
-        // Execute les taches à la suite tant que le retour est TASK_COMPLETE
-        while (!_tasks.isEmpty()) {
-
-            switch (actionTask(character, _tasks.peek(), hourInterval, currentTime)) {
-
-                // Task isn't complete
-                case TASK_CONTINUE:
-                    if (soundId == 0) {
-                        soundId = DependencyManager.getInstance().getDependency(SoundManager.class).start();
-                    }
-                    return;
-
-                // Task return TASK_COMPLETED_STOP, stop to execute action until next update
-                case TASK_COMPLETED_STOP:
-                    _tasks.poll();
-                    return;
-
-                // Task is complete, take next task
-                case TASK_COMPLETED:
-                    _tasks.poll();
-                    break;
-
-                // Task return TASK_ERROR, immediatly close job
-                case TASK_ERROR:
-                    close(currentTime);
-                    return;
-
-            }
-
-        }
-
-        // All tasks has been executed
-        close(currentTime);
-    }
-
-    /**
-     * Execute la tache passé en paramètre
-     *
-     * @param character CharacterModel
-     * @param task JobTask
-     * @return JobTaskReturn
-     */
-    private JobTaskReturn actionTask(CharacterModel character, JobTask task, double hourInterval, LocalDateTime localDateTime) {
-        Log.debug(JobModel.class, "actionTask: (taks: %s, job: %s)", task.label, this);
-
-        if (task.technicalAction != null) {
-            task.technicalAction.onExecuteTask(this);
-            return task.taskReturn;
-        }
-
-        if (task.startTime == null) {
-            task.init(localDateTime);
-        }
-
-        task.action(character, hourInterval, localDateTime);
-        _lastTaskReturn = task.getStatus(character, hourInterval, localDateTime);
-        _label = task.label;
-
-        Log.debug(JobModel.class, "actionTask return: %s", _lastTaskReturn);
-
-        return _lastTaskReturn;
     }
 
     public Collection<JobModel> getSubJob() {

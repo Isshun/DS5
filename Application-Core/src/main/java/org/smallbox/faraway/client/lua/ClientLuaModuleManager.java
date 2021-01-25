@@ -41,6 +41,7 @@ public class ClientLuaModuleManager extends LuaModuleManager {
                         "panel_width = " + applicationConfig.ui.panelWidth + "\n" +
 
                         "fill = " + View.FILL + "\n" +
+                        "content = " + View.CONTENT + "\n" +
 
                         "black = " + 0x000000ff + "\n" +
                         "white = " + 0xffffffff + "\n" +

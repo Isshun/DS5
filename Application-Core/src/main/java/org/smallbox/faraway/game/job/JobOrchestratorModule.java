@@ -5,6 +5,8 @@ import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.module.SuperGameModule;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameTime;
+import org.smallbox.faraway.game.character.model.PathModel;
+import org.smallbox.faraway.game.world.Parcel;
 import org.smallbox.faraway.game.world.WorldHelper;
 import org.smallbox.faraway.core.config.ApplicationConfig;
 import org.smallbox.faraway.core.path.PathManager;
@@ -54,10 +56,13 @@ public class JobOrchestratorModule extends SuperGameModule<JobModel, JobModuleOb
             statusForCharacter.available = true;
             statusForCharacter.approxDistance = WorldHelper.getApproxDistance(job.getTargetParcel(), character.getParcel());
             statusForCharacter.skillLevel = getSkillLevel(character, job.getSkillType());
-            if (!hasPath(job, character)) {
+            statusForCharacter.path = pathManager.getPath(character.getParcel(), job.getAcceptedParcels());
+
+            if (statusForCharacter.path == null) {
                 statusForCharacter.label = "No path";
                 statusForCharacter.available = false;
             }
+
             job.statusMap.put(character, statusForCharacter);
         });
 
@@ -110,7 +115,13 @@ public class JobOrchestratorModule extends SuperGameModule<JobModel, JobModuleOb
     }
 
     private boolean hasPath(JobModel job, CharacterModel character) {
-        return pathManager.getPath(character.getParcel(), job.getTargetParcel(), false, false, true) != null;
+        for (Parcel acceptedParcel: job.getAcceptedParcels()) {
+            PathModel path = pathManager.getPath(character.getParcel(), acceptedParcel, false, false, false);
+            if (path != null) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private boolean waitTimeBeforeOptionalExpired(CharacterModel character) {
@@ -122,6 +133,8 @@ public class JobOrchestratorModule extends SuperGameModule<JobModel, JobModuleOb
 
         // Remove optional job
         Optional.ofNullable(character.getJob()).filter(JobModel::isOptional).ifPresent(jobModel -> jobModel.close(gameTime.now()));
+
+        job._targetParcel = job.getStatusForCharacter(character).path.getLastParcel();
 
         job.start(character);
     }

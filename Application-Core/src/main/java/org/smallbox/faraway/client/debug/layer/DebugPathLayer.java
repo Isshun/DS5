@@ -19,6 +19,7 @@ import org.smallbox.faraway.util.Constant;
 public class DebugPathLayer extends BaseMapLayer {
     private static final Color GREEN = new Color(0x00ff00dd);
     private static final Color RED = new Color(0xff0000ff);
+
     @Inject private WorldModule worldModule;
     @Inject private CharacterModule characterModule;
     @Inject private PathManager pathManager;
@@ -34,24 +35,32 @@ public class DebugPathLayer extends BaseMapLayer {
 
                     // Top
                     color = pathManager.hasConnection(parcel, WorldHelper.getParcel(parcel.x, parcel.y - 1, parcel.z)) ? GREEN : RED;
-                    renderer.drawRectangleOnMap(parcel, 1, 6, color, Constant.HALF_TILE_SIZE, 0);
+                    renderer.drawRectangleOnMap(parcel, 4, 24, color, Constant.HALF_TILE_SIZE, 0);
 
                     // Bottom
                     color = pathManager.hasConnection(parcel, WorldHelper.getParcel(parcel.x, parcel.y + 1, parcel.z)) ? GREEN : RED;
-                    renderer.drawRectangleOnMap(parcel, 1, 6, color, Constant.HALF_TILE_SIZE, 26);
+                    renderer.drawRectangleOnMap(parcel, 4, 24, color, Constant.HALF_TILE_SIZE, Constant.TILE_SIZE - 24);
 
                     // Left
                     color = pathManager.hasConnection(parcel, WorldHelper.getParcel(parcel.x - 1, parcel.y, parcel.z)) ? GREEN : RED;
-                    renderer.drawRectangleOnMap(parcel, 6, 1, color, 0, Constant.HALF_TILE_SIZE);
+                    renderer.drawRectangleOnMap(parcel, 24, 4, color, 0, Constant.HALF_TILE_SIZE);
 
                     // Right
                     color = pathManager.hasConnection(parcel, WorldHelper.getParcel(parcel.x + 1, parcel.y, parcel.z)) ? GREEN : RED;
-                    renderer.drawRectangleOnMap(parcel, 6, 1, color, 26, Constant.HALF_TILE_SIZE);
+                    renderer.drawRectangleOnMap(parcel, 24, 4, color, Constant.TILE_SIZE - 24, Constant.HALF_TILE_SIZE);
+
+                    // Above
+                    color = pathManager.hasConnection(parcel, WorldHelper.getParcel(parcel.x, parcel.y, parcel.z + 1)) ? GREEN : RED;
+                    renderer.drawRectangleOnMap(parcel, 12, 12, color, Constant.HALF_TILE_SIZE - 6, Constant.HALF_TILE_SIZE - 12);
+
+                    // Below
+                    color = pathManager.hasConnection(parcel, WorldHelper.getParcel(parcel.x, parcel.y, parcel.z - 1)) ? GREEN : RED;
+                    renderer.drawRectangleOnMap(parcel, 12, 12, color, Constant.HALF_TILE_SIZE - 6, Constant.HALF_TILE_SIZE + 12);
                 });
 
         characterModule.getAll().stream()
                 .filter(characterModel -> characterModel.getPath() != null)
-                .forEach(character -> character.getPath().getNodes().forEach(parcel -> {
+                .forEach(character -> character.getPath().getGraphPath().forEach(parcel -> {
                     renderer.drawCircleOnMap(parcel, 5, Color.BLACK, true, Constant.HALF_TILE_SIZE, Constant.HALF_TILE_SIZE);
                     renderer.drawCircleOnMap(parcel, 4, Color.WHITE, true, Constant.HALF_TILE_SIZE, Constant.HALF_TILE_SIZE);
                 }));
