@@ -9,6 +9,10 @@ public class StoreJob extends JobModel {
     public ConsumableItem sourceConsumable;
     public ConsumableItem targetConsumable;
 
+    public StoreJob(Parcel parcel) {
+        super(parcel);
+    }
+
     public Parcel getStorageParcel() {
         return targetConsumable.getParcel();
     }

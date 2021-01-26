@@ -14,10 +14,9 @@ public class JobDashboardLayer extends DashboardLayerBase {
     protected void onDraw(BaseRenderer renderer, int frame) {
         jobModule.getAll().forEach(job -> {
             drawDebug(renderer, "JOB",
-                    String.format("%s, %.2f, %s",
+                    String.format("%s, %.2f",
                             job.getMainLabel(),
-                            job.getProgress(),
-                            job.getLastReturn()
+                            job.getProgress()
                     )
             );
             job.getTasks().forEach(task -> drawDebug(renderer, "JOB", "  - " + task.label));

@@ -15,6 +15,8 @@ public class BasicAndroidSelfCheckJob extends JobModel {
     private double _time;
 
     public BasicAndroidSelfCheckJob(CharacterModel character) {
+        super(character.getParcel());
+
         setMainLabel("BasicAndroidSelfCheckJob");
         setVisible(false);
 

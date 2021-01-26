@@ -8,7 +8,6 @@ import org.smallbox.faraway.core.path.PathManager;
 import org.smallbox.faraway.game.character.model.CharacterSkillExtra;
 import org.smallbox.faraway.game.consumable.ConsumableModule;
 import org.smallbox.faraway.game.job.JobModel;
-import org.smallbox.faraway.game.job.task.MoveTask;
 import org.smallbox.faraway.game.job.task.TechnicalTask;
 import org.smallbox.faraway.game.plant.model.PlantItem;
 import org.smallbox.faraway.game.world.Parcel;
@@ -25,9 +24,8 @@ public class HarvestJobFactory {
         Parcel consumableDropParcel = WorldHelper.searchAround(plant.getParcel(), 1, WorldHelper.SearchStrategy.FREE);
 
         if (consumableDropParcel != null) {
-            JobModel job = new JobModel();
+            JobModel job = new JobModel(plant.getParcel());
 
-            job._targetParcel = plant.getParcel();
             job.setMainLabel("Harvest");
             job.setSkillType(CharacterSkillExtra.SkillType.GATHER);
             job.setIcon("[base]/graphics/jobs/ic_gather.png");
@@ -35,7 +33,7 @@ public class HarvestJobFactory {
             WorldHelper.getParcelAround(plant.getParcel(), SurroundedPattern.SQUARE, job::addAcceptedParcel);
 
             // Déplace le personnage à l'emplacement des composants
-            job.addTask(new MoveTask("Move to plant", () -> consumableDropParcel));
+            job.addAcceptedParcel(consumableDropParcel);
 
             // - Create output products
             // - Set plant maturity to 0

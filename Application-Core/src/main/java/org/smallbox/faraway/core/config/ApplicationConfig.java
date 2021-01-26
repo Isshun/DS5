@@ -48,6 +48,8 @@ public class ApplicationConfig {
         public double           characterSpeed;
         public int              minuteBeforeIdleJob;
 
+        public double           consumeTime;
+
         // Temps nécéssaire pour construire 1 point de 'item cost'
         public double           craftTime;
 

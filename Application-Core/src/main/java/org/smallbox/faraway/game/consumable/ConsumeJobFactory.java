@@ -2,9 +2,7 @@ package org.smallbox.faraway.game.consumable;
 
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
-import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.game.job.task.ActionTask;
-import org.smallbox.faraway.game.job.task.MoveTask;
 import org.smallbox.faraway.game.world.SurroundedPattern;
 import org.smallbox.faraway.game.world.WorldHelper;
 
@@ -14,41 +12,25 @@ import static org.smallbox.faraway.game.job.JobTaskReturn.TASK_CONTINUE;
 @GameObject
 public class ConsumeJobFactory {
     @Inject private ConsumableModule consumableModule;
-    @Inject private Game game;
 
-    public ConsumeJob create(ConsumableItem consumable, double totalDuration, ConsumeJob.OnConsumeCallback callback) {
-        ConsumeJob job = new ConsumeJob();
+    public ConsumeJob create(ConsumableItem consumable, ConsumeJob.OnConsumeCallback callback) {
+        ConsumeJob job = new ConsumeJob(consumable.getParcel());
 
-        job._consumable = consumable;
         job._lock = consumableModule.lock(job, consumable, 1);
-        job._targetParcel = consumable.getParcel();
+        job.setTotalDuration(consumable.getInfo().consume.duration);
+        job.setMainLabel("Consume " + consumable.getInfo().label);
         WorldHelper.getParcelAround(consumable.getParcel(), SurroundedPattern.SQUARE, job::addAcceptedParcel);
 
-        job.setMainLabel("Consume " + consumable.getInfo().label);
-
-        job.addTask(new MoveTask("Move", consumable::getParcel));
         job.addTask(new ActionTask("Consume", (character, hourInterval, localDateTime) -> {
-            // TODO
-            job._duration += 1 / game.getTickPerHour();
-            double durationLeft = totalDuration - job._duration;
-            callback.onConsume(consumable, durationLeft);
-            job.setProgress(job._duration, totalDuration);
-
-            // Retire le lock si l'action est terminée
-            if (durationLeft <= 0) {
-                consumableModule.createConsumableFromLock(job._lock);
-            }
-
-        }, () -> totalDuration - job._duration <= 0 ? TASK_CONTINUE : TASK_COMPLETED));
+            job.addProgression(hourInterval);
+            callback.onConsume(consumable, job.getTotalDuration() - job.getDuration());
+        }, () -> job.getDuration() >= job.getTotalDuration() ? TASK_COMPLETED : TASK_CONTINUE));
 
         job.addCloseTask(j -> {
             if (job._lock.available) {
                 consumableModule.cancelLock(job._lock);
             }
-
-            if (job._consumable != null) {
-                job._consumable.removeJob(job);
-            }
+            consumable.removeJob(job);
         });
 
         return job;

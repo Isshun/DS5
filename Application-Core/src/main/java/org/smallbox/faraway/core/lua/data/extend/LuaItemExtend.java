@@ -17,6 +17,7 @@ import org.smallbox.faraway.util.log.Log;
 
 import java.io.File;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 @ApplicationObject
 public class LuaItemExtend extends LuaExtend {
@@ -188,6 +189,7 @@ public class LuaItemExtend extends LuaExtend {
             itemInfo.consume.type = "consume";
             itemInfo.consume.cost = getInt(value.get("consume"), "cost", 10);
             itemInfo.consume.duration = value.get("consume").get("duration").optdouble(0);
+            itemInfo.consume.durationUnit = TimeUnit.HOURS;
             itemInfo.consume.count = getInt(value.get("consume"), "count", 1);
             itemInfo.consume.effects = new ItemInfo.ItemInfoEffects();
             readEffectValues(itemInfo.consume.effects, value.get("consume").get("effects"));
@@ -199,6 +201,7 @@ public class LuaItemExtend extends LuaExtend {
             itemInfo.use.type = "use";
             itemInfo.use.cost = getInt(value.get("use"), "cost", 10);
             itemInfo.use.duration = value.get("use").get("duration").optdouble(0);
+            itemInfo.use.durationUnit = TimeUnit.HOURS;
             itemInfo.use.count = getInt(value.get("use"), "count", 1);
             itemInfo.use.effects = new ItemInfo.ItemInfoEffects();
             readEffectValues(itemInfo.use.effects, value.get("use").get("effects"));

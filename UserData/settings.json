@@ -55,6 +55,7 @@
     "environmentDistance": 5,
     "maxNearDistance": 32,
     "characterSpeed": 500,
+    "consumeTime":  0.015,
     "craftTime":  0.015,
     "buildTime": 0.015,
     "repairTime":  0.015,

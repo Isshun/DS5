@@ -28,7 +28,7 @@ public abstract class CharacterModel extends MovableModel {
     protected Map<Class<? extends CharacterExtra>, CharacterExtra>  _extra = new ConcurrentHashMap<>();
     public PathModel _path;
     public GameTask _task;
-    private LocalDateTime lastJobDate;
+    public LocalDateTime lastJobDate;
 
     public CharacterModel(int id, CharacterInfo characterInfo, Parcel parcel) {
         super(id, parcel);
@@ -113,14 +113,4 @@ public abstract class CharacterModel extends MovableModel {
         _path = null;
     }
 
-    public void clearJob(JobModel job, LocalDateTime endDate) {
-        if (this.job == job) {
-            this.job = null;
-            this.lastJobDate = endDate;
-            this.clearMove();
-            Log.debug("Job cleared from character: " + this);
-
-            job.clearCharacter(this, endDate);
-        }
-    }
 }

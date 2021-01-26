@@ -1,12 +1,14 @@
 package org.smallbox.faraway.game.consumable;
 
 import org.smallbox.faraway.game.job.JobModel;
+import org.smallbox.faraway.game.world.Parcel;
 
 public class ConsumeJob extends JobModel {
-
-    public ConsumableItem _consumable;
     public ConsumableModule.ConsumableJobLock _lock;
-    public double _duration;
+
+    public ConsumeJob(Parcel parcel) {
+        super(parcel);
+    }
 
     public interface OnConsumeCallback {
         /**

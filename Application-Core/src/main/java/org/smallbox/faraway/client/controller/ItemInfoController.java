@@ -271,12 +271,12 @@ public class ItemInfoController extends AbsInfoLuaController<UsableItem> {
         itemInfoFactoryComponentsController.setVisible(true);
     }
 
-    @BindLuaAction
-    public void onDumpItem(View view) {
-        if (listSelected.size() == 1) {
-            itemModule.dumpItem(listSelected.peek());
-        }
-    }
+//    @BindLuaAction
+//    public void onDumpItem(View view) {
+//        if (listSelected.size() == 1) {
+//            itemModule.dumpItem(listSelected.peek());
+//        }
+//    }
 
     @BindLuaAction
     public void onCancelBuild(View view) {

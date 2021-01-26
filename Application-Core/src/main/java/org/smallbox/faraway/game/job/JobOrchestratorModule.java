@@ -63,7 +63,7 @@ public class JobOrchestratorModule extends SuperGameModule<JobModel, JobModuleOb
                 statusForCharacter.available = false;
             }
 
-            job.statusMap.put(character, statusForCharacter);
+            job.setStatus(character, statusForCharacter);
         });
 
 //        Collections.sort(potentialJobs, Comparator.comparing(o -> o.getStatusForCharacter(character).skillLevel, j -> j));
@@ -132,11 +132,9 @@ public class JobOrchestratorModule extends SuperGameModule<JobModel, JobModuleOb
         Objects.requireNonNull(job, "Try to assign null job");
 
         // Remove optional job
-        Optional.ofNullable(character.getJob()).filter(JobModel::isOptional).ifPresent(jobModel -> jobModel.close(gameTime.now()));
+        Optional.ofNullable(character.getJob()).filter(JobModel::isOptional).ifPresent(jobModel -> jobModule.remove(jobModel));
 
-        job._targetParcel = job.getStatusForCharacter(character).path.getLastParcel();
-
-        job.start(character);
+        jobModule.start(job, character);
     }
 
 }

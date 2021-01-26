@@ -4,7 +4,6 @@ import org.smallbox.faraway.client.debug.interpreter.moduleInterpreter.ConsoleCo
 import org.smallbox.faraway.client.debug.interpreter.moduleInterpreter.ConsoleInterpreterBase;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
-import org.smallbox.faraway.game.job.model.MoveJob;
 import org.smallbox.faraway.game.character.CharacterModule;
 import org.smallbox.faraway.game.job.JobModel;
 import org.smallbox.faraway.game.job.JobModule;
@@ -26,9 +25,7 @@ public class JobModuleConsoleInterpreter extends ConsoleInterpreterBase {
 
     @ConsoleCommand("add")
     public String add() {
-        JobModel job = MoveJob.create(characterModule.getRandom(), worldModule.getRandom());
-        jobModule.add(job);
-        return job.getLabel();
+        return null;
     }
 
     @ConsoleCommand("info")

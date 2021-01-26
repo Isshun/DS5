@@ -25,28 +25,27 @@ public class BuildJobFactory {
     @Inject private ApplicationConfig applicationConfig;
 
     public JobModel createJob(ItemInfo itemInfo, Parcel targetParcel) {
-        BuildJob buildJob = new BuildJob();
+        BuildableMapObject item = itemModule.addItem(itemInfo, false, targetParcel);
+        BuildJob buildJob = new BuildJob(targetParcel);
 
         buildJob.setSkillType(CharacterSkillExtra.SkillType.BUILD);
-
         buildJob.setMainLabel("Build " + itemInfo.label);
-        buildJob._targetParcel = targetParcel;
-        buildJob._mapObject = itemModule.addItem(itemInfo, false, targetParcel);
+        buildJob.setIcon("[base]/graphics/jobs/ic_build.png");
+        buildJob.setTotalDuration(item.getBuildCost());
+        buildJob.setAcceptedParcel(WorldHelper.getParcelAround(targetParcel, SurroundedPattern.SQUARE));
 
         itemInfo.receipts.stream().findFirst().ifPresent(
                 receiptInfo -> receiptInfo.inputs.forEach(
-                        inputInfo -> buildJob.addSubJob(bringItemJobFactory.createJob(buildJob, buildJob._mapObject, inputInfo.item, inputInfo.quantity))));
-
-        buildJob.setAcceptedParcel(WorldHelper.getParcelAround(targetParcel, SurroundedPattern.SQUARE));
+                        inputInfo -> buildJob.addSubJob(bringItemJobFactory.createJob(buildJob, item, inputInfo.item, inputInfo.quantity))));
 
         // Job
         buildJob.addTask(new ActionTask("Build", (character, hourInterval, localDateTime) -> {
-            buildJob._mapObject.actionBuild(1 / applicationConfig.game.buildTime * hourInterval);
-            buildJob.setProgress(buildJob._mapObject.getBuildValue(), buildJob._mapObject.getBuildCost());
-        }, () -> buildJob._mapObject.isComplete() ? TASK_COMPLETED : TASK_CONTINUE));
+            item.actionBuild(1 / applicationConfig.game.buildTime * hourInterval);
+            buildJob.addProgression(1 / applicationConfig.game.buildTime * hourInterval);
+        }, () -> item.isComplete() ? TASK_COMPLETED : TASK_CONTINUE));
 
         // Close
-        buildJob.addCloseTask(job -> removeUncompletedObject(buildJob._mapObject)); // Delete uncompleted object
+        buildJob.addCloseTask(job -> removeUncompletedObject(item)); // Delete uncompleted object
         buildJob.addCloseTask(job -> pathManager.refreshConnections(targetParcel)); // Refresh path manager
 
         return buildJob;

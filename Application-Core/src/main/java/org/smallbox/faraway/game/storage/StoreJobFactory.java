@@ -29,13 +29,12 @@ public class StoreJobFactory {
                 .orElse(null);
 
         if (targetParcel != null) {
-            StoreJob job = new StoreJob();
+            StoreJob job = new StoreJob(consumable.getParcel());
 
             job.sourceConsumable = consumable;
-            job._targetParcel = consumable.getParcel();
             consumable.setStoreJob(job);
             job.setMainLabel("Store");
-            job.setIcon("[base]/graphics/jobs/ic_haul.png");
+            job.setIcon("[base]/graphics/jobs/ic_store.png");
             job.setSkillType(CharacterSkillExtra.SkillType.STORE);
             job.setColor(new Color(0xbb391eff));
 

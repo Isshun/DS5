@@ -74,7 +74,6 @@ public class CharacterMoveModule extends SuperGameModule2<CharacterModuleObserve
 
             // First move on this path
             character.setPath(path);
-            job._targetParcel = path.getLastParcel();
             path.setMoveSpeed(job.getMoveSpeed());
             return CharacterMoveStatus.CONTINUE;
         }

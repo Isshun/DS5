@@ -8,6 +8,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 public class ItemInfo extends ObjectInfo {
     public boolean isLiquid;
@@ -37,6 +38,7 @@ public class ItemInfo extends ObjectInfo {
         public int                      count;
         public ItemInfoEffects          effects;
         public double                   duration;
+        public TimeUnit                 durationUnit;
     }
 
     public static class ItemMaterialInfo {

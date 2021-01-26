@@ -2,16 +2,12 @@ package org.smallbox.faraway.game.character;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.smallbox.faraway.GameTaskManager;
-import org.smallbox.faraway.util.UUIDUtils;
-import org.smallbox.faraway.util.GameException;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnInit;
-import org.smallbox.faraway.core.module.SuperGameModule;
 import org.smallbox.faraway.core.game.DataManager;
 import org.smallbox.faraway.core.game.Game;
-import org.smallbox.faraway.game.world.WorldHelper;
-import org.smallbox.faraway.game.world.Parcel;
+import org.smallbox.faraway.core.module.SuperGameModule;
 import org.smallbox.faraway.game.character.model.CharacterInfoAnnotation;
 import org.smallbox.faraway.game.character.model.CharacterInventoryExtra;
 import org.smallbox.faraway.game.character.model.HumanModel;
@@ -19,10 +15,13 @@ import org.smallbox.faraway.game.character.model.base.CharacterModel;
 import org.smallbox.faraway.game.character.model.base.CharacterPersonalsExtra;
 import org.smallbox.faraway.game.consumable.ConsumableModule;
 import org.smallbox.faraway.game.item.ItemModule;
-import org.smallbox.faraway.game.job.JobAbortReason;
 import org.smallbox.faraway.game.job.JobModule;
+import org.smallbox.faraway.game.world.Parcel;
+import org.smallbox.faraway.game.world.WorldHelper;
 import org.smallbox.faraway.game.world.WorldModule;
 import org.smallbox.faraway.util.Constant;
+import org.smallbox.faraway.util.GameException;
+import org.smallbox.faraway.util.UUIDUtils;
 import org.smallbox.faraway.util.log.Log;
 
 import java.lang.reflect.Constructor;
@@ -40,8 +39,7 @@ public class CharacterModule extends SuperGameModule<CharacterModel, CharacterMo
     @Inject private WorldModule worldModule;
     @Inject private DataManager dataManager;
 
-    private final List<CharacterModel>                _addOnUpdate = new ArrayList<>();
-    private int                                 _count;
+    private final List<CharacterModel> addOnUpdate = new ArrayList<>();
 
     @OnInit
     private void init() {
@@ -58,10 +56,10 @@ public class CharacterModule extends SuperGameModule<CharacterModel, CharacterMo
         fixCharacterInventory();
 
         // Add new born
-        if (CollectionUtils.isNotEmpty(_addOnUpdate)) {
+        if (CollectionUtils.isNotEmpty(addOnUpdate)) {
             Log.info("Add new character");
-            modelList.addAll(_addOnUpdate);
-            _addOnUpdate.clear();
+            modelList.addAll(addOnUpdate);
+            addOnUpdate.clear();
         }
 
         // Remove dead characters
@@ -76,15 +74,14 @@ public class CharacterModule extends SuperGameModule<CharacterModel, CharacterMo
      * @param character CharacterModel
      */
     private void updateDeadCharacter(CharacterModel character) {
-        // Cancel job
         if (character.getJob() != null) {
-            jobModule.quitJob(character.getJob(), JobAbortReason.DIED);
+            jobModule.quitJob(character.getJob());
         }
     }
 
     @Override
     public void add(CharacterModel character) {
-        _addOnUpdate.add(character);
+        addOnUpdate.add(character);
 
         notifyObservers(observer -> observer.onAddCharacter(character));
     }
@@ -97,7 +94,7 @@ public class CharacterModule extends SuperGameModule<CharacterModel, CharacterMo
     }
 
     public CharacterModel getCharacter(Parcel parcel) {
-        for (CharacterModel character: modelList) {
+        for (CharacterModel character : modelList) {
             if (character.getParcel() == parcel) {
                 return character;
             }

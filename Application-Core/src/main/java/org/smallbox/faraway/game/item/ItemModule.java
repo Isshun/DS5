@@ -1,5 +1,7 @@
 package org.smallbox.faraway.game.item;
 
+import org.smallbox.faraway.game.item.job.OnUseCallback;
+import org.smallbox.faraway.game.item.job.UseJobFactory;
 import org.smallbox.faraway.util.GameException;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
@@ -9,7 +11,6 @@ import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.module.SuperGameModule;
 import org.smallbox.faraway.core.world.model.MapObjectModel;
 import org.smallbox.faraway.game.area.AreaModule;
-import org.smallbox.faraway.game.building.BasicDumpJob;
 import org.smallbox.faraway.game.building.BuildJobFactory;
 import org.smallbox.faraway.game.consumable.ConsumableModule;
 import org.smallbox.faraway.game.item.job.UseJob;
@@ -30,17 +31,10 @@ public class ItemModule extends SuperGameModule<UsableItem, ItemModuleObserver> 
     @Inject private ConsumableModule consumableModule;
     @Inject private BuildJobFactory buildJobFactory;
     @Inject private DataManager dataManager;
+    @Inject private UseJobFactory useJobFactory;
 
-    /**
-     * Crée un UseJob
-     *
-     * @param item
-     * @param totalDuration
-     * @param callback
-     * @return
-     */
-    public UseJob createUseJob(UsableItem item, double totalDuration, UseJob.OnUseCallback callback) {
-        UseJob useJob = new UseJob(this, item, totalDuration, callback);
+    public UseJob createUseJob(UsableItem item, OnUseCallback callback) {
+        UseJob useJob = useJobFactory.create(item, callback);
         jobModule.add(useJob);
         return useJob;
     }
@@ -156,9 +150,9 @@ public class ItemModule extends SuperGameModule<UsableItem, ItemModuleObserver> 
         return null;
     }
 
-    public void dumpItem(UsableItem item) {
-        if (jobModule.getAll().stream().noneMatch(job -> job instanceof BasicDumpJob && ((BasicDumpJob)job).getObject() == item)) {
-            jobModule.add(new BasicDumpJob(this, item));
-        }
-    }
+//    public void dumpItem(UsableItem item) {
+//        if (jobModule.getAll().stream().noneMatch(job -> job instanceof BasicDumpJob && ((BasicDumpJob)job).getObject() == item)) {
+//            jobModule.add(new BasicDumpJob(this, item));
+//        }
+//    }
 }

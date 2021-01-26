@@ -1,20 +1,14 @@
 package org.smallbox.faraway.game.job;
 
 import com.badlogic.gdx.graphics.Color;
-import org.smallbox.faraway.client.asset.sound.SoundManager;
-import org.smallbox.faraway.core.dependencyInjector.DependencyManager;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo.ItemInfoAction;
-import org.smallbox.faraway.core.world.model.ItemFilter;
-import org.smallbox.faraway.game.building.BuildJob;
 import org.smallbox.faraway.game.character.model.CharacterSkillExtra;
 import org.smallbox.faraway.game.character.model.base.CharacterModel;
 import org.smallbox.faraway.game.job.taskAction.PrerequisiteTaskAction;
 import org.smallbox.faraway.game.job.taskAction.TechnicalTaskAction;
-import org.smallbox.faraway.game.storage.StoreJob;
 import org.smallbox.faraway.game.world.ObjectModel;
 import org.smallbox.faraway.game.world.Parcel;
-import org.smallbox.faraway.util.GameException;
 import org.smallbox.faraway.util.log.Log;
 
 import java.time.LocalDateTime;
@@ -25,16 +19,64 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class JobModel extends ObjectModel {
-
-    public double _time;
-    private String icon;
-    public long soundId;
-    private Color color;
+    private final Parcel targetParcel;
     private final Collection<JobModel> subJob = new ConcurrentLinkedQueue<>();
-    private boolean exactParcel;
-    private boolean optional;
-    private float moveSpeed = 1;
     private final Collection<Parcel> acceptedParcels = new ConcurrentLinkedQueue<>();
+    private final Queue<JobTask> tasks = new ConcurrentLinkedQueue<>();
+    private final Queue<TechnicalTaskAction> initTasks = new ConcurrentLinkedQueue<>();
+    private final Queue<PrerequisiteTaskAction> prerequisiteTasks = new ConcurrentLinkedQueue<>();
+    private final Queue<TechnicalTaskAction> closeTasks = new ConcurrentLinkedQueue<>();
+    private final Map<CharacterModel, JobCharacterStatus> statusMap = new ConcurrentHashMap<>();
+    private JobStatus status = JobStatus.JOB_INITIALIZED;
+    private double totalDuration;
+    private double duration;
+    private String mainLabel = "";
+    private String label;
+    private String icon;
+    private Color color;
+    private float moveSpeed = 1;
+    private LocalDateTime blocked;
+    private ItemInfoAction actionInfo;
+    private CharacterModel character;
+    private CharacterModel characterRequire;
+    private boolean visible = true;
+    private boolean isAuto;
+    private boolean optional;
+    private CharacterSkillExtra.SkillType skillType;
+
+    public JobModel(Parcel targetParcel) {
+        this.targetParcel = targetParcel;
+    }
+
+    public JobModel(Parcel targetParcel, ItemInfoAction actionInfo) {
+        init();
+        this.targetParcel = targetParcel;
+        if (actionInfo != null) {
+            this.actionInfo = actionInfo;
+        }
+    }
+
+    private void init() {
+        status = JobStatus.JOB_INITIALIZED;
+
+        Log.debug("Job #" + _id + " create new " + getClass().getSimpleName());
+    }
+
+    public Collection<TechnicalTaskAction> getInitTasks() {
+        return initTasks;
+    }
+
+    public Collection<TechnicalTaskAction> getCloseTasks() {
+        return closeTasks;
+    }
+
+    public double getDuration() {
+        return duration;
+    }
+
+    public void addProgression(double progression) {
+        duration += progression;
+    }
 
     public void addAcceptedParcel(Parcel acceptedParcel) {
         this.acceptedParcels.add(acceptedParcel);
@@ -48,29 +90,12 @@ public class JobModel extends ObjectModel {
         this.moveSpeed = moveSpeed;
     }
 
-    public long getSoundId() {
-        return soundId;
-    }
-
-    public void setSoundId(long soundId) {
-        this.soundId = soundId;
-    }
-
     public void setIcon(String icon) {
         this.icon = icon;
     }
 
     public String getIcon() {
-//        if (this instanceof BasicHaulJob) return "[base]/graphics/jobs/ic_haul.png";
-        if (this instanceof StoreJob) return "[base]/graphics/jobs/ic_store.png";
-//        if (this instanceof BasicCraftJob) return "[base]/graphics/jobs/ic_craft.png";
-        if (this instanceof BuildJob) return "[base]/graphics/jobs/ic_build.png";
-//        if (this instanceof BasicRepairJob) return "[base]/graphics/jobs/ic_build.png";
         return icon;
-    }
-
-    public boolean isExactParcel() {
-        return exactParcel;
     }
 
     public void setColor(Color color) {
@@ -97,10 +122,6 @@ public class JobModel extends ObjectModel {
         return this.prerequisiteTasks.stream().allMatch(PrerequisiteTaskAction::onExecuteTask);
     }
 
-    public void setExactParcel(boolean exactParcel) {
-        this.exactParcel = exactParcel;
-    }
-
     public void setOptional(boolean optional) {
         this.optional = optional;
     }
@@ -118,137 +139,122 @@ public class JobModel extends ObjectModel {
     }
 
     public void setBlockedUntil(LocalDateTime _blocked) {
-        this._blocked = _blocked;
+        this.blocked = _blocked;
     }
 
-    protected int               _limit;
-    protected int               _fail;
-    protected LocalDateTime _blocked;
-    protected int               _cost = 1;
-    protected boolean           _isClose;
-    protected double            _progress;
-    protected ItemFilter        _filter;
-    protected ItemInfoAction    _actionInfo;
-    protected CharacterModel character;
-    protected CharacterModel    _characterRequire;
-    protected JobAbortReason    _reason;
-    public String            _label;
-    public JobStatus status = JobStatus.JOB_INITIALIZED;
-    protected String            _message;
-    public Parcel _targetParcel;
-    protected boolean           _isEntertainment;
-    protected boolean           _isAuto;
-    protected String            _mainLabel = "";
-    protected Object            _data;
-    protected boolean           _visible = true;
-    public JobTaskReturn     _lastTaskReturn;
-    protected Map<CharacterModel, JobCharacterStatus> statusMap = new ConcurrentHashMap<>();
-    private CharacterSkillExtra.SkillType skillType;
-
-    public JobModel(ItemInfo.ItemInfoAction actionInfo, Parcel targetParcel) {
-        init();
-        _targetParcel = targetParcel;
-        if (actionInfo != null) {
-            _actionInfo = actionInfo;
-            _cost = actionInfo.cost;
-            _progress = 0;
-        }
+    public String getLabel() {
+        return mainLabel;
     }
 
-    public JobModel() {
-        init();
+    public String getMainLabel() {
+        return mainLabel;
     }
 
-    private void init() {
-        _filter = null;
-        status = JobStatus.JOB_INITIALIZED;
-        _limit = -1;
-        _label = "none";
-
-        Log.debug("Job #" + _id + " create new " + getClass().getSimpleName());
+    public CharacterModel getCharacter() {
+        return character;
     }
 
-    public String                   getMessage() { return _message; }
-    public String                   getLabel() { return _mainLabel; }
-    public String                   getMainLabel() { return _mainLabel; }
-    public CharacterModel           getCharacter() { return character; }
-    public CharacterModel           getCharacterRequire() { return _characterRequire; }
-    public int                      getFail() { return _fail; }
-    public LocalDateTime getBlocked() { return _blocked; }
-    public boolean isBlocked() { return status == JobStatus.JOB_BLOCKED; }
-    public boolean isAvailable() { return status == JobStatus.JOB_INITIALIZED || status == JobStatus.JOB_WAITING; }
-    public boolean isFree() { return character == null; }
-    public JobAbortReason           getReason() { return _reason; }
-    public double                   getQuantity() { return _progress; }
-    public double                   getProgress() { return Math.min(_progress, 1); }
-    public JobStatus                getStatus() { return status; }
-    public JobCharacterStatus getStatusForCharacter(CharacterModel character) { return statusMap.get(character); }
-    public double                   getSpeedModifier() { return 1; }
-    public Parcel getTargetParcel() { return _targetParcel; }
-    public ItemInfo.ItemInfoAction  getAction() { return _actionInfo; }
-    public Object                   getData() { return _data; }
-    public JobTaskReturn            getLastReturn() { return _lastTaskReturn; }
+    public CharacterModel getCharacterRequire() {
+        return characterRequire;
+    }
 
-    public void                     setEntertainment(boolean isEntertainment) { _isEntertainment = isEntertainment; }
-    public void                     setAction(ItemInfo.ItemInfoAction action) { _actionInfo = action; _cost = action.cost; _isAuto = _actionInfo.auto; }
-    public void                     setLabel(String label) { _label = label; }
-    public void                     setQuantity(int quantity) { _progress = quantity; }
-    public void                     setCost(int quantityTotal) { _cost = quantityTotal; }
-    public void                     setCharacterRequire(CharacterModel character) { _characterRequire = character; }
-    public void                     setVisible(boolean visible) { _visible = visible; }
-    public void                     setData(Object data) { _data = data; }
-    public void                     setMainLabel(String mainLabel) { _mainLabel = mainLabel; }
-    public void                     setProgress(double current, double  total) { _progress = current / total; }
-    public void                     setCharacter(CharacterModel character) { this.character = character; }
+    public LocalDateTime getBlocked() {
+        return blocked;
+    }
 
-    public boolean                  isClose() { return _isClose; }
-    public boolean                  isOpen() { return !_isClose; }
-    public boolean                  isEntertainment() { return _isEntertainment; }
-    public boolean                  isAuto() { return _isAuto; }
-    public boolean                  isVisible() { return _visible; }
+    public boolean isBlocked() {
+        return status == JobStatus.JOB_BLOCKED;
+    }
 
-    public boolean onNewInit() { return true; }
-    protected boolean onFirstStart() { return true; }
-    protected JobCheckReturn onCheck(CharacterModel character) { return JobCheckReturn.OK; }
-    protected void onUpdate() {}
-    protected void onClose() {}
+    public boolean isAvailable() {
+        return status == JobStatus.JOB_INITIALIZED || status == JobStatus.JOB_WAITING;
+    }
 
-    public void start(CharacterModel character) {
-        Log.debug("Start job " + this + " by " + (character != null ? character.getName() : "auto"));
+    public boolean isFree() {
+        return character == null;
+    }
 
-        // TODO: waiting that all jobs move to new logic
-        if (acceptedParcels.isEmpty()) {
-            acceptedParcels.add(_targetParcel);
-        }
+    public double getProgress() {
+        return Math.min(duration / totalDuration, 1);
+    }
 
-        if (_isClose) {
-            throw new GameException(JobModel.class, "Job is close");
-        }
+    public JobStatus getStatus() {
+        return status;
+    }
 
-        if (status == JobStatus.JOB_INITIALIZED) {
-            status = JobStatus.JOB_WAITING;
-            onFirstStart();
-        }
+    public JobCharacterStatus getStatusForCharacter(CharacterModel character) {
+        return statusMap.get(character);
+    }
 
-        if (_isAuto && character != null) {
-            throw new GameException(JobModel.class, "cannot assign character to auto job");
-        }
+    public double getSpeedModifier() {
+        return 1;
+    }
 
-//        // Remove job from old characters
-//        if (_character != null) {
-//            quit(_character);
-//        }
-        if (this.character != null) {
-            throw new GameException(JobModel.class, "start: Task is already assigned to a character");
-        }
+    public Parcel getTargetParcel() {
+        return targetParcel;
+    }
 
-        // Set job to new characters
+    public ItemInfo.ItemInfoAction getAction() {
+        return actionInfo;
+    }
+
+    public void setAction(ItemInfo.ItemInfoAction action) {
+        actionInfo = action;
+        isAuto = actionInfo.auto;
+    }
+
+    public void setLabel(String label) {
+        this.label = label;
+    }
+
+    public void setCharacterRequire(CharacterModel character) {
+        characterRequire = character;
+    }
+
+    public void setVisible(boolean visible) {
+        this.visible = visible;
+    }
+
+    public void setMainLabel(String mainLabel) {
+        this.mainLabel = mainLabel;
+    }
+
+    public void setCharacter(CharacterModel character) {
         this.character = character;
-        if (character != null) {
-            character.setJob(this);
-        }
+    }
 
-        status = JobStatus.JOB_RUNNING;
+    public boolean isClose() {
+        return status == JobStatus.JOB_COMPLETE;
+    }
+
+    public boolean isOpen() {
+        return status != JobStatus.JOB_COMPLETE;
+    }
+
+    public boolean isAuto() {
+        return isAuto;
+    }
+
+    public boolean isVisible() {
+        return visible;
+    }
+
+    public boolean onNewInit() {
+        return true;
+    }
+
+    protected boolean onFirstStart() {
+        return true;
+    }
+
+    protected JobCheckReturn onCheck(CharacterModel character) {
+        return JobCheckReturn.OK;
+    }
+
+    protected void onUpdate() {
+    }
+
+    protected void onClose() {
     }
 
     public boolean checkCharacterAccepted(CharacterModel character) {
@@ -263,73 +269,32 @@ public class JobModel extends ObjectModel {
         this.skillType = skillType;
     }
 
-    /**
-     * Retire le personnage de la tache, mais celle-ci continue
-     */
-    public void clearCharacter(CharacterModel character, LocalDateTime currentTime) {
-        if (this.character == character) {
-            this.character = null;
-            this.status = JobStatus.JOB_WAITING;
-            Log.debug("Character cleared from job: " + this);
-
-            character.clearJob(this, currentTime);
-        }
+    protected boolean onCheck() {
+        return true;
     }
-
-    /**
-     * La tache est fermée (terminée ou annulée)
-     * @param currentTime
-     */
-    public void close(LocalDateTime currentTime) {
-
-        if (character != null) {
-            Log.debug("Complete job " + this + " by " + character.getName());
-            clearCharacter(character, currentTime);
-        }
-
-        onClose();
-
-        closeTasks.forEach(technicalTaskAction -> technicalTaskAction.onExecuteTask(this));
-
-        _isClose = true;
-        status = JobStatus.JOB_COMPLETE;
-
-        DependencyManager.getInstance().getDependency(SoundManager.class).stop(soundId);
-    }
-
-    public boolean check() {
-        return onCheck();
-    }
-
-    public void update() {
-        onUpdate();
-    }
-
-    protected boolean onCheck() { return true; }
-
-    public final Queue<JobTask> _tasks = new ConcurrentLinkedQueue<>();
-    private final Queue<TechnicalTaskAction> initTasks = new ConcurrentLinkedQueue<>();
-    private final Queue<PrerequisiteTaskAction> prerequisiteTasks = new ConcurrentLinkedQueue<>();
-    private final Queue<TechnicalTaskAction> closeTasks = new ConcurrentLinkedQueue<>();
 
     public Collection<JobTask> getTasks() {
-        return _tasks;
+        return tasks;
+    }
+
+    public JobTask lastTask() {
+        return tasks.peek();
+    }
+
+    public JobTask nextTask() {
+        return tasks.poll();
     }
 
     public void addTask(JobTask jobTask) {
-        if (_tasks.isEmpty()) {
-            _label = jobTask.label;
+        if (tasks.isEmpty()) {
+            label = jobTask.label;
         }
 
-        _tasks.add(jobTask);
+        tasks.add(jobTask);
     }
 
     public boolean hasStatus(JobStatus status) {
         return this.status == status;
-    }
-
-    public boolean hasReason(JobAbortReason reason) {
-        return this._reason == reason;
     }
 
     public void setAcceptedParcel(Collection<Parcel> acceptedParcels) {
@@ -337,8 +302,12 @@ public class JobModel extends ObjectModel {
         this.acceptedParcels.addAll(acceptedParcels);
     }
 
-    public interface ParcelCallback {
-        Parcel getParcel();
+    public void setTotalDuration(double totalDuration) {
+        this.totalDuration = totalDuration;
+    }
+
+    public double getTotalDuration() {
+        return totalDuration;
     }
 
     public void addInitTask(TechnicalTaskAction technicalTaskAction) {
@@ -355,6 +324,10 @@ public class JobModel extends ObjectModel {
 
     public Collection<JobModel> getSubJob() {
         return subJob;
+    }
+
+    public void setStatus(CharacterModel character, JobCharacterStatus statusForCharacter) {
+        statusMap.put(character, statusForCharacter);
     }
 
 }

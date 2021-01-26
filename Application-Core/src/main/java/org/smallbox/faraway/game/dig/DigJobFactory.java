@@ -32,9 +32,7 @@ public class DigJobFactory {
 
     public DigJob createJob(Parcel digParcel, DigType digType) {
         if (digParcel.getRockInfo() != null) {
-            DigJob job = new DigJob();
-
-            job._targetParcel = digParcel;
+            DigJob job = new DigJob(digParcel);
 
             WorldHelper.getParcelAround(digParcel, SurroundedPattern.X_CROSS, job::addAcceptedParcel);
             WorldHelper.getParcelAround(WorldHelper.getParcelOffset(digParcel, 0, 0, 1), SurroundedPattern.X_CROSS, job::addAcceptedParcel);
@@ -43,14 +41,14 @@ public class DigJobFactory {
             job.setSkillType(CharacterSkillExtra.SkillType.DIG);
             job.setIcon("[base]/graphics/jobs/ic_mining.png");
             job.setColor(new Color(0x80391eff));
+            job.setTotalDuration(applicationConfig.game.digTime);
 
             // Dig action
             job.addTask(new ActionTask("Dig", (character, hourInterval, localDateTime) -> {
                 if (digParcel.getRockInfo() != null) {
-                    job._time += hourInterval;
-                    job.setProgress(job._time, applicationConfig.game.digTime);
+                    job.addProgression(hourInterval);
                 }
-            }, () -> !digParcel.hasRock() || job._time >= applicationConfig.game.digTime ? TASK_COMPLETED : TASK_CONTINUE));
+            }, () -> job.getDuration() >= job.getTotalDuration() ? TASK_COMPLETED : TASK_CONTINUE));
 
             // - Create output products
             // - Remove rock from parcel

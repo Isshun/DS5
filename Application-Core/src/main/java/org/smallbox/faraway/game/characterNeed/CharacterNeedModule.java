@@ -92,14 +92,14 @@ public class CharacterNeedModule extends SuperGameModule {
             // Arrêt du job uniquement si le personnage à son énergie au minimum à la moitier du niveau warning
             double workWakeUpThreshold  = (sleepNeed.critical + (sleepNeed.warning - sleepNeed.critical) / 2);
             if (state == CharacterTimetableExtra.State.WORK && hasSleepJob && sleepNeed.value() >= workWakeUpThreshold) {
-                sleepJob.close(gameTime.now());
+                jobModule.remove(sleepJob);
                 return;
             }
 
             // Check: le personnage est en période FREE et un job est lancé
             // Arrêt du job uniquement si le personnage à son énergie au minimum du niveau optimal
             if (state == CharacterTimetableExtra.State.FREE && hasSleepJob && sleepNeed.value() >= sleepNeed.optimal) {
-                sleepJob.close(gameTime.now());
+                jobModule.remove(sleepJob);
             }
 
         }
@@ -162,7 +162,7 @@ public class CharacterNeedModule extends SuperGameModule {
         }
 
         // Create use job
-        UseJob job = itemModule.createUseJob(bestItem, bestItem.getInfo().use.duration, (consumable, durationLeft) ->
+        UseJob job = itemModule.createUseJob(bestItem, (consumable, durationLeft) ->
                 character.getExtra(CharacterNeedsExtra.class).use(consumable.getInfo().use, game.getTickPerHour()));
         if (job == null) {
             return false;
@@ -184,7 +184,7 @@ public class CharacterNeedModule extends SuperGameModule {
         }
 
         // Create consume job
-        ConsumeJob job = consumeJobFactory.create(bestConsumable, bestConsumable.getInfo().consume.duration, (consumable, durationLeft) -> {
+        ConsumeJob job = consumeJobFactory.create(bestConsumable, (consumable, durationLeft) -> {
             ItemInfo itemInfo = bestConsumable.getInfo();
             character.getExtra(CharacterNeedsExtra.class).use(itemInfo.consume, game.getTickPerHour());
         });

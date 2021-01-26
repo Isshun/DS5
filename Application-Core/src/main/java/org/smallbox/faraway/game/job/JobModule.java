@@ -10,6 +10,7 @@ import org.smallbox.faraway.core.game.GameTime;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.module.SuperGameModule;
 import org.smallbox.faraway.game.character.CharacterJobModule;
+import org.smallbox.faraway.game.character.model.base.CharacterModel;
 import org.smallbox.faraway.game.consumable.ConsumableModule;
 import org.smallbox.faraway.game.world.Parcel;
 import org.smallbox.faraway.util.Constant;
@@ -21,7 +22,6 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.stream.Stream;
 
-import static org.smallbox.faraway.game.job.JobAbortReason.INVALID;
 import static org.smallbox.faraway.game.job.JobStatus.*;
 
 @GameObject
@@ -39,10 +39,10 @@ public class JobModule extends SuperGameModule<JobModel, JobModuleObserver> {
         // Check all jobs
         modelList.forEach(job -> {
 
-            if (job.check()) {
-                job.update();
+            if (job.onCheck()) {
+                job.onUpdate();
             } else {
-                job.close(gameTime.now());
+                remove(job);
             }
 
         });
@@ -54,7 +54,7 @@ public class JobModule extends SuperGameModule<JobModel, JobModuleObserver> {
         });
 
         // Remove invalid or completed jobs
-        modelList.removeIf(job -> job.hasReason(INVALID) || job.hasStatus(JOB_COMPLETE));
+        modelList.removeIf(job -> job.hasStatus(JOB_INVALID) || job.hasStatus(JOB_COMPLETE));
 
         // Run auto job
         modelList.stream().filter(JobModel::isAuto).forEach(job -> characterJobModule.actionJob(null, job, getTickInterval() * game.getTickPerHour()));
@@ -72,7 +72,7 @@ public class JobModule extends SuperGameModule<JobModel, JobModuleObserver> {
             boolean ret = jobInitCallback.onInit(job);
             job.onNewInit();
             if (!ret) {
-                job.close(gameTime.now());
+                remove(job);
                 return null;
             }
 
@@ -129,7 +129,7 @@ public class JobModule extends SuperGameModule<JobModel, JobModuleObserver> {
         modelList.addAll(_unordonnedJobs);
     }
 
-    public void quitJob(JobModel job, JobAbortReason reason) {
+    public void quitJob(JobModel job) {
         if (job != null) {
             Log.debug(JobModule.class, "Job quit: " + job.getId());
 
@@ -143,7 +143,7 @@ public class JobModule extends SuperGameModule<JobModel, JobModuleObserver> {
     public void onCancelJobs(Parcel parcel, Object object) {
         modelList.stream().filter(JobModel::isOpen).forEach(job -> {
             if (object == null && job.getTargetParcel() == parcel) {
-                job.close(gameTime.now());
+                remove(job);
             }
         });
     }
@@ -166,8 +166,60 @@ public class JobModule extends SuperGameModule<JobModel, JobModuleObserver> {
 
     @Override
     public void remove(JobModel job) {
-        Log.debug("Remove job " + job + ", status: " + job.getStatus());
-        job.close(gameTime.now());
         super.remove(job);
+
+        if (job.getCharacter() != null) {
+            Log.debug("Complete job " + this + " by " + job.getCharacter().getName());
+            clearCharacter(job, job.getCharacter());
+        }
+
+        job.onClose();
+        job.getCloseTasks().forEach(technicalTaskAction -> technicalTaskAction.onExecuteTask(job));
+        job.setStatus(JobStatus.JOB_COMPLETE);
+
+        Log.debug("Remove job " + job + ", status: " + job.getStatus());
     }
+
+    /**
+     * Character is removed from job but it continue
+     */
+    public void clearCharacter(JobModel job, CharacterModel character) {
+        if (job.getCharacter() == character) {
+            job.setCharacter(null);
+            job.setStatus(JobStatus.JOB_WAITING);
+            Log.debug("Character cleared from job: " + job);
+
+            characterJobModule.clearJob(character, job);
+        }
+    }
+
+    public void start(JobModel job, CharacterModel character) {
+        Log.debug("Start job " + job + " by " + (character != null ? character.getName() : "auto"));
+
+        if (job.getStatus() == JobStatus.JOB_COMPLETE) {
+            throw new GameException(JobModel.class, "Job is close");
+        }
+
+        if (job.getStatus() == JobStatus.JOB_INITIALIZED) {
+            job.setStatus(JobStatus.JOB_WAITING);;
+            job.onFirstStart();
+        }
+
+        if (job.isAuto() && character != null) {
+            throw new GameException(JobModel.class, "cannot assign character to auto job");
+        }
+
+        if (job.getCharacter() != null) {
+            throw new GameException(JobModel.class, "start: Task is already assigned to a character");
+        }
+
+        // Set job to new characters
+        job.setCharacter(character);
+        if (character != null) {
+            character.setJob(job);
+        }
+
+        job.setStatus(JobStatus.JOB_RUNNING);
+    }
+
 }
