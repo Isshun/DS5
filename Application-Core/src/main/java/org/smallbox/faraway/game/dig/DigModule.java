@@ -9,14 +9,15 @@ import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnInit;
 import org.smallbox.faraway.core.game.Game;
+import org.smallbox.faraway.game.area.AreaModule;
+import org.smallbox.faraway.game.area.AreaModuleBase;
 import org.smallbox.faraway.game.dig.action.DigAction;
 import org.smallbox.faraway.game.dig.action.DigRampAction;
 import org.smallbox.faraway.game.dig.action.DigUnderAction;
-import org.smallbox.faraway.game.world.Parcel;
-import org.smallbox.faraway.game.area.AreaModule;
-import org.smallbox.faraway.game.area.AreaModuleBase;
+import org.smallbox.faraway.game.dig.factory.DigRockJobFactory;
 import org.smallbox.faraway.game.job.JobModel;
 import org.smallbox.faraway.game.job.JobModule;
+import org.smallbox.faraway.game.world.Parcel;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -25,7 +26,7 @@ import java.util.stream.Collectors;
 public class DigModule extends AreaModuleBase<DigAction> {
     @Inject private JobModule jobModule;
     @Inject private AreaModule areaModule;
-    @Inject private DigJobFactory digJobFactory;
+    @Inject private DigRockJobFactory digRockJobFactory;
     @Inject private GameActionManager gameActionManager;
     @Inject private DigUnderAction digUnderAction;
     @Inject private DigRampAction digRampAction;
@@ -48,7 +49,7 @@ public class DigModule extends AreaModuleBase<DigAction> {
         parcelInDigArea.stream()
                 .filter(parcel -> parcel.getRockInfo() != null)
                 .filter(parcel -> !CollectionUtils.containsAny(parcelInDigJob, parcel))
-                .forEach(parcel -> jobModule.add(digJobFactory.createJob(parcel, DigType.ROCK)));
+                .forEach(parcel -> jobModule.add(digRockJobFactory.createJob(parcel)));
     }
 
     @Override

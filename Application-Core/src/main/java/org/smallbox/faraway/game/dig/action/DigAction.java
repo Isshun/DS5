@@ -3,18 +3,17 @@ package org.smallbox.faraway.game.dig.action;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
-import org.smallbox.faraway.game.dig.DigJobFactory;
-import org.smallbox.faraway.game.dig.DigType;
-import org.smallbox.faraway.game.world.Parcel;
 import org.smallbox.faraway.game.area.AreaModel;
 import org.smallbox.faraway.game.area.AreaTypeInfo;
+import org.smallbox.faraway.game.dig.factory.DigRockJobFactory;
 import org.smallbox.faraway.game.job.JobModule;
+import org.smallbox.faraway.game.world.Parcel;
 
 @GameObject
 @AreaTypeInfo(label = "Dig", color = 0x80391eff)
 public class DigAction extends AreaModel {
     @Inject private JobModule jobModule;
-    @Inject private DigJobFactory digJobFactory;
+    @Inject private DigRockJobFactory digRockJobFactory;
 
     @Override
     public boolean isAccepted(ItemInfo itemInfo) {
@@ -28,7 +27,7 @@ public class DigAction extends AreaModel {
     @Override
     public void onParcelSelected(Parcel parcel) {
         if (parcel.getRockInfo() != null) {
-            jobModule.add(digJobFactory.createJob(parcel, DigType.ROCK));
+            jobModule.add(digRockJobFactory.createJob(parcel));
         }
     }
 

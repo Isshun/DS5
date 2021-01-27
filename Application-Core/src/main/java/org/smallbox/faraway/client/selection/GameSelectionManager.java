@@ -7,6 +7,8 @@ import org.smallbox.faraway.client.controller.LuaController;
 import org.smallbox.faraway.client.controller.MainPanelController;
 import org.smallbox.faraway.client.gameAction.GameActionManager;
 import org.smallbox.faraway.client.layer.LayerManager;
+import org.smallbox.faraway.game.plant.PlantModule;
+import org.smallbox.faraway.game.plant.model.PlantItem;
 import org.smallbox.faraway.game.world.ObjectModel;
 import org.smallbox.faraway.core.dependencyInjector.DependencyManager;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
@@ -41,6 +43,7 @@ public class GameSelectionManager extends GameManager {
     @Inject private ConsumableModule consumableModule;
     @Inject private ItemModule itemModule;
     @Inject private StructureModule structureModule;
+    @Inject private PlantModule plantModule;
     @Inject private DependencyManager dependencyManager;
     @Inject private MainPanelController mainPanelController;
 
@@ -147,8 +150,9 @@ public class GameSelectionManager extends GameManager {
                 ConsumableItem consumable = consumableModule.getAll().stream().filter(c -> c.getParcel() == parcel).findFirst().orElse(null);
                 UsableItem item = itemModule.getAll().stream().filter(c -> c.getParcel() == parcel).findFirst().orElse(null);
                 StructureItem structure = structureModule.getAll().stream().filter(c -> c.getParcel() == parcel).findFirst().orElse(null);
+                PlantItem plant = plantModule.getAll().stream().filter(c -> c.getParcel() == parcel).findFirst().orElse(null);
 
-                select(ObjectUtils.firstNonNull(character, consumable, item, structure, area, parcel));
+                select(ObjectUtils.firstNonNull(character, consumable, item, structure, area, plant, parcel));
             }
         }
     }

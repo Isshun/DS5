@@ -1,19 +1,18 @@
 package org.smallbox.faraway.game.job;
 
+import org.smallbox.faraway.core.config.ApplicationConfig;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
-import org.smallbox.faraway.core.module.SuperGameModule;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameTime;
-import org.smallbox.faraway.game.character.model.PathModel;
-import org.smallbox.faraway.game.world.Parcel;
-import org.smallbox.faraway.game.world.WorldHelper;
-import org.smallbox.faraway.core.config.ApplicationConfig;
+import org.smallbox.faraway.core.module.SuperGameModule;
 import org.smallbox.faraway.core.path.PathManager;
 import org.smallbox.faraway.game.character.CharacterModule;
 import org.smallbox.faraway.game.character.model.CharacterSkillExtra;
+import org.smallbox.faraway.game.character.model.PathModel;
 import org.smallbox.faraway.game.character.model.base.CharacterModel;
-import org.smallbox.faraway.game.job.freeTimeJobs.WalkJobFactory;
+import org.smallbox.faraway.game.world.Parcel;
+import org.smallbox.faraway.game.world.WorldHelper;
 
 import java.util.Comparator;
 import java.util.List;
@@ -28,7 +27,6 @@ public class JobOrchestratorModule extends SuperGameModule<JobModel, JobModuleOb
     @Inject private PathManager pathManager;
     @Inject private ApplicationConfig applicationConfig;
     @Inject private CharacterModule characterModule;
-    @Inject private WalkJobFactory walkJobFactory;
     @Inject private JobModule jobModule;
     @Inject private GameTime gameTime;
     @Inject private Game game;

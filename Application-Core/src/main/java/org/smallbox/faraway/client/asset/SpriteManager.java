@@ -337,6 +337,8 @@ public class SpriteManager {
 
                 if (graphicInfo.type == GraphicInfo.Type.ICON) {
                     sprite = new Sprite(texture, 0, 0, graphicInfo.width, graphicInfo.height);
+                } else if (graphicInfo.width != 0 && graphicInfo.height != 0) {
+                    sprite = new Sprite(texture, 0, 0, graphicInfo.width, graphicInfo.height);
                 } else {
                     sprite = new Sprite(texture,
                             (graphicInfo.x + tile) * graphicInfo.tileWidth,

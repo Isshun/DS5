@@ -6,8 +6,9 @@ import com.almworks.sqlite4java.SQLiteStatement;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.save.GenericGameCollectionSerializer;
-import org.smallbox.faraway.game.world.WorldHelper;
+import org.smallbox.faraway.game.dig.factory.DigRockJobFactory;
 import org.smallbox.faraway.game.job.JobModule;
+import org.smallbox.faraway.game.world.WorldHelper;
 
 import java.util.Collection;
 import java.util.Optional;
@@ -15,7 +16,7 @@ import java.util.stream.Collectors;
 
 @GameObject
 public class DigJobCollectionSerializer extends GenericGameCollectionSerializer<DigJob> {
-    @Inject private DigJobFactory digJobFactory;
+    @Inject private DigRockJobFactory digRockJobFactory;
     @Inject private JobModule jobModule;
 
     @Override
@@ -48,7 +49,7 @@ public class DigJobCollectionSerializer extends GenericGameCollectionSerializer<
         try {
             while (selectStatement.step()) {
                 Optional.ofNullable(WorldHelper.getParcel(selectStatement.columnInt(1), selectStatement.columnInt(2), selectStatement.columnInt(3)))
-                        .ifPresent(parcel -> jobModule.add(digJobFactory.createJob(parcel, DigType.ROCK)));
+                        .ifPresent(parcel -> jobModule.add(digRockJobFactory.createJob(parcel)));
             }
         } finally {
             selectStatement.dispose();

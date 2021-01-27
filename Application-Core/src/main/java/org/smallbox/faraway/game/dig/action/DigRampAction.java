@@ -5,8 +5,7 @@ import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.game.area.AreaModel;
 import org.smallbox.faraway.game.area.AreaTypeInfo;
-import org.smallbox.faraway.game.dig.DigJobFactory;
-import org.smallbox.faraway.game.dig.DigType;
+import org.smallbox.faraway.game.dig.factory.DigRampJobFactory;
 import org.smallbox.faraway.game.job.JobModule;
 import org.smallbox.faraway.game.world.Parcel;
 import org.smallbox.faraway.game.world.WorldModule;
@@ -15,7 +14,7 @@ import org.smallbox.faraway.game.world.WorldModule;
 @AreaTypeInfo(label = "Dig ramp", color = 0x80391eff)
 public class DigRampAction extends AreaModel {
     @Inject private JobModule jobModule;
-    @Inject private DigJobFactory digJobFactory;
+    @Inject private DigRampJobFactory digRampJobFactory;
     @Inject private WorldModule worldModule;
 
     @Override
@@ -30,7 +29,7 @@ public class DigRampAction extends AreaModel {
     @Override
     public void onParcelSelected(Parcel parcel) {
         if (parcel.hasRock()) {
-            jobModule.add(digJobFactory.createJob(parcel, DigType.RAMP));
+            jobModule.add(digRampJobFactory.createJob(parcel));
         }
     }
 

@@ -1,13 +1,14 @@
 package org.smallbox.faraway.client.controller;
 
 import org.smallbox.faraway.client.controller.annotation.BindLua;
-import org.smallbox.faraway.client.ui.widgets.View;
 import org.smallbox.faraway.client.ui.widgets.UILabel;
+import org.smallbox.faraway.client.ui.widgets.View;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
-import org.smallbox.faraway.game.world.Parcel;
+import org.smallbox.faraway.core.dependencyInjector.gameAction.OnGameSelectAction;
 import org.smallbox.faraway.game.plant.PlantModule;
 import org.smallbox.faraway.game.plant.model.PlantItem;
+import org.smallbox.faraway.game.world.Parcel;
 
 import java.util.Queue;
 
@@ -15,7 +16,7 @@ import java.util.Queue;
 public class PlantInfoController extends AbsInfoLuaController<PlantItem> {
     @Inject private PlantModule plantModule;
 
-    @BindLua private UILabel lbLabel;
+    @BindLua private UILabel lbName;
     @BindLua private UILabel lbJob;
     @BindLua private UILabel lbMaturity;
     @BindLua private UILabel lbGarden;
@@ -35,9 +36,11 @@ public class PlantInfoController extends AbsInfoLuaController<PlantItem> {
     @BindLua private View imgMoisture;
     @BindLua private View imgOxygen;
 
-    @Override
-    protected void onDisplayUnique(PlantItem plant) {
-        lbLabel.setText("Type: " + plant.getLabel());
+    @OnGameSelectAction(PlantItem.class)
+    protected void onSelectPlant(PlantItem plant) {
+        setVisible(true);
+
+        lbName.setText(plant.getLabel());
         lbMaturity.setText("Maturity: " + (int)(plant.getMaturity() * 100) + "%");
         lbGarden.setText("Garden: " + plant.getGarden());
         lbSeed.setText("Seed: " + plant.hasSeed());
@@ -47,22 +50,22 @@ public class PlantInfoController extends AbsInfoLuaController<PlantItem> {
         double minTemperature = plant.getInfo().plant.temperature.min;
         double maxTemperature = plant.getInfo().plant.temperature.max;
         double bestTemperature = plant.getInfo().plant.temperature.best;
-        lbTemperature.setText("Temperature: " + minTemperature + " > " + bestTemperature + " > " + maxTemperature);
+        lbTemperature.setText(minTemperature + " > " + bestTemperature + " > " + maxTemperature);
 
         double minLight = 0;
         double maxLight = 1;
         double bestLight = 0.8;
-        lbLight.setText("Light: " + minLight + " > " + bestLight + " > " + maxLight);
+        lbLight.setText(minLight + " > " + bestLight + " > " + maxLight);
 
         double minMoisture = 0;
         double maxMoisture = 1;
         double bestMoisture = 0.5;
-        lbMoisture.setText("Moisture: " + minMoisture + " > " + bestMoisture + " > " + maxMoisture);
+        lbMoisture.setText(minMoisture + " > " + bestMoisture + " > " + maxMoisture);
 
         double minOxygen = 0;
         double maxOxygen = 1;
         double bestOxygen = 0.5;
-        lbOxygen.setText("Oxygen: " + minOxygen + " > " + bestOxygen + " > " + maxOxygen);
+        lbOxygen.setText(minOxygen + " > " + bestOxygen + " > " + maxOxygen);
 
         Parcel parcel = plant.getParcel();
         if (parcel != null) {
@@ -101,8 +104,12 @@ public class PlantInfoController extends AbsInfoLuaController<PlantItem> {
     }
 
     @Override
+    protected void onDisplayUnique(PlantItem plantItem) {
+
+    }
+
+    @Override
     protected void onDisplayMultiple(Queue<PlantItem> objects) {
-        lbLabel.setText("MULTIPLE");
     }
 
     @Override

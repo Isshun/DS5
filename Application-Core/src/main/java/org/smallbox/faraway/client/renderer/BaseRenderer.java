@@ -79,12 +79,8 @@ public abstract class BaseRenderer {
 
     public void drawSprite(Sprite sprite, int x, int y) {
         if (sprite != null) {
-            Gdx.gl.glEnable(GL20.GL_BLEND);
-            _batch.begin();
-            _batch.setProjectionMatrix(getCombinedProjection());
-            _batch.draw(sprite, x, y);
-            _batch.end();
-            Gdx.gl.glBlendEquation(GL20.GL_FUNC_ADD);
+            sprite.setPosition(x, y);
+            drawSprite(sprite);
         }
     }
 

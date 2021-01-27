@@ -9,7 +9,7 @@ import org.smallbox.faraway.game.character.model.CharacterSkillExtra;
 import org.smallbox.faraway.game.character.model.base.CharacterModel;
 import org.smallbox.faraway.game.consumable.ConsumableItem;
 import org.smallbox.faraway.game.consumable.ConsumableModule;
-import org.smallbox.faraway.game.dig.DigJobFactory;
+import org.smallbox.faraway.game.dig.factory.DigJobFactory;
 import org.smallbox.faraway.game.job.JobModel;
 import org.smallbox.faraway.game.job.task.TechnicalTask;
 import org.smallbox.faraway.game.world.Parcel;

@@ -13,6 +13,7 @@ import org.smallbox.faraway.util.Constant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
@@ -168,4 +169,7 @@ public class WorldModule extends GenericGameModule<Parcel> {
         return Stream.of(directions).map(direction -> getParcel(parcel, direction)).allMatch(p -> p == null || predicate.test(p));
     }
 
+    public Parcel getRandom(int floor) {
+        return modelList.stream().filter(parcel -> parcel.z == floor).skip(new Random().nextInt(_width * _height)).findFirst().orElse(null);
+    }
 }
