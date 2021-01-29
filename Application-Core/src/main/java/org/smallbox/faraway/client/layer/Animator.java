@@ -14,8 +14,8 @@ public class Animator {
     private float changeValue;
     private float value;
 
-    public Animator(float fromValue, float toValue, float changeValue, BiConsumer<Sprite, Float> spriteSupplier) {
-        this.interpolation = Interpolation.pow2;
+    public Animator(float fromValue, float toValue, float changeValue, Interpolation interpolation, BiConsumer<Sprite, Float> spriteSupplier) {
+        this.interpolation = interpolation;
         this.spriteSupplier = spriteSupplier;
         this.fromValue = fromValue;
         this.toValue = toValue;
@@ -23,13 +23,15 @@ public class Animator {
         this.value = (float) Math.random();
     }
 
-    public void update(Sprite sprite) {
+    public Sprite update(Sprite sprite) {
         if (value < 0 || value > 1) {
             changeValue = -changeValue;
         }
         value += changeValue;
 
         spriteSupplier.accept(sprite, interpolation.apply(fromValue, toValue, value));
+
+        return sprite;
     }
 
 }

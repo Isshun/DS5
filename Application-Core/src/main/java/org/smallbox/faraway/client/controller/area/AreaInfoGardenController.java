@@ -8,28 +8,26 @@ import org.smallbox.faraway.client.ui.widgets.UILabel;
 import org.smallbox.faraway.client.ui.widgets.UIList;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
+import org.smallbox.faraway.core.dependencyInjector.gameAction.OnGameSelectAction;
 import org.smallbox.faraway.core.game.DataManager;
-import org.smallbox.faraway.game.world.Parcel;
 import org.smallbox.faraway.game.area.AreaModel;
 import org.smallbox.faraway.game.area.AreaModule;
 import org.smallbox.faraway.game.plant.GardenArea;
 import org.smallbox.faraway.game.plant.PlantModule;
+import org.smallbox.faraway.game.world.Parcel;
 
 import java.util.Queue;
 
 @GameObject
 public class AreaInfoGardenController extends AbsInfoLuaController<AreaModel> {
-
-    @Inject
-    protected GameSelectionManager gameSelectionManager;
+    @Inject protected GameSelectionManager gameSelectionManager;
     @Inject private UIEventManager uiEventManager;
     @Inject private AreaModule areaModule;
     @Inject private PlantModule plantModule;
-
-    @BindLua
-    private UIList listPlants;
     @Inject private DataManager dataManager;
     @Inject private AreaInfoController areaInfoController;
+
+    @BindLua private UIList listPlants;
 
     @Override
     public void onReloadUI() {
@@ -37,8 +35,11 @@ public class AreaInfoGardenController extends AbsInfoLuaController<AreaModel> {
     }
 
     @Override
+    @OnGameSelectAction(GardenArea.class)
     protected void onDisplayUnique(AreaModel area) {
         setVisible(true);
+
+        gameSelectionManager.setSelected(area.getParcels());
 
         listPlants.removeAllViews();
         dataManager.items.stream()

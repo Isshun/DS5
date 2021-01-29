@@ -23,4 +23,20 @@ public class PlantModuleConsoleInterpreter extends ConsoleInterpreterBase {
         return "done";
     }
 
+    @ConsoleCommand("tree2")
+    public String addTree2() {
+        PlantItem plantItem = new PlantItem(dataManager.getItemInfo("base.plant.tree_2"));
+        plantItem.setParcel(worldModule.getRandom(worldModule.getFloors() - 1));
+        plantModule.add(plantItem);
+        return "done";
+    }
+
+    @ConsoleCommand("wheat")
+    public String addWheat() {
+        PlantItem plantItem = new PlantItem(dataManager.getItemInfo("base.plant.wheat"));
+        plantItem.setParcel(worldModule.getRandom(worldModule.getFloors() - 1));
+        plantModule.add(plantItem);
+        return "done";
+    }
+
 }

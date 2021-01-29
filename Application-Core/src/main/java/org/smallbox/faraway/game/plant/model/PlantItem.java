@@ -1,6 +1,5 @@
 package org.smallbox.faraway.game.plant.model;
 
-import org.smallbox.faraway.core.save.GameSerializer;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.world.model.MapObjectModel;
 import org.smallbox.faraway.game.job.JobModel;
@@ -10,7 +9,6 @@ import org.smallbox.faraway.util.Utils;
 
 import static org.smallbox.faraway.core.game.modelInfo.ItemInfo.ItemInfoPlant.GrowingInfo;
 
-@GameSerializer(PlantSerializer.class)
 public class PlantItem extends MapObjectModel {
     private GrowingInfo         _growingInfo;
     private double              _maturity;
@@ -20,6 +18,7 @@ public class PlantItem extends MapObjectModel {
     private int                 _tile;
     private JobModel            _job;
     public PlantGrowTask        task;
+    private int gridPosition;
 
     public PlantItem(ItemInfo info) {
         super(info);
@@ -48,6 +47,14 @@ public class PlantItem extends MapObjectModel {
     public boolean              inGarden() { return _garden != null; }
     public boolean              hasSeed() { return _hasSeed; }
     public boolean              hasGrowingInfo() { return _growingInfo != null; }
+
+    public int getGridPosition() {
+        return gridPosition;
+    }
+
+    public void setGridPosition(int gridPosition) {
+        this.gridPosition = gridPosition;
+    }
 
     public void grow(double hourInterval) {
         if (_growingInfo != null) {

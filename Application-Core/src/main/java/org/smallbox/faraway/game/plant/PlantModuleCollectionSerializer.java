@@ -25,19 +25,20 @@ public class PlantModuleCollectionSerializer extends GenericGameCollectionSerial
 
     @Override
     public void onCreateTable(SQLiteConnection db) throws SQLiteException {
-        db.exec("CREATE TABLE WorldModule_plant (_id INTEGER, x INTEGER, y INTEGER, z INTEGER, name TEXT)");
+        db.exec("CREATE TABLE WorldModule_plant (_id INTEGER, x INTEGER, y INTEGER, z INTEGER, grid_position INTEGER, name TEXT)");
     }
 
     @Override
     public void onSaveEntry(SQLiteConnection db, PlantItem item) throws SQLiteException {
-        SQLiteStatement insertStatement = db.prepare("INSERT INTO WorldModule_plant (_id, x, y, z, name) VALUES (?, ?, ?, ?, ?)");
+        SQLiteStatement insertStatement = db.prepare("INSERT INTO WorldModule_plant (_id, x, y, z, grid_position, name) VALUES (?, ?, ?, ?, ?, ?)");
         try {
             if (item.getParcel() != null) {
                 insertStatement.bind(1, item.getId());
                 insertStatement.bind(2, item.getParcel().x);
                 insertStatement.bind(3, item.getParcel().y);
                 insertStatement.bind(4, item.getParcel().z);
-                insertStatement.bind(5, item.getInfo().name);
+                insertStatement.bind(5, item.getGridPosition());
+                insertStatement.bind(6, item.getInfo().name);
                 insertStatement.step();
             }
         } finally {
@@ -47,12 +48,13 @@ public class PlantModuleCollectionSerializer extends GenericGameCollectionSerial
 
     @Override
     public void onLoadEntry(SQLiteConnection db) throws SQLiteException {
-        SQLiteStatement selectStatement = db.prepare("SELECT _id, x, y, z, name FROM WorldModule_plant");
+        SQLiteStatement selectStatement = db.prepare("SELECT _id, x, y, z, grid_position, name FROM WorldModule_plant");
         try {
             while (selectStatement.step()) {
-                ItemInfo itemInfo = dataManager.getItemInfo(selectStatement.columnString(4));
+                ItemInfo itemInfo = dataManager.getItemInfo(selectStatement.columnString(5));
                 if (itemInfo != null) {
                     PlantItem item = new PlantItem(itemInfo, selectStatement.columnInt(0));
+                    item.setGridPosition(selectStatement.columnInt(4));
                     item.setParcel(worldModule.getParcel(selectStatement.columnInt(1), selectStatement.columnInt(2), selectStatement.columnInt(3)));
                     plantModule.add(item);
                 }

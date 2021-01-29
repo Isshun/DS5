@@ -17,6 +17,7 @@ import org.smallbox.faraway.game.plant.model.PlantItem;
 import org.smallbox.faraway.game.world.WorldModule;
 
 import java.util.Optional;
+import java.util.stream.IntStream;
 
 @GameObject
 public class PlantModule extends GenericGameModule<PlantItem> {
@@ -34,22 +35,22 @@ public class PlantModule extends GenericGameModule<PlantItem> {
     }
 
     @Override
-    public void onModuleUpdate(Game game) {
-        // Fait pousser les plantes
-        modelList.stream()
-                .filter(plant -> plant.task == null && plant.hasSeed() && computeGrowingInfo(plant))
-                .forEach(plant -> gameTaskManager.startTask(new PlantGrowTask(plant)));
+    public void onGameUpdate(Game game) {
+//        // Fait pousser les plantes
+//        modelList.stream()
+//                .filter(plant -> plant.task == null && plant.hasSeed() && computeGrowingInfo(plant))
+//                .forEach(plant -> gameTaskManager.startTask(new PlantGrowTask(plant)));
 
         // Fait pousser les plantes
         modelList.stream()
-                .filter(plant -> plant.hasSeed() && computeGrowingInfo(plant))
+                .filter(plant -> computeGrowingInfo(plant))
                 .forEach(plant -> plant.grow(getHourInterval()));
 
-        // Récolte les plantes arrivées à maturité
-        modelList.stream()
-                .filter(plant -> plant.getJob() == null)
-                .filter(plant -> plant.getMaturity() >= 1)
-                .forEach(plant -> jobModule.add(harvestJobFactory.create(plant)));
+//        // Récolte les plantes arrivées à maturité
+//        modelList.stream()
+//                .filter(plant -> plant.getJob() == null)
+//                .filter(plant -> plant.getMaturity() >= 1)
+//                .forEach(plant -> jobModule.add(harvestJobFactory.create(plant)));
 
         // TODO: ajout auto de la graine
         modelList.forEach(plant -> plant.setSeed(true));
@@ -71,10 +72,13 @@ public class PlantModule extends GenericGameModule<PlantItem> {
         modelList.removeIf(plant -> plant.getParcel() == parcel);
 
         // Add new one
-        PlantItem plant = new PlantItem(item);
-        plant.setParcel(parcel);
-        plant.setMaturity(0);
-        modelList.add(plant);
+        IntStream.range(0, item.plant.grid).forEach(gridPosition -> {
+            PlantItem plant = new PlantItem(item);
+            plant.setParcel(parcel);
+            plant.setMaturity(0);
+            plant.setGridPosition(gridPosition);
+            modelList.add(plant);
+        });
     }
 
     private boolean computeGrowingInfo(PlantItem plant) {
@@ -87,6 +91,13 @@ public class PlantModule extends GenericGameModule<PlantItem> {
                 bestValue = growingInfo.value;
             }
         }
+
+        ItemInfo.ItemInfoPlant.GrowingInfo growingInfo = plant.getInfo().plant.states.stream().filter(g -> g.name.equals("regular")).findFirst().orElse(null);
+
+        if (growingInfo != null) {
+            plant.setMaturity(plant.getMaturity() + 0.005 * growingInfo.value);
+        }
+
         return plant.getGrowingInfo() != null;
     }
 

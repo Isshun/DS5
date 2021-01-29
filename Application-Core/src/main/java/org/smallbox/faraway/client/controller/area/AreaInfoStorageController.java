@@ -49,7 +49,6 @@ public class AreaInfoStorageController extends AbsInfoLuaController<AreaModel> {
 
     @Override
     protected void onDisplayMultiple(Queue<AreaModel> objects) {
-
     }
 
     @Override

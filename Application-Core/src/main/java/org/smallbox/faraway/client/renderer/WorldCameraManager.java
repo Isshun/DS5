@@ -11,7 +11,7 @@ import org.smallbox.faraway.util.log.Log;
 
 @ApplicationObject
 public class WorldCameraManager {
-    protected final static float MAX_ZOOM_IN = 1.5f;
+    protected final static float MAX_ZOOM_IN = 1f;
     protected final static float MAX_ZOOM_OUT = 3f;
     protected final static float ZOOM_INTERVAL = 0.125f;
 

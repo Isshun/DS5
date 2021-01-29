@@ -1,33 +1,26 @@
 package org.smallbox.faraway.client.selection;
 
 import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.lang3.ObjectUtils;
 import org.smallbox.faraway.client.controller.AbsInfoLuaController;
 import org.smallbox.faraway.client.controller.LuaController;
 import org.smallbox.faraway.client.controller.MainPanelController;
 import org.smallbox.faraway.client.gameAction.GameActionManager;
 import org.smallbox.faraway.client.layer.LayerManager;
-import org.smallbox.faraway.game.plant.PlantModule;
-import org.smallbox.faraway.game.plant.model.PlantItem;
-import org.smallbox.faraway.game.world.ObjectModel;
 import org.smallbox.faraway.core.dependencyInjector.DependencyManager;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnInit;
 import org.smallbox.faraway.core.dependencyInjector.gameAction.OnGameSelectAction;
 import org.smallbox.faraway.core.game.GameManager;
-import org.smallbox.faraway.game.world.WorldHelper;
-import org.smallbox.faraway.game.consumable.ConsumableItem;
-import org.smallbox.faraway.game.world.Parcel;
-import org.smallbox.faraway.game.structure.StructureItem;
-import org.smallbox.faraway.game.area.AreaModel;
 import org.smallbox.faraway.game.area.AreaModuleBase;
 import org.smallbox.faraway.game.character.CharacterModule;
-import org.smallbox.faraway.game.character.model.base.CharacterModel;
 import org.smallbox.faraway.game.consumable.ConsumableModule;
 import org.smallbox.faraway.game.item.ItemModule;
-import org.smallbox.faraway.game.item.UsableItem;
+import org.smallbox.faraway.game.plant.PlantModule;
 import org.smallbox.faraway.game.structure.StructureModule;
+import org.smallbox.faraway.game.world.ObjectModel;
+import org.smallbox.faraway.game.world.Parcel;
+import org.smallbox.faraway.game.world.WorldHelper;
 import org.smallbox.faraway.util.log.Log;
 
 import java.util.*;
@@ -63,7 +56,7 @@ public class GameSelectionManager extends GameManager {
         }
     }
 
-    public <T extends ObjectModel> void select(T object) {
+    public void select(ObjectModel object) {
         Log.info("Select item: " + object.getClass().getSimpleName());
 
         _selected.clear();
@@ -145,14 +138,26 @@ public class GameSelectionManager extends GameManager {
                 gameActionManager.selectParcel(parcel);
             } else {
                 List<AreaModuleBase> matchingAreaModules = specializedAreaModules.stream().filter(areaModuleBase -> areaModuleBase.hasArea(parcel)).collect(Collectors.toList());
-                AreaModel area = CollectionUtils.isNotEmpty(matchingAreaModules) ? matchingAreaModules.get(0).getArea(parcel) : null;
-                CharacterModel character = characterModule.getAll().stream().filter(c -> c.getParcel() == parcel).findFirst().orElse(null);
-                ConsumableItem consumable = consumableModule.getAll().stream().filter(c -> c.getParcel() == parcel).findFirst().orElse(null);
-                UsableItem item = itemModule.getAll().stream().filter(c -> c.getParcel() == parcel).findFirst().orElse(null);
-                StructureItem structure = structureModule.getAll().stream().filter(c -> c.getParcel() == parcel).findFirst().orElse(null);
-                PlantItem plant = plantModule.getAll().stream().filter(c -> c.getParcel() == parcel).findFirst().orElse(null);
 
-                select(ObjectUtils.firstNonNull(character, consumable, item, structure, area, plant, parcel));
+                List<ObjectModel> objects = new ArrayList<>();
+
+                characterModule.getAll().stream().filter(c -> c.getParcel() == parcel).findFirst().ifPresent(objects::add);
+                consumableModule.getAll().stream().filter(c -> c.getParcel() == parcel).findFirst().ifPresent(objects::add);
+                itemModule.getAll().stream().filter(c -> c.getParcel() == parcel).findFirst().ifPresent(objects::add);
+                structureModule.getAll().stream().filter(c -> c.getParcel() == parcel).findFirst().ifPresent(objects::add);
+                plantModule.getAll().stream().filter(c -> c.getParcel() == parcel).findFirst().ifPresent(objects::add);
+                Optional.ofNullable(CollectionUtils.isNotEmpty(matchingAreaModules) ? matchingAreaModules.get(0).getArea(parcel) : null).ifPresent(objects::add);
+
+                if (CollectionUtils.isNotEmpty(objects)) {
+
+                    if (_selected.size() == 1 && objects.contains(_selected.iterator().next())) {
+                        int index = objects.indexOf(_selected.iterator().next());
+                        select(objects.get((index + 1) % objects.size()));
+                    } else {
+                        select(objects.get(0));
+                    }
+
+                }
             }
         }
     }

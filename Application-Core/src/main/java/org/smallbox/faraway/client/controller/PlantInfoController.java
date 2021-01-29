@@ -6,6 +6,7 @@ import org.smallbox.faraway.client.ui.widgets.View;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.dependencyInjector.gameAction.OnGameSelectAction;
+import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.game.plant.PlantModule;
 import org.smallbox.faraway.game.plant.model.PlantItem;
 import org.smallbox.faraway.game.world.Parcel;
@@ -36,64 +37,77 @@ public class PlantInfoController extends AbsInfoLuaController<PlantItem> {
     @BindLua private View imgMoisture;
     @BindLua private View imgOxygen;
 
+    private PlantItem plant;
+
     @OnGameSelectAction(PlantItem.class)
     protected void onSelectPlant(PlantItem plant) {
+        this.plant = plant;
         setVisible(true);
+        displayPlant();
+    }
 
-        lbName.setText(plant.getLabel());
-        lbMaturity.setText("Maturity: " + (int)(plant.getMaturity() * 100) + "%");
-        lbGarden.setText("Garden: " + plant.getGarden());
-        lbSeed.setText("Seed: " + plant.hasSeed());
-        lbNourish.setText("Nourish: " + plant.getNourish());
-        lbGrowing.setText("Growing: " + (plant.getGrowingInfo() != null ? plant.getGrowingInfo().name : ""));
+    @Override
+    public void onGameUpdate(Game game) {
+        displayPlant();
+    }
 
-        double minTemperature = plant.getInfo().plant.temperature.min;
-        double maxTemperature = plant.getInfo().plant.temperature.max;
-        double bestTemperature = plant.getInfo().plant.temperature.best;
-        lbTemperature.setText(minTemperature + " > " + bestTemperature + " > " + maxTemperature);
+    private void displayPlant() {
+        if (plant != null) {
+            lbName.setText(plant.getLabel());
+            lbMaturity.setText("Maturity: " + (int)(plant.getMaturity() * 100) + "%");
+            lbGarden.setText("Garden: " + plant.getGarden());
+            lbSeed.setText("Seed: " + plant.hasSeed());
+            lbNourish.setText("Nourish: " + plant.getNourish());
+            lbGrowing.setText("Growing: " + (plant.getGrowingInfo() != null ? plant.getGrowingInfo().name : ""));
 
-        double minLight = 0;
-        double maxLight = 1;
-        double bestLight = 0.8;
-        lbLight.setText(minLight + " > " + bestLight + " > " + maxLight);
+            double minTemperature = plant.getInfo().plant.temperature.min;
+            double maxTemperature = plant.getInfo().plant.temperature.max;
+            double bestTemperature = plant.getInfo().plant.temperature.best;
+            lbTemperature.setText(minTemperature + " > " + bestTemperature + " > " + maxTemperature);
 
-        double minMoisture = 0;
-        double maxMoisture = 1;
-        double bestMoisture = 0.5;
-        lbMoisture.setText(minMoisture + " > " + bestMoisture + " > " + maxMoisture);
+            double minLight = 0;
+            double maxLight = 1;
+            double bestLight = 0.8;
+            lbLight.setText(minLight + " > " + bestLight + " > " + maxLight);
 
-        double minOxygen = 0;
-        double maxOxygen = 1;
-        double bestOxygen = 0.5;
-        lbOxygen.setText(minOxygen + " > " + bestOxygen + " > " + maxOxygen);
+            double minMoisture = 0;
+            double maxMoisture = 1;
+            double bestMoisture = 0.5;
+            lbMoisture.setText(minMoisture + " > " + bestMoisture + " > " + maxMoisture);
 
-        Parcel parcel = plant.getParcel();
-        if (parcel != null) {
+            double minOxygen = 0;
+            double maxOxygen = 1;
+            double bestOxygen = 0.5;
+            lbOxygen.setText(minOxygen + " > " + bestOxygen + " > " + maxOxygen);
 
-            // Temperature
-            int positionTemperature = getStatePosition(parcel.getTemperature(), bestTemperature, minTemperature, maxTemperature);
-            imgTemperature.setPosition(positionTemperature - 4, 16);
-            lbCurrentTemperature.setPosition(positionTemperature - 8, 32);
-            lbCurrentTemperature.setText(parcel.getTemperature() + "°");
+            Parcel parcel = plant.getParcel();
+            if (parcel != null) {
 
-            // Light
-            int positionLight = getStatePosition(parcel.getLight(), bestLight, minLight, maxLight);
-            imgLight.setPosition(positionLight - 4, 16);
-            lbCurrentLight.setPosition(positionLight - 8, 32);
-            lbCurrentLight.setText((int)(parcel.getLight() * 100) + "%");
+                // Temperature
+                int positionTemperature = getStatePosition(parcel.getTemperature(), bestTemperature, minTemperature, maxTemperature);
+                imgTemperature.setPosition(positionTemperature - 4, 16);
+                lbCurrentTemperature.setPosition(positionTemperature - 8, 32);
+                lbCurrentTemperature.setText(parcel.getTemperature() + "°");
 
-            // Moisture
-            int positionMoisture = getStatePosition(parcel.getMoisture(), bestMoisture, minMoisture, maxMoisture);
-            imgMoisture.setPosition(positionMoisture - 4, 16);
-            lbCurrentMoisture.setPosition(positionMoisture - 8, 32);
-            lbCurrentMoisture.setText((int)(parcel.getMoisture() * 100) + "%");
+                // Light
+                int positionLight = getStatePosition(parcel.getLight(), bestLight, minLight, maxLight);
+                imgLight.setPosition(positionLight - 4, 16);
+                lbCurrentLight.setPosition(positionLight - 8, 32);
+                lbCurrentLight.setText((int)(parcel.getLight() * 100) + "%");
+
+                // Moisture
+                int positionMoisture = getStatePosition(parcel.getMoisture(), bestMoisture, minMoisture, maxMoisture);
+                imgMoisture.setPosition(positionMoisture - 4, 16);
+                lbCurrentMoisture.setPosition(positionMoisture - 8, 32);
+                lbCurrentMoisture.setText((int)(parcel.getMoisture() * 100) + "%");
 
 
-            // Oxygen
-            int positionOxygen = getStatePosition(parcel.getOxygen(), bestOxygen, minOxygen, maxOxygen);
-            imgOxygen.setPosition(positionOxygen - 4, 16);
-            lbCurrentOxygen.setPosition(positionOxygen - 8, 32);
-            lbCurrentOxygen.setText((int)(parcel.getOxygen() * 100) + "%");
+                // Oxygen
+                int positionOxygen = getStatePosition(parcel.getOxygen(), bestOxygen, minOxygen, maxOxygen);
+                imgOxygen.setPosition(positionOxygen - 4, 16);
+                lbCurrentOxygen.setPosition(positionOxygen - 8, 32);
+                lbCurrentOxygen.setText((int)(parcel.getOxygen() * 100) + "%");
+            }
         }
     }
 

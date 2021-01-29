@@ -1,10 +1,5 @@
-local window_width = 400
-local window_inner_width = 374
 local window_pos = 346
-local button_number = 4
-local button_width = window_width / 4
-local button_height = 52
-local tab_width = window_inner_width / 5 - 10
+local tab_width = 396 / 5 - 10
 
 ui:extend({
     type = "view",
@@ -12,17 +7,17 @@ ui:extend({
     parent = "base.ui.right_panel.sub_controller_full",
     controller = "org.smallbox.faraway.client.controller.area.AreaInfoStorageController",
     visible = false,
-    size = {400, 940},
+    size = {panel_width, 940},
     views = {
 
-        { type = "view", size = {window_width, application.screen_height - window_pos - 10}, background = green, views = {
-            { type = "view", size = {window_width - 8, application.screen_height - window_pos - 10 - 8}, position = {4, 4}, background = blue_dark_4, views = {
+        { type = "view", size = {panel_width, application.screen_height - window_pos - 10}, background = green, views = {
+            { type = "view", size = {panel_width - 8, application.screen_height - window_pos - 10 - 8}, position = {4, 4}, background = blue_dark_4, views = {
                 { type = "label", id = "lb_name", text_font = "font3", text = "Area #42", text_size = 26, text_color = 0xd4d4d4ff, margin = {20, 16} },
                 { type = "label", action = "onClose", text = "x", text_font = "whitrabt", outlined = false, text_color = 0x181818ff, background = 0xd4d4d4ff, text_size = 32, padding = {0, 5}, size = {26, 26}, position = {349, 15}},
                 { type = "view", size = {360, 1}, position = {15, 59}, background = 0xb4b4b4ff},
 
-                { type = "label", text = "Prority", text_font = "font3", text_color = green, text_size = 10, size = {window_inner_width, 10}, position = {15, 68}},
-                { type = "grid", columns = 5, column_width = window_inner_width / 5, row_height = 24, position = {15, 78}, views = {
+                { type = "label", text = "Prority", text_font = "font3", text_color = green, text_size = 10, size = {panel_width - 26, 10}, position = {15, 68}},
+                { type = "grid", columns = 5, column_width = (panel_width - 26) / 5, row_height = 24, position = {15, 78}, views = {
                     { type = "label", text = "1", id = "btPriority1", text_color = blue_dark_4, text_font = "sui", text_size = 18, text_align = "CENTER", size = {tab_width, 24}, background = 0x87d10042 },
                     { type = "label", text = "2", id = "btPriority2", text_color = blue_dark_4, text_font = "sui", text_size = 18, text_align = "CENTER", size = {tab_width, 24}, background = green },
                     { type = "label", text = "3", id = "btPriority3", text_color = blue_dark_4, text_font = "sui", text_size = 18, text_align = "CENTER", size = {tab_width, 24}, background = 0x87d10042 },

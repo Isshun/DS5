@@ -41,8 +41,8 @@ data:extend({
         type = "structure",
         category = "structure",
         health = 500,
-        graphics = {path = "[base]/graphics/items/structures/wall_granite.png", type = "wall"},
-        receipts = {label = "Granite", icon = "[base]/graphics/icons/material/granite.png", components = { item = "base.granite_brick", quantity = 10} }
+        graphics = {path = "[data]/graphics/structures/walls/wall_128_2.png", type = "wall", width = 128, height = 128},
+        receipts = {label = "Granite", icon = "[base]/graphics/icons/material/granite.png", components = {} }
     },
     { label = "Iron wall",
         id = "base.metal_wall",

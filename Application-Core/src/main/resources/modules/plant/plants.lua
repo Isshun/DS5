@@ -65,6 +65,7 @@ data:extend({
 
     { type = "plant", label = "Wheat", id = "base.plant.wheat",
         plant = {
+            grid = 4,
             mature = 5,
             growing = 20 * 7,
             temperature = { min = 3, best = 25, max = 30 },
@@ -79,12 +80,13 @@ data:extend({
             type = "gather", cost = 20, products = {{ item = "base.consumable.vegetable.wheat", quantity = {1, 1}, rate = 1 } }
         },
         graphics = {
-            { path = "[module]/graphics/consumables/vegetables.png", x = 11, y = 3, tile_width = 24, tile_height = 24 },
+            { path = "[data]/graphics/plants/wheat_128.png", width = 64, height = 140 },
         }
     },
 
     { type = "plant", label = "Corn", id = "base.plant.corn",
         plant = {
+            grid = 2,
             mature = 5,
             growing = 0.005,
             temperature = { min = 3, best = 25, max = 30 },
@@ -99,7 +101,7 @@ data:extend({
             type = "gather", cost = 20, products = {{ item = "base.consumable.vegetable.corn", quantity = {1, 1}, rate = 1 } }
         },
         graphics = {
-            { path = "[module]/graphics/consumables/foods.png", x = 4, y = 0, tile_width = 64, tile_height = 64 },
+            { path = "[data]/graphics/plants/corn/corn_128.png", width = 96, height = 264 },
         }
     },
 

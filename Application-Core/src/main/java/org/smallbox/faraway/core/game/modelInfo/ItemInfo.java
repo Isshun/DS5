@@ -90,6 +90,7 @@ public class ItemInfo extends ObjectInfo {
         public PlantRangeInfo           oxygen;
         public PlantRangeInfo           moisture;
         public PlantRangeInfo           light;
+        public int grid;
     }
 
     public static class ItemInfoReceipt {

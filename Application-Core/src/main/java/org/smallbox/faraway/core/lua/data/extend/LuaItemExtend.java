@@ -440,6 +440,7 @@ public class LuaItemExtend extends LuaExtend {
         itemInfo.plant = new ItemInfo.ItemInfoPlant();
 //        itemInfo.plant.growing = 1 / getDouble(plantValue, "growing", 2000);
 //        itemInfo.plant.nourish = 1 / getDouble(plantValue, "nourish", 500);
+        itemInfo.plant.grid = getInt(plantValue, "grid", 1);
         itemInfo.plant.growing = getDouble(plantValue, "growing", 1);
         itemInfo.plant.nourish = getDouble(plantValue, "nourish", 1);
 //        itemInfo.plant.oxygen = getDouble(value, "oxygen", 0);

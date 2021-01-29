@@ -3,14 +3,14 @@ package org.smallbox.faraway.client.layer.area;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import org.smallbox.faraway.client.asset.SpriteManager;
-import org.smallbox.faraway.client.renderer.BaseRenderer;
-import org.smallbox.faraway.client.layer.LayerManager;
-import org.smallbox.faraway.client.renderer.Viewport;
 import org.smallbox.faraway.client.layer.BaseMapLayer;
 import org.smallbox.faraway.client.layer.GameLayer;
+import org.smallbox.faraway.client.layer.LayerManager;
+import org.smallbox.faraway.client.renderer.BaseRenderer;
+import org.smallbox.faraway.client.renderer.Viewport;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
-import org.smallbox.faraway.core.game.Game;
+import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnGameLayerInit;
 import org.smallbox.faraway.game.area.AreaModel;
 import org.smallbox.faraway.game.area.AreaTypeInfo;
 import org.smallbox.faraway.game.plant.GardenModule;
@@ -27,7 +27,6 @@ public class GardenLayer extends BaseMapLayer {
 
     private final Map<Class, TextureRegion> _textureByClass = new ConcurrentHashMap<>();
     private TextureRegion[] _regions;
-    private TextureRegion[] _regionsSelected;
     private int _mouseX;
     private int _mouseY;
 
@@ -36,20 +35,10 @@ public class GardenLayer extends BaseMapLayer {
     private Mode _mode;
     private Class<? extends AreaModel> _cls;
 
-    @Override
-    public void onGameStart(Game game) {
+    @OnGameLayerInit
+    public void onGameLayerInit() {
         _regions = new TextureRegion[5];
-        _regions[0] = new TextureRegion(spriteManager.getTexture("data/res/bg_area.png"), 0, 32, 32, 32);
-        _regions[1] = new TextureRegion(spriteManager.getTexture("data/res/bg_area.png"), 0, 32, 32, 32);
-        _regions[2] = new TextureRegion(spriteManager.getTexture("data/res/bg_area.png"), 0, 64, 32, 32);
-        _regions[3] = new TextureRegion(spriteManager.getTexture("data/res/bg_area.png"), 0, 96, 32, 32);
-        _regions[4] = new TextureRegion(spriteManager.getTexture("data/res/bg_area.png"), 0, 128, 32, 32);
-        _regionsSelected = new TextureRegion[5];
-        _regionsSelected[0] = new TextureRegion(spriteManager.getTexture("data/res/bg_area.png"), 32, 0, 32, 32);
-        _regionsSelected[1] = new TextureRegion(spriteManager.getTexture("data/res/bg_area.png"), 32, 32, 32, 32);
-        _regionsSelected[2] = new TextureRegion(spriteManager.getTexture("data/res/bg_area.png"), 32, 64, 32, 32);
-        _regionsSelected[3] = new TextureRegion(spriteManager.getTexture("data/res/bg_area.png"), 32, 96, 32, 32);
-        _regionsSelected[4] = new TextureRegion(spriteManager.getTexture("data/res/bg_area.png"), 32, 128, 32, 32);
+        _regions[0] = new TextureRegion(spriteManager.getTexture("data/graphics/plants/garden.png"), 0, Constant.TILE_SIZE, Constant.TILE_SIZE, Constant.TILE_SIZE);
     }
 
     @Override
