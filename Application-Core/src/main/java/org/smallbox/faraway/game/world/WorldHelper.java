@@ -372,7 +372,9 @@ public class WorldHelper {
     }
 
     public static void getParcelAround(Parcel source, SurroundedPattern surroundedPattern, ParcelCallback callback) {
-        getParcelAround(source, surroundedPattern, parcel -> true, callback);
+        if (source != null) {
+            getParcelAround(source, surroundedPattern, parcel -> true, callback);
+        }
     }
 
     public static void getParcelAround(Parcel source, SurroundedPattern surroundedPattern, Predicate<Parcel> condition, ParcelCallback callback) {

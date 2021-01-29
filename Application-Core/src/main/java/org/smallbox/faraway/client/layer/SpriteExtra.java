@@ -5,4 +5,5 @@ public class SpriteExtra {
     public int offsetX;
     public int offsetY;
     public boolean flip;
+    public int rotate;
 }

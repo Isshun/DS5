@@ -9,12 +9,14 @@ import org.smallbox.faraway.client.renderer.BaseRenderer;
 import org.smallbox.faraway.client.renderer.Viewport;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
+import org.smallbox.faraway.core.game.modelInfo.GraphicInfo;
 import org.smallbox.faraway.game.plant.PlantModule;
 import org.smallbox.faraway.game.plant.model.PlantItem;
 import org.smallbox.faraway.util.Constant;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
@@ -47,17 +49,7 @@ public class PlantLayer extends BaseMapLayer {
 //        renderer.drawRectangleOnMap(plant.getParcel(), Constant.TILE_SIZE, Constant.TILE_SIZE, COLOR_BASE, 0, 0);
 
         if (!extraMap.containsKey(plant)) {
-            SpriteExtra extra = new SpriteExtra();
-
-            extra.animator = new Animator(-1.5f, 1.5f, 0.005f, Interpolation.pow2, (sprite, value) -> {
-                sprite.setOrigin(sprite.getWidth() / 2, sprite.getHeight() - 25);
-                sprite.setRotation(value);
-            });
-            extra.offsetX = new Random().nextInt(10) - 5;
-            extra.offsetY = new Random().nextInt(10) - 5;
-            extra.flip = new Random().nextBoolean();
-
-            extraMap.put(plant, extra);
+            buildSpriteExtraParameters(plant, plant.getGraphic());
         }
 
         if (!spriteMap.containsKey(plant)) {
@@ -67,81 +59,102 @@ public class PlantLayer extends BaseMapLayer {
         }
 
         if (!spriteMap2.containsKey(plant)) {
-            Sprite sprite2 = new Sprite(spriteManager.getTexture("data/graphics/plants/wheat_128_2.png"), 0, 0, plant.getGraphic().width, plant.getGraphic().height);
+            Sprite sprite2 = new Sprite(spriteManager.getTexture("data/graphics/plants/wheat/wheat_128_2.png"), 0, 0, plant.getGraphic().width, plant.getGraphic().height);
             sprite2.setFlip(false, true);
             spriteMap2.put(plant, sprite2);
         }
 
-        SpriteExtra extra = extraMap.get(plant);
+        Sprite sprite = spriteMap.get(plant);
 
-        if (plant.getInfo().name.equals("base.plant.wheat") || plant.getInfo().name.equals("base.plant.corn")) {
-            Sprite sprite = extra.animator.update(spriteMap.get(plant));
-
-            if (plant.getInfo().name.equals("base.plant.wheat")) {
-                Sprite sprite2 = extra.animator.update(spriteMap2.get(plant));
-                drawWheat(plant, renderer, sprite2, extra);
-            }
-
-            sprite.setAlpha((float) plant.getMaturity());
-            drawWheat(plant, renderer, sprite, extra);
-        } else {
-            renderer.drawSpriteOnMap(spriteMap.get(plant), plant.getParcel(),
-                    Constant.HALF_TILE_SIZE - plant.getGraphic().width / 2,
-                    Constant.TILE_SIZE - plant.getGraphic().height);
+        if (plant.getInfo().name.equals("base.plant.wheat")) {
+            Sprite sprite2 = spriteMap2.get(plant);
+            drawWheat(plant, renderer, sprite2);
         }
+
+        sprite.setAlpha((float) plant.getMaturity());
+        drawWheat(plant, renderer, sprite);
 
     }
 
-    private void drawWheat(PlantItem plant, BaseRenderer renderer, Sprite sprite, SpriteExtra extra) {
+    private void drawWheat(PlantItem plant, BaseRenderer renderer, Sprite sprite) {
+        SpriteExtra extra = extraMap.get(plant);
+
         sprite.setFlip(extra.flip, true);
         sprite.setScale((float) plant.getMaturity());
+        sprite.setRotation(extra.rotate);
 
-        if (plant.getInfo().plant.grid == 4) {
+        if (extra.animator != null) {
+            extra.animator.update(sprite);
+        }
 
-            if (plant.getGridPosition() == 2) {
-                renderer.drawSpriteOnMap(sprite, plant.getParcel(),
-                        Constant.HALF_TILE_SIZE - plant.getGraphic().width / 2 - 32 + extra.offsetX,
-                        Constant.TILE_SIZE - plant.getGraphic().height + extra.offsetY);
-            }
-
-            if (plant.getGridPosition() == 3) {
-                renderer.drawSpriteOnMap(sprite, plant.getParcel(),
-                        Constant.HALF_TILE_SIZE - plant.getGraphic().width / 2 + 32 + extra.offsetX,
-                        Constant.TILE_SIZE - plant.getGraphic().height + extra.offsetY);
-            }
-
-            if (plant.getGridPosition() == 0) {
-                renderer.drawSpriteOnMap(sprite, plant.getParcel(),
-                        Constant.HALF_TILE_SIZE - plant.getGraphic().width / 2 - 32 + extra.offsetX,
-                        Constant.TILE_SIZE - plant.getGraphic().height - 64 + extra.offsetY);
-            }
-
-            if (plant.getGridPosition() == 1) {
-                renderer.drawSpriteOnMap(sprite, plant.getParcel(),
-                        Constant.HALF_TILE_SIZE - plant.getGraphic().width / 2 + 32 + extra.offsetX,
-                        Constant.TILE_SIZE - plant.getGraphic().height - 64 + extra.offsetY);
-            }
-
-        } else if (plant.getInfo().plant.grid == 2) {
-
-            if (plant.getGridPosition() == 1) {
-                renderer.drawSpriteOnMap(sprite, plant.getParcel(),
-                        Constant.HALF_TILE_SIZE - plant.getGraphic().width / 2 - 32 + extra.offsetX,
-                        Constant.TILE_SIZE - plant.getGraphic().height + extra.offsetY);
-            }
-
-            if (plant.getGridPosition() == 0) {
-                renderer.drawSpriteOnMap(sprite, plant.getParcel(),
-                        Constant.HALF_TILE_SIZE - plant.getGraphic().width / 2 + 32 + extra.offsetX,
-                        Constant.TILE_SIZE - plant.getGraphic().height - 64 + extra.offsetY);
-            }
-
-        } else {
+        if (plant.getInfo().plant.grid == 1) {
             renderer.drawSpriteOnMap(sprite, plant.getParcel(),
                     Constant.HALF_TILE_SIZE - plant.getGraphic().width / 2 + extra.offsetX,
                     Constant.TILE_SIZE - plant.getGraphic().height + extra.offsetY);
         }
 
+        else {
+
+            if (plant.getInfo().plant.grid == 2 || plant.getInfo().plant.grid == 4) {
+
+                // TOP-RIGHT
+                if (plant.getGridPosition() == 0) {
+                    renderer.drawSpriteOnMap(sprite, plant.getParcel(),
+                            Constant.HALF_TILE_SIZE - plant.getGraphic().width / 2 + Constant.QUARTER_TILE_SIZE + extra.offsetX,
+                            Constant.TILE_SIZE - plant.getGraphic().height - Constant.HALF_TILE_SIZE + extra.offsetY);
+                }
+
+                // TOP-LEFT
+                if (plant.getInfo().plant.grid == 4 && plant.getGridPosition() == 2) {
+                    renderer.drawSpriteOnMap(sprite, plant.getParcel(),
+                            Constant.HALF_TILE_SIZE - plant.getGraphic().width / 2 - Constant.QUARTER_TILE_SIZE + extra.offsetX,
+                            Constant.TILE_SIZE - plant.getGraphic().height - Constant.HALF_TILE_SIZE + extra.offsetY);
+                }
+
+                // BOTTOM-RIGHT
+                if (plant.getInfo().plant.grid == 4 && plant.getGridPosition() == 3) {
+                    renderer.drawSpriteOnMap(sprite, plant.getParcel(),
+                            Constant.HALF_TILE_SIZE - plant.getGraphic().width / 2 + Constant.QUARTER_TILE_SIZE + extra.offsetX,
+                            Constant.TILE_SIZE - plant.getGraphic().height + extra.offsetY);
+                }
+
+                // BOTTOM-LEFT
+                if (plant.getGridPosition() == 1) {
+                    renderer.drawSpriteOnMap(sprite, plant.getParcel(),
+                            Constant.HALF_TILE_SIZE - plant.getGraphic().width / 2 - Constant.QUARTER_TILE_SIZE + extra.offsetX,
+                            Constant.TILE_SIZE - plant.getGraphic().height + extra.offsetY);
+                }
+
+            }
+
+        }
+
+    }
+
+    private void buildSpriteExtraParameters(PlantItem plant, GraphicInfo graphicInfo) {
+        SpriteExtra extra = new SpriteExtra();
+
+        Optional.ofNullable(graphicInfo.randomization).ifPresent(randomization -> {
+            if (randomization.offset > 0) {
+                extra.offsetX = new Random().nextInt(randomization.offset) - randomization.offset / 2;
+                extra.offsetY = new Random().nextInt(randomization.offset) - randomization.offset / 2;
+            }
+
+            if (randomization.rotate > 0) {
+                extra.rotate = new Random().nextInt(randomization.rotate) - randomization.rotate / 2;
+            }
+
+            extra.flip = randomization.flip && new Random().nextBoolean();
+        });
+
+        Optional.ofNullable(graphicInfo.animation).ifPresent(animation -> {
+            extra.animator = new Animator(-animation.value / 2, animation.value / 2, animation.speed, Interpolation.pow2, (sprite, value) -> {
+                sprite.setOrigin(sprite.getWidth() / 2, sprite.getHeight() - 25);
+                sprite.setRotation(value);
+            });
+        });
+
+        extraMap.put(plant, extra);
     }
 
     private int getTileForMaturity(PlantItem plant) {

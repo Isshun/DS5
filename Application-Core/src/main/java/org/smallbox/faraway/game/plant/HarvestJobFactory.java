@@ -20,7 +20,7 @@ public class HarvestJobFactory {
     @Inject private ConsumableModule consumableModule;
     @Inject private PathManager pathManager;
 
-    public JobModel create(PlantItem plant) {
+    public JobModel createJob(PlantItem plant) {
         Parcel consumableDropParcel = WorldHelper.searchAround(plant.getParcel(), 1, WorldHelper.SearchStrategy.FREE);
 
         if (consumableDropParcel != null) {

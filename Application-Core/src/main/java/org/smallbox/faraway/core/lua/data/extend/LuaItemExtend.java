@@ -4,14 +4,11 @@ import com.badlogic.gdx.graphics.Color;
 import org.luaj.vm2.Globals;
 import org.luaj.vm2.LuaValue;
 import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject;
+import org.smallbox.faraway.core.game.modelInfo.*;
 import org.smallbox.faraway.core.module.ModuleBase;
 import org.smallbox.faraway.core.lua.data.DataExtendException;
 import org.smallbox.faraway.core.lua.data.LuaExtend;
 import org.smallbox.faraway.core.game.DataManager;
-import org.smallbox.faraway.core.game.modelInfo.GraphicInfo;
-import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
-import org.smallbox.faraway.core.game.modelInfo.NetworkInfo;
-import org.smallbox.faraway.core.game.modelInfo.ReceiptGroupInfo;
 import org.smallbox.faraway.util.Constant;
 import org.smallbox.faraway.util.log.Log;
 
@@ -340,13 +337,41 @@ public class LuaItemExtend extends LuaExtend {
         readInt(luaGraphic, "x", value -> graphicInfo.x = value);
         readInt(luaGraphic, "y", value -> graphicInfo.y = value);
 
-        graphicInfo.width = itemInfo.width * Constant.TILE_SIZE;
-        graphicInfo.height = itemInfo.height * Constant.TILE_SIZE;
+        graphicInfo.width = itemInfo.width * graphicInfo.tileWidth;
+        graphicInfo.height = itemInfo.height * graphicInfo.tileHeight;
 
         readInt(luaGraphic, "width", value -> graphicInfo.width = value);
         readInt(luaGraphic, "height", value -> graphicInfo.height = value);
 
+        if (!luaGraphic.get("randomization").isnil()) {
+            graphicInfo.randomization = readGraphicRandomization(luaGraphic.get("randomization"));
+        }
+
+        if (!luaGraphic.get("animation").isnil()) {
+            graphicInfo.animation = readGraphicAnimation(luaGraphic.get("animation"));
+        }
+
         return graphicInfo;
+    }
+
+    private GraphicRandomizationInfo readGraphicRandomization(LuaValue luaGraphic) {
+        GraphicRandomizationInfo graphicRandomizationInfo = new GraphicRandomizationInfo();
+
+        readInt(luaGraphic, "offset", value -> graphicRandomizationInfo.offset = value);
+        readBoolean(luaGraphic, "flip", value -> graphicRandomizationInfo.flip = value);
+        readInt(luaGraphic, "rotate", value -> graphicRandomizationInfo.rotate = value);
+
+        return graphicRandomizationInfo;
+    }
+
+    private GraphicAnimationInfo readGraphicAnimation(LuaValue luaGraphic) {
+        GraphicAnimationInfo graphicAnimationInfo = new GraphicAnimationInfo();
+
+        readString(luaGraphic, "id", value -> graphicAnimationInfo.id = value);
+        readFloat(luaGraphic, "value", value -> graphicAnimationInfo.value = value);
+        readFloat(luaGraphic, "speed", value -> graphicAnimationInfo.speed = value);
+
+        return graphicAnimationInfo;
     }
 
     private void readLightValues(ItemInfo itemInfo, LuaValue value) {

@@ -18,6 +18,8 @@ public class GraphicInfo {
     public int              tileHeight = Constant.TILE_SIZE;
     public Type             type = Type.NONE;
     public Rectangle        textureRect;
+    public GraphicRandomizationInfo randomization;
+    public GraphicAnimationInfo animation;
 
     public GraphicInfo(String packageName, String path) {
         this.packageName = packageName;

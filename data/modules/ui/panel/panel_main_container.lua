@@ -15,9 +15,10 @@ ui:extend({
     views = {
 
         { type = "grid", columns = 4, column_width = 98, row_height = 40, views = {
-            { type = "label", text = "Dig", background = blue_dark_3, text_color = 0xffffffcc, text_font = "font3", text_align = "center", size = {90, 30} },
-            { type = "label", text = "Dig V", background = blue_dark_3, text_color = 0xffffffcc, text_font = "font3", text_align = "center", size = {90, 30} },
-            { type = "label", text = "Cancel", background = blue_dark_3, text_color = 0xffffffcc, text_font = "font3", text_align = "center", size = {90, 30} },
+            { type = "label", text = "_Dig", background = blue_dark_3, text_color = 0xffffffcc, text_font = "font3", text_align = "center", size = {90, 30} },
+            { type = "label", text = "_Dig V", background = blue_dark_3, text_color = 0xffffffcc, text_font = "font3", text_align = "center", size = {90, 30} },
+            { type = "label", text = "_Harvest", background = blue_dark_3, text_color = 0xffffffcc, text_font = "font3", text_align = "center", size = {90, 30} },
+            { type = "label", text = "_Cancel", background = blue_dark_3, text_color = 0xffffffcc, text_font = "font3", text_align = "center", size = {90, 30} },
         }},
 
         { type = "view", position = {0, 42}, size = {panel_width, application.screen_height - window_pos - 54}, background = blue_dark_4, views = {

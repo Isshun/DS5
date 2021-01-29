@@ -7,10 +7,12 @@ import org.smallbox.faraway.client.renderer.BaseRenderer;
 import org.smallbox.faraway.client.layer.LayerManager;
 import org.smallbox.faraway.client.renderer.Viewport;
 import org.smallbox.faraway.client.layer.BaseMapLayer;
+import org.smallbox.faraway.client.selection.GameSelectionManager;
 import org.smallbox.faraway.client.ui.extra.Colors;
 import org.smallbox.faraway.client.layer.GameLayer;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
+import org.smallbox.faraway.game.world.Parcel;
 import org.smallbox.faraway.util.Constant;
 
 /**
@@ -21,6 +23,7 @@ import org.smallbox.faraway.util.Constant;
 public class SelectionProjectionLayer extends BaseMapLayer {
     @Inject private GameEventManager gameEventManager;
     @Inject private GameActionManager gameActionManager;
+    @Inject private GameSelectionManager gameSelectionManager;
     @Inject private Viewport viewport;
 
     @Override
@@ -30,6 +33,9 @@ public class SelectionProjectionLayer extends BaseMapLayer {
                     gameEventManager.getMouseDownX(), gameEventManager.getMouseDownY(),
                     gameEventManager.getMouseOffsetX(), gameEventManager.getMouseOffsetY(),
                     gameActionManager.hasAction() ? gameActionManager.getActionColor() : Colors.COLOR_SELECTION);
+        } else {
+            gameSelectionManager.getSelected().forEach(obj ->
+                    renderer.drawCadreOnMap((Parcel) obj, Constant.TILE_SIZE - 8, Constant.TILE_SIZE - 8, Color.WHITE, 4, 4, 4));
         }
     }
 

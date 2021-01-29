@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import org.smallbox.faraway.client.renderer.BaseRenderer;
 import org.smallbox.faraway.client.ui.extra.Align;
+import org.smallbox.faraway.client.ui.extra.Colors;
 import org.smallbox.faraway.core.module.ModuleBase;
 import org.smallbox.faraway.util.StringUtils;
 
@@ -255,23 +256,33 @@ public class UILabel extends View {
             }
 
 //            renderer.drawPixel(getAlignedX() + x + _offsetX + _paddingLeft + _marginLeft, getAlignedY() + y + _offsetY + _paddingTop + _marginTop, _textSize, _gdxTextColor, _text);
+
             renderer.drawText((batch, font) -> {
                 int finalX = getAlignedX() + x + geometry.getOffsetX() + geometry.getPaddingLeft() + geometry.getMarginLeft();
                 int finalY = getAlignedY() + y + geometry.getOffsetY() + geometry.getPaddingTop() + geometry.getMarginTop();
 
+                String text = _text.replace("_", "");
+
                 int tagOffsetX = 0;
 
-                if (_text.contains("{")) {
+                if (text.contains("{")) {
 //                    resolveTag();
                 } else {
                     if (shadow != 0) {
                         font.setColor(shadowColor);
-                        font.draw(batch, _text, finalX + shadow, finalY + shadow);
+                        font.draw(batch, text, finalX + shadow, finalY + shadow);
                     }
                     font.setColor(_textColor);
-                    font.draw(batch, _text, finalX, finalY);
+                    font.draw(batch, text, finalX, finalY);
                 }
+
+                if (_text.contains("_")) {
+                    font.setColor(Colors.BLUE_LIGHT_3);
+                    font.draw(batch, text.substring(0, 1), finalX, finalY);
+                }
+
             }, _textSize, outlined, font);
+
         }
     }
 //

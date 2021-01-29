@@ -1,19 +1,23 @@
 package org.smallbox.faraway.game.plant;
 
+import com.badlogic.gdx.Input;
 import org.smallbox.faraway.GameTaskManager;
+import org.smallbox.faraway.client.gameAction.GameActionManager;
+import org.smallbox.faraway.client.gameAction.GameActionMode;
+import org.smallbox.faraway.client.shortcut.GameShortcut;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnInit;
-import org.smallbox.faraway.core.module.GenericGameModule;
 import org.smallbox.faraway.core.game.DataManager;
 import org.smallbox.faraway.core.game.Game;
-import org.smallbox.faraway.game.world.WorldHelper;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
-import org.smallbox.faraway.game.world.Parcel;
+import org.smallbox.faraway.core.module.GenericGameModule;
 import org.smallbox.faraway.game.area.AreaModule;
 import org.smallbox.faraway.game.consumable.ConsumableModule;
 import org.smallbox.faraway.game.job.JobModule;
 import org.smallbox.faraway.game.plant.model.PlantItem;
+import org.smallbox.faraway.game.world.Parcel;
+import org.smallbox.faraway.game.world.WorldHelper;
 import org.smallbox.faraway.game.world.WorldModule;
 
 import java.util.Optional;
@@ -27,7 +31,8 @@ public class PlantModule extends GenericGameModule<PlantItem> {
     @Inject private JobModule jobModule;
     @Inject private AreaModule areaModule;
     @Inject private GameTaskManager gameTaskManager;
-    @Inject private HarvestJobFactory harvestJobFactory;
+    @Inject private GameActionManager gameActionManager;
+    @Inject private HarvestAction harvestAction;
 
     @OnInit
     public void init() {
@@ -120,6 +125,11 @@ public class PlantModule extends GenericGameModule<PlantItem> {
     public PlantItem getPlant(Parcel parcel) {
         Optional<PlantItem> optional = modelList.stream().filter(plant -> plant.getParcel() == parcel).findAny();
         return optional.orElse(null);
+    }
+
+    @GameShortcut(key = Input.Keys.H)
+    public void harvestMode() {
+        gameActionManager.setAreaAction(GameActionMode.ADD_AREA, harvestAction);
     }
 
 }

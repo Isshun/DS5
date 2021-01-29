@@ -43,26 +43,6 @@ data:extend({
         }
     },
 
-    { type = "plant", label = "Pine", id = "base.plant.pine",
-        plant = {
-            mature = 5,
-            growing = 20 * 7,
-            temperature = { min = 3, best = 25, max = 30 },
-            states = {
-                { id = "dying", value = -1 },
-                { id = "depleted", value = 0.75, temperature = {3, 10}, light = {0, 1}, moisture = {0, 1}, oxygen = {0, 1} },
-                { id = "regular", value = 1, temperature = {10, 20}, light = {0.5, 1}, moisture = {0, 1}, oxygen = {0, 1} },
-                { id = "good", value = 1.25, temperature = {20, 30}, light = {0.5, 1}, moisture = {0, 1}, oxygen = {0, 1} },
-            }
-        },
-        actions = {
-            type = "gather", cost = 20, products = {{ item = "base.consumable.vegetable.carrot", quantity = {1, 1}, rate = 1 } }
-        },
-        graphics = {
-            { path = "[module]/graphics/plants/pine.png", x = 0, y = 0, tile_width = 273, tile_height = 378 },
-        }
-    },
-
     { type = "plant", label = "Wheat", id = "base.plant.wheat",
         plant = {
             grid = 4,
@@ -80,7 +60,28 @@ data:extend({
             type = "gather", cost = 20, products = {{ item = "base.consumable.vegetable.wheat", quantity = {1, 1}, rate = 1 } }
         },
         graphics = {
-            { path = "[data]/graphics/plants/wheat_128.png", width = 64, height = 140 },
+            { path = "[data]/graphics/plants/wheat/wheat_128.png", width = 64, height = 140, randomization = { offset = 10, flip = true }, animation = { id = "wind", value = 1, speed = 0.01 } },
+        }
+    },
+
+    { type = "plant", label = "Laitue", id = "base.plant.laitue",
+        plant = {
+            grid = 4,
+            mature = 5,
+            growing = 20 * 7,
+            temperature = { min = 3, best = 25, max = 30 },
+            states = {
+                { id = "dying", value = -1 },
+                { id = "depleted", value = 0.75, temperature = {3, 10}, light = {0, 1}, moisture = {0, 1}, oxygen = {0, 1} },
+                { id = "regular", value = 1, temperature = {10, 20}, light = {0.5, 1}, moisture = {0, 1}, oxygen = {0, 1} },
+                { id = "good", value = 1.25, temperature = {20, 30}, light = {0.5, 1}, moisture = {0, 1}, oxygen = {0, 1} },
+            }
+        },
+        actions = {
+            type = "gather", cost = 20, products = {{ item = "base.consumable.vegetable.wheat", quantity = {1, 1}, rate = 1 } }
+        },
+        graphics = {
+            { path = "[data]/graphics/plants/laitue/laitue_64_2.png", width = 64, height = 64, randomization = { offset = 6, rotate = 100 } },
         }
     },
 
@@ -101,7 +102,7 @@ data:extend({
             type = "gather", cost = 20, products = {{ item = "base.consumable.vegetable.corn", quantity = {1, 1}, rate = 1 } }
         },
         graphics = {
-            { path = "[data]/graphics/plants/corn/corn_128.png", width = 96, height = 264 },
+            { path = "[data]/graphics/plants/corn/corn_128.png", width = 96, height = 264, randomization = { offset = 10, flip = true }, animation = { id = "wind", value = 4, speed = 0.003 } },
         }
     },
 

@@ -80,6 +80,15 @@ public abstract class LuaExtend {
         }
     }
 
+    protected void readFloat(LuaValue value, String key, ReadCallback<Float> callback, float... def) {
+        LuaValue v = value.get(key);
+        if (!v.isnil()) {
+            callback.onReadCallback(v.tofloat());
+        } else if (def.length > 0) {
+            callback.onReadCallback(def[0]);
+        }
+    }
+
     protected void readString(LuaValue value, String key, ReadCallback<String> callback) {
         LuaValue v = value.get(key);
         if (!v.isnil()) {

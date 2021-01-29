@@ -149,14 +149,14 @@ public class GameSelectionManager extends GameManager {
                 Optional.ofNullable(CollectionUtils.isNotEmpty(matchingAreaModules) ? matchingAreaModules.get(0).getArea(parcel) : null).ifPresent(objects::add);
 
                 if (CollectionUtils.isNotEmpty(objects)) {
-
                     if (_selected.size() == 1 && objects.contains(_selected.iterator().next())) {
                         int index = objects.indexOf(_selected.iterator().next());
                         select(objects.get((index + 1) % objects.size()));
                     } else {
                         select(objects.get(0));
                     }
-
+                } else {
+                    select(parcel);
                 }
             }
         }

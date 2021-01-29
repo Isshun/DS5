@@ -95,10 +95,6 @@ public class WorldGroundLayer extends BaseMapLayer {
                         }
                     }
 
-                    if (gameSelectionManager.getSelected().contains(parcel)) {
-                        renderer.drawCadreOnMap(parcel, Constant.TILE_SIZE - 8, Constant.TILE_SIZE - 8, Color.WHITE, 4, 4, 4);
-                    }
-
                 }
 
             }

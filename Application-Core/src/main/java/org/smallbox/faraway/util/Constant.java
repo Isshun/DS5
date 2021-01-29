@@ -18,6 +18,7 @@ public class Constant {
     public static final int TILE_SIZE = 128;
     public static final int TERRAIN_TEXTURE_SIZE = 512;
     public static final int HALF_TILE_SIZE = TILE_SIZE / 2;
+    public static final int QUARTER_TILE_SIZE = TILE_SIZE / 4;
     public static final int CHARACTER_HEIGHT = 64;
     public static final int CHARACTER_WIDTH = 64;
     public static final int PANEL_WIDTH = 420;

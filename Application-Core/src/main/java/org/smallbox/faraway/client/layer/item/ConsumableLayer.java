@@ -85,7 +85,7 @@ public class ConsumableLayer extends BaseMapLayer {
 //                    renderer.drawTextOnMapUI(parcel.x, parcel.y, stringQuantity, (int) (8 * (4 - gdxRenderer.getZoom())), Color.WHITE, offsetX, offsetY + 50, false, true);
                     renderer.drawTextOnMap(parcel, stringQuantity, consumableQuantityStyle, offsetX, offsetX + 50);
 
-                    drawSelectionOnMap(renderer, spriteManager, viewport, consumable, parcel.x, parcel.y, 20, 20, 6, 6);
+                    //drawSelectionOnMap(renderer, spriteManager, viewport, consumable, parcel.x, parcel.y, Constant.HALF_TILE_SIZE - 12, Constant.HALF_TILE_SIZE - 12, 6, 6);
                 });
 
 //        tags.removeIf(draw -> draw.frameLeft < 0);
