@@ -29,7 +29,7 @@ public class ItemDashboardLayer extends DashboardLayerBase {
 
         if (item.getInventory() != null) {
             sb.append(" inventory: ");
-            item.getInventory().forEach(consumable -> sb.append(consumable.getLabel()).append("x").append(consumable.getFreeQuantity()).append(" "));
+            item.getInventory().forEach(consumable -> sb.append(consumable.getLabel()).append("x").append(consumable.getActualQuantity()).append(" "));
         }
 
         drawDebug(renderer, "Item", sb.toString());

@@ -8,19 +8,20 @@ import org.smallbox.faraway.client.lua.extend.LuaUIExtend;
 import org.smallbox.faraway.client.ui.extra.RawColors;
 import org.smallbox.faraway.client.ui.widgets.CompositeView;
 import org.smallbox.faraway.client.ui.widgets.View;
-import org.smallbox.faraway.util.GameException;
+import org.smallbox.faraway.core.config.ApplicationConfig;
 import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
-import org.smallbox.faraway.core.module.ModuleBase;
+import org.smallbox.faraway.core.game.DataManager;
 import org.smallbox.faraway.core.lua.LuaDataModel;
 import org.smallbox.faraway.core.lua.LuaExtendInterface;
 import org.smallbox.faraway.core.lua.LuaModuleManager;
 import org.smallbox.faraway.core.lua.luaModel.LuaApplicationModel;
-import org.smallbox.faraway.core.game.DataManager;
-import org.smallbox.faraway.core.config.ApplicationConfig;
+import org.smallbox.faraway.core.module.ModuleBase;
+import org.smallbox.faraway.util.GameException;
 import org.smallbox.faraway.util.log.Log;
 
 import java.io.File;
+import java.util.Map;
 import java.util.Optional;
 
 @ApplicationObject
@@ -104,7 +105,7 @@ public class ClientLuaModuleManager extends LuaModuleManager {
         return globals;
     }
 
-    public View createView(ModuleBase module, Globals globals, LuaValue value, boolean inGame, int deep, CompositeView parent, String path, int index, boolean isGameView, boolean runAfter) {
+    public View createView(ModuleBase module, Globals globals, LuaValue value, boolean inGame, int deep, CompositeView parent, String path, int index, boolean isGameView, boolean runAfter, Map<String, LuaValue> styles) {
         String type = value.get("type").toString();
 
         Optional<LuaUIExtend> optional = _extends.stream()
@@ -115,7 +116,7 @@ public class ClientLuaModuleManager extends LuaModuleManager {
 
         if (optional.isPresent()) {
             Log.debug(LuaModuleManager.class, "Found lua extend: %s", optional.get().getClass());
-            return optional.get().createView(module, globals, value, inGame, deep, parent, path, index, isGameView, runAfter);
+            return optional.get().createView(module, globals, value, inGame, deep, parent, path, index, isGameView, runAfter, styles);
         } else {
             Log.warning(LuaModuleManager.class, "No extend for type: %s", type);
         }

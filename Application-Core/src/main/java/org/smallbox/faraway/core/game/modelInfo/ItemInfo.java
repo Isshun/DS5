@@ -14,6 +14,8 @@ public class ItemInfo extends ObjectInfo {
     public boolean isLiquid;
     public ItemInfo surface;
     public File dataDirectory;
+    public int tileWidth;
+    public int tileHeight;
 
     public boolean instanceOf(ItemInfo inputInfo) {
         return this == inputInfo || this.parent == inputInfo;

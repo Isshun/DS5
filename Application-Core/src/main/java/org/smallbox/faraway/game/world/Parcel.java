@@ -10,7 +10,7 @@ import org.smallbox.faraway.core.world.model.MapObjectModel;
 import org.smallbox.faraway.core.world.model.NetworkItem;
 import org.smallbox.faraway.game.structure.StructureItem;
 import org.smallbox.faraway.game.area.AreaModel;
-import org.smallbox.faraway.game.consumable.ConsumableItem;
+import org.smallbox.faraway.game.consumable.Consumable;
 import org.smallbox.faraway.game.room.model.RoomModel;
 
 import java.util.ArrayList;
@@ -188,12 +188,16 @@ public class Parcel extends ParcelCommon {
         return this.x == x && this.y == y && this.z == z;
     }
 
-    public boolean accept(ConsumableItem consumable) {
-        return accept(consumable.getInfo(), consumable.getFreeQuantity());
+    public boolean accept(Consumable consumable) {
+        return accept(consumable.getInfo(), consumable.getActualQuantity());
     }
 
     public boolean accept(ItemInfo itemInfo, int quantity) {
         if (_groundInfo == null || _groundInfo.isLinkDown) {
+            return false;
+        }
+
+        if (_items.size() >= 4) {
             return false;
         }
 
@@ -248,4 +252,5 @@ public class Parcel extends ParcelCommon {
     public boolean hasRamp() {
         return rampDirection != null;
     }
+
 }

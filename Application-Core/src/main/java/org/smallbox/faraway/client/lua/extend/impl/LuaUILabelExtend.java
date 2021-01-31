@@ -16,17 +16,17 @@ public class LuaUILabelExtend extends LuaUIExtend {
     }
 
     @Override
-    protected void readSpecific(LuaValue value, View view) {
+    protected void readSpecific(LuaValue style, LuaValue value, View view) {
         UILabel label = (UILabel) view;
-        readString(value, "text_font", label::setFont);
-        readBoolean(value, "text_outlined", label::setOutlined);
-        readInt(value, "shadow", label::setShadow);
-        readInt(value, "shadow_color", label::setShadowColor);
-        readString(value, "text_align", label::setTextAlign);
-        readInt(value, "text_length", label::setTextLength);
-        readInt(value, "text_size", label::setTextSize);
-        readInt(value, "text_color", label::setTextColor);
-        readString(value, "text", label::setText);
+        readString(style, value, "text_font", label::setFont);
+        readBoolean(style, value, "text_outlined", label::setOutlined);
+        readInt(style, value, "shadow", label::setShadow);
+        readInt(style, value, "shadow_color", label::setShadowColor);
+        readString(style, value, "text_align", label::setTextAlign);
+        readInt(style, value, "text_length", label::setTextLength);
+        readInt(style, value, "text_size", label::setTextSize);
+        readInt(style, value, "text_color", label::setTextColor);
+        readString(style, value, "text", label::setText);
     }
 
     @Override

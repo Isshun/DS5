@@ -16,7 +16,7 @@ public class LuaUICheckBoxExtend extends LuaUICompositeExtend {
     }
 
     @Override
-    protected void readSpecific(LuaValue value, View view) {
+    protected void readSpecific(LuaValue style, LuaValue value, View view) {
         UICheckBox checkBox = (UICheckBox) view;
         readString(value, "text", checkBox::setText);
         readInt(value, "text_size", checkBox::setTextSize);

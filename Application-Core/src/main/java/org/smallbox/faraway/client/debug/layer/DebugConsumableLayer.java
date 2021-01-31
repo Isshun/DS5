@@ -29,8 +29,8 @@ public class DebugConsumableLayer extends BaseMapLayer {
                     renderer.drawTextOnMap(consumable.getParcel(), consumable.getLabel(), Color.BLACK, 14, 1, 1);
                     renderer.drawTextOnMap(consumable.getParcel(), consumable.getLabel(), Color.WHITE, 14, 0, 0);
 
-                    renderer.drawTextOnMap(consumable.getParcel(), "x" + consumable.getFreeQuantity(), Color.BLACK, 14, 1, 17);
-                    renderer.drawTextOnMap(consumable.getParcel(), "x" + consumable.getFreeQuantity(), Color.WHITE, 14, 0, 16);
+                    renderer.drawTextOnMap(consumable.getParcel(), "x" + consumable.getActualQuantity(), Color.BLACK, 14, 1, 17);
+                    renderer.drawTextOnMap(consumable.getParcel(), "x" + consumable.getActualQuantity(), Color.WHITE, 14, 0, 16);
                 });
     }
 

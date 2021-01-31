@@ -24,9 +24,10 @@ import org.smallbox.faraway.util.log.Log;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.stream.Collectors;
 
 @GameObject
-public class ConsumableModule extends SuperGameModule<ConsumableItem, ConsumableModuleObserver> {
+public class ConsumableModule extends SuperGameModule<Consumable, ConsumableModuleObserver> {
     @Inject private PathManager pathManager;
     @Inject private DataManager dataManager;
     @Inject private WorldModule worldModule;
@@ -59,18 +60,18 @@ public class ConsumableModule extends SuperGameModule<ConsumableItem, Consumable
     }
 
     // TODO à clean et tester
-    public ConsumableItem addConsumable(ItemInfo itemInfo, int quantity, Parcel targetParcel) {
-        return addConsumable(itemInfo, quantity, targetParcel, 0);
+    public Consumable addConsumable(ItemInfo itemInfo, int quantity, Parcel parcel) {
+        return addConsumable(itemInfo, quantity, parcel, 0);
     }
 
-    public ConsumableItem addConsumable(ItemInfo itemInfo, int quantity, Parcel targetParcel, int stack) {
+    public Consumable addConsumable(ItemInfo itemInfo, int quantity, Parcel targetParcel, int stack) {
 
         if (quantity < 0) {
             throw new GameException(ConsumableModule.class, "addConsumable: invalid quantity (%d)", quantity);
         }
 
         Parcel finalParcel = WorldHelper.move(targetParcel, parcel -> {
-            ConsumableItem consumable = getConsumable(parcel, stack);
+            Consumable consumable = getConsumable(parcel, stack);
 
             // La parcel ne contient pas le bon consomable
             if (consumable != null && consumable.getInfo() != itemInfo) {
@@ -78,12 +79,12 @@ public class ConsumableModule extends SuperGameModule<ConsumableItem, Consumable
             }
 
             // La parcel contient le bon consomable mais il ne peux pas accepter la quantité à ajouter
-            return !(consumable != null && consumable.getInfo() == itemInfo && consumable.getFreeQuantity() + quantity > consumable.getInfo().stack);
+            return !(consumable != null && consumable.getInfo() == itemInfo && consumable.getActualQuantity() + quantity > consumable.getInfo().stack);
         });
 
         // Ajout du consomable à la parcel
         if (finalParcel != null) {
-            ConsumableItem consumable = getConsumable(finalParcel, stack);
+            Consumable consumable = getConsumable(finalParcel, stack);
 
             // Ajout de la quantité à un consomable déjà existant
             if (consumable != null) {
@@ -92,7 +93,7 @@ public class ConsumableModule extends SuperGameModule<ConsumableItem, Consumable
 
             // Ajout d'un nouveau consomable
             else {
-                consumable = new ConsumableItem(itemInfo, quantity, stack);
+                consumable = new Consumable(itemInfo, quantity, stack);
                 consumable.setParcel(finalParcel);
                 add(consumable);
             }
@@ -135,16 +136,20 @@ public class ConsumableModule extends SuperGameModule<ConsumableItem, Consumable
         _locks.removeIf(lock -> !lock.available);
     }
 
-    public boolean parcelAcceptConsumable(Parcel parcel, ConsumableItem consumable) {
-        ConsumableItem consumableOnTargetParcel = getConsumable(parcel);
-        if (consumableOnTargetParcel == null) {
+    public boolean parcelAcceptConsumable(Parcel parcel, Consumable consumable) {
+        List<Consumable> consumablesOnTargetParcel = getConsumableList(parcel);
+        if (consumablesOnTargetParcel.size() < 4) {
             return true;
         }
-        return consumableOnTargetParcel.getInfo() == consumable.getInfo() && consumableOnTargetParcel.getTotalQuantity() + consumable.getFreeQuantity() < consumable.getInfo().stack;
+
+        int totalQuantity = consumablesOnTargetParcel.stream().filter(existingConsumable -> existingConsumable.getInfo() == consumable.getInfo()).mapToInt(Consumable::getTotalQuantity).sum();
+        int actualQuantity = consumablesOnTargetParcel.stream().filter(existingConsumable -> existingConsumable.getInfo() == consumable.getInfo()).mapToInt(Consumable::getActualQuantity).sum();
+
+        return consumable.getTotalQuantity() <= totalQuantity - actualQuantity;
     }
 
     public boolean parcelAcceptConsumable(Parcel parcel, ItemInfo itemInfo, int quantity) {
-        ConsumableItem consumableOnTargetParcel = getConsumable(parcel);
+        Consumable consumableOnTargetParcel = getConsumable(parcel);
         if (consumableOnTargetParcel == null) {
             return true;
         }
@@ -183,10 +188,10 @@ public class ConsumableModule extends SuperGameModule<ConsumableItem, Consumable
 //        return true;
 //    }
 
-    public void addToLock(JobModel job, ConsumableItem consumable, int quantity) {
+    public void addToLock(JobModel job, Consumable consumable, int quantity) {
 
         // Le consomable n'a pas la quantité demandé de libre
-        if (consumable.getFreeQuantity() == 0 || consumable.getFreeQuantity() < quantity) {
+        if (consumable.getActualQuantity() == 0 || consumable.getActualQuantity() < quantity) {
             Log.warning(ConsumableModule.class, "Not enough quantity to lock", consumable, quantity, _locks);
             return;
         }
@@ -206,7 +211,7 @@ public class ConsumableModule extends SuperGameModule<ConsumableItem, Consumable
         lock.quantity += quantity;
     }
 
-    public int removeQuantity(ConsumableItem consumable, int quantity) {
+    public int removeQuantity(Consumable consumable, int quantity) {
         if (quantity < consumable.getTotalQuantity()) {
             consumable.setQuantity(consumable.getTotalQuantity() - quantity);
             return quantity;
@@ -216,13 +221,55 @@ public class ConsumableModule extends SuperGameModule<ConsumableItem, Consumable
         return consumable.getTotalQuantity();
     }
 
+    // TODO: handle null or full parcel
+    public int addQuantity(Parcel parcel, int quantity, ItemInfo itemInfo) {
+        Log.info("Add " + quantity + " " + itemInfo.label + " to " + parcel);
+        int consumableOnParcel = 0;
+        for (Consumable consumable: getAll()) {
+            if (consumable.getParcel() == parcel) {
+                consumableOnParcel++;
+                if (consumable.getInfo() == itemInfo && quantity > 0) {
+                    quantity = consumable.addQuantity(quantity);
+                }
+            }
+        }
+
+        while (consumableOnParcel < 4 && quantity > 0) {
+            Consumable newConsumable = new Consumable(itemInfo, 0, getFreeGridPosition(parcel));
+            newConsumable.setParcel(parcel);
+            quantity = newConsumable.addQuantity(quantity);
+            add(newConsumable);
+            consumableOnParcel++;
+        }
+
+        return quantity;
+    }
+
+    private int getFreeGridPosition(Parcel parcel) {
+        List<Integer> usedPositions = getAll().stream().filter(consumable -> consumable.getParcel() == parcel).map(Consumable::getGridPosition).collect(Collectors.toList());
+        if (!usedPositions.contains(0)) return 0;
+        if (!usedPositions.contains(1)) return 1;
+        if (!usedPositions.contains(2)) return 2;
+        if (!usedPositions.contains(3)) return 3;
+        return -1;
+    }
+
+    public int getFreeSpace(Parcel parcel, ItemInfo itemInfo) {
+        List<Consumable> consumables = getConsumablesOnParcel(parcel);
+        return (4 - consumables.size()) * itemInfo.stack + consumables.stream().filter(consumable -> consumable.getInfo() == itemInfo).mapToInt(Consumable::getFreeSpace).sum();
+    }
+
+    public List<Consumable> getConsumablesOnParcel(Parcel parcel) {
+        return getAll().stream().filter(consumableItem -> consumableItem.getParcel() == parcel).collect(Collectors.toList());
+    }
+
     public static class ConsumableJobLock {
-        public ConsumableItem consumable;
+        public Consumable consumable;
         public JobModel job;
         public int quantity;
         public boolean available;
 
-        public ConsumableJobLock(ConsumableItem consumable, JobModel job, int quantity) {
+        public ConsumableJobLock(Consumable consumable, JobModel job, int quantity) {
             this.consumable = consumable;
             this.job = job;
             this.quantity = quantity;
@@ -236,12 +283,12 @@ public class ConsumableModule extends SuperGameModule<ConsumableItem, Consumable
     }
 
     public static class ParcelJobLock {
-        public ConsumableItem consumable;
+        public Consumable consumable;
         public JobModel job;
         public int quantity;
         public boolean available;
 
-        public ParcelJobLock(ConsumableItem consumable, JobModel job, int quantity) {
+        public ParcelJobLock(Consumable consumable, JobModel job, int quantity) {
             this.consumable = consumable;
             this.job = job;
             this.quantity = quantity;
@@ -283,7 +330,7 @@ public class ConsumableModule extends SuperGameModule<ConsumableItem, Consumable
 
     @Override
     protected void onModuleUpdate(Game game) {
-        getAll().forEach(ConsumableItem::fixPosition);
+        getAll().forEach(Consumable::fixPosition);
 
         // Retire les consomables ayant comme quantité 0
         getAll().removeIf(consumable -> consumable.getTotalQuantity() == 0 && !consumable.hasLock() && consumable.getStoreJob() == null);
@@ -324,7 +371,7 @@ public class ConsumableModule extends SuperGameModule<ConsumableItem, Consumable
         return null;
     }
 
-    public ConsumableItem createConsumableFromLock(ConsumableJobLock lock) {
+    public Consumable createConsumableFromLock(ConsumableJobLock lock) {
 
         Log.debug(ConsumableModule.class, "TakeConsumable: (lock: %s)", lock);
 
@@ -336,7 +383,7 @@ public class ConsumableModule extends SuperGameModule<ConsumableItem, Consumable
         lock.consumable.removeLock(lock);
         _locks.remove(lock);
 
-        return new ConsumableItem(lock.consumable.getInfo(), lock.quantity);
+        return new Consumable(lock.consumable.getInfo(), lock.quantity);
     }
 
     /**
@@ -345,7 +392,7 @@ public class ConsumableModule extends SuperGameModule<ConsumableItem, Consumable
      * @param consumable Consomable d'origine
      * @return Consomable nouvellement créé
      */
-    public ConsumableItem createConsumableFromLock(JobModel job, ConsumableItem consumable) {
+    public Consumable createConsumableFromLock(JobModel job, Consumable consumable) {
 
         Log.debug(ConsumableModule.class, "TakeConsumable: (consumable: %s)", consumable);
 
@@ -362,15 +409,15 @@ public class ConsumableModule extends SuperGameModule<ConsumableItem, Consumable
         targetLock.consumable.removeLock(targetLock);
         _locks.remove(targetLock);
 
-        return new ConsumableItem(targetLock.consumable.getInfo(), targetLock.quantity);
+        return new Consumable(targetLock.consumable.getInfo(), targetLock.quantity);
     }
 
-    public int getLockQuantity(JobModel job, ConsumableItem consumable) {
+    public int getLockQuantity(JobModel job, Consumable consumable) {
         ConsumableJobLock lock = getLock(job, consumable);
         return lock != null ? lock.quantity : 0;
     }
 
-    public ConsumableJobLock getLock(JobModel job, ConsumableItem consumable) {
+    public ConsumableJobLock getLock(JobModel job, Consumable consumable) {
         return _locks.stream()
                 .filter(lock -> lock.job == job)
                 .filter(lock -> lock.consumable == consumable)
@@ -378,7 +425,7 @@ public class ConsumableModule extends SuperGameModule<ConsumableItem, Consumable
                 .orElse(null);
     }
 
-    public void removeConsumable(ConsumableItem consumable) {
+    public void removeConsumable(Consumable consumable) {
 
         Log.debug(ConsumableModule.class, "RemoveConsumable: %s", consumable);
 
@@ -391,17 +438,17 @@ public class ConsumableModule extends SuperGameModule<ConsumableItem, Consumable
 
     }
 
-    public ConsumableItem putConsumable(Parcel parcel, ConsumableItem consumable) {
+    public Consumable putConsumable(Parcel parcel, Consumable consumable) {
         if (parcel != null) {
-            Parcel finalParcel = WorldHelper.getNearestFreeArea(parcel, consumable.getInfo(), consumable.getFreeQuantity());
+            Parcel finalParcel = WorldHelper.getNearestFreeArea(parcel, consumable.getInfo(), consumable.getActualQuantity());
             if (finalParcel == null) {
                 return null;
             }
 
             // Ajout la quantity au consomable déjà présent
-            ConsumableItem existingConsumable = finalParcel.getItem(ConsumableItem.class);
+            Consumable existingConsumable = finalParcel.getItem(Consumable.class);
             if (existingConsumable != null) {
-                existingConsumable.addQuantity(consumable.getFreeQuantity());
+                existingConsumable.addQuantity(consumable.getActualQuantity());
             }
 
             // Ajout le nouveau consomable sur la carte
@@ -418,7 +465,7 @@ public class ConsumableModule extends SuperGameModule<ConsumableItem, Consumable
         return null;
     }
 
-    private void moveConsumableToParcel(Parcel parcel, ConsumableItem consumable) {
+    private void moveConsumableToParcel(Parcel parcel, Consumable consumable) {
         if (consumable != null) {
             if (consumable.getParcel() != null) {
                 consumable.getParcel().setItem(null);
@@ -437,35 +484,36 @@ public class ConsumableModule extends SuperGameModule<ConsumableItem, Consumable
 
     @Override
     public void removeObject(MapObjectModel mapObjectModel) {
-        if (mapObjectModel.isConsumable() && mapObjectModel instanceof ConsumableItem) {
-            removeConsumable((ConsumableItem) mapObjectModel);
+        if (mapObjectModel.isConsumable() && mapObjectModel instanceof Consumable) {
+            removeConsumable((Consumable) mapObjectModel);
         }
     }
 
-    public ConsumableItem putConsumable(Parcel parcel, ItemInfo itemInfo, int quantity) {
+    public Consumable putConsumable(Parcel parcel, ItemInfo itemInfo, int quantity) {
         throw new RuntimeException("this method is deprecated");
     }
 
-    public ConsumableItem find(ItemInfo itemInfo) {
+    public Consumable find(ItemInfo itemInfo) {
         return getAll().stream()
                 .filter(consumable -> consumable.getInfo() == itemInfo && consumable.getParcel() != null)
                 .findAny().orElse(null);
     }
 
-    public ConsumableItem create(ItemInfo info, int quantity, Parcel parcel) {
-        ConsumableItem consumable = new ConsumableItem(info);
+    public Consumable create(ItemInfo info, int quantity, Parcel parcel, int gridPosition) {
+        Consumable consumable = new Consumable(info);
         consumable.setQuantity(quantity);
         consumable.setParcel(parcel);
+        consumable.setGridPosition(gridPosition);
 
         add(consumable);
 
         return consumable;
     }
 
-    public void create(ItemInfo itemInfo, int quantity, int x, int y, int z) {
+    public void create(ItemInfo itemInfo, int quantity, int x, int y, int z, int gridPosition) {
         Parcel parcel = worldModule.getParcel(x, y, z);
         if (parcel != null) {
-            create(itemInfo, quantity, parcel);
+            create(itemInfo, quantity, parcel, gridPosition);
         }
     }
 
@@ -476,7 +524,7 @@ public class ConsumableModule extends SuperGameModule<ConsumableItem, Consumable
     public int getTotal(ItemInfo itemInfo) {
         return getAll().stream()
                 .filter(consumable -> consumable.getInfo().instanceOf(itemInfo))
-                .mapToInt(ConsumableItem::getFreeQuantity)
+                .mapToInt(Consumable::getActualQuantity)
                 .sum();
     }
 
@@ -484,7 +532,7 @@ public class ConsumableModule extends SuperGameModule<ConsumableItem, Consumable
     public int getTotalAccessible(ItemInfo itemInfo, Parcel parcel) {
         return getAll().stream()
                 .filter(consumable -> consumable.getInfo() == itemInfo)
-                .mapToInt(ConsumableItem::getFreeQuantity)
+                .mapToInt(Consumable::getActualQuantity)
                 .sum();
     }
 //
@@ -515,18 +563,24 @@ public class ConsumableModule extends SuperGameModule<ConsumableItem, Consumable
 //    }
 
     // TODO: perfs
-    public ConsumableItem getConsumable(Parcel parcel) {
+    public Consumable getConsumable(Parcel parcel) {
         return getConsumable(parcel, 0);
     }
 
-    public ConsumableItem getConsumable(Parcel parcel, int s) {
+    public List<Consumable> getConsumableList(Parcel parcel) {
         return getAll().stream()
                 .filter(consumableItem -> consumableItem.getParcel() == parcel)
-                .filter(consumableItem -> consumableItem.getStack() == s)
+                .collect(Collectors.toList());
+    }
+
+    public Consumable getConsumable(Parcel parcel, int gridPosition) {
+        return getAll().stream()
+                .filter(consumableItem -> consumableItem.getParcel() == parcel)
+                .filter(consumableItem -> consumableItem.getGridPosition() == gridPosition)
                 .findFirst().orElse(null);
     }
 
-    public ConsumableItem getConsumable(int x, int y, int z) {
+    public Consumable getConsumable(int x, int y, int z) {
         return getConsumable(WorldHelper.getParcel(x, y, z));
     }
 
@@ -538,7 +592,7 @@ public class ConsumableModule extends SuperGameModule<ConsumableItem, Consumable
      * @param quantity
      * @return
      */
-    public ConsumableJobLock lock(JobModel job, ConsumableItem consumable, int quantity) {
+    public ConsumableJobLock lock(JobModel job, Consumable consumable, int quantity) {
 
         Log.info(ConsumableModule.class, "Lock (job: %s, consumable: %s, quantity: %d)", job, consumable, quantity);
 
@@ -547,7 +601,7 @@ public class ConsumableModule extends SuperGameModule<ConsumableItem, Consumable
         }
 
         // Retourne false si le consomable n'a pas la quantité demandé de libre
-        if (consumable.getFreeQuantity() == 0 || consumable.getFreeQuantity() < quantity) {
+        if (consumable.getActualQuantity() == 0 || consumable.getActualQuantity() < quantity) {
             Log.warning(ConsumableModule.class, "Not enough quantity to lock", consumable, quantity, _locks);
             return null;
         }
@@ -578,7 +632,7 @@ public class ConsumableModule extends SuperGameModule<ConsumableItem, Consumable
      * @param consumable
      * @return
      */
-    public boolean hasLock(ConsumableItem consumable) {
+    public boolean hasLock(Consumable consumable) {
         return _locks.stream().anyMatch(lock -> lock.consumable == consumable);
     }
 

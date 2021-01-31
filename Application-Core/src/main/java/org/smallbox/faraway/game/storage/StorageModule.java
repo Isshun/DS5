@@ -7,7 +7,7 @@ import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnInit;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.path.PathManager;
-import org.smallbox.faraway.game.consumable.ConsumableItem;
+import org.smallbox.faraway.game.consumable.Consumable;
 import org.smallbox.faraway.game.area.AreaModule;
 import org.smallbox.faraway.game.area.AreaModuleBase;
 import org.smallbox.faraway.game.consumable.ConsumableModule;
@@ -20,15 +20,15 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 @GameObject
 public class StorageModule extends AreaModuleBase<StorageArea> {
+    @Inject private AreaInfoStorageController areaInfoStorageController;
     @Inject private WorldModule worldModule;
     @Inject private ConsumableModule consumableModule;
     @Inject private JobModule jobModule;
     @Inject private AreaModule areaModule;
     @Inject private PathManager pathManager;
-    @Inject private AreaInfoStorageController areaInfoStorageController;
     @Inject private StoreJobFactory storeJobFactory;
 
-    private final Queue<ConsumableItem> _checkQueue = new ConcurrentLinkedQueue<>();
+    private final Queue<Consumable> _checkQueue = new ConcurrentLinkedQueue<>();
 
     @OnInit
     public void init() {
@@ -42,20 +42,20 @@ public class StorageModule extends AreaModuleBase<StorageArea> {
             _checkQueue.addAll(consumableModule.getAll());
         }
 
-        ConsumableItem consumable = _checkQueue.poll();
-        if (consumable != null && consumable.getFreeQuantity() > 0) {
+        Consumable consumable = _checkQueue.poll();
+        if (consumable != null && consumable.getActualQuantity() > 0) {
             checkConsumable(consumable);
         }
 
     }
 
-    private void checkConsumable(ConsumableItem consumable) {
+    private void checkConsumable(Consumable consumable) {
         StoreJob storeJob = consumable.getStoreJob();
         StorageArea storageArea = areas.stream()
-                .filter(area -> area.haveParcel(storeJob != null ? storeJob.getStorageParcel() : consumable.getParcel()))
+                .filter(area -> area.haveParcel(storeJob != null ? storeJob.getTargetParcel() : consumable.getParcel()))
                 .findFirst().orElse(null);
 
-        StorageArea bestArea = getBestArea(consumable.getInfo(), consumable.getFreeQuantity());
+        StorageArea bestArea = getBestArea(consumable.getInfo(), consumable.getActualQuantity());
 
         if (bestArea != null) {
 
@@ -65,7 +65,7 @@ public class StorageModule extends AreaModuleBase<StorageArea> {
             }
 
             // Consumable have StoreJob or StoreArea but not the best one
-            else if (storageArea != bestArea) {
+            else if (storageArea != bestArea && (storeJob == null || storeJob.storageArea != bestArea)) {
 
                 if (storeJob != null) {
                     jobModule.remove(storeJob);

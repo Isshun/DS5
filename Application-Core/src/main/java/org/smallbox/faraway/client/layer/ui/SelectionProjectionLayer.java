@@ -1,17 +1,18 @@
 package org.smallbox.faraway.client.layer.ui;
 
 import com.badlogic.gdx.graphics.Color;
-import org.smallbox.faraway.client.input.GameEventManager;
 import org.smallbox.faraway.client.gameAction.GameActionManager;
-import org.smallbox.faraway.client.renderer.BaseRenderer;
-import org.smallbox.faraway.client.layer.LayerManager;
-import org.smallbox.faraway.client.renderer.Viewport;
+import org.smallbox.faraway.client.input.GameEventManager;
 import org.smallbox.faraway.client.layer.BaseMapLayer;
+import org.smallbox.faraway.client.layer.GameLayer;
+import org.smallbox.faraway.client.layer.LayerManager;
+import org.smallbox.faraway.client.renderer.BaseRenderer;
+import org.smallbox.faraway.client.renderer.Viewport;
 import org.smallbox.faraway.client.selection.GameSelectionManager;
 import org.smallbox.faraway.client.ui.extra.Colors;
-import org.smallbox.faraway.client.layer.GameLayer;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
+import org.smallbox.faraway.core.world.model.MapObjectModel;
 import org.smallbox.faraway.game.world.Parcel;
 import org.smallbox.faraway.util.Constant;
 
@@ -34,8 +35,14 @@ public class SelectionProjectionLayer extends BaseMapLayer {
                     gameEventManager.getMouseOffsetX(), gameEventManager.getMouseOffsetY(),
                     gameActionManager.hasAction() ? gameActionManager.getActionColor() : Colors.COLOR_SELECTION);
         } else {
-            gameSelectionManager.getSelected().forEach(obj ->
-                    renderer.drawCadreOnMap((Parcel) obj, Constant.TILE_SIZE - 8, Constant.TILE_SIZE - 8, Color.WHITE, 4, 4, 4));
+            gameSelectionManager.getSelected().forEach(obj -> {
+                if (obj instanceof Parcel) {
+                    renderer.drawCadreOnMap((Parcel) obj, Constant.TILE_SIZE - 8, Constant.TILE_SIZE - 8, Color.WHITE, 4, 4, 4);
+                }
+                if (obj instanceof MapObjectModel) {
+                    renderer.drawCadreOnMap(((MapObjectModel) obj).getParcel(), ((MapObjectModel) obj).getInfo().tileWidth - 8, ((MapObjectModel) obj).getInfo().tileHeight - 8, Color.WHITE, 4, 4, 4);
+                }
+            });
         }
     }
 

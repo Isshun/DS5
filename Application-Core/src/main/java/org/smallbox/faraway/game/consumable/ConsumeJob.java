@@ -16,7 +16,7 @@ public class ConsumeJob extends JobModel {
          * @param consumable le consomable
          * @param durationLeft la durée restante
          */
-        void onConsume(ConsumableItem consumable, double durationLeft);
+        void onConsume(Consumable consumable, double durationLeft);
     }
 
 }

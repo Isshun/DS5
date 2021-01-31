@@ -82,6 +82,8 @@ public class PlantLayer extends BaseMapLayer {
         sprite.setFlip(extra.flip, true);
         sprite.setScale((float) plant.getMaturity());
         sprite.setRotation(extra.rotate);
+        sprite.setOrigin(sprite.getWidth() / 2, sprite.getHeight() - 25);
+        sprite.setScale(extra.scale);
 
         if (extra.animator != null) {
             extra.animator.update(sprite);
@@ -144,14 +146,15 @@ public class PlantLayer extends BaseMapLayer {
                 extra.rotate = new Random().nextInt(randomization.rotate) - randomization.rotate / 2;
             }
 
+            if (randomization.scale != 1) {
+                extra.scale = 1 + new Random().nextFloat() * randomization.scale - randomization.scale / 2;
+            }
+
             extra.flip = randomization.flip && new Random().nextBoolean();
         });
 
         Optional.ofNullable(graphicInfo.animation).ifPresent(animation -> {
-            extra.animator = new Animator(-animation.value / 2, animation.value / 2, animation.speed, Interpolation.pow2, (sprite, value) -> {
-                sprite.setOrigin(sprite.getWidth() / 2, sprite.getHeight() - 25);
-                sprite.setRotation(value);
-            });
+            extra.animator = new Animator(-animation.value / 2, animation.value / 2, animation.speed, Interpolation.pow2, Sprite::setRotation);
         });
 
         extraMap.put(plant, extra);

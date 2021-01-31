@@ -309,6 +309,13 @@ public class SpriteManager {
         return itemInfo != null && CollectionUtils.isNotEmpty(itemInfo.graphics) ? getNewSprite(itemInfo.graphics.get(0), 0) : null;
     }
 
+    public Sprite getIcon(GraphicInfo graphicInfo, int width, int height) {
+        Sprite sprite = new Sprite(assetManager.lazyLoad(graphicInfo.absolutePath, Texture.class), 0, 0, graphicInfo.width, graphicInfo.height);
+        sprite.setFlip(false, true);
+        sprite.setSize(width, height);
+        return sprite;
+    }
+
     public Sprite getNewSprite(GraphicInfo graphicInfo) {
         return getNewSprite(graphicInfo, 0);
     }
@@ -338,7 +345,9 @@ public class SpriteManager {
                 if (graphicInfo.type == GraphicInfo.Type.ICON) {
                     sprite = new Sprite(texture, 0, 0, graphicInfo.width, graphicInfo.height);
                 } else if (graphicInfo.width != 0 && graphicInfo.height != 0) {
-                    sprite = new Sprite(texture, 0, 0, graphicInfo.width, graphicInfo.height);
+                    sprite = new Sprite(texture,
+                            (graphicInfo.x + tile) * graphicInfo.tileWidth,
+                            graphicInfo.y * graphicInfo.tileHeight, graphicInfo.width, graphicInfo.height);
                 } else {
                     sprite = new Sprite(texture,
                             (graphicInfo.x + tile) * graphicInfo.tileWidth,

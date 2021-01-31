@@ -12,26 +12,26 @@ import org.smallbox.faraway.util.log.Log;
 import java.util.Collection;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-public class ConsumableItem extends MapObjectModel {
+public class Consumable extends MapObjectModel {
     private StoreJob storeJob;
-    private int _freeQuantity;
+    private int actualQuantity;
     private int _totalQuantity;
     private final Collection<ConsumableModule.ConsumableJobLock>    _locks = new ConcurrentLinkedQueue<>();
-    private int stack;
+    private int gridPosition;
 
-    public ConsumableItem(ItemInfo info) {
+    public Consumable(ItemInfo info) {
         super(info);
     }
 
-    public ConsumableItem(ItemInfo info, int quantity) {
+    public Consumable(ItemInfo info, int quantity) {
         super(info);
-        _totalQuantity = _freeQuantity = quantity;
+        _totalQuantity = actualQuantity = quantity;
     }
 
-    public ConsumableItem(ItemInfo info, int quantity, int stack) {
+    public Consumable(ItemInfo info, int quantity, int gridPosition) {
         super(info);
-        _totalQuantity = _freeQuantity = quantity;
-        this.stack = stack;
+        _totalQuantity = actualQuantity = quantity;
+        this.gridPosition = gridPosition;
     }
 
     public StoreJob getStoreJob() {
@@ -48,31 +48,40 @@ public class ConsumableItem extends MapObjectModel {
         }
     }
 
-    public void addQuantity(int quantity) {
+    public int addQuantity(int quantity) {
 
-        Log.debug(ConsumableItem.class, "AddQuantity (consumable: %s, quantity: %d, quantity to add: %d)", this, _freeQuantity, quantity);
+        Log.debug(Consumable.class, "AddQuantity (consumable: %s, quantity: %d, quantity to add: %d)", this, actualQuantity, quantity);
 
-        _freeQuantity += quantity;
-        _totalQuantity = _freeQuantity + _locks.stream().mapToInt(l -> l.quantity).sum();
+        actualQuantity += quantity;
+        _totalQuantity = actualQuantity + _locks.stream().mapToInt(l -> l.quantity).sum();
 
-        if (_freeQuantity < 0) {
-            throw new GameException(ConsumableItem.class, "freeQuantity cannot be < 0", this, _freeQuantity);
+        if (_totalQuantity > getInfo().stack) {
+            int diff = _totalQuantity - getInfo().stack;
+            _totalQuantity = getInfo().stack;
+            actualQuantity -= diff;
+            return diff;
         }
+
+        if (actualQuantity < 0) {
+            throw new GameException(Consumable.class, "freeQuantity cannot be < 0", this, actualQuantity);
+        }
+
+        return 0;
     }
 
-    public int getFreeQuantity() {
-        return _freeQuantity;
+    public int getActualQuantity() {
+        return actualQuantity;
     }
 
     public void setQuantity(int quantity) {
 
-        Log.debug(ConsumableItem.class, "SetQuantity (consumable: %s, quantity: %d, quantity to set: %d)", this, _freeQuantity, quantity);
+        Log.debug(Consumable.class, "SetQuantity (consumable: %s, quantity: %d, quantity to set: %d)", this, actualQuantity, quantity);
 
-        _freeQuantity = quantity;
-        _totalQuantity = _freeQuantity + _locks.stream().mapToInt(l -> l.quantity).sum();
+        actualQuantity = quantity;
+        _totalQuantity = actualQuantity + _locks.stream().mapToInt(l -> l.quantity).sum();
 
-        if (_freeQuantity < 0) {
-            throw new GameException(ConsumableItem.class, "freeQuantity cannot be < 0", this, _freeQuantity);
+        if (actualQuantity < 0) {
+            throw new GameException(Consumable.class, "freeQuantity cannot be < 0", this, actualQuantity);
         }
     }
 
@@ -90,7 +99,7 @@ public class ConsumableItem extends MapObjectModel {
         return false;
     }
 
-    public boolean isEmpty() { return _freeQuantity <= 0; }
+    public boolean isEmpty() { return actualQuantity <= 0; }
 
     public void fixPosition() {
         if (_parcel != null && !_parcel.isWalkable()) {
@@ -105,19 +114,19 @@ public class ConsumableItem extends MapObjectModel {
     public String toString() { return _info.name + " at " + _parcel; }
 
     public void removeQuantity(int quantity) {
-        _freeQuantity -= quantity;
+        actualQuantity -= quantity;
         _totalQuantity -= quantity;
 
-        if (_freeQuantity < 0 || _totalQuantity < 0) {
-            throw new GameException(ConsumableItem.class, "quantity cannot be < 0", this, _freeQuantity, _totalQuantity);
+        if (actualQuantity < 0 || _totalQuantity < 0) {
+            throw new GameException(Consumable.class, "quantity cannot be < 0", this, actualQuantity, _totalQuantity);
         }
     }
 
     public void addLock(ConsumableModule.ConsumableJobLock lock) {
-        Log.debug(ConsumableItem.class, "addLock: %s", lock);
+        Log.debug(Consumable.class, "addLock: %s", lock);
 
         _locks.add(lock);
-        _totalQuantity = _freeQuantity + _locks.stream().mapToInt(l -> l.quantity).sum();
+        _totalQuantity = actualQuantity + _locks.stream().mapToInt(l -> l.quantity).sum();
     }
 
     public boolean hasLock() {
@@ -133,18 +142,21 @@ public class ConsumableItem extends MapObjectModel {
     }
 
     public void removeLock(ConsumableModule.ConsumableJobLock lock) {
-        Log.debug(ConsumableItem.class, "removeLock: %s", lock);
+        Log.debug(Consumable.class, "removeLock: %s", lock);
 
         if (!_locks.contains(lock)) {
-            throw new GameException(ConsumableItem.class, "RemoveLock: lock doesn't exists in consumable");
+            throw new GameException(Consumable.class, "RemoveLock: lock doesn't exists in consumable");
         }
 
         _locks.remove(lock);
-        _totalQuantity = _freeQuantity + _locks.stream().mapToInt(l -> l.quantity).sum();
+        _totalQuantity = actualQuantity + _locks.stream().mapToInt(l -> l.quantity).sum();
     }
 
-    public int getStack() {
-        return stack;
+    public int getGridPosition() {
+        return gridPosition;
     }
 
+    public int getFreeSpace() {
+        return _info.stack - _totalQuantity;
+    }
 }

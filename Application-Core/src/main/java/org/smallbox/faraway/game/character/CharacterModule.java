@@ -9,7 +9,6 @@ import org.smallbox.faraway.core.game.DataManager;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.module.SuperGameModule;
 import org.smallbox.faraway.game.character.model.CharacterInfoAnnotation;
-import org.smallbox.faraway.game.character.model.CharacterInventoryExtra;
 import org.smallbox.faraway.game.character.model.HumanModel;
 import org.smallbox.faraway.game.character.model.base.CharacterModel;
 import org.smallbox.faraway.game.character.model.base.CharacterPersonalsExtra;
@@ -127,15 +126,15 @@ public class CharacterModule extends SuperGameModule<CharacterModel, CharacterMo
     }
 
     private void fixCharacterInventory() {
-        modelList.stream()
-                .filter(character -> character.hasExtra(CharacterInventoryExtra.class))
-                .filter(character -> character.getJob() == null && !character.getExtra(CharacterInventoryExtra.class).getAll().isEmpty())
-                .forEach(character -> {
-                    Log.warning(getName() + " have item in inventory without job");
-                    character.getExtra(CharacterInventoryExtra.class).getAll().forEach((itemInfo, quantity) ->
-                            consumableModule.addConsumable(itemInfo, quantity, character.getParcel()));
-                    character.getExtra(CharacterInventoryExtra.class).getAll().clear();
-                });
+//        modelList.stream()
+//                .filter(character -> character.hasExtra(CharacterInventoryExtra.class))
+//                .filter(character -> character.getJob() == null && !character.getExtra(CharacterInventoryExtra.class).getAll().isEmpty())
+//                .forEach(character -> {
+//                    Log.warning(getName() + " have item in inventory without job");
+//                    character.getExtra(CharacterInventoryExtra.class).getAll().forEach(inventoryConsumable ->
+//                            consumableModule.addConsumable(inventoryConsumable.getInfo(), inventoryConsumable.getTotalQuantity(), character.getParcel()));
+//                    character.getExtra(CharacterInventoryExtra.class).getAll().clear();
+//                });
     }
 
 }

@@ -16,7 +16,7 @@ public class LuaUIImageExtend extends LuaUICompositeExtend {
     }
 
     @Override
-    protected void readSpecific(LuaValue value, View view) {
+    protected void readSpecific(LuaValue style, LuaValue value, View view) {
         UIImage imageView = (UIImage) view;
         readString(value, "src", imageView::setImage);
         readLua(value, "texture_rect", v -> imageView.setTextureRect(v.get(1).toint(), v.get(2).toint(), v.get(3).toint(), v.get(4).toint()));

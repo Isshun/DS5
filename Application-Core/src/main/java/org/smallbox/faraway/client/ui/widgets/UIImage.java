@@ -30,7 +30,7 @@ public class UIImage extends View {
     }
 
     public UIImage setImage(GraphicInfo graphicInfo) {
-        _sprite = spriteManager.getNewSprite(graphicInfo);
+        _sprite = spriteManager.getIcon(graphicInfo, geometry.getWidth(), geometry.getHeight());
         _dirty = true;
         return this;
     }

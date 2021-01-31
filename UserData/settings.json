@@ -1,6 +1,6 @@
 {
   "debug": {
-    "actionOnLoad": "LAST_SAVE",
+    "actionOnLoad": "",
     "debugView": false,
     "scenario": "data/scenarios/test1.json",
     "log": true,
@@ -65,6 +65,6 @@
   "launchGui": true,
   "uiScale": 1,
   "lang": "en",
-  "musicVolume": 0.4,
+  "musicVolume": 0,
   "soundVolume": 0.6
 }

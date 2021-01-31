@@ -9,7 +9,7 @@ import org.smallbox.faraway.core.game.GameManager;
 import org.smallbox.faraway.core.game.GameTime;
 import org.smallbox.faraway.game.character.CharacterInfo;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
-import org.smallbox.faraway.game.consumable.ConsumableItem;
+import org.smallbox.faraway.game.consumable.Consumable;
 import org.smallbox.faraway.game.character.CharacterModule;
 import org.smallbox.faraway.game.character.CharacterTimetableExtra;
 import org.smallbox.faraway.game.character.model.base.CharacterModel;
@@ -175,8 +175,8 @@ public class CharacterNeedModule extends SuperGameModule {
     private boolean tryToRestoreNeedWithConsumable(CharacterModel character, NeedEntry need) {
 
         // Find best consumable
-        ConsumableItem bestConsumable = consumableModule.getAll().stream()
-                .filter(consumable -> consumable.getFreeQuantity() > 0)
+        Consumable bestConsumable = consumableModule.getAll().stream()
+                .filter(consumable -> consumable.getActualQuantity() > 0)
                 .filter(item -> need.hasEffect(item.getInfo().consume))
                 .findAny().orElse(null);
         if (bestConsumable == null) {

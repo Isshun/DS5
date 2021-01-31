@@ -23,6 +23,7 @@ import org.smallbox.faraway.core.dependencyInjector.DependencyManager;
 import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.dependencyInjector.annotationEvent.*;
+import org.smallbox.faraway.core.game.GameManager;
 import org.smallbox.faraway.util.log.Log;
 
 import java.io.File;
@@ -43,6 +44,7 @@ public class UIManager {
     @Inject private ClientLuaModuleManager clientLuaModuleManager;
     @Inject private LuaControllerManager luaControllerManager;
     @Inject private DependencyManager dependencyManager;
+    @Inject private GameManager gameManager;
 
     private final Map<String, LuaValue> _styles = new ConcurrentHashMap<>();
     private UIEventManager.OnDragListener _dragListener;
@@ -112,10 +114,15 @@ public class UIManager {
             callMethodAnnotatedBy(controller, OnInit.class);
             callMethodAnnotatedBy(controller, OnApplicationLayerInit.class);
             callMethodAnnotatedBy(controller, AfterApplicationLayerInit.class);
-            callMethodAnnotatedBy(controller, OnGameLayerInit.class);
-            callMethodAnnotatedBy(controller, AfterGameLayerInit.class);
-            callMethodAnnotatedBy(controller, OnGameStart.class);
         });
+
+        if (gameManager.isRunning()) {
+            dependencyManager.getSubTypesOf(LuaController.class).forEach(controller -> {
+                callMethodAnnotatedBy(controller, OnGameLayerInit.class);
+                callMethodAnnotatedBy(controller, AfterGameLayerInit.class);
+                callMethodAnnotatedBy(controller, OnGameStart.class);
+            });
+        }
     }
 
     private void callMethodAnnotatedBy(LuaController controller, Class<? extends Annotation> cls) {

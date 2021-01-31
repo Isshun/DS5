@@ -2,7 +2,9 @@ package org.smallbox.faraway.client.gameAction;
 
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
+import org.apache.commons.lang3.StringUtils;
 import org.smallbox.faraway.client.ui.extra.Colors;
+import org.smallbox.faraway.game.plant.PlantModule;
 import org.smallbox.faraway.game.world.ObjectModel;
 import org.smallbox.faraway.client.shortcut.GameShortcut;
 import org.smallbox.faraway.core.dependencyInjector.DependencyManager;
@@ -33,6 +35,7 @@ public class GameActionManager extends GameManager {
     @Inject private JobModule jobModule;
     @Inject private BuildJobFactory buildJobFactory;
     @Inject private DependencyManager dependencyManager;
+    @Inject private PlantModule plantModule;
 
     private Map<Class<? extends Annotation>, Map<OnGameSelectAction, Consumer<ObjectModel>>> gameActionsConsumers;
     private Collection<GameActionAreaListener> specializedAreaModules;
@@ -69,7 +72,13 @@ public class GameActionManager extends GameManager {
         this.itemInfo = itemInfo;
         this.actionColor = Color.BLUE;
         this.actionLabel = "Build " + itemInfo.label;
-        this.areaAction = parcel -> jobModule.add(buildJobFactory.createJob(itemInfo, parcel));
+        this.areaAction = parcel -> {
+            if (StringUtils.equals(itemInfo.type, "plant")) {
+                plantModule.addPlant(itemInfo, parcel);
+            } else {
+                jobModule.add(buildJobFactory.createJob(itemInfo, parcel));
+            }
+        };
     }
 
     public void setCancelAction() {

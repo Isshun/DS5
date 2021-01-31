@@ -7,6 +7,7 @@ import org.smallbox.faraway.client.controller.annotation.BindLua;
 import org.smallbox.faraway.client.controller.annotation.BindLuaAction;
 import org.smallbox.faraway.client.selection.GameSelectionManager;
 import org.smallbox.faraway.client.ui.event.UIEventManager;
+import org.smallbox.faraway.client.ui.extra.RawColors;
 import org.smallbox.faraway.client.ui.widgets.CompositeView;
 import org.smallbox.faraway.client.ui.widgets.View;
 import org.smallbox.faraway.client.ui.widgets.UILabel;
@@ -14,6 +15,7 @@ import org.smallbox.faraway.client.ui.widgets.UIList;
 import org.smallbox.faraway.client.shortcut.GameShortcut;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
+import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnGameLayerInit;
 import org.smallbox.faraway.core.dependencyInjector.gameAction.OnGameSelectAction;
 import org.smallbox.faraway.core.game.DataManager;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
@@ -41,6 +43,32 @@ public class AreaInfoStorageController extends AbsInfoLuaController<AreaModel> {
 
     @BindLua private UILabel lbName;
     @BindLua private UIList listAgreed;
+    @BindLua private View btPriority1;
+    @BindLua private View btPriority2;
+    @BindLua private View btPriority3;
+    @BindLua private View btPriority4;
+    @BindLua private View btPriority5;
+
+    private StorageArea area;
+
+    @OnGameLayerInit
+    private void onGameLayerInit() {
+        btPriority1.getEvents().setOnClickListener(() -> setPriority(btPriority1, 1));
+        btPriority2.getEvents().setOnClickListener(() -> setPriority(btPriority2, 2));
+        btPriority3.getEvents().setOnClickListener(() -> setPriority(btPriority3, 3));
+        btPriority4.getEvents().setOnClickListener(() -> setPriority(btPriority4, 4));
+        btPriority5.getEvents().setOnClickListener(() -> setPriority(btPriority5, 5));
+    }
+
+    private void setPriority(View btPriority, int priority) {
+        area.setPriority(priority);
+        btPriority1.getStyle().setBackgroundColor(0x87d10042);
+        btPriority2.getStyle().setBackgroundColor(0x87d10042);
+        btPriority3.getStyle().setBackgroundColor(0x87d10042);
+        btPriority4.getStyle().setBackgroundColor(0x87d10042);
+        btPriority5.getStyle().setBackgroundColor(0x87d10042);
+        btPriority.getStyle().setBackgroundColor(RawColors.RAW_GREEN);
+    }
 
     @Override
     protected void onDisplayUnique(AreaModel areaModel) {
@@ -55,7 +83,8 @@ public class AreaInfoStorageController extends AbsInfoLuaController<AreaModel> {
     public AreaModel getObjectOnParcel(Parcel parcel) {
         return null;
     }
-//
+
+    //
 //    @BindLua private UIList listStorage;
 //    @BindLua private UILabel btPriority1;
 //    @BindLua private UILabel btPriority2;
@@ -252,7 +281,7 @@ public class AreaInfoStorageController extends AbsInfoLuaController<AreaModel> {
 //
     @OnGameSelectAction(StorageArea.class)
     public void onDisplayArea(StorageArea area) {
-//        _area = area;
+        this.area = area;
         setVisible(true);
 
         gameSelectionManager.setSelected(area.getParcels());

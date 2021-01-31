@@ -13,31 +13,30 @@ import org.smallbox.faraway.client.asset.AssetManager;
 import org.smallbox.faraway.client.asset.SpriteManager;
 import org.smallbox.faraway.client.input.InputManager;
 import org.smallbox.faraway.client.layer.BaseMapLayer;
+import org.smallbox.faraway.client.layer.GameLayer;
 import org.smallbox.faraway.client.layer.LayerManager;
 import org.smallbox.faraway.client.renderer.BaseRenderer;
 import org.smallbox.faraway.client.renderer.MapRenderer;
 import org.smallbox.faraway.client.renderer.Viewport;
 import org.smallbox.faraway.client.ui.extra.Colors;
-import org.smallbox.faraway.game.character.CharacterCommon;
-import org.smallbox.faraway.game.character.CharacterPositionCommon;
-import org.smallbox.faraway.client.layer.GameLayer;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.dependencyInjector.annotationEvent.AfterGameLayerInit;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameManager;
 import org.smallbox.faraway.core.game.model.MovableModel;
-import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
+import org.smallbox.faraway.game.character.CharacterCommon;
 import org.smallbox.faraway.game.character.CharacterModule;
+import org.smallbox.faraway.game.character.CharacterPositionCommon;
 import org.smallbox.faraway.game.character.model.CharacterInventoryExtra;
 import org.smallbox.faraway.game.character.model.PathModel;
 import org.smallbox.faraway.game.character.model.base.CharacterModel;
+import org.smallbox.faraway.game.consumable.Consumable;
 import org.smallbox.faraway.game.job.JobModel;
 import org.smallbox.faraway.game.world.Parcel;
 import org.smallbox.faraway.game.world.WorldHelper;
 import org.smallbox.faraway.util.Constant;
 
-import java.util.Map;
 import java.util.Optional;
 
 @GameObject
@@ -240,9 +239,9 @@ public class CharacterLayer extends BaseMapLayer {
      */
     private void drawInventory(BaseRenderer renderer, CharacterModel character, int posX, int posY) {
         if (character.hasExtra(CharacterInventoryExtra.class)) {
-            for (Map.Entry<ItemInfo, Integer> entry : character.getExtra(CharacterInventoryExtra.class).getAll().entrySet()) {
-                if (entry.getValue() > 0) {
-                    renderer.drawSprite(spriteManager.getNewSprite(entry.getKey()), posX, posY + 2);
+            for (Consumable inventoryConsumable : character.getExtra(CharacterInventoryExtra.class).getAll()) {
+                if (inventoryConsumable.getTotalQuantity() > 0) {
+                    renderer.drawSprite(spriteManager.getNewSprite(inventoryConsumable.getInfo()), posX, posY + 2);
                 }
             }
         }

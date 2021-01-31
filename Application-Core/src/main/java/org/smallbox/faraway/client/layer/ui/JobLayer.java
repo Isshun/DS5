@@ -27,7 +27,7 @@ public class JobLayer extends BaseMapLayer {
             if (job.getTargetParcel() != null) {
 
                 if (job instanceof StoreJob) {
-                    if (((StoreJob)job).sourceConsumable.getFreeQuantity() > 0) {
+                    if (((StoreJob)job).sourceConsumable.getActualQuantity() > 0 && ((StoreJob)job).sourceConsumable.getParcel() != null) {
                         renderer.drawSpriteOnMap(spriteManager.getIcon("graphics/jobs/ic_store.png"), ((StoreJob)job).sourceConsumable.getParcel());
                         renderer.drawTextOnMap(job.getTargetParcel(), "store", Color.CHARTREUSE, 10, 0, 0);
                     }

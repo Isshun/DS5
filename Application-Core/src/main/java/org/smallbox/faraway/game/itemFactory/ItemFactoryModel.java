@@ -5,7 +5,7 @@ import org.smallbox.faraway.core.dependencyInjector.DependencyManager;
 import org.smallbox.faraway.core.game.DataManager;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.game.modelInfo.ReceiptGroupInfo;
-import org.smallbox.faraway.game.consumable.ConsumableItem;
+import org.smallbox.faraway.game.consumable.Consumable;
 import org.smallbox.faraway.game.world.Parcel;
 import org.smallbox.faraway.game.consumable.ConsumableModule;
 import org.smallbox.faraway.game.item.UsableItem;
@@ -120,7 +120,7 @@ public class ItemFactoryModel {
 
         return _item.getInventory().stream()
                 .filter(consumable -> consumable.getInfo().instanceOf(itemInfo))
-                .mapToInt(ConsumableItem::getFreeQuantity)
+                .mapToInt(Consumable::getActualQuantity)
                 .sum();
     }
 

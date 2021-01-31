@@ -3,11 +3,11 @@ package org.smallbox.faraway.game.storage;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
-import org.smallbox.faraway.game.consumable.ConsumableItem;
-import org.smallbox.faraway.game.world.Parcel;
 import org.smallbox.faraway.game.area.AreaModel;
 import org.smallbox.faraway.game.area.AreaTypeInfo;
+import org.smallbox.faraway.game.consumable.Consumable;
 import org.smallbox.faraway.game.consumable.ConsumableModule;
+import org.smallbox.faraway.game.world.Parcel;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -20,7 +20,8 @@ public class StorageArea extends AreaModel {
     private final int                         _index;
     private int                         _priority = 1;
     protected Set<ItemInfo> _items;
-    @Inject private StorageModule storageModule;
+
+    @Inject StorageModule storageModule;
 
     public StorageArea() {
         _index = ++_count;
@@ -43,12 +44,12 @@ public class StorageArea extends AreaModel {
         return true;
     }
 
-    public boolean isAccepted(Collection<ConsumableItem> consumables) {
+    public boolean isAccepted(Collection<Consumable> consumables) {
 //        return consumables.stream().allMatch(consumable -> isAccepted(consumable.getInfo()));
         return true;
     }
 
-    public boolean isAccepted(ConsumableItem consumable) {
+    public boolean isAccepted(Consumable consumable) {
 //        return consumables.stream().allMatch(consumable -> isAccepted(consumable.getInfo()));
         return true;
     }
@@ -68,18 +69,20 @@ public class StorageArea extends AreaModel {
 //        return bestParcel;
 //    }
 
-    public Parcel getNearestFreeParcel(ConsumableItem consumable) {
+    public Parcel getNearestFreeParcel(ConsumableModule consumableModule, Consumable consumable) {
+        Parcel bestParcel = null;
+        int bestFreeSpace = 0;
         for (Parcel parcel: _parcels) {
-            if (parcel.hasItem(ConsumableItem.class) && parcel.accept(consumable.getInfo(), 1)) {
+            int freeSpace = consumableModule.getFreeSpace(parcel, consumable.getInfo());
+            if (freeSpace >= consumable.getTotalQuantity()) {
                 return parcel;
             }
-        }
-        for (Parcel parcel: _parcels) {
-            if (parcel.accept(consumable.getInfo(), 1)) {
-                return parcel;
+            if (freeSpace > bestFreeSpace) {
+                bestFreeSpace = freeSpace;
+                bestParcel = parcel;
             }
         }
-        return null;
+        return bestParcel;
     }
 
 //    public ParcelModel getNearestFreeParcel(ConsumableItem consumable, ParcelModel consumableParcel) {

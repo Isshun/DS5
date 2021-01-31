@@ -8,7 +8,7 @@ import org.smallbox.faraway.core.world.model.BuildableMapObject;
 import org.smallbox.faraway.game.character.model.CharacterInventoryExtra;
 import org.smallbox.faraway.game.character.model.CharacterSkillExtra;
 import org.smallbox.faraway.game.character.model.base.CharacterModel;
-import org.smallbox.faraway.game.consumable.ConsumableItem;
+import org.smallbox.faraway.game.consumable.Consumable;
 import org.smallbox.faraway.game.consumable.ConsumableModule;
 import org.smallbox.faraway.game.job.JobModule;
 import org.smallbox.faraway.game.job.task.TechnicalTask;
@@ -21,7 +21,7 @@ public class BringItemJobFactory {
     @Inject private JobModule jobModule;
 
     public BringItemJob createJob(BuildJob parent, BuildableMapObject targetItem, ItemInfo itemInfo, int quantity) {
-        ConsumableItem sourceConsumable = consumableModule.find(itemInfo);
+        Consumable sourceConsumable = consumableModule.find(itemInfo);
 
         BringItemJob job = new BringItemJob(sourceConsumable.getParcel());
 
@@ -43,11 +43,11 @@ public class BringItemJobFactory {
         });
 
         job.addTask(new TechnicalTask(j -> {
-            takeConsumable(parent, targetItem, job.sourceConsumable, job.getCharacter(), quantity);
+            job.inventoryConsumable = takeConsumable(parent, targetItem, job.sourceConsumable, job.getCharacter(), quantity);
             job.setAcceptedParcel(WorldHelper.getParcelAround(targetItem.getParcel(), SurroundedPattern.SQUARE));
         }));
 
-        job.addTask(new TechnicalTask(j -> targetItem.addInventory(job.getCharacter().getExtra(CharacterInventoryExtra.class).takeInventory(itemInfo)))); // Move consumable to map object
+        job.addTask(new TechnicalTask(j -> targetItem.addInventory(job.getCharacter().getExtra(CharacterInventoryExtra.class).takeInventory(job.inventoryConsumable)))); // Move consumable to map object
 
         job.onNewInit();
 
@@ -57,15 +57,17 @@ public class BringItemJobFactory {
     /**
      * Take consumable from parcel and move them to character's inventory
      */
-    private void takeConsumable(BuildJob parent, BuildableMapObject mapObject, ConsumableItem consumable, CharacterModel character, int quantity) {
+    private Consumable takeConsumable(BuildJob parent, BuildableMapObject mapObject, Consumable consumable, CharacterModel character, int quantity) {
         int availableQuantity = consumableModule.removeQuantity(consumable, quantity);
-        character.getExtra(CharacterInventoryExtra.class).addInventory(consumable.getInfo(), availableQuantity);
+        Consumable inventoryConsumable = character.getExtra(CharacterInventoryExtra.class).addInventory(consumable.getInfo(), availableQuantity);
 
         if (availableQuantity < quantity) {
             BringItemJob bringItemJob = createJob(parent, mapObject, consumable.getInfo(), quantity - availableQuantity);
             parent.addSubJob(bringItemJob);
             jobModule.add(bringItemJob);
         }
+
+        return inventoryConsumable;
     }
 
 }

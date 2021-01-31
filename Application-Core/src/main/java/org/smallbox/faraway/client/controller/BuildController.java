@@ -51,12 +51,14 @@ public class BuildController extends LuaController {
 
     @AfterGameLayerInit
     public void afterGameLayerInit() {
-        List<String> categories = List.of("structure", "furniture", "kitchen", "power", "industrial", "production", "other");
+        List<String> categories = List.of("structure", "furniture", "kitchen", "power", "industrial", "production", "other", "plant");
 
         // Build item map by category
         itemsByCategory = dataManager.getItems().stream()
                 .filter(itemInfo -> StringUtils.equals(itemInfo.type, "item") || StringUtils.equals(itemInfo.type, "structure"))
                 .collect(Collectors.groupingBy(itemInfo -> categories.contains(itemInfo.category) ? itemInfo.category : "other"));
+
+        itemsByCategory.put("plant", dataManager.getItems().stream().filter(itemInfo -> StringUtils.equals(itemInfo.type, "plant")).collect(Collectors.toList()));
 
         // Add item's categories to UI
         categories.forEach(category -> {

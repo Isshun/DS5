@@ -14,7 +14,7 @@ import org.smallbox.faraway.util.Constant;
 import java.util.Collection;
 
 @GameObject
-public class ConsumableCollectionSerializer extends GenericGameCollectionSerializer<ConsumableItem> {
+public class ConsumableCollectionSerializer extends GenericGameCollectionSerializer<Consumable> {
     @Inject private Game game;
     @Inject private DataManager dataManager;
     @Inject private ConsumableModule consumableModule;
@@ -24,12 +24,12 @@ public class ConsumableCollectionSerializer extends GenericGameCollectionSeriali
 
     @Override
     public void onCreateTable(SQLiteConnection db) throws SQLiteException {
-        db.exec("CREATE TABLE WorldModule_consumable (_id INTEGER, x INTEGER, y INTEGER, z INTEGER, name TEXT, quantity INTEGER)");
+        db.exec("CREATE TABLE WorldModule_consumable (_id INTEGER, x INTEGER, y INTEGER, z INTEGER, name TEXT, quantity INTEGER, position INTEGER)");
     }
 
     @Override
-    public void onSaveEntry(SQLiteConnection db, ConsumableItem consumable) throws SQLiteException {
-        SQLiteStatement stItem = db.prepare("INSERT INTO WorldModule_consumable (_id, x, y, z, name, quantity) VALUES (?, ?, ?, ?, ?, ?)");
+    public void onSaveEntry(SQLiteConnection db, Consumable consumable) throws SQLiteException {
+        SQLiteStatement stItem = db.prepare("INSERT INTO WorldModule_consumable (_id, x, y, z, name, quantity, position) VALUES (?, ?, ?, ?, ?, ?, ?)");
         try {
             if (consumable.getParcel() != null) {
                 stItem.bind(1, consumable.getId());
@@ -37,7 +37,8 @@ public class ConsumableCollectionSerializer extends GenericGameCollectionSeriali
                 stItem.bind(3, consumable.getParcel().y);
                 stItem.bind(4, consumable.getParcel().z);
                 stItem.bind(5, consumable.getInfo().name);
-                stItem.bind(6, consumable.getFreeQuantity());
+                stItem.bind(6, consumable.getActualQuantity());
+                stItem.bind(7, consumable.getGridPosition());
                 stItem.step();
             }
         } finally {
@@ -47,12 +48,12 @@ public class ConsumableCollectionSerializer extends GenericGameCollectionSeriali
 
     @Override
     public void onLoadEntry(SQLiteConnection db) throws SQLiteException {
-        SQLiteStatement stItem = db.prepare("SELECT _id, x, y, z, name, quantity FROM WorldModule_consumable");
+        SQLiteStatement stItem = db.prepare("SELECT _id, x, y, z, name, quantity, position FROM WorldModule_consumable");
         try {
             while (stItem.step()) {
                 ItemInfo itemInfo = dataManager.getItemInfo(stItem.columnString(4));
                 if (itemInfo != null) {
-                    consumableModule.create(itemInfo, stItem.columnInt(5), stItem.columnInt(1), stItem.columnInt(2), stItem.columnInt(3));
+                    consumableModule.create(itemInfo, stItem.columnInt(5), stItem.columnInt(1), stItem.columnInt(2), stItem.columnInt(3), stItem.columnInt(6));
                 }
             }
         } finally {
@@ -61,7 +62,7 @@ public class ConsumableCollectionSerializer extends GenericGameCollectionSeriali
     }
 
     @Override
-    public Collection<ConsumableItem> getEntries() {
+    public Collection<Consumable> getEntries() {
         return consumableModule.getAll();
     }
 

@@ -332,16 +332,15 @@ public class LuaItemExtend extends LuaExtend {
         }
 
         readString(luaGraphic, "type", value -> graphicInfo.type = GraphicInfo.Type.valueOf(value.toUpperCase()));
-        readInt(luaGraphic, "tile_width", value -> graphicInfo.tileWidth = value, Constant.TILE_SIZE);
-        readInt(luaGraphic, "tile_height", value -> graphicInfo.tileHeight = value, Constant.TILE_SIZE);
         readInt(luaGraphic, "x", value -> graphicInfo.x = value);
         readInt(luaGraphic, "y", value -> graphicInfo.y = value);
+        readInt(luaGraphic, "tile_width", value -> graphicInfo.tileWidth = value, Constant.TILE_SIZE);
+        readInt(luaGraphic, "tile_height", value -> graphicInfo.tileHeight = value, Constant.TILE_SIZE);
+        readInt(luaGraphic, "width", value -> graphicInfo.width = value, itemInfo.width * graphicInfo.tileWidth);
+        readInt(luaGraphic, "height", value -> graphicInfo.height = value, itemInfo.height * graphicInfo.tileHeight);
 
-        graphicInfo.width = itemInfo.width * graphicInfo.tileWidth;
-        graphicInfo.height = itemInfo.height * graphicInfo.tileHeight;
-
-        readInt(luaGraphic, "width", value -> graphicInfo.width = value);
-        readInt(luaGraphic, "height", value -> graphicInfo.height = value);
+        itemInfo.tileWidth = graphicInfo.tileWidth;
+        itemInfo.tileHeight = graphicInfo.tileHeight;
 
         if (!luaGraphic.get("randomization").isnil()) {
             graphicInfo.randomization = readGraphicRandomization(luaGraphic.get("randomization"));
@@ -360,6 +359,7 @@ public class LuaItemExtend extends LuaExtend {
         readInt(luaGraphic, "offset", value -> graphicRandomizationInfo.offset = value);
         readBoolean(luaGraphic, "flip", value -> graphicRandomizationInfo.flip = value);
         readInt(luaGraphic, "rotate", value -> graphicRandomizationInfo.rotate = value);
+        readFloat(luaGraphic, "scale", value -> graphicRandomizationInfo.scale = value, 1);
 
         return graphicRandomizationInfo;
     }

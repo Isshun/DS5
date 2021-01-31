@@ -4,7 +4,7 @@ import com.badlogic.gdx.math.MathUtils;
 import org.smallbox.faraway.util.GameException;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.save.GameInfo;
-import org.smallbox.faraway.game.consumable.ConsumableItem;
+import org.smallbox.faraway.game.consumable.Consumable;
 import org.smallbox.faraway.game.structure.StructureItem;
 import org.smallbox.faraway.game.plant.model.PlantItem;
 import org.smallbox.faraway.util.Utils;
@@ -16,14 +16,14 @@ import java.util.Optional;
 import java.util.function.Predicate;
 
 public class WorldHelper {
-    private static Parcel[][][]    _parcels;
-    private static int                  _currentFloor;
-    private static int                  _groundFloor;
-    private static int                  _width;
-    private static int                  _height;
-    private static int                  _floors;
+    private static Parcel[][][] _parcels;
+    private static int _currentFloor;
+    private static int _groundFloor;
+    private static int _width;
+    private static int _height;
+    private static int _floors;
 
-    public static void init(GameInfo gameInfo, Parcel[][][]parcels) {
+    public static void init(GameInfo gameInfo, Parcel[][][] parcels) {
         _groundFloor = gameInfo.groundFloor;
         _currentFloor = gameInfo.worldFloors - 1;
         _parcels = parcels;
@@ -32,28 +32,81 @@ public class WorldHelper {
         _floors = gameInfo.worldFloors;
     }
 
-    public static ConsumableItem    getConsumable(int x, int y, int z) { return inMapBounds(x, y, z) ? _parcels[x][y][z].getItem(ConsumableItem.class) : null; }
-    public static StructureItem     getStructure(int x, int y, int z) { return inMapBounds(x, y, z) ? _parcels[x][y][z].getItem(StructureItem.class) : null; }
-    public static ItemInfo          getGroundInfo(int x, int y, int z) { return inMapBounds(x, y, z) ? _parcels[x][y][z].getGroundInfo() : null; }
-    public static int               getCurrentFloor() { return _currentFloor; }
-    public static int               getGroundFloor() { return _groundFloor; }
+    public static Consumable getConsumable(int x, int y, int z) {
+        return inMapBounds(x, y, z) ? _parcels[x][y][z].getItem(Consumable.class) : null;
+    }
 
-    public static void              setCurrentFloor(int currentFloor) { _currentFloor = currentFloor; }
+    public static StructureItem getStructure(int x, int y, int z) {
+        return inMapBounds(x, y, z) ? _parcels[x][y][z].getItem(StructureItem.class) : null;
+    }
 
-    public static boolean           hasGround(int x, int y, int z) { return inMapBounds(x, y, z) && _parcels[x][y][z].getGroundInfo() != null; }
-    public static boolean           hasRock(int x, int y, int z) { return inMapBounds(x, y, z) && _parcels[x][y][z].getRockInfo() != null; }
-    public static boolean           hasWall(int x, int y, int z) { return inMapBounds(x, y, z) && _parcels[x][y][z].hasItem(StructureItem.class) && _parcels[x][y][z].getItem(StructureItem.class).getInfo().isWall; }
-    public static boolean           hasDoor(int x, int y, int z) { return inMapBounds(x, y, z) && _parcels[x][y][z].hasItem(StructureItem.class) && _parcels[x][y][z].getItem(StructureItem.class).getInfo().isDoor; }
-    public static boolean           hasPlant(int x, int y, int z) { return inMapBounds(x, y, z) && _parcels[x][y][z].hasItem(PlantItem.class); }
-    public static boolean           hasStructure(int x, int y, int z) { return inMapBounds(x, y, z) && _parcels[x][y][z].hasItem(StructureItem.class); }
-    public static boolean           hasWallOrDoor(int x, int y, int z) { return inMapBounds(x, y, z) && _parcels[x][y][z].hasItem(StructureItem.class) && hasWallOrDoor(_parcels[x][y][z]); }
-    public static boolean           hasLiquid(int x, int y, int z) { return inMapBounds(x, y, z) && _parcels[x][y][z].hasLiquid(); }
+    public static ItemInfo getGroundInfo(int x, int y, int z) {
+        return inMapBounds(x, y, z) ? _parcels[x][y][z].getGroundInfo() : null;
+    }
 
-    public static boolean           hasStructure(Parcel parcel) { return parcel.hasItem(StructureItem.class); }
-    public static boolean           hasWallOrDoor(Parcel parcel) { return parcel.hasItem(StructureItem.class) && (parcel.getItem(StructureItem.class).getInfo().isWall || parcel.getItem(StructureItem.class).getInfo().isDoor); }
-    public static boolean           hasWall(Parcel parcel) { return parcel.hasItem(StructureItem.class) && parcel.getItem(StructureItem.class).getInfo().isWall; }
-    public static boolean           hasDoor(Parcel parcel) { return parcel.hasItem(StructureItem.class) && parcel.getItem(StructureItem.class).getInfo().isDoor; }
-    public static boolean           hasFloor(Parcel parcel) { return parcel.hasItem(StructureItem.class) && parcel.getItem(StructureItem.class).getInfo().isFloor; }
+    public static int getCurrentFloor() {
+        return _currentFloor;
+    }
+
+    public static int getGroundFloor() {
+        return _groundFloor;
+    }
+
+    public static void setCurrentFloor(int currentFloor) {
+        _currentFloor = currentFloor;
+    }
+
+    public static boolean hasGround(int x, int y, int z) {
+        return inMapBounds(x, y, z) && _parcels[x][y][z].getGroundInfo() != null;
+    }
+
+    public static boolean hasRock(int x, int y, int z) {
+        return inMapBounds(x, y, z) && _parcels[x][y][z].getRockInfo() != null;
+    }
+
+    public static boolean hasWall(int x, int y, int z) {
+        return inMapBounds(x, y, z) && _parcels[x][y][z].hasItem(StructureItem.class) && _parcels[x][y][z].getItem(StructureItem.class).getInfo().isWall;
+    }
+
+    public static boolean hasDoor(int x, int y, int z) {
+        return inMapBounds(x, y, z) && _parcels[x][y][z].hasItem(StructureItem.class) && _parcels[x][y][z].getItem(StructureItem.class).getInfo().isDoor;
+    }
+
+    public static boolean hasPlant(int x, int y, int z) {
+        return inMapBounds(x, y, z) && _parcels[x][y][z].hasItem(PlantItem.class);
+    }
+
+    public static boolean hasStructure(int x, int y, int z) {
+        return inMapBounds(x, y, z) && _parcels[x][y][z].hasItem(StructureItem.class);
+    }
+
+    public static boolean hasWallOrDoor(int x, int y, int z) {
+        return inMapBounds(x, y, z) && _parcels[x][y][z].hasItem(StructureItem.class) && hasWallOrDoor(_parcels[x][y][z]);
+    }
+
+    public static boolean hasLiquid(int x, int y, int z) {
+        return inMapBounds(x, y, z) && _parcels[x][y][z].hasLiquid();
+    }
+
+    public static boolean hasStructure(Parcel parcel) {
+        return parcel.hasItem(StructureItem.class);
+    }
+
+    public static boolean hasWallOrDoor(Parcel parcel) {
+        return parcel.hasItem(StructureItem.class) && (parcel.getItem(StructureItem.class).getInfo().isWall || parcel.getItem(StructureItem.class).getInfo().isDoor);
+    }
+
+    public static boolean hasWall(Parcel parcel) {
+        return parcel.hasItem(StructureItem.class) && parcel.getItem(StructureItem.class).getInfo().isWall;
+    }
+
+    public static boolean hasDoor(Parcel parcel) {
+        return parcel.hasItem(StructureItem.class) && parcel.getItem(StructureItem.class).getInfo().isDoor;
+    }
+
+    public static boolean hasFloor(Parcel parcel) {
+        return parcel.hasItem(StructureItem.class) && parcel.getItem(StructureItem.class).getInfo().isFloor;
+    }
 
     /**
      * Search for org.smallbox.faraway.core.module.room.model free to receive a ConsumableItem
@@ -119,10 +172,10 @@ public class WorldHelper {
 //            return false;
 //        }
 
-        ConsumableItem consumable = parcel.getItem(ConsumableItem.class);
+        Consumable consumable = parcel.getItem(Consumable.class);
         // TODO
 //        return !(consumable != null && (consumable.getInfo() != info || consumable.getFreeQuantity() + quantity > Math.max(Application.config.game.storageMaxQuantity, consumable.getInfo().stack)));
-        return !(consumable != null && (consumable.getInfo() != info || consumable.getFreeQuantity() + quantity > Math.max(10, consumable.getInfo().stack)));
+        return !(consumable != null && (consumable.getInfo() != info || consumable.getActualQuantity() + quantity > Math.max(10, consumable.getInfo().stack)));
     }
 
     /**
@@ -226,7 +279,7 @@ public class WorldHelper {
 //            return false;
 //        }
 
-        return !_parcels[x][y][z].hasItem(ConsumableItem.class);
+        return !_parcels[x][y][z].hasItem(Consumable.class);
     }
 
     public static Parcel getNearestWalkable(Parcel parcel, int minDistance, int maxDistance) {
@@ -372,47 +425,47 @@ public class WorldHelper {
     }
 
     public static void getParcelAround(Parcel source, SurroundedPattern surroundedPattern, ParcelCallback callback) {
-        if (source != null) {
-            getParcelAround(source, surroundedPattern, parcel -> true, callback);
-        }
+        getParcelAround(source, surroundedPattern, parcel -> true, callback);
     }
 
     public static void getParcelAround(Parcel source, SurroundedPattern surroundedPattern, Predicate<Parcel> condition, ParcelCallback callback) {
+        if (source != null) {
 
-        // Same parcel
-        if (surroundedPattern != SurroundedPattern.X_CROSS && surroundedPattern != SurroundedPattern.X_SQUARE && surroundedPattern != SurroundedPattern.X_CROSS_3 && surroundedPattern != SurroundedPattern.X_SQUARE_3) {
-            Optional.ofNullable(getParcel(source.x, source.y, source.z)).filter(condition).ifPresent(callback::onCallback);
+            // Same parcel
+            if (surroundedPattern != SurroundedPattern.X_CROSS && surroundedPattern != SurroundedPattern.X_SQUARE && surroundedPattern != SurroundedPattern.X_CROSS_3 && surroundedPattern != SurroundedPattern.X_SQUARE_3) {
+                Optional.ofNullable(getParcel(source.x, source.y, source.z)).filter(condition).ifPresent(callback::onCallback);
+            }
+
+            // Cross
+            Optional.ofNullable(getParcel(source.x - 1, source.y, source.z)).filter(condition).ifPresent(callback::onCallback);
+            Optional.ofNullable(getParcel(source.x + 1, source.y, source.z)).filter(condition).ifPresent(callback::onCallback);
+            Optional.ofNullable(getParcel(source.x, source.y - 1, source.z)).filter(condition).ifPresent(callback::onCallback);
+            Optional.ofNullable(getParcel(source.x, source.y + 1, source.z)).filter(condition).ifPresent(callback::onCallback);
+
+            // Diagonal
+            if (surroundedPattern == SurroundedPattern.SQUARE || surroundedPattern == SurroundedPattern.X_SQUARE || surroundedPattern == SurroundedPattern.X_SQUARE_3) {
+                Optional.ofNullable(getParcel(source.x - 1, source.y - 1, source.z)).filter(condition).ifPresent(callback::onCallback);
+                Optional.ofNullable(getParcel(source.x + 1, source.y + 1, source.z)).filter(condition).ifPresent(callback::onCallback);
+                Optional.ofNullable(getParcel(source.x - 1, source.y + 1, source.z)).filter(condition).ifPresent(callback::onCallback);
+                Optional.ofNullable(getParcel(source.x + 1, source.y - 1, source.z)).filter(condition).ifPresent(callback::onCallback);
+            }
+
+            // Cross 3 - Add below and above parcels
+            if (surroundedPattern == SurroundedPattern.X_CROSS_3 || surroundedPattern == SurroundedPattern.X_SQUARE_3) {
+                Optional.ofNullable(getParcel(source.x, source.y, source.z - 1)).filter(condition).ifPresent(callback::onCallback);
+                Optional.ofNullable(getParcel(source.x, source.y, source.z + 1)).filter(condition).ifPresent(callback::onCallback);
+            }
+
         }
-
-        // Cross
-        Optional.ofNullable(getParcel(source.x - 1, source.y, source.z)).filter(condition).ifPresent(callback::onCallback);
-        Optional.ofNullable(getParcel(source.x + 1, source.y, source.z)).filter(condition).ifPresent(callback::onCallback);
-        Optional.ofNullable(getParcel(source.x, source.y - 1, source.z)).filter(condition).ifPresent(callback::onCallback);
-        Optional.ofNullable(getParcel(source.x, source.y + 1, source.z)).filter(condition).ifPresent(callback::onCallback);
-
-        // Diagonal
-        if (surroundedPattern == SurroundedPattern.SQUARE || surroundedPattern == SurroundedPattern.X_SQUARE || surroundedPattern == SurroundedPattern.X_SQUARE_3) {
-            Optional.ofNullable(getParcel(source.x - 1, source.y - 1, source.z)).filter(condition).ifPresent(callback::onCallback);
-            Optional.ofNullable(getParcel(source.x + 1, source.y + 1, source.z)).filter(condition).ifPresent(callback::onCallback);
-            Optional.ofNullable(getParcel(source.x - 1, source.y + 1, source.z)).filter(condition).ifPresent(callback::onCallback);
-            Optional.ofNullable(getParcel(source.x + 1, source.y - 1, source.z)).filter(condition).ifPresent(callback::onCallback);
-        }
-
-        // Cross 3 - Add below and above parcels
-        if (surroundedPattern == SurroundedPattern.X_CROSS_3 || surroundedPattern == SurroundedPattern.X_SQUARE_3) {
-            Optional.ofNullable(getParcel(source.x, source.y, source.z - 1)).filter(condition).ifPresent(callback::onCallback);
-            Optional.ofNullable(getParcel(source.x, source.y, source.z + 1)).filter(condition).ifPresent(callback::onCallback);
-        }
-
     }
 
     public static Parcel getRandomParcel(Parcel initailParcel, int maxDistance) {
-        int x = Utils.bound(0, _width - 1, (int)(initailParcel.x + (Math.random() * maxDistance) - maxDistance / 2));
-        int y = Utils.bound(0, _height - 1, (int)(initailParcel.y + (Math.random() * maxDistance) - maxDistance / 2));
+        int x = Utils.bound(0, _width - 1, (int) (initailParcel.x + (Math.random() * maxDistance) - maxDistance / 2));
+        int y = Utils.bound(0, _height - 1, (int) (initailParcel.y + (Math.random() * maxDistance) - maxDistance / 2));
         return _parcels[x][y][initailParcel.z];
     }
 
-    public enum SearchStrategy { FREE }
+    public enum SearchStrategy {FREE}
 
     public static Parcel searchAround(Parcel originParcel, int maxDistance, SearchStrategy... strategies) {
         for (int distance = 0; distance <= maxDistance; distance++) {
@@ -429,7 +482,7 @@ public class WorldHelper {
     }
 
     private static boolean searchAroundMatch(Parcel parcel, SearchStrategy... strategies) {
-        for (SearchStrategy strategy: strategies) {
+        for (SearchStrategy strategy : strategies) {
             if (strategy == SearchStrategy.FREE && !parcel.isWalkable()) {
                 return false;
             }
@@ -444,8 +497,8 @@ public class WorldHelper {
     /**
      * Parcours en spirale
      *
-     * @param parcel    position initiale
-     * @param callback  condition d'arret
+     * @param parcel   position initiale
+     * @param callback condition d'arret
      */
     public static Parcel move(Parcel parcel, GetParcelCallback callback) {
         return move(parcel.x, parcel.y, parcel.z, callback);
@@ -454,10 +507,10 @@ public class WorldHelper {
     /**
      * Parcours en spirale
      *
-     * @param x0        position X initiale
-     * @param y0        position Y initiale
-     * @param z0        position Z initiale
-     * @param callback  condition d'arret
+     * @param x0       position X initiale
+     * @param y0       position Y initiale
+     * @param z0       position Z initiale
+     * @param callback condition d'arret
      */
     public static Parcel move(int x0, int y0, int z0, GetParcelCallback callback) {
         Log.info(WorldHelper.class, "Search parcel (initial: %d x %d x %d)", x0, y0, z0);

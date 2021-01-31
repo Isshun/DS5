@@ -60,7 +60,7 @@ data:extend({
             type = "gather", cost = 20, products = {{ item = "base.consumable.vegetable.wheat", quantity = {1, 1}, rate = 1 } }
         },
         graphics = {
-            { path = "[data]/graphics/plants/wheat/wheat_128.png", width = 64, height = 140, randomization = { offset = 10, flip = true }, animation = { id = "wind", value = 1, speed = 0.01 } },
+            { path = "[data]/graphics/plants/wheat/wheat_128.png", width = 64, height = 140, randomization = { offset = 25, flip = true }, animation = { id = "wind", value = 1, speed = 0.01 } },
         }
     },
 

@@ -16,7 +16,7 @@ public class LuaUIGridExtend extends LuaUICompositeExtend {
     }
 
     @Override
-    protected void readSpecific(LuaValue value, View view) {
+    protected void readSpecific(LuaValue style, LuaValue value, View view) {
     }
 
     @Override

@@ -13,7 +13,7 @@ import static org.smallbox.faraway.game.job.JobTaskReturn.TASK_CONTINUE;
 public class ConsumeJobFactory {
     @Inject private ConsumableModule consumableModule;
 
-    public ConsumeJob create(ConsumableItem consumable, ConsumeJob.OnConsumeCallback callback) {
+    public ConsumeJob create(Consumable consumable, ConsumeJob.OnConsumeCallback callback) {
         ConsumeJob job = new ConsumeJob(consumable.getParcel());
 
         job._lock = consumableModule.lock(job, consumable, 1);

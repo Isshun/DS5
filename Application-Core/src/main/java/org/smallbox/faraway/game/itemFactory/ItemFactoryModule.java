@@ -7,7 +7,7 @@ import org.smallbox.faraway.core.module.SuperGameModule;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.game.modelInfo.ReceiptGroupInfo;
-import org.smallbox.faraway.game.consumable.ConsumableItem;
+import org.smallbox.faraway.game.consumable.Consumable;
 import org.smallbox.faraway.game.consumable.ConsumableModule;
 import org.smallbox.faraway.game.item.ItemModule;
 import org.smallbox.faraway.game.item.UsableItem;
@@ -177,7 +177,7 @@ public class ItemFactoryModule extends SuperGameModule {
         // Check l'inventaire de la fabrique
         availableQuantity += item.getInventory().stream()
                 .filter(consumable -> consumable.getInfo().instanceOf(itemInfo))
-                .mapToInt(ConsumableItem::getFreeQuantity)
+                .mapToInt(Consumable::getActualQuantity)
                 .sum();
 
 //        // Check l'inventaire des personnages sur les hauling jobs de la fabrique

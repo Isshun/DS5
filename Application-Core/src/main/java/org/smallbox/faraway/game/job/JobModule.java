@@ -219,6 +219,8 @@ public class JobModule extends SuperGameModule<JobModel, JobModuleObserver> {
             character.setJob(job);
         }
 
+        job.getOnStartTasks().forEach(jobTask -> jobTask.technicalAction.onExecuteTask(job));
+
         job.setStatus(JobStatus.JOB_RUNNING);
     }
 

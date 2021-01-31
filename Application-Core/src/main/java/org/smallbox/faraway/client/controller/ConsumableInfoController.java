@@ -12,14 +12,14 @@ import org.smallbox.faraway.client.shortcut.GameShortcut;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.dependencyInjector.gameAction.OnGameSelectAction;
-import org.smallbox.faraway.game.consumable.ConsumableItem;
+import org.smallbox.faraway.game.consumable.Consumable;
 import org.smallbox.faraway.game.world.Parcel;
 import org.smallbox.faraway.game.consumable.ConsumableModule;
 
 import java.util.Queue;
 
 @GameObject
-public class ConsumableInfoController extends AbsInfoLuaController<ConsumableItem> {
+public class ConsumableInfoController extends AbsInfoLuaController<Consumable> {
     @Inject protected GameSelectionManager gameSelectionManager;
     @Inject private UIEventManager uiEventManager;
     @Inject private ConsumableModule consumableModule;
@@ -35,8 +35,8 @@ public class ConsumableInfoController extends AbsInfoLuaController<ConsumableIte
         gameSelectionManager.registerSelection(this);
     }
 
-    @OnGameSelectAction(ConsumableItem.class)
-    private void onSelectConsumable(ConsumableItem consumable) {
+    @OnGameSelectAction(Consumable.class)
+    private void onSelectConsumable(Consumable consumable) {
         setVisible(true);
 
         if (consumable.getTotalQuantity() <= 0) {
@@ -51,16 +51,16 @@ public class ConsumableInfoController extends AbsInfoLuaController<ConsumableIte
     }
 
     @Override
-    protected void onDisplayUnique(ConsumableItem consumableItem) {
+    protected void onDisplayUnique(Consumable consumable) {
     }
 
     @Override
-    protected void onDisplayMultiple(Queue<ConsumableItem> objects) {
+    protected void onDisplayMultiple(Queue<Consumable> objects) {
         lbName.setText("MULTIPLE");
     }
 
     @Override
-    public ConsumableItem getObjectOnParcel(Parcel parcel) {
+    public Consumable getObjectOnParcel(Parcel parcel) {
         return consumableModule.getConsumable(parcel);
     }
 

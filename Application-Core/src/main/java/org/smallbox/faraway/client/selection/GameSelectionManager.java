@@ -65,6 +65,16 @@ public class GameSelectionManager extends GameManager {
         gameActionManager.callActions(OnGameSelectAction.class, object);
     }
 
+    public void select(Collection<? extends ObjectModel> objects) {
+        objects.forEach(object -> {
+            Log.info("Select item: " + object.getClass().getSimpleName());
+            gameActionManager.callActions(OnGameSelectAction.class, object);
+        });
+
+        _selected.clear();
+        _selected.addAll(objects);
+    }
+
     public boolean selectContains(ObjectModel object) {
         return _selected != null && _selected.contains(object);
     }
@@ -130,36 +140,7 @@ public class GameSelectionManager extends GameManager {
 
     // Unique parcel
     public void select(int mapX, int mapY) {
-        Parcel parcel = WorldHelper.getParcel(mapX, mapY, layerManager.getViewport().getFloor());
-        Log.info("Click on map at parcel: %s", parcel);
-        if (parcel != null) {
-
-            if (gameActionManager.hasAction()) {
-                gameActionManager.selectParcel(parcel);
-            } else {
-                List<AreaModuleBase> matchingAreaModules = specializedAreaModules.stream().filter(areaModuleBase -> areaModuleBase.hasArea(parcel)).collect(Collectors.toList());
-
-                List<ObjectModel> objects = new ArrayList<>();
-
-                characterModule.getAll().stream().filter(c -> c.getParcel() == parcel).findFirst().ifPresent(objects::add);
-                consumableModule.getAll().stream().filter(c -> c.getParcel() == parcel).findFirst().ifPresent(objects::add);
-                itemModule.getAll().stream().filter(c -> c.getParcel() == parcel).findFirst().ifPresent(objects::add);
-                structureModule.getAll().stream().filter(c -> c.getParcel() == parcel).findFirst().ifPresent(objects::add);
-                plantModule.getAll().stream().filter(c -> c.getParcel() == parcel).findFirst().ifPresent(objects::add);
-                Optional.ofNullable(CollectionUtils.isNotEmpty(matchingAreaModules) ? matchingAreaModules.get(0).getArea(parcel) : null).ifPresent(objects::add);
-
-                if (CollectionUtils.isNotEmpty(objects)) {
-                    if (_selected.size() == 1 && objects.contains(_selected.iterator().next())) {
-                        int index = objects.indexOf(_selected.iterator().next());
-                        select(objects.get((index + 1) % objects.size()));
-                    } else {
-                        select(objects.get(0));
-                    }
-                } else {
-                    select(parcel);
-                }
-            }
-        }
+        select(mapX, mapY, mapX, mapY);
     }
 
     // Square selection
@@ -167,12 +148,39 @@ public class GameSelectionManager extends GameManager {
         List<Parcel> parcelList = WorldHelper.getParcelInRect(fromMapX, fromMapY, toMapX, toMapY, layerManager.getViewport().getFloor());
         Log.info("Click on map for parcels: %s", parcelList);
 
+        List<ObjectModel> objects = new ArrayList<>();
+
+        // Call GameActionManager
         if (gameActionManager.hasAction()) {
-            gameActionManager.selectParcels(parcelList);
-            //gameActionManager.callActions(OnGameSelectAction.class, object);
-        } else {
-            _selected.clear();
-            _selected.addAll(parcelList);
+            parcelList.forEach(parcel -> gameActionManager.selectParcel(parcel));
+        }
+
+        // Display info
+        else {
+
+            parcelList.forEach(parcel -> {
+                List<AreaModuleBase> matchingAreaModules = specializedAreaModules.stream().filter(areaModuleBase -> areaModuleBase.hasArea(parcel)).collect(Collectors.toList());
+
+                characterModule.getAll().stream().filter(c -> c.getParcel() == parcel).findFirst().ifPresent(objects::add);
+                consumableModule.getAll().stream().filter(c -> c.getParcel() == parcel).findFirst().ifPresent(objects::add);
+                itemModule.getAll().stream().filter(c -> c.getParcel() == parcel).findFirst().ifPresent(objects::add);
+                structureModule.getAll().stream().filter(c -> c.getParcel() == parcel).findFirst().ifPresent(objects::add);
+                plantModule.getAll().stream().filter(c -> c.getParcel() == parcel).findFirst().ifPresent(objects::add);
+                Optional.ofNullable(CollectionUtils.isNotEmpty(matchingAreaModules) ? matchingAreaModules.get(0).getArea(parcel) : null).ifPresent(objects::add);
+            });
+
+            if (CollectionUtils.isNotEmpty(objects)) {
+                if (_selected.size() == 1 && objects.contains(_selected.iterator().next())) {
+                    int index = objects.indexOf(_selected.iterator().next());
+                    select(objects.get((index + 1) % objects.size()));
+                } else if (fromMapX == toMapX && fromMapY == toMapY) {
+                    select(objects.get(0));
+                } else {
+                    select(objects);
+                }
+            } else {
+                select(parcelList);
+            }
         }
     }
 

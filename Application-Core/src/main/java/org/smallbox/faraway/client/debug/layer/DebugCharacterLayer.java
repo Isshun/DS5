@@ -30,7 +30,7 @@ public class DebugCharacterLayer extends BaseMapLayer {
     private CharacterModel _character;
 
     @Override
-    public void    onDraw(BaseRenderer renderer, Viewport viewport, double animProgress, int frame) {
+    public void onDraw(BaseRenderer renderer, Viewport viewport, double animProgress, int frame) {
         _index = 0;
         renderer.drawRectangle(0, 0, 2000, 2000, BG_COLOR);
 
@@ -41,8 +41,8 @@ public class DebugCharacterLayer extends BaseMapLayer {
             drawDebug(renderer, "Parcel", _character.getParcel() != null ? _character.getParcel() : "--");
             drawDebug(renderer, "Job", _character.getJob() != null ? _character.getJob() : "--");
             drawDebug(renderer, "Inventory2", _character.hasExtra(CharacterInventoryExtra.class) ? "--" :
-                    _character.getExtra(CharacterInventoryExtra.class).getAll().entrySet().stream()
-                            .map(entry -> entry.getKey().label + "x" + entry.getValue())
+                    _character.getExtra(CharacterInventoryExtra.class).getAll().stream()
+                            .map(entry -> entry.getInfo().label + "x" + entry.getTotalQuantity())
                             .collect(Collectors.joining(", ")));
         }
     }
@@ -60,7 +60,7 @@ public class DebugCharacterLayer extends BaseMapLayer {
 
     @GameShortcut(key = Input.Keys.F11)
     public void onToggleVisibility() {
-            toggleVisibility();
+        toggleVisibility();
     }
 
     private void drawDebug(BaseRenderer renderer, String label, Object object) {

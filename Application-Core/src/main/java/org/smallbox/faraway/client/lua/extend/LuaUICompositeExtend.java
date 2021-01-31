@@ -9,13 +9,14 @@ import org.smallbox.faraway.core.module.ModuleBase;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public abstract class LuaUICompositeExtend extends LuaUIExtend {
 
-    public View createView(ModuleBase module, Globals globals, LuaValue value, boolean inGame, int deep, CompositeView parent, String path, int index, boolean isGameView, boolean runAfter) {
-        View view = super.createView(module, globals, value, inGame, deep, parent, path, index, isGameView, runAfter);
+    public View createView(ModuleBase module, Globals globals, LuaValue value, boolean inGame, int deep, CompositeView parent, String path, int index, boolean isGameView, boolean runAfter, Map<String, LuaValue> styles) {
+        View view = super.createView(module, globals, value, inGame, deep, parent, path, index, isGameView, runAfter, styles);
 
-        readTemplate(module, globals, value, inGame, deep, view, path, isGameView);
+        readTemplate(module, globals, value, inGame, deep, view, path, isGameView, styles);
 
         return view;
     }
@@ -24,12 +25,12 @@ public abstract class LuaUICompositeExtend extends LuaUIExtend {
      * Read template from lua.
      * When template contains several views, they are encapsulated in UIList
      */
-    private void readTemplate(ModuleBase module, Globals globals, LuaValue value, boolean inGame, int deep, View view, String path, boolean isGameView) {
+    private void readTemplate(ModuleBase module, Globals globals, LuaValue value, boolean inGame, int deep, View view, String path, boolean isGameView, Map<String, LuaValue> styles) {
         if (!value.get("template").isnil()) {
             ((CompositeView) view).setTemplate(() -> {
                 List<View> templateViews = new ArrayList<>();
                 readTable(value, "template", (subValue, i) -> templateViews.add(
-                        clientLuaModuleManager.createView(module, globals, subValue, inGame, deep + 1, (CompositeView) view, path + "." + i, i, isGameView, false)
+                        clientLuaModuleManager.createView(module, globals, subValue, inGame, deep + 1, (CompositeView) view, path + "." + i, i, isGameView, false, styles)
                 ));
 
                 if (templateViews.size() == 1) {

@@ -8,15 +8,16 @@ ui:extend({
 
         -- Equipments
         { type = "label", text = "Equipments", text_font = "font3", text_color = yellow_50, text_size = 12, size = {100, 40}, position = {0, 18}},
-        { type = "grid", id = "grid_inventory", columns = 6, column_width = 56, row_height = 56, position = {0, 38}, size = {0, 200}, views = {
-            { type = "view", size = {48, 48}, background = 0xffffff55, views = {{type = "image", src = "[base]/graphics/consumables/wood_log_40.png", position = {4, 4}, size = {40, 40}}}},
-            { type = "view", size = {48, 48}, background = 0xffffff55, views = {{type = "image", src = "[base]/graphics/consumables/wood_log_40.png", position = {4, 4}, size = {40, 40}}}},
-            { type = "view", size = {48, 48}, background = 0xffffff55, views = {{type = "image", src = "[base]/graphics/consumables/wood_log_40.png", position = {4, 4}, size = {40, 40}}}},
-            { type = "view", size = {48, 48}, background = 0xffffff55, views = {{type = "image", src = "[base]/graphics/consumables/wood_log_40.png", position = {4, 4}, size = {40, 40}}}},
-            { type = "view", size = {48, 48}, background = 0xffffff55, views = {{type = "image", src = "[base]/graphics/consumables/wood_log_40.png", position = {4, 4}, size = {40, 40}}}},
-            { type = "view", size = {48, 48}, background = 0xffffff55, views = {{type = "image", src = "[base]/graphics/consumables/wood_log_40.png", position = {4, 4}, size = {40, 40}}}},
-            { type = "view", size = {48, 48}, background = 0xffffff55, views = {{type = "image", src = "[base]/graphics/consumables/wood_log_40.png", position = {4, 4}, size = {40, 40}}}},
-            { type = "view", size = {48, 48}, background = 0xffffff55, views = {{type = "image", src = "[base]/graphics/consumables/wood_log_40.png", position = {4, 4}, size = {40, 40}}}},
+        { type = "grid", id = "grid_inventory", columns = 6, column_width = 56, row_height = 56, position = {0, 38}, size = {0, 200}, template = {
+            { type = "view", size = {48, 48}, background = 0xffffff55, views = {{type = "image", id = "img_inventory", position = {4, 4}, size = {40, 40}}}},
+            { type = "label", id = "lb_inventory", text_size = 12, text_color = 0xffffffcc, text_font = "sui", size = {72, 14}, position = {0, 70}, text_align = "CENTER"},
+--            { type = "view", size = {48, 48}, background = 0xffffff55, views = {{type = "image", src = "[base]/graphics/consumables/wood_log_40.png", position = {4, 4}, size = {40, 40}}}},
+--            { type = "view", size = {48, 48}, background = 0xffffff55, views = {{type = "image", src = "[base]/graphics/consumables/wood_log_40.png", position = {4, 4}, size = {40, 40}}}},
+--            { type = "view", size = {48, 48}, background = 0xffffff55, views = {{type = "image", src = "[base]/graphics/consumables/wood_log_40.png", position = {4, 4}, size = {40, 40}}}},
+--            { type = "view", size = {48, 48}, background = 0xffffff55, views = {{type = "image", src = "[base]/graphics/consumables/wood_log_40.png", position = {4, 4}, size = {40, 40}}}},
+--            { type = "view", size = {48, 48}, background = 0xffffff55, views = {{type = "image", src = "[base]/graphics/consumables/wood_log_40.png", position = {4, 4}, size = {40, 40}}}},
+--            { type = "view", size = {48, 48}, background = 0xffffff55, views = {{type = "image", src = "[base]/graphics/consumables/wood_log_40.png", position = {4, 4}, size = {40, 40}}}},
+--            { type = "view", size = {48, 48}, background = 0xffffff55, views = {{type = "image", src = "[base]/graphics/consumables/wood_log_40.png", position = {4, 4}, size = {40, 40}}}},
         }},
 
         -- Carrying
@@ -27,7 +28,6 @@ ui:extend({
             { type = "view", size = {48, 48}, background = 0xffffff55, views = {{type = "image", src = "[base]/graphics/consumables/wood_log_40.png", position = {4, 4}, size = {40, 40}}}},
             { type = "view", size = {48, 48}, background = 0xffffff55, views = {{type = "image", src = "[base]/graphics/consumables/wood_log_40.png", position = {4, 4}, size = {40, 40}}}},
         }},
-
 
         { type = "view", size = {64, 64}, position = {10, 100}, background = 0xffffff55, views = {
             { type = "view", size = {64, 64}, position = {4, 4}, background = 0xffffff88, views = {

@@ -5,6 +5,7 @@ import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo.ItemInfoAction;
 import org.smallbox.faraway.game.character.model.CharacterSkillExtra;
 import org.smallbox.faraway.game.character.model.base.CharacterModel;
+import org.smallbox.faraway.game.job.task.TechnicalTask;
 import org.smallbox.faraway.game.job.taskAction.PrerequisiteTaskAction;
 import org.smallbox.faraway.game.job.taskAction.TechnicalTaskAction;
 import org.smallbox.faraway.game.world.ObjectModel;
@@ -23,6 +24,7 @@ public class JobModel extends ObjectModel {
     private final Collection<JobModel> subJob = new ConcurrentLinkedQueue<>();
     private final Collection<Parcel> acceptedParcels = new ConcurrentLinkedQueue<>();
     private final Queue<JobTask> tasks = new ConcurrentLinkedQueue<>();
+    private final Queue<JobTask> onStartTasks = new ConcurrentLinkedQueue<>();
     private final Queue<TechnicalTaskAction> initTasks = new ConcurrentLinkedQueue<>();
     private final Queue<PrerequisiteTaskAction> prerequisiteTasks = new ConcurrentLinkedQueue<>();
     private final Queue<TechnicalTaskAction> closeTasks = new ConcurrentLinkedQueue<>();
@@ -283,6 +285,14 @@ public class JobModel extends ObjectModel {
 
     public JobTask nextTask() {
         return tasks.poll();
+    }
+
+    public void addOnStartTask(TechnicalTask technicalTask) {
+        onStartTasks.add(technicalTask);
+    }
+
+    public Queue<JobTask> getOnStartTasks() {
+        return onStartTasks;
     }
 
     public void addTask(JobTask jobTask) {

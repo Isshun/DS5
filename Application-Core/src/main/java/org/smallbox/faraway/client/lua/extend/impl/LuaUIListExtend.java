@@ -16,7 +16,7 @@ public class LuaUIListExtend extends LuaUICompositeExtend {
     }
 
     @Override
-    protected void readSpecific(LuaValue value, View view) {
+    protected void readSpecific(LuaValue style, LuaValue value, View view) {
         UIList list = (UIList) view;
         readInt(value, "spacing", list::setSpacing);
     }

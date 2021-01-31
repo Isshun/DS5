@@ -7,7 +7,7 @@ import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.game.character.model.CharacterInventoryExtra;
 import org.smallbox.faraway.game.character.model.CharacterSkillExtra;
 import org.smallbox.faraway.game.character.model.base.CharacterModel;
-import org.smallbox.faraway.game.consumable.ConsumableItem;
+import org.smallbox.faraway.game.consumable.Consumable;
 import org.smallbox.faraway.game.consumable.ConsumableModule;
 import org.smallbox.faraway.game.dig.factory.DigJobFactory;
 import org.smallbox.faraway.game.job.JobModel;
@@ -21,7 +21,7 @@ import org.smallbox.faraway.util.GameException;
 public class StoreJobFactory {
     @Inject private ConsumableModule consumableModule;
 
-    public JobModel createJob(StorageArea storageArea, ConsumableItem consumable) {
+    public JobModel createJob(StorageArea storageArea, Consumable consumable) {
         ItemInfo consumableInfo = consumable.getInfo();
         Parcel targetParcel = storageArea.getParcels().stream()
                 .filter(parcel -> consumableModule.parcelAcceptConsumable(parcel, consumable))
@@ -29,31 +29,39 @@ public class StoreJobFactory {
                 .orElse(null);
 
         if (targetParcel != null) {
-            StoreJob job = new StoreJob(consumable.getParcel());
+            StoreJob job = new StoreJob(targetParcel);
+            consumable.setStoreJob(job);
 
             job.sourceConsumable = consumable;
-            consumable.setStoreJob(job);
+            job.storageArea = storageArea;
             job.setMainLabel("Store");
             job.setIcon("[base]/graphics/jobs/ic_store.png");
             job.setSkillType(CharacterSkillExtra.SkillType.STORE);
             job.setColor(new Color(0xbb391eff));
+            job.setAcceptedParcel(WorldHelper.getParcelAround(consumable.getParcel(), SurroundedPattern.SQUARE));
 
             // Init
-            job.addInitTask(j -> job.targetConsumable = consumableModule.addConsumable(consumableInfo, 0, targetParcel)); // Create consumable with 0 quantity (to book parcel on storage area)
-            job.addInitTask(j -> job.targetConsumable.setStoreJob(job)); // Set store job on source consumable
-            job.addInitTask(j -> job.sourceConsumable.setStoreJob(job)); // Set store job on source consumable
-            job.addInitTask(j -> job.setAcceptedParcel(WorldHelper.getParcelAround(job.sourceConsumable.getParcel(), SurroundedPattern.SQUARE))); // Set store job on source consumable
+//            job.addInitTask(j -> job.targetConsumable = consumableModule.addConsumable(consumableInfo, 0, targetParcel)); // Create consumable with 0 quantity (to book parcel on storage area)
+//            job.addInitTask(j -> job.targetConsumable.setStoreJob(job)); // Set store job on source consumable
+//            job.addOnStartTask(new TechnicalTask(j -> job.setAcceptedParcel(WorldHelper.getParcelAround(job.sourceConsumable.getParcel(), SurroundedPattern.SQUARE)))); // Set store job on source consumable
 
-            // Job
-            job.addTask(new TechnicalTask(j -> {
-                takeConsumable(job.sourceConsumable, job.getCharacter());
-                job.setAcceptedParcel(WorldHelper.getParcelAround(job.targetConsumable.getParcel(), SurroundedPattern.SQUARE));
-            }));
+            // Find storage parcel
+            job.addTask(new TechnicalTask(j -> job.storageParcel = storageArea.getNearestFreeParcel(consumableModule, job.sourceConsumable)));
 
-            job.addTask(new TechnicalTask(j -> dropConsumable(job.targetConsumable, job.getCharacter()))); // Ajoute les composants à la zone de stockage
+            // Move to consumable
+            job.addTask(new TechnicalTask(j -> job.setAcceptedParcel(WorldHelper.getParcelAround(job.sourceConsumable.getParcel(), SurroundedPattern.SQUARE))));
+
+            // Take consumable
+            job.addTask(new TechnicalTask(j -> job.inventoryConsumable = takeConsumable(job.sourceConsumable, job.getCharacter())));
+
+            // Move to storage parcel
+            job.addTask(new TechnicalTask(j -> job.setAcceptedParcel(WorldHelper.getParcelAround(job.storageParcel, SurroundedPattern.SQUARE))));
+
+            // Drop consumable
+            job.addTask(new TechnicalTask(j -> dropConsumable(job, consumable.getInfo()))); // Ajoute les composants à la zone de stockage
 
             // Close
-            job.addCloseTask(j -> job.targetConsumable.removeStoreJob(job)); // Remove job on targetConsumable when job is closed
+//            job.addCloseTask(j -> job.targetConsumable.removeStoreJob(job)); // Remove job on targetConsumable when job is closed
             job.addCloseTask(j -> job.sourceConsumable.removeStoreJob(job)); // Remove job on sourceConsumable when job is closed
 
             job.onNewInit();
@@ -67,17 +75,18 @@ public class StoreJobFactory {
     /**
      * Take consumable from parcel and move them to character's inventory
      */
-    private void takeConsumable(ConsumableItem consumable, CharacterModel character) {
+    private Consumable takeConsumable(Consumable consumable, CharacterModel character) {
         consumableModule.removeConsumable(consumable);
-        character.getExtra(CharacterInventoryExtra.class).addInventory(consumable.getInfo(), consumable.getTotalQuantity());
+        return character.getExtra(CharacterInventoryExtra.class).addInventory(consumable.getInfo(), consumable.getTotalQuantity());
     }
 
     /**
      * Drop consumable from character's inventory to storageArea's parcel
      */
-    private void dropConsumable(ConsumableItem targetConsumable, CharacterModel character) {
-        ConsumableItem inventoryConsumable = character.getExtra(CharacterInventoryExtra.class).takeInventory(targetConsumable.getInfo());
-        targetConsumable.addQuantity(inventoryConsumable.getTotalQuantity());
+    private void dropConsumable(StoreJob storeJob, ItemInfo itemInfo) {
+        int extraQuantity = consumableModule.addQuantity(storeJob.storageParcel, storeJob.inventoryConsumable.getTotalQuantity(), itemInfo);
+        storeJob.inventoryConsumable.setQuantity(extraQuantity);
+        storeJob.getCharacter().getExtra(CharacterInventoryExtra.class).updateInventory();
     }
 
 }

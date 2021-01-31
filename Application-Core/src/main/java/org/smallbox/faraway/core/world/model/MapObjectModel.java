@@ -3,7 +3,7 @@ package org.smallbox.faraway.core.world.model;
 import org.smallbox.faraway.game.world.ObjectModel;
 import org.smallbox.faraway.core.game.modelInfo.GraphicInfo;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
-import org.smallbox.faraway.game.consumable.ConsumableItem;
+import org.smallbox.faraway.game.consumable.Consumable;
 import org.smallbox.faraway.game.job.JobModel;
 import org.smallbox.faraway.game.world.Parcel;
 
@@ -22,7 +22,17 @@ public abstract class MapObjectModel extends ObjectModel {
     protected Parcel _parcel;
     private Set<JobModel>       _jobs;
     private GraphicInfo         _graphic;
-    private final Collection<ConsumableItem>      _inventory = new ConcurrentLinkedQueue<>();
+    private int gridPosition;
+
+    private final Collection<Consumable>      _inventory = new ConcurrentLinkedQueue<>();
+
+    public int getGridPosition() {
+        return gridPosition;
+    }
+
+    public void setGridPosition(int gridPosition) {
+        this.gridPosition = gridPosition;
+    }
 
     public void removeInventory(ItemInfo itemInfo, int quantity) {
         _inventory.forEach(consumable -> {
@@ -33,8 +43,8 @@ public abstract class MapObjectModel extends ObjectModel {
         _inventory.removeIf(consumable -> consumable.getTotalQuantity() == 0);
     }
 
-    private ConsumableItem getInventory(ItemInfo itemInfo) {
-        for (ConsumableItem consumable: _inventory) {
+    private Consumable getInventory(ItemInfo itemInfo) {
+        for (Consumable consumable: _inventory) {
             if (consumable.getInfo().instanceOf(itemInfo)) {
                 return consumable;
             }
@@ -43,7 +53,7 @@ public abstract class MapObjectModel extends ObjectModel {
     }
 
     public int getInventoryQuantity(ItemInfo itemInfo) {
-        for (ConsumableItem consumable: _inventory) {
+        for (Consumable consumable: _inventory) {
             if (consumable.getInfo().instanceOf(itemInfo)) {
                 return consumable.getTotalQuantity();
             }
@@ -61,14 +71,14 @@ public abstract class MapObjectModel extends ObjectModel {
     }
 
     public void addInventory(ItemInfo itemInfo, int quantity) {
-        _inventory.add(new ConsumableItem(itemInfo, quantity));
+        _inventory.add(new Consumable(itemInfo, quantity));
     }
 
-    public void addInventory(ConsumableItem consumable) {
+    public void addInventory(Consumable consumable) {
         _inventory.add(consumable);
     }
 
-    public Collection<ConsumableItem> getInventory() {
+    public Collection<Consumable> getInventory() {
         return _inventory;
     }
 

@@ -18,7 +18,6 @@ public class PlantItem extends MapObjectModel {
     private int                 _tile;
     private JobModel            _job;
     public PlantGrowTask        task;
-    private int gridPosition;
 
     public PlantItem(ItemInfo info) {
         super(info);
@@ -47,14 +46,6 @@ public class PlantItem extends MapObjectModel {
     public boolean              inGarden() { return _garden != null; }
     public boolean              hasSeed() { return _hasSeed; }
     public boolean              hasGrowingInfo() { return _growingInfo != null; }
-
-    public int getGridPosition() {
-        return gridPosition;
-    }
-
-    public void setGridPosition(int gridPosition) {
-        this.gridPosition = gridPosition;
-    }
 
     public void grow(double hourInterval) {
         if (_growingInfo != null) {

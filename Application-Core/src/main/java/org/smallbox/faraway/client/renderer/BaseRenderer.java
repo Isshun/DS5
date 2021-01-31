@@ -160,8 +160,8 @@ public abstract class BaseRenderer {
     public void drawCadreOnMap(int x, int y, int width, int height, Color color, int thickness, int offsetX, int offsetY) {
         drawRectangleOnMap(x, y, width, thickness, color, offsetX, offsetY);
         drawRectangleOnMap(x, y, thickness, height, color, offsetX, offsetY);
-        drawRectangleOnMap(x, y, width, thickness, color, offsetX, Constant.TILE_SIZE - offsetY - thickness);
-        drawRectangleOnMap(x, y, thickness, height, color, Constant.TILE_SIZE - offsetX - thickness, offsetY);
+        drawRectangleOnMap(x, y, width, thickness, color, offsetX, height + offsetY - thickness);
+        drawRectangleOnMap(x, y, thickness, height, color, width + offsetX - thickness, offsetY);
     }
 
     public void drawRectangleOnMap(Parcel parcel, int width, int height, Color color, int offsetX, int offsetY) {

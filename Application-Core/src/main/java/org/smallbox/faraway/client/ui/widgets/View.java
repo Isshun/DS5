@@ -53,6 +53,7 @@ public abstract class View implements Comparable<View> {
     protected ViewEvents events = new ViewEvents(this);
     protected ViewStyle style = new ViewStyle(this);
     protected Align _align = Align.TOP_LEFT;
+    private String styleName;
 
     public ViewEvents getEvents() {
         return events;
@@ -381,4 +382,11 @@ public abstract class View implements Comparable<View> {
         return style;
     }
 
+    public void setStyle(String style) {
+        this.styleName = style;
+    }
+
+    public String getStyleName() {
+        return styleName;
+    }
 }

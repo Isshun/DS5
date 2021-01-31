@@ -97,8 +97,8 @@ public class WorldFactory {
         ItemInfo defaultGroundInfo = dataManager.getItemInfo("base.ground.grass");
 
         if (game.getInfo().region != null) {
-            ItemInfo regionGroundInfo = dataManager.getItemInfo("base.ground.rock");
-//            ItemInfo regionGroundInfo = data.getItemInfo(game.getInfo().region.terrains.get(0).ground);
+//            ItemInfo regionGroundInfo = dataManager.getItemInfo("base.ground.rock");
+            ItemInfo regionGroundInfo = dataManager.getItemInfo(game.getInfo().region.terrains.get(0).ground);
 
             parcelList.forEach(parcel -> {
 //                if (parcel.z < floors - 1) {
