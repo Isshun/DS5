@@ -3,6 +3,7 @@ package org.smallbox.faraway.client.controller;
 import com.badlogic.gdx.graphics.Color;
 import org.smallbox.faraway.client.controller.annotation.BindLua;
 import org.smallbox.faraway.client.notification.NotificationLevel;
+import org.smallbox.faraway.client.ui.widgets.CompositeView;
 import org.smallbox.faraway.client.ui.widgets.UILabel;
 import org.smallbox.faraway.client.ui.widgets.UIList;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
@@ -45,7 +46,9 @@ public class NotificationController extends LuaController {
     }
 
     public void addNotification(NotificationLevel level, String text) {
-        UILabel label = listNotification.createFromTemplate(UILabel.class);
+        CompositeView viewNotification = listNotification.createFromTemplate(CompositeView.class);
+
+        UILabel label = viewNotification.findLabel("lb_notification");
         label.setText(text);
 
         switch (level) {
@@ -55,7 +58,7 @@ public class NotificationController extends LuaController {
             case CRITICAL: label.setTextColor(COLOR_CRITICAL); break;
         }
 
-        listNotification.addNextView(label);
+        listNotification.addNextView(viewNotification);
     }
 
 }

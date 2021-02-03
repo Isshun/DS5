@@ -1,15 +1,12 @@
 package org.smallbox.faraway.client.controller.gameMenu;
 
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import org.smallbox.faraway.client.controller.LuaController;
 import org.smallbox.faraway.client.controller.annotation.BindLua;
 import org.smallbox.faraway.client.controller.annotation.BindLuaAction;
-import org.smallbox.faraway.client.ui.extra.Colors;
-import org.smallbox.faraway.client.ui.widgets.View;
-import org.smallbox.faraway.client.ui.widgets.UIFrame;
-import org.smallbox.faraway.client.ui.widgets.UILabel;
-import org.smallbox.faraway.client.ui.widgets.UIList;
 import org.smallbox.faraway.client.shortcut.GameShortcut;
+import org.smallbox.faraway.client.ui.widgets.*;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.game.Game;
@@ -29,6 +26,7 @@ public class GameMenuLoadController extends LuaController {
 
     @BindLua private UIList loadEntries;
     @BindLua private View loadDetail;
+    @BindLua private UIImage imgDetail;
     @BindLua private UILabel lbDetailName;
     @BindLua private UILabel lbDetailDuration;
     @BindLua private UILabel lbDetailRealDuration;
@@ -37,21 +35,13 @@ public class GameMenuLoadController extends LuaController {
     private GameSaveInfo gameSaveInfo;
 
     protected void onControllerUpdate() {
-        loadEntries.getViews().clear();
-        gameFileManager.getSaves().forEach(gameSaveInfo -> {
-            UILabel uiLabel = UILabel.createFast(gameSaveInfo.label, Colors.BLUE_LIGHT_3);
-            uiLabel.setTextSize(20);
-            uiLabel.setSize(400, 40);
-            uiLabel.setFocusBackgroundColor(0x225588ff);
-            uiLabel.getEvents().setOnClickListener(() -> displaySave(gameSaveInfo));
-            uiLabel.getStyle().setBackgroundColor(Colors.BLUE_DARK_1);
-            loadEntries.getViews().add(uiLabel);
-
-            View view = new UIFrame(null);
-            view.setSize(400, 5);
-            loadEntries.getViews().add(view);
+        gameFileManager.getSaves().stream().sorted((o1, o2) -> o2.date.compareTo(o1.date)).forEach(gameSaveInfo -> {
+            CompositeView viewEntry = loadEntries.createFromTemplate(CompositeView.class);
+            viewEntry.findLabel("lb_entry").setText(gameSaveInfo.label);
+            viewEntry.findLabel("lb_entry").getEvents().setOnClickListener(() -> displaySave(gameSaveInfo));
+            loadEntries.addNextView(viewEntry);
         });
-
+        loadEntries.switchViews();
     }
 
     private void displaySave(GameSaveInfo gameSaveInfo) {
@@ -61,6 +51,11 @@ public class GameMenuLoadController extends LuaController {
         lbDetailDuration.setText(LocalTime.ofSecondOfDay(gameSaveInfo.duration).format(DateTimeFormatter.ofPattern("HH:mm:ss")));
         lbDetailRealDuration.setText(LocalTime.ofSecondOfDay(gameSaveInfo.duration).format(DateTimeFormatter.ofPattern("HH:mm:ss")));
         lbDetailCrew.setText(String.valueOf(gameSaveInfo.crew));
+
+        // TODO: dispose
+        Sprite sprite = new Sprite(gameFileManager.getScreenshot(gameSaveInfo));
+        sprite.setSize(imgDetail.getWidth(), imgDetail.getHeight());
+        imgDetail.setImage(sprite);
     }
 
     @GameShortcut(key = Input.Keys.ESCAPE)
@@ -72,7 +67,7 @@ public class GameMenuLoadController extends LuaController {
     }
 
     @BindLuaAction
-    public void onActionSave(View view) {
+    public void onActionLoad(View view) {
         if (gameSaveInfo != null) {
             setVisible(false);
             gameManager.loadGame(game.getInfo(), gameSaveInfo, null);

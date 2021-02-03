@@ -132,6 +132,8 @@ public abstract class LuaModuleManager implements GameObserver {
         _luaModules.forEach(luaModule -> loadModule(luaModule, globals));
 
         // TODO: load all lua files
+        loadStyles();
+
         loadLuaFiles(null, new File(FileUtils.BASE_PATH), globals);
 
         com.google.common.io.Files.fileTreeTraverser().preOrderTraversal(new File("."))
@@ -172,6 +174,10 @@ public abstract class LuaModuleManager implements GameObserver {
         _luaLoadListeners.forEach(LuaLoadListener::onLoad);
     }
 
+    public void loadStyles() {
+        loadLuaFile("styles.lua");
+    }
+
     public void doLoadFile(File file) {
         Log.debug(LuaModuleManager.class, "Load lua file: %s", file.getAbsolutePath());
 
@@ -206,6 +212,7 @@ public abstract class LuaModuleManager implements GameObserver {
         // Load lua files
         FileUtils.listRecursively(dataDirectory).stream()
                 .filter(f -> f.getName().endsWith(".lua"))
+                .filter(f -> !f.getName().equals("styles.lua"))
                 .forEach(this::doLoadFile);
 
         // TODO

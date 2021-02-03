@@ -4,16 +4,19 @@ ui:extend({
     size = {application.screen_width, application.screen_height},
     controller = "org.smallbox.faraway.client.controller.gameMenu.GameMenuPauseController",
     visible = false,
+    styles = {
+        { id = "menu_entry", text_font = "font3", text_size = 22, text_align = "CENTER", text_color = blue_dark_5, background = 0xffffff55, focus = 0xffffff88, size = {280, 52}}
+    },
     level = 100,
     views = {
 
         -- Pause frame
         { type = "view", id = "view_pause", background = 0x00000055, size = {application.screen_width, application.screen_height}, views = {
-            { type = "list", background = 0x00ff00ff, border = blue_light_2, position = {application.screen_width / 2 - 150, 200}, size = {250, 350}, views = {
-                { type = "label", size = {240, 50}, background = 0x349394ff, margin = {5, 0, 0, 5}, text_size = 20, text_align = "center", text = "Resume", action="onActionResume"},
-                { type = "label", size = {240, 50}, background = 0x349394ff, margin = {5, 0, 0, 5}, text_size = 20, text_align = "center", text = "Save", action="onActionSave"},
-                { type = "label", size = {240, 50}, background = 0x349394ff, margin = {5, 0, 0, 5}, text_size = 20, text_align = "center", text = "Load", action="onActionLoad"},
-                { type = "label", size = {240, 50}, background = 0x349394ff, margin = {5, 0, 0, 5}, text_size = 20, text_align = "center", text = "Exit", action="onActionExit"},
+            { type = "list", position = {application.screen_width / 2 - 280 / 2, 200}, size = {280, 350}, spacing = 20, views = {
+                { type = "label", style = "menu_entry", text = "Resume", action="onActionResume"},
+                { type = "label", style = "menu_entry", text = "Save", action="onActionSave"},
+                { type = "label", style = "menu_entry", text = "Load", action="onActionLoad"},
+                { type = "label", style = "menu_entry", text = "Exit", action="onActionExit"},
             }}
         }},
 --

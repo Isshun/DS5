@@ -21,6 +21,7 @@ public class UILabel extends View {
     private String _text = "";
     private int _textSize = 14;
     private Color _textColor = Color.BLACK;
+    private Color _textFocusColor = Color.BLACK;
     private int _maxLength;
     private boolean outlined;
     private int _textLength;
@@ -169,6 +170,11 @@ public class UILabel extends View {
         return this;
     }
 
+    public UILabel setTextFocusColor(int color) {
+        _textFocusColor = new Color(color);
+        return this;
+    }
+
     public void setTextLength(int length) {
         _textLength = length;
     }
@@ -202,6 +208,10 @@ public class UILabel extends View {
 
     public Color getColor() {
         return _textColor;
+    }
+
+    public Color getFocusColor() {
+        return _textFocusColor;
     }
 
     public UILabel setDashedString(String label, String value, int nbColumns) {
@@ -272,7 +282,11 @@ public class UILabel extends View {
                         font.setColor(shadowColor);
                         font.draw(batch, text, finalX + shadow, finalY + shadow);
                     }
-                    font.setColor(_textColor);
+                    if (isFocus() && getFocusColor() != null) {
+                        font.setColor(getFocusColor());
+                    } else {
+                        font.setColor(_textColor);
+                    }
                     font.draw(batch, text, finalX, finalY);
                 }
 

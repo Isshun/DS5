@@ -14,10 +14,10 @@ ui:extend({
 
         { type = "view", position = {12, 12}, size = {panel_width - 56, 24}, views = {
             { type = "grid", columns = 4, column_width = (panel_width - 56) / 4, row_height = 24, views = {
-                { type = "label", text = "STATUS", id = "bt_status", text_font = "sui", outlined = false, text_color = blue_dark_3, background = yellow, text_size = 12, text_align = "CENTER", size = {(panel_width - 56) / 4 - 10, 24}, action="onOpenStatus"},
-                { type = "label", text = "INV.", id = "bt_inventory", text_font = "sui", outlined = false, text_color = blue_dark_3, background = yellow_50, text_size = 12, text_align = "CENTER", size = {(panel_width - 56) / 4 - 10, 24}, action="onOpenInventory"},
-                { type = "label", text = "HEALTH", id = "bt_health", text_font = "sui", outlined = false, text_color = blue_dark_3, background = yellow_50, text_size = 12, text_align = "CENTER", size = {(panel_width - 56) / 4 - 10, 24}, action="onOpenHealth"},
-                { type = "label", text = "TIME.", id = "bt_timetable", text_font = "sui", outlined = false, text_color = blue_dark_3, background = yellow_50, text_size = 12, text_align = "CENTER", size = {(panel_width - 56) / 4 - 10, 24}, action="onOpenTimetable"},
+                { type = "label", text = "STATUS", id = "bt_status", text_font = "sui", outlined = false, text_color = blue_dark_3, background = yellow, text_focus_color = blue_dark_1, text_size = 12, text_align = "CENTER", size = {(panel_width - 56) / 4 - 10, 24}, action="onOpenStatus"},
+                { type = "label", text = "INV.", id = "bt_inventory", text_font = "sui", outlined = false, text_color = blue_dark_3, background = yellow_50, text_focus_color = blue_dark_1, text_size = 12, text_align = "CENTER", size = {(panel_width - 56) / 4 - 10, 24}, action="onOpenInventory"},
+                { type = "label", text = "HEALTH", id = "bt_health", text_font = "sui", outlined = false, text_color = blue_dark_3, background = yellow_50, text_focus_color = blue_dark_1, text_size = 12, text_align = "CENTER", size = {(panel_width - 56) / 4 - 10, 24}, action="onOpenHealth"},
+                { type = "label", text = "TIME.", id = "bt_timetable", text_font = "sui", outlined = false, text_color = blue_dark_3, background = yellow_50, text_focus_color = blue_dark_1, text_size = 12, text_align = "CENTER", size = {(panel_width - 56) / 4 - 10, 24}, action="onOpenTimetable"},
             }},
             { type = "label", text = "?", id = "bt_info", text_font = "sui", outlined = false, text_color = blue_dark_3, background = yellow_50, text_size = 12, text_align = "CENTER", position = {panel_width - 57, 0}, size = {25, 24}, action="onOpenInfo"},
         }},

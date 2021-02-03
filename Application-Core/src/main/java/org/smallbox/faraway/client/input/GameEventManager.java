@@ -50,6 +50,11 @@ public class GameEventManager implements EventManager {
     }
 
     @Override
+    public boolean onDrag(int x, int y, boolean pressed) {
+        return false;
+    }
+
+    @Override
     public boolean onMousePress(int x, int y, int button) {
         _mouseDownX = x;
         _mouseDownY = y;

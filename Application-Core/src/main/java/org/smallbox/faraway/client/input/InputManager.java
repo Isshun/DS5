@@ -248,7 +248,6 @@ public class InputManager implements InputProcessor {
         return false;
     }
 
-
     @Override
     public boolean scrolled(float amountX, float amountY) {
 

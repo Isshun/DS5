@@ -153,6 +153,13 @@ public abstract class BaseRenderer {
         }
     }
 
+    public void drawCadre(int x, int y, int width, int height, Color color, int thickness) {
+        drawRectangle(x, y, width, thickness, color);
+        drawRectangle(x, y, thickness, height, color);
+        drawRectangle(x, y + height - thickness, width, thickness, color);
+        drawRectangle(x + width - thickness, y, thickness, height, color);
+    }
+
     public void drawCadreOnMap(Parcel parcel, int width, int height, Color color, int thickness, int offsetX, int offsetY) {
         drawCadreOnMap(parcel.x, parcel.y, width, height, color, thickness, offsetX, offsetY);
     }

@@ -10,38 +10,50 @@ ui:extend({
     controller = "org.smallbox.faraway.client.controller.gameMenu.GameMenuLoadController",
     visible = false,
     level = 100,
+    styles = {
+        {
+            id = "action_button",
+            text_font = "font3",
+            text_size = 38,
+            text_color = blue_light_1,
+            text_focus_color = yellow,
+            shadow = 3,
+            shadow_color = 0x000000aa,
+            size = {240, 50},
+        },
+    },
     views = {
 
         -- Pause frame
         { type = "view", id = "view_load", background = 0x00000055, size = {application.screen_width, application.screen_height}, views = {
-            { type = "view", background = 0x002255ff, border = blue_light_2, position = {window_postion_x, window_postion_y}, size = {window_width, window_height}, views = {
-                {type = "list", id = "load_entries", position = {10, 14}},
-                {type = "view", background = blue_light_3, size = {1, window_height}, position = {850, 0}},
-                {type = "view", id = "load_detail", visible = false, size = {318, 240}, position = {866, 16}, views = {
-                    {type = "view", id = "image_detail", background = 0x000000ff, size = {318, 240}},
-                    {type = "list", position = {0, 260}, views = {
-                        { type = "label", text_color = blue_light_1, text = "Name", text_size = 16},
-                        { type = "label", text_color = blue_light_4, margin = {0, 0, 10, 0}, id = "lb_detail_name", text_size = 20},
-                        { type = "label", text_color = blue_light_1, text = "Duration", text_size = 16},
-                        { type = "label", text_color = blue_light_4, margin = {0, 0, 10, 0}, id = "lb_detail_duration", text_size = 20},
-                        { type = "label", text_color = blue_light_1, text = "Real duration", text_size = 16},
-                        { type = "label", text_color = blue_light_4, margin = {0, 0, 10, 0}, id = "lb_detail_real_duration", text_size = 20},
-                        { type = "label", text_color = blue_light_1, text = "Crew", text_size = 16},
-                        { type = "label", text_color = blue_light_4, margin = {0, 0, 10, 0}, id = "lb_detail_crew", text_size = 20},
-                    }},
-                    { type = "label", size = {308, 50}, position = {0, window_height - 90}, background = blue_light_2, margin = {5, 0, 0, 5}, text_size = 20, text_align = "center", text = "Load", action="onActionLoad"},
+            { type = "view", background = blue_dark_4, border = blue_light_1, border_size = 4, position = {window_postion_x, window_postion_y}, size = {window_width, window_height}, views = {
+
+                -- Left pane
+                {type = "list", id = "load_entries", position = {18, 18}, spacing = 16, template = {
+                    { type = "label", text_color = blue_light_4, background = 0xffffff22, focus = 0xffffff55, size = {716, 60}, text_align = "LEFT", padding = {0, 0, 0, 18}, id = "lb_entry", text_size = 20, text_font = "sui"},
                 }},
+
+                -- Separator
+                {type = "view", background = blue_light_1, size = {4, window_height}, position = {750, 0}},
+
+                -- Right pane
+                {type = "view", id = "load_detail", visible = false, size = {418, 240}, position = {766, 16}, views = {
+                    {type = "image", id = "img_detail", background = 0x000000ff, size = {418, 280}},
+                    {type = "list", position = {0, 294}, spacing = 10, views = {
+                        { type = "label", text_font = "sui", text_color = blue_light_1, text = "Name", text_size = 16},
+                        { type = "label", text_font = "sui", text_color = 0xffffffc4, margin = {0, 0, 10, 0}, id = "lb_detail_name", text_size = 20},
+                        { type = "label", text_font = "sui", text_color = blue_light_1, text = "Duration", text_size = 16},
+                        { type = "label", text_font = "sui", text_color = 0xffffffc4, margin = {0, 0, 10, 0}, id = "lb_detail_duration", text_size = 20},
+                        { type = "label", text_font = "sui", text_color = blue_light_1, text = "Real duration", text_size = 16},
+                        { type = "label", text_font = "sui", text_color = 0xffffffc4, margin = {0, 0, 10, 0}, id = "lb_detail_real_duration", text_size = 20},
+                        { type = "label", text_font = "sui", text_color = blue_light_1, text = "Crew", text_size = 16},
+                        { type = "label", text_font = "sui", text_color = 0xffffffc4, margin = {0, 0, 10, 0}, id = "lb_detail_crew", text_size = 20},
+                    }},
+                    { type = "label", size = {408, 50}, position = {0, window_height - 90}, style = "action_button", text_align = "CENTER", text = "Load", action="onActionLoad"},
+                }},
+
             }}
+
         }},
---
---         { type = "label", text = "Stand-by", text_size = 42, text_color = 0x25c9cbff, position = {20, application.screen_height - 52}},
---         { type = "view", id = "bt_cursor", background = 0x25c9cbff, size = {20, 32}, position = {210, application.screen_height - 52}},
---         { type = "list", background = 0xffff00ff, position = {application.screen_width / 2 - 280 / 2, application.screen_height / 2 - 240 / 2}, views = {
---             { type = "label", style = "menu.pause.button", action = "onResume", text = "Resume"},
---             { type = "label", style = "menu.pause.button", action = "onSave", text = "Save"},
---             { type = "label", style = "menu.pause.button", action = "onLoad", text = "Load"},
---             { type = "label", style = "menu.pause.button", action = "onSettings", text = "Settings"},
---             { type = "label", style = "menu.pause.button", action = "onQuit", text = "Quit"},
---         }},
     },
 })

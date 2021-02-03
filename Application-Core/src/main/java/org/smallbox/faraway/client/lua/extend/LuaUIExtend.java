@@ -11,6 +11,7 @@ import org.smallbox.faraway.client.lua.LuaControllerManager;
 import org.smallbox.faraway.client.lua.LuaStyleManager;
 import org.smallbox.faraway.client.ui.RootView;
 import org.smallbox.faraway.client.ui.UIManager;
+import org.smallbox.faraway.client.ui.event.DefaultFocusListener;
 import org.smallbox.faraway.client.ui.event.OnFocusListener;
 import org.smallbox.faraway.client.ui.extra.HorizontalAlign;
 import org.smallbox.faraway.client.ui.extra.VerticalAlign;
@@ -58,6 +59,7 @@ public abstract class LuaUIExtend extends LuaExtend {
         boolean isGameView = !rootName.startsWith("base.ui.menu.");
 
         Map<String, LuaValue> styles = new ConcurrentHashMap<>();
+        uiManager.getStyles().forEach(styles::put);
         readTable(value, "styles", (subValue, index) -> styles.put(subValue.get("id").tojstring(), subValue));
 
         View view = createView(module, globals, value, true, 0, null, rootName, 1, isGameView, true, styles);
@@ -65,7 +67,7 @@ public abstract class LuaUIExtend extends LuaExtend {
         RootView rootView = new RootView();
         rootView.setView((CompositeView) view);
 
-        if (value.get("parent").isnil() && rootName.startsWith("base.ui.menu.")) {
+        if (value.get("parent").isnil() && !isGameView) {
             uiManager.addMenuView(rootView);
         } else if (value.get("parent").isnil()) {
             uiManager.addRootView(rootView);
@@ -98,6 +100,7 @@ public abstract class LuaUIExtend extends LuaExtend {
         readLua(style, value, "effects", v -> view.setEffect(new FadeEffect(getInt(v, "duration", 0))));
         readLua(style, value, "animations", v -> view.setAnimation(new RotateAnimation(getInt(v, "duration", 0))));
         readInt(style, value, "border", v -> view.getStyle().setBorderColor(v));
+        readInt(style, value, "border_size", v -> view.getStyle().setBorderSize(v), 1);
 
         readLua(style, value, "background", v -> {
             if (v.istable()) {
@@ -124,6 +127,8 @@ public abstract class LuaUIExtend extends LuaExtend {
                 view.getStyle().setBackgroundColor(v.toint());
             }
         });
+
+        readLua(style, value, "focus", v -> view.getStyle().setBackgroundFocusColor(v.toint()));
 
     }
 
@@ -179,8 +184,8 @@ public abstract class LuaUIExtend extends LuaExtend {
 
         LuaValue style = nonNull(view.getStyleName()) && styles.containsKey(view.getStyleName()) ? styles.get(view.getStyleName()) : null;
 
-        customizeViewCosmetic(style, value, view, styles);
         readGeometry(style, value, view);
+        customizeViewCosmetic(style, value, view, styles);
 
         // Add subviews
         readTable(value, "views", (subValue, i) -> ((CompositeView) view).addView(
@@ -190,7 +195,9 @@ public abstract class LuaUIExtend extends LuaExtend {
         // Set controller
         readString(value, "controller", controllerName -> luaControllerManager.setControllerView(controllerName, (CompositeView) view, globals.get("file").tojstring()));
 
-//        readString(value, "style", styleName -> applyStyle(view, styleName));
+        if (view.getStyle().getBackgroundFocusColor() != null) {
+            view.getEvents().setOnFocusListener(new DefaultFocusListener());
+        }
 
         return view;
     }

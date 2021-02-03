@@ -3,6 +3,7 @@ package org.smallbox.faraway.client.lua.extend;
 import org.luaj.vm2.Globals;
 import org.luaj.vm2.LuaValue;
 import org.smallbox.faraway.client.ui.widgets.CompositeView;
+import org.smallbox.faraway.client.ui.widgets.UIFrame;
 import org.smallbox.faraway.client.ui.widgets.View;
 import org.smallbox.faraway.client.ui.widgets.UIList;
 import org.smallbox.faraway.core.module.ModuleBase;
@@ -34,7 +35,10 @@ public abstract class LuaUICompositeExtend extends LuaUIExtend {
                 ));
 
                 if (templateViews.size() == 1) {
-                    return templateViews.get(0);
+                    UIFrame frame = new UIFrame(module);
+                    frame.addView(templateViews.get(0));
+                    frame.setSize(templateViews.get(0).getWidth(), templateViews.get(0).getHeight());
+                    return frame;
                 }
 
                 if (templateViews.size() > 1) {

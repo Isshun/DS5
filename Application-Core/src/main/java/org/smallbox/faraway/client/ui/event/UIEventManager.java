@@ -6,8 +6,8 @@ import org.smallbox.faraway.client.input.InputManager;
 import org.smallbox.faraway.client.layer.LayerManager;
 import org.smallbox.faraway.client.selection.GameSelectionManager;
 import org.smallbox.faraway.client.ui.UIManager;
-import org.smallbox.faraway.client.ui.widgets.View;
 import org.smallbox.faraway.client.ui.widgets.UIDropDown;
+import org.smallbox.faraway.client.ui.widgets.View;
 import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.game.GameManager;
@@ -18,6 +18,11 @@ import java.util.concurrent.ConcurrentSkipListMap;
 
 @ApplicationObject
 public class UIEventManager implements EventManager {
+    @Inject private LayerManager layerManager;
+    @Inject private GameSelectionManager gameSelectionManager;
+    @Inject private InputManager inputManager;
+    @Inject private UIManager uiManager;
+    @Inject private GameManager gameManager;
 
     private final Map<View, OnDragListener>       _onDragListeners;
     private final Map<View, OnClickListener>      _onClickListeners;
@@ -29,11 +34,7 @@ public class UIEventManager implements EventManager {
     private UIDropDown                      _currentDropDown;
     private final Map<View, Object>               _dropViews;
     private OnDragListener                  _dragListener;
-    @Inject private LayerManager layerManager;
-    @Inject private GameSelectionManager gameSelectionManager;
-    @Inject private InputManager inputManager;
-    @Inject private UIManager uiManager;
-    @Inject private GameManager gameManager;
+    private View focusView;
 
     public UIEventManager() {
         _onDragListeners = new ConcurrentSkipListMap<>();
@@ -45,6 +46,28 @@ public class UIEventManager implements EventManager {
         _onMouseWheelDownListeners = new ConcurrentSkipListMap<>();
         _dropViews = new ConcurrentSkipListMap<>();
     }
+
+//    @AfterApplicationLayerInit
+//    private void afterApplicationLayerInit() {
+//        uiManager.getViews().stream()
+//                .filter(view -> view.getStyle().getBackgroundFocusColor() != null)
+//                .forEach(view -> view.getEvents().setOnFocusListener(new OnFocusListener() {
+//                    @Override
+//                    public void onEnter(View view) {
+//                        view.setFocus(true);
+//                    }
+//
+//                    @Override
+//                    public void onExit(View view) {
+//                        view.setFocus(false);
+//                    }
+//                }));
+//    }
+
+//    @AfterGameLayerInit
+//    private void afterGameLayerInit() {
+//
+//    }
 
     public void setOnFocusListener(View view, OnFocusListener onFocusListener) {
         if (onFocusListener == null) {
@@ -107,6 +130,7 @@ public class UIEventManager implements EventManager {
         public View hoverView;
 
         public abstract void onDrag(int x, int y);
+        public abstract void onDragMove(int x, int y);
         public abstract void onDrop(int x, int y, View dropView);
         public abstract void onHover(int x, int y, View dropView);
         public abstract void onHoverExit(int x, int y, View dropView);
@@ -177,12 +201,12 @@ public class UIEventManager implements EventManager {
             return true;
         }
 
-        if (button == Input.Buttons.LEFT) {
-            _dragListener = drag(x, y);
-            if (_dragListener != null) {
-                return true;
-            }
-        }
+//        if (button == Input.Buttons.LEFT) {
+//            _dragListener = drag(x, y);
+//            if (_dragListener != null) {
+//                return true;
+//            }
+//        }
 
         return false;
     }
@@ -228,10 +252,13 @@ public class UIEventManager implements EventManager {
     }
 
     @Override
-    public boolean onMouseMove(int x, int y, boolean pressed) {
-
+    public boolean onDrag(int x, int y, boolean pressed) {
 
         // On drag hover
+        if (_dragListener == null) {
+            _dragListener = drag(x, y);
+        }
+
         if (_dragListener != null) {
             Map.Entry<View, Object> dropViewEntry = getDropViews().entrySet().stream()
                     .filter(entry -> entry.getKey().contains(x, y))
@@ -246,18 +273,39 @@ public class UIEventManager implements EventManager {
                 _dragListener.onHoverExit(x, y, _dragListener.hoverView);
                 _dragListener.hoverView = null;
             }
+            _dragListener.onDragMove(x, y);
             return false;
         }
 
-        uiManager.getViews().stream()
-                .filter(view -> view.isVisible() && view.isActive() && hasVisibleHierarchy(view))
-                .forEach(view -> {
-                    if (hasVisibleHierarchy(view) && view.contains(x, y)) {
-                        view.getEvents().onEnter();
-                    } else if (view.isFocus()) {
-                        view.getEvents().onExit();
-                    }
-                });
+        return false;
+    }
+    @Override
+    public boolean onMouseMove(int x, int y, boolean pressed) {
+
+        if (focusView != null && !focusView.contains(x, y)) {
+            focusView.getEvents().onExit();
+            focusView = null;
+        }
+
+        View bestView = null;
+        int bestDepth = -1;
+
+        for (View view: _onFocusListeners.keySet()) {
+            if (view.isActive() && hasVisibleHierarchy(view) && view.contains(x, y) && view.getDeep() > bestDepth) {
+                bestDepth = view.getDeep();
+                bestView = view;
+            }
+        }
+
+        // Click on UI
+        if (bestView != null) {
+            if (focusView != null) {
+                focusView.getEvents().onExit();
+            }
+            bestView.getEvents().onEnter();
+            focusView = bestView;
+            return true;
+        }
 
         return false;
     }

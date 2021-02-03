@@ -12,7 +12,6 @@ ui:extend({
     in_game = false,
     visible = false,
     views = {
-        { type = "image", src = "[base]/background/17520.jpg", size = {application.screen_width, application.screen_height}},
 
         { type = "view", background = blue_light_1,
             size = {max_width + window_border_size * 2, max_height + window_border_size * 2},

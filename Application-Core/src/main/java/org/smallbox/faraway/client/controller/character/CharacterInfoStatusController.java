@@ -43,6 +43,7 @@ public class CharacterInfoStatusController extends LuaController {
 
     @OnGameLayerInit
     public void init() {
+        gridNeeds.getViews().clear();
         needs = Stream
                 .of(TAG_ENERGY, TAG_OXYGEN, TAG_FOOD, TAG_DRINK, TAG_RELATION, TAG_ENTERTAINMENT, TAG_HAPPINESS)
                 .map(key -> {
@@ -75,9 +76,9 @@ public class CharacterInfoStatusController extends LuaController {
 
     private void displayBuffs(CharacterModel character) {
         buffModule.getBuffs(character).forEach(buff -> {
-            UILabel label = listBuffs.createFromTemplate(UILabel.class);
-            label.setText(buff.getName());
-            listBuffs.addNextView(label);
+            CompositeView viewBuff = listBuffs.createFromTemplate(CompositeView.class);
+            viewBuff.findLabel("lb_name").setText(buff.getName());
+            listBuffs.addNextView(viewBuff);
         });
         listBuffs.switchViews();
     }

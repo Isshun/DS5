@@ -2,6 +2,7 @@ package org.smallbox.faraway.core.game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import org.smallbox.faraway.client.ui.UIManager;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.client.shortcut.GameShortcut;
 import org.smallbox.faraway.core.dependencyInjector.DependencyManager;
@@ -30,6 +31,7 @@ public class GameManager implements GameObserver {
     @Inject private GameFileManager gameFileManager;
     @Inject private DependencyManager dependencyManager;
     @Inject private DataManager dataManager;
+    @Inject private UIManager uiManager;
 
     private Game _game;
 
@@ -77,7 +79,12 @@ public class GameManager implements GameObserver {
     }
 
     private void phase1(GameInfo gameInfo) {
-        dependencyManager.destroyGameObjects();
+        // Close previous game if exists (destroy GameObjects in DI)
+        closeGame();
+
+//        uiManager.clearViews();
+//        uiManager.reloadViews();
+//        uiManager.refreshApplication();
 
         _game = new Game(gameInfo, applicationConfig);
 
@@ -116,11 +123,13 @@ public class GameManager implements GameObserver {
     }
 
     public void closeGame() {
-        _game.stop();
-        _game = null;
+        if (_game != null) {
+            _game.stop();
+            _game = null;
 
-        dependencyManager.callMethodAnnotatedBy(OnGameStop.class);
-        dependencyManager.destroyGameObjects();
+            dependencyManager.callMethodAnnotatedBy(OnGameStop.class);
+            dependencyManager.destroyGameObjects();
+        }
     }
 
     /**

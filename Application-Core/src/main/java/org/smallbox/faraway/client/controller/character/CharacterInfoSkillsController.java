@@ -57,6 +57,10 @@ public class CharacterInfoSkillsController extends LuaController {
                     }
 
                     @Override
+                    public void onDragMove(int x, int y) {
+                    }
+
+                    @Override
                     public void onDrop(int x, int y, View dropView) {
                         Log.info("drop at " + x + " x " + y);
                         Log.info("drop on " + dropView);

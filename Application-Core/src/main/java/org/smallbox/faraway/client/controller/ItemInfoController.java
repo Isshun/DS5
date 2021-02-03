@@ -7,10 +7,7 @@ import org.smallbox.faraway.client.controller.annotation.BindLuaAction;
 import org.smallbox.faraway.client.selection.GameSelectionManager;
 import org.smallbox.faraway.client.shortcut.GameShortcut;
 import org.smallbox.faraway.client.ui.event.UIEventManager;
-import org.smallbox.faraway.client.ui.widgets.UIImage;
-import org.smallbox.faraway.client.ui.widgets.UILabel;
-import org.smallbox.faraway.client.ui.widgets.UIList;
-import org.smallbox.faraway.client.ui.widgets.View;
+import org.smallbox.faraway.client.ui.widgets.*;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.dependencyInjector.gameAction.OnGameSelectAction;
@@ -165,8 +162,8 @@ public class ItemInfoController extends AbsInfoLuaController<UsableItem> {
     private void refreshInventory(UsableItem item) {
         Optional.ofNullable(item.getInventory()).ifPresent(consumables -> {
             consumables.forEach(consumable -> {
-                UILabel entryItem = listInventory.createFromTemplate(UILabel.class);
-                entryItem.setText(consumable.getInfo().label + " x" + consumable.getTotalQuantity());
+                CompositeView entryItem = listInventory.createFromTemplate(CompositeView.class);
+                entryItem.findLabel("lb_item").setText(consumable.getInfo().label + " x" + consumable.getTotalQuantity());
                 listInventory.addNextView(entryItem);
             });
             listInventory.switchViews();

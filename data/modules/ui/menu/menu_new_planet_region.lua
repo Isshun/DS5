@@ -6,7 +6,6 @@ ui:extend({
     in_game = false,
     visible = false,
     views = {
-        { type = "image", id = "img_background", size = {1920, 1200}},
         { type = "view", position = {application.screen_width / 2 - 300 / 2, application.screen_height / 2 - 200}, views = {
             { type = "label", text = "Regions", text_size = 38},
             { type = "list", id = "list_regions", position = {0, 40}},

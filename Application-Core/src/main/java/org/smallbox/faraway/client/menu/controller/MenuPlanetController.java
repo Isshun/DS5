@@ -4,23 +4,20 @@ import com.badlogic.gdx.Input;
 import org.smallbox.faraway.client.controller.LuaController;
 import org.smallbox.faraway.client.controller.annotation.BindLua;
 import org.smallbox.faraway.client.controller.annotation.BindLuaAction;
-import org.smallbox.faraway.client.ui.extra.Colors;
-import org.smallbox.faraway.client.ui.widgets.CompositeView;
-import org.smallbox.faraway.client.ui.widgets.View;
-import org.smallbox.faraway.client.ui.widgets.UIGrid;
-import org.smallbox.faraway.client.ui.widgets.UIImage;
-import org.smallbox.faraway.client.ui.widgets.UILabel;
-import org.smallbox.faraway.client.ui.widgets.UIList;
 import org.smallbox.faraway.client.shortcut.GameShortcut;
+import org.smallbox.faraway.client.ui.widgets.*;
+import org.smallbox.faraway.core.config.ApplicationConfig;
 import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.dependencyInjector.annotationEvent.AfterApplicationLayerInit;
 import org.smallbox.faraway.core.game.DataManager;
 import org.smallbox.faraway.core.game.GameFactory;
 import org.smallbox.faraway.core.game.GameManager;
-import org.smallbox.faraway.game.planet.PlanetInfo;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
-import org.smallbox.faraway.core.config.ApplicationConfig;
+import org.smallbox.faraway.game.planet.PlanetInfo;
+
+import static org.smallbox.faraway.client.ui.extra.Colors.BLUE_DARK_1;
+import static org.smallbox.faraway.client.ui.extra.Colors.BLUE_LIGHT_5;
 
 @ApplicationObject
 public class MenuPlanetController extends LuaController {
@@ -42,11 +39,14 @@ public class MenuPlanetController extends LuaController {
     @AfterApplicationLayerInit
     private void afterApplicationLayerInit() {
         dataManager.planets.forEach(planet -> {
-            UILabel lbPlanet = listPlanets.createFromTemplate(UILabel.class);
-            lbPlanet.setId(planet.name);
+            CompositeView viewPlanet = listPlanets.createFromTemplate(CompositeView.class);
+            viewPlanet.setId(planet.name);
+
+            UILabel lbPlanet = viewPlanet.findLabel("lb_planet");
             lbPlanet.setText(planet.label);
             lbPlanet.getEvents().setOnClickListener(() -> selectPlanet(planet));
-            listPlanets.addView(lbPlanet);
+
+            listPlanets.addView(viewPlanet);
         });
         selectPlanet(dataManager.planets.get(0));
     }
@@ -54,7 +54,7 @@ public class MenuPlanetController extends LuaController {
     private void selectPlanet(PlanetInfo planet) {
         if (planet.graphics.background != null) {
             imgPlanet.setImage(planet.graphics.background.path);
-            listPlanets.getViews().stream().map(view -> ((UILabel)view)).forEach(view -> view.setTextColor(view.getId().equals(planet.name) ? Colors.BLUE_LIGHT_5 : Colors.BLUE_DARK_1));
+            listPlanets.getViews().forEach(view -> ((CompositeView)view).findLabel("lb_planet").setTextColor(view.getId().equals(planet.name) ? BLUE_LIGHT_5 : BLUE_DARK_1));
             this.planet = planet;
 
             infoPlanet.setVisible(true);
@@ -62,20 +62,21 @@ public class MenuPlanetController extends LuaController {
             listInfoRegions.getViews().clear();
 
             planet.regions.forEach(region -> {
-                CompositeView viewRegion = (CompositeView)listInfoRegions.createFromTemplate();
-                ((UILabel)viewRegion.find("lb_region_name")).setText(region.label);
-                ((UILabel)viewRegion.find("lb_hostility")).setText("low");
-                ((UILabel)viewRegion.find("lb_fertility")).setText("high");
-                ((UILabel)viewRegion.find("lb_atmosphere")).setText("o2, nitrogen");
-                ((UILabel)viewRegion.find("lb_temperature")).setText("-5° +50");
+                CompositeView viewRegion = (CompositeView) listInfoRegions.createFromTemplate();
+                ((UILabel) viewRegion.find("lb_region_name")).setText(region.label);
+                ((UILabel) viewRegion.find("lb_hostility")).setText("low");
+                ((UILabel) viewRegion.find("lb_fertility")).setText("high");
+                ((UILabel) viewRegion.find("lb_atmosphere")).setText("o2, nitrogen");
+                ((UILabel) viewRegion.find("lb_temperature")).setText("-5° +50");
 
-                UIGrid listResource = ((UIGrid)viewRegion.find("grid_info_resources"));
+                UIGrid listResource = ((UIGrid) viewRegion.find("grid_info_resources"));
                 region.terrains.stream().filter(terrain -> terrain.resource != null).forEach(terrain -> {
-                    UIImage viewResource = (UIImage)listResource.createFromTemplate();
+                    CompositeView viewResource = listResource.createFromTemplate(CompositeView.class);
                     ItemInfo resourceInfo = dataManager.getItemInfo(terrain.resource);
                     if (resourceInfo.hasIcon()) {
-                        viewResource.setImage(resourceInfo.icon);
+                        viewResource.findImage("img_resource").setImage(resourceInfo.icon);
                     }
+                    viewResource.findLabel("lb_resource").setText(resourceInfo.label);
                     listResource.addNextView(viewResource);
                 });
                 listResource.switchViews();

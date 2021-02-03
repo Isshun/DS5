@@ -1,19 +1,39 @@
+local window_width = 1200
+local window_height = 900
+
 ui:extend({
     type = "view",
     id = "base.ui.menu.settings",
     controller = "org.smallbox.faraway.client.menu.controller.MenuSettingsController",
     in_game = false,
     visible = false,
+    size = {window_width, window_height},
+    position = {application.screen_width / 2 - window_width / 2, application.screen_height / 2 - window_height / 2},
+    styles = {
+        {
+            id = "header_button",
+            text_font = "font3",
+            text_color = 0x00000088,
+            text_size = 34,
+            text_focus_color = 0xffffffff,
+            text_align = "CENTER",
+            size = {300, 65},
+        }
+    },
     views = {
-        { type = "image", src = "[base]/background/17520.jpg", size = {application.screen_width, application.screen_height}},
-        { type = "list", size = {800, 600}, background = 0x25c9cbbb, position = {application.screen_width / 2 - 800 / 2, application.screen_height / 2 - 200}, views = {
-            { type = "grid", id = "grid_settings_sections", columns = 4, column_width = 200, row_height = 50, background = blue_dark_4, size = {800, 50}, views = {
-                { type = "label", id = "btGraphic", action = "onOpenGraphic", text = "Graphic", text_size = 28, padding = 16, size = {200, 50}, padding = 14, background = 0x25c9cbff},
-                { type = "label", id = "btSound", action = "onOpenSound", text = "Sound", text_size = 28, padding = 16, size = {200, 50}, padding = 14},
-                { type = "label", id = "btBindings", action = "onOpenBindings", text = "Bindings", text_size = 28, padding = 16, size = {200, 50}, padding = 14},
-                { type = "label", id = "btGameplay", action = "onOpenGameplay", text = "Gameplay", text_size = 28, padding = 16, size = {200, 50}, padding = 14},
+        { type = "list", background = 0xffffff88, border = 0x000000cc, border_size = 4, views = {
+
+            -- Buttons header
+            { type = "grid", id = "grid_settings_sections", columns = 4, column_width = (window_width - 8) / 4, row_height = 65, background = 0x00000055, position = {4, 4}, size = {window_width - 8, 50}, views = {
+                { type = "label", id = "btGraphic", action = "onOpenGraphic", style = "header_button", text = "Graphic" },
+                { type = "label", id = "btSound", action = "onOpenSound", style = "header_button", text = "Sound" },
+                { type = "label", id = "btBindings", action = "onOpenBindings", style = "header_button", text = "Bindings" },
+                { type = "label", id = "btGameplay", action = "onOpenGameplay", style = "header_button", text = "Gameplay" },
             }},
-            { type = "list", background = 0x25c9cbff, size = {800, 4}},
+
+--            { type = "list", background = 0x25c9cbff, size = {800, 4}},
+
+            -- Graphic
             { type = "list", id = "graphic_sub_menu", visible = true, position = {0, 2}, size = {800, 490}, views = {
                 { type = "view", size = {100, 26}, views = {
                     { type = "label", text = "Resolution", text_size = 20, padding = 10},
@@ -32,15 +52,30 @@ ui:extend({
                 }},
                 { type = "label", text = "UI Scale", text_size = 16, padding = 10},
             }},
+
+            -- Sound
             { type = "list", id = "sound_sub_menu", visible = false, position = {0, 2}, size = {800, 490}, views = {
-                { type = "label", text = "Music", text_size = 16, padding = 10},
-                { type = "label", text = "Game sounds", text_size = 16, padding = 10},
-                { type = "label", text = "Notifications", text_size = 16, padding = 10},
+                { type = "view", size = {window_width, 60}, position = {20, 0}, views = {
+                    { type = "label", text = "Music", text_font = "sui", text_color = 0x000000cc, text_size = 24, size = {400, 60}, text_align = "LEFT", padding = 10},
+                    { type = "slider", size = {400, 6}, handle_size = {50, 20}, position = {650, 40}, handle_background = 0x000000ee, background = 0x00000088, views = {
+                        { type = "label", text_size = 16, text_color = 0x000000cc, text_size = 24, text_font = "sui", position = {450, -5}},
+                    }},
+                }},
+                { type = "view", size = {window_width, 60}, position = {20, 0}, views = {
+                    { type = "label", text = "Sounds", text_font = "sui", text_color = 0x000000cc, text_size = 24, size = {400, 60}, text_align = "LEFT", padding = 10},
+                    { type = "slider", size = {400, 6}, handle_size = {50, 20}, position = {650, 40}, handle_background = 0x000000ee, background = 0x00000088, views = {
+                        { type = "label", text_size = 16, text_color = 0x000000cc, text_size = 24, text_font = "sui", position = {450, -5}},
+                    }},
+                }},
             }},
+
+            -- Bindings
             { type = "list", id = "bindings_sub_menu", visible = false, position = {0, 2}, size = {800, 490}, views = {
                 { type = "label", text = "UI", text_size = 16, padding = 10},
                 { type = "label", text = "Game", text_size = 16, padding = 10},
             }},
+
+            -- Gameplay
             { type = "list", id = "gameplay_sub_menu", visible = false, position = {0, 2}, size = {800, 490}, views = {
                 { type = "view", size = {100, 26}, views = {
                     { type = "label", text = "Restraint mouse to window", text_size = 20, padding = 10},
@@ -56,10 +91,15 @@ ui:extend({
                         }},
                     }},
             }},
-            { type = "view", size = {800, 45}, views = {
-                { type = "label", text = "Close", action = "onClose", text_size = 22, padding = 16, size = {160, 45}, position = {458, 0}, background = {regular = 0x01000000, focus = 0x25c9cbff}},
-                { type = "label", text = "Apply", action = "onApply", text_size = 22, padding = 16, size = {160, 45}, position = {630, 0}, background = {regular = 0x01000000, focus = 0x25c9cbff}},
-            }}
+
         }},
+
+        -- Buttons footer
+        { type = "view", size = {800, 45}, views = {
+            { type = "label", text = "Close", style = "action_button", action = "onClose", text_align = "LEFT", position = {30, window_height - 75} },
+            { type = "label", text = "Apply", style = "action_button", action = "onApply", text_align = "RIGHT", position = {window_width - 270, window_height - 75} },
+        }}
+
     },
+
 })

@@ -44,14 +44,11 @@ public class UIManager {
     @Inject private ClientLuaModuleManager clientLuaModuleManager;
     @Inject private LuaControllerManager luaControllerManager;
     @Inject private DependencyManager dependencyManager;
+    @Inject private UIEventManager uiEventManager;
     @Inject private GameManager gameManager;
 
     private final Map<String, LuaValue> _styles = new ConcurrentHashMap<>();
     private UIEventManager.OnDragListener _dragListener;
-
-    public void clearViews() {
-        _rootViews.clear();
-    }
 
     public void addDropsDowns(UIDropDown view) {
         _dropsDowns.add(view);
@@ -97,25 +94,40 @@ public class UIManager {
         _menuViews.put(view.getName(), view);
     }
 
-    @GameShortcut(key = Input.Keys.F1)
-    public void refreshUI() {
+    public void clearViews() {
+        uiEventManager.clear();
+
         _views.clear();
         _menuViews.clear();
         _rootViews.clear();
         _subViews.clear();
+    }
 
+    public void reloadViews() {
         luaControllerManager.getControllers().forEach(controller -> {
             Log.info("Reload lua: " + luaControllerManager.getFileName(controller.getClass().getCanonicalName()));
             clientLuaModuleManager.doLoadFile(new File(luaControllerManager.getFileName(controller.getClass().getCanonicalName())));
             luaControllerManager.initController(controller);
         });
+    }
 
+    private void reloadStyles() {
+        clientLuaModuleManager.loadStyles();
+    }
+
+    public Map<String, LuaValue> getStyles() {
+        return _styles;
+    }
+
+    public void refreshApplication() {
         dependencyManager.getSubTypesOf(LuaController.class).forEach(controller -> {
             callMethodAnnotatedBy(controller, OnInit.class);
             callMethodAnnotatedBy(controller, OnApplicationLayerInit.class);
             callMethodAnnotatedBy(controller, AfterApplicationLayerInit.class);
         });
+    }
 
+    public void refreshGame() {
         if (gameManager.isRunning()) {
             dependencyManager.getSubTypesOf(LuaController.class).forEach(controller -> {
                 callMethodAnnotatedBy(controller, OnGameLayerInit.class);
@@ -123,6 +135,15 @@ public class UIManager {
                 callMethodAnnotatedBy(controller, OnGameStart.class);
             });
         }
+    }
+
+    @GameShortcut(key = Input.Keys.F1)
+    public void refreshUI() {
+        clearViews();
+        reloadStyles();
+        reloadViews();
+        refreshApplication();
+        refreshGame();
     }
 
     private void callMethodAnnotatedBy(LuaController controller, Class<? extends Annotation> cls) {

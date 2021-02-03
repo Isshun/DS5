@@ -27,7 +27,7 @@ public class LuaUIMinimapExtend extends LuaUIExtend {
         return new View(module) {
             @Override
             public void draw(BaseRenderer renderer, int x, int y) {
-                if (_isVisible && minimapLayer.getSprite() != null) {
+                if (_isVisible && minimapLayer != null && minimapLayer.getSprite() != null) {
                     geometry.setFinalX(getAlignedX() + geometry.getMarginLeft() + x);
                     geometry.setFinalY(geometry.getY() + geometry.getMarginTop() + y);
                     renderer.drawSprite(minimapLayer.getSprite());

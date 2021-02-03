@@ -136,6 +136,10 @@ public abstract class View implements Comparable<View> {
         return _isActive;
     }
 
+    public boolean isGameView() {
+        return _isGameView;
+    }
+
     public void setId(String id) {
         _id = id;
     }
@@ -245,14 +249,14 @@ public abstract class View implements Comparable<View> {
             geometry.setFinalX(getAlignedX() + geometry.getMarginLeft() + x);
             geometry.setFinalY(getAlignedY() + geometry.getMarginTop() + y);
 
-            if (style._backgroundFocusColor != null && _isFocus) {
-                renderer.drawRectangle(geometry.getFinalX(), geometry.getFinalY(), getWidth(), getHeight(), style._backgroundFocusColor);
-            } else if (style._backgroundColor != null) {
-                renderer.drawRectangle(geometry.getFinalX(), geometry.getFinalY(), getWidth(), getHeight(), style._backgroundColor);
+            if (style.backgroundFocusColor != null && _isFocus) {
+                renderer.drawRectangle(geometry.getFinalX(), geometry.getFinalY(), getWidth(), getHeight(), style.backgroundFocusColor);
+            } else if (style.backgroundColor != null) {
+                renderer.drawRectangle(geometry.getFinalX(), geometry.getFinalY(), getWidth(), getHeight(), style.backgroundColor);
             }
 
-            if (style._borderColor != null) {
-                renderer.drawRectangle(geometry.getFinalX(), geometry.getFinalY(), getWidth(), getHeight(), style._borderColor, false);
+            if (style.borderColor != null) {
+                renderer.drawCadre(geometry.getFinalX(), geometry.getFinalY(), getWidth(), getHeight(), style.borderColor, style.getBorderSize());
             }
 
             if (applicationConfig.debug.debugView) {

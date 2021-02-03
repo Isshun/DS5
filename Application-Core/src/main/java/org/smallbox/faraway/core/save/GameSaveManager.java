@@ -1,12 +1,17 @@
 package org.smallbox.faraway.core.save;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.graphics.PixmapIO;
+import com.badlogic.gdx.utils.BufferUtils;
+import com.badlogic.gdx.utils.ScreenUtils;
 import org.apache.commons.compress.archivers.ArchiveException;
 import org.apache.commons.compress.archivers.ArchiveOutputStream;
 import org.apache.commons.compress.archivers.ArchiveStreamFactory;
 import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
 import org.apache.commons.compress.utils.IOUtils;
 import org.smallbox.faraway.core.Application;
-import org.smallbox.faraway.util.GameException;
 import org.smallbox.faraway.core.dependencyInjector.DependencyManager;
 import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
@@ -16,6 +21,7 @@ import org.smallbox.faraway.core.game.GameSerializer;
 import org.smallbox.faraway.core.game.GameTime;
 import org.smallbox.faraway.game.character.CharacterModule;
 import org.smallbox.faraway.util.FileUtils;
+import org.smallbox.faraway.util.GameException;
 import org.smallbox.faraway.util.log.Log;
 
 import java.io.*;
@@ -47,21 +53,40 @@ public class GameSaveManager {
         createDatabaseFile(gameDirectory, prefixName);
 
         sqlManager.post(db -> {
-            try {
-                createArchive(gameDirectory, prefixName);
-                deleteFiles(gameDirectory, prefixName);
+            Gdx.app.postRunnable(() -> {
+                try {
+                    createScreenshot(gameDirectory, prefixName);
+                    createArchive(gameDirectory, prefixName);
+                    deleteFiles(gameDirectory, prefixName);
 
-                Log.info("Save game completed (" + (System.currentTimeMillis() - time) + "ms)");
-                Application.notify(observer -> observer.onCustomEvent("save_game.complete", null));
-            } catch (IOException | ArchiveException e) {
-                throw new GameException(GameSaveManager.class, e, "Error during game save");
-            }
+                    Log.info("Save game completed (" + (System.currentTimeMillis() - time) + "ms)");
+                    Application.notify(observer -> observer.onCustomEvent("save_game.complete", null));
+                } catch (IOException | ArchiveException e) {
+                    throw new GameException(GameSaveManager.class, e, "Error during game save");
+                }
+            });
         });
     }
 
+    private void createScreenshot(File gameDirectory, String prefixName) {
+        File saveInfoFile = new File(gameDirectory, prefixName + ".png");
+
+        byte[] pixels = ScreenUtils.getFrameBufferPixels(0, 0, Gdx.graphics.getBackBufferWidth(), Gdx.graphics.getBackBufferHeight(), true);
+
+        // This loop makes sure the whole screenshot is opaque and looks exactly like what the user is seeing
+        for (int i = 4; i < pixels.length; i += 4) {
+            pixels[i - 1] = (byte) 255;
+        }
+
+        Pixmap pixmap = new Pixmap(Gdx.graphics.getBackBufferWidth(), Gdx.graphics.getBackBufferHeight(), Pixmap.Format.RGBA8888);
+        BufferUtils.copy(pixels, 0, pixmap.getPixels(), pixels.length);
+        PixmapIO.writePNG(new FileHandle(saveInfoFile), pixmap);
+        pixmap.dispose();
+    }
+
     private void createGameInfoFile(File gameDirectory, String prefixName, GameSaveType type, Date date) {
-        File saveInfoFile = new  File(gameDirectory, prefixName + ".json");
-        File gameInfoFile = new  File(gameDirectory, "game.json");
+        File saveInfoFile = new File(gameDirectory, prefixName + ".json");
+        File gameInfoFile = new File(gameDirectory, "game.json");
 
         GameSaveInfo saveInfo = new GameSaveInfo();
         saveInfo.type = type;
@@ -83,7 +108,7 @@ public class GameSaveManager {
 
     // Create and populate DB
     private void createDatabaseFile(File gameDirectory, String prefixName) {
-        File dbFile = new  File(gameDirectory, prefixName + ".db");
+        File dbFile = new File(gameDirectory, prefixName + ".db");
         sqlManager.openDB(dbFile);
 
         // Call modules serializers
@@ -94,14 +119,14 @@ public class GameSaveManager {
 
     // Delete DB file
     private void deleteFiles(File gameDirectory, String prefixName) throws IOException {
-        File gameInfoFile = new  File(gameDirectory, prefixName + ".json");
-        if (!gameInfoFile.delete()) {
-            throw new IOException("Unable to delete GameInfo file: " + gameInfoFile.getAbsolutePath());
-        }
+        deleteFile(new File(gameDirectory, prefixName + ".json"));
+        deleteFile(new File(gameDirectory, prefixName + ".db"));
+        deleteFile(new File(gameDirectory, prefixName + ".png"));
+    }
 
-        File dbFile = new  File(gameDirectory, prefixName + ".db");
-        if (!dbFile.delete()) {
-            throw new IOException("Unable to delete DB file: " + dbFile.getAbsolutePath());
+    private void deleteFile(File fileToDelete) throws IOException {
+        if (!fileToDelete.delete()) {
+            throw new IOException("Unable to delete file: " + fileToDelete.getAbsolutePath());
         }
     }
 
@@ -111,6 +136,7 @@ public class GameSaveManager {
         try (OutputStream archiveStream = new FileOutputStream(archiveFile)) {
             try (ArchiveOutputStream archive = new ArchiveStreamFactory().createArchiveOutputStream(ArchiveStreamFactory.ZIP, archiveStream)) {
                 createArchiveEntry(archive, gameDirectory, prefixName + ".db");
+                createArchiveEntry(archive, gameDirectory, prefixName + ".png");
                 createArchiveEntry(archive, gameDirectory, prefixName + ".json");
                 archive.finish();
             }
@@ -118,7 +144,7 @@ public class GameSaveManager {
     }
 
     private void createArchiveEntry(ArchiveOutputStream archive, File gameDirectory, String fileName) throws IOException {
-        File file = new  File(gameDirectory, fileName);
+        File file = new File(gameDirectory, fileName);
         archive.putArchiveEntry(new ZipArchiveEntry(fileName));
         try (BufferedInputStream input = new BufferedInputStream(new FileInputStream(file))) {
             IOUtils.copy(input, archive);

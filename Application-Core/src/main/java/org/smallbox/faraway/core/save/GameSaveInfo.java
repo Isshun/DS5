@@ -31,7 +31,6 @@ public class GameSaveInfo {
         return saveJson;
     }
 
-
     public static GameSaveInfo fromJSON(JSONObject jsonSave) {
         GameSaveInfo saveInfo = new GameSaveInfo();
         saveInfo.type = GameSaveType.valueOf(jsonSave.getString("type").toUpperCase());

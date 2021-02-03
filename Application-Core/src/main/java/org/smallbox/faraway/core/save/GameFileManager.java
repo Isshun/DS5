@@ -1,5 +1,7 @@
 package org.smallbox.faraway.core.save;
 
+import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.graphics.Texture;
 import org.apache.commons.compress.archivers.ArchiveEntry;
 import org.apache.commons.compress.archivers.ArchiveException;
 import org.apache.commons.compress.archivers.ArchiveInputStream;
@@ -12,10 +14,7 @@ import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.util.FileUtils;
 import org.smallbox.faraway.util.log.Log;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.Collections;
@@ -42,7 +41,28 @@ public class GameFileManager {
                 ArchiveEntry entry;
                 while ((entry = archive.getNextEntry()) != null) {
                     if (entry.getName().endsWith(".json")) {
-                        return GameSaveInfo.fromJSON(new JSONObject(IOUtils.toString(archive, StandardCharsets.UTF_8)));
+                        GameSaveInfo gameSaveInfo = GameSaveInfo.fromJSON(new JSONObject(IOUtils.toString(archive, StandardCharsets.UTF_8)));
+                        gameSaveInfo.game = game.getInfo();
+                        return gameSaveInfo;
+                    }
+                }
+            }
+        } catch (IOException | ArchiveException e) {
+            Log.error(e);
+        }
+        return null;
+    }
+
+    public Texture getScreenshot(GameSaveInfo gameSaveInfo) {
+        File gameDirectory = FileUtils.getSaveDirectory(gameSaveInfo.game.name);
+        try (InputStream archiveStream = new FileInputStream(new File(gameDirectory, gameSaveInfo.filename + ".zip"))) {
+            try (ArchiveInputStream archive = new ArchiveStreamFactory().createArchiveInputStream(ArchiveStreamFactory.ZIP, archiveStream)) {
+                ArchiveEntry entry;
+                while ((entry = archive.getNextEntry()) != null) {
+                    if (entry.getName().endsWith(".png")) {
+                        Pixmap pixmap = new Pixmap(archive.readAllBytes(), 0, (int) archive.getBytesRead()); //error here
+                        Texture t = new Texture(pixmap);
+                        return t;
                     }
                 }
             }

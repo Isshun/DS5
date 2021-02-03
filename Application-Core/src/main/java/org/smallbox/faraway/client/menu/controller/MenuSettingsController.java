@@ -3,9 +3,8 @@ package org.smallbox.faraway.client.menu.controller;
 import org.smallbox.faraway.client.controller.LuaController;
 import org.smallbox.faraway.client.controller.annotation.BindLua;
 import org.smallbox.faraway.client.controller.annotation.BindLuaAction;
-import org.smallbox.faraway.client.ui.extra.Colors;
-import org.smallbox.faraway.client.ui.widgets.View;
 import org.smallbox.faraway.client.ui.widgets.UILabel;
+import org.smallbox.faraway.client.ui.widgets.View;
 import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 
@@ -13,10 +12,10 @@ import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 public class MenuSettingsController extends LuaController {
     @Inject private MenuMainController menuMainController;
 
-    @BindLua private View btGraphic;
-    @BindLua private View btSound;
-    @BindLua private View btBindings;
-    @BindLua private View btGameplay;
+    @BindLua private UILabel btGraphic;
+    @BindLua private UILabel btSound;
+    @BindLua private UILabel btBindings;
+    @BindLua private UILabel btGameplay;
     @BindLua private UILabel btScreenBorderless;
     @BindLua private UILabel btScreenFullscreen;
     @BindLua private UILabel btScreenWindow;
@@ -76,13 +75,13 @@ public class MenuSettingsController extends LuaController {
         btScreenWindow.setText("[x] Window");
     }
 
-    private void openSubMenu(View button, View subMenu) {
-        btGraphic.getStyle().setBackgroundColor(Colors.BLUE_DARK_4);
-        btSound.getStyle().setBackgroundColor(Colors.BLUE_DARK_4);
-        btBindings.getStyle().setBackgroundColor(Colors.BLUE_DARK_4);
-        btGameplay.getStyle().setBackgroundColor(Colors.BLUE_DARK_4);
+    private void openSubMenu(UILabel button, View subMenu) {
+        btGraphic.setTextColor(0x00000088);
+        btSound.setTextColor(0x00000088);
+        btBindings.setTextColor(0x00000088);
+        btGameplay.setTextColor(0x00000088);
 
-        button.getStyle().setBackgroundColor(0x25c9cbff);
+        button.setTextColor(0xffffffcc);
 
         graphicSubMenu.setVisible(false);
         soundSubMenu.setVisible(false);
