@@ -66,6 +66,20 @@ public abstract class BaseRenderer {
         drawSprite(sprite, mapToScreenX(parcel.x, offsetX), mapToScreenY(parcel.y, offsetY));
     }
 
+    public void drawSpriteOnMap(Sprite sprite, Parcel parcel, int offsetX, int offsetY, int gridSize, int gridPosition) {
+        // Compute offset for the center of the parcel
+        int gridOffsetX = (int) (Constant.HALF_TILE_SIZE - sprite.getWidth() / 2);
+        int gridOffsetY = (int) (Constant.TILE_SIZE - sprite.getHeight());
+
+        // Compute offset for the corners of the parcel
+        if (gridSize == 2 || gridSize == 4) {
+            gridOffsetX += (gridPosition == 1 || gridPosition == 2 ? -Constant.QUARTER_TILE_SIZE : Constant.QUARTER_TILE_SIZE);
+            gridOffsetY += (gridPosition == 0 || gridPosition == 2 ? -Constant.HALF_TILE_SIZE : 0);
+        }
+
+        drawSprite(sprite, mapToScreenX(parcel.x, offsetX + gridOffsetX), mapToScreenY(parcel.y, offsetY + gridOffsetY));
+    }
+
     public void drawSprite(Sprite sprite) {
         if (sprite != null) {
             Gdx.gl.glEnable(GL20.GL_BLEND);

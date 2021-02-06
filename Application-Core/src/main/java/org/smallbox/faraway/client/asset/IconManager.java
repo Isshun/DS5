@@ -16,13 +16,13 @@ public class IconManager {
     }
 
     public Sprite getOrCreateIcon(GraphicInfo graphicInfo, int width, int height) {
-        Sprite sprite = spriteManager.getOrCreateSprite(graphicInfo, 0, width + "-" + height);
+        Sprite sprite = spriteManager.getOrCreateSprite(graphicInfo, 0, false, width + "-" + height, null);
         sprite.setSize(width, height);
         return sprite;
     }
 
     public Sprite getOrCreateIcon(String absolutePath) {
-        return spriteManager.getOrCreateSprite(absolutePath, 0, 0, 0, 0, 0, null);
+        return spriteManager.getOrCreateSprite(absolutePath, 0, 0, 0, 0, 0, false, null, null);
     }
 
 }

@@ -1,20 +1,25 @@
 package org.smallbox.faraway.client.layer.item;
 
-import org.smallbox.faraway.client.layer.LayerManager;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import org.smallbox.faraway.client.asset.SpriteManager;
+import org.smallbox.faraway.client.input.InputManager;
 import org.smallbox.faraway.client.layer.BaseMapLayer;
-import org.smallbox.faraway.client.renderer.*;
+import org.smallbox.faraway.client.layer.GameLayer;
+import org.smallbox.faraway.client.layer.LayerManager;
+import org.smallbox.faraway.client.renderer.BaseRenderer;
+import org.smallbox.faraway.client.renderer.MapRenderer;
+import org.smallbox.faraway.client.renderer.Viewport;
 import org.smallbox.faraway.client.renderer.extra.TextStyle;
 import org.smallbox.faraway.client.renderer.extra.TextStyleBuilder;
 import org.smallbox.faraway.client.ui.widgets.UILabel;
-import org.smallbox.faraway.client.layer.GameLayer;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.game.consumable.Consumable;
-import org.smallbox.faraway.game.world.Parcel;
 import org.smallbox.faraway.game.consumable.ConsumableModule;
 import org.smallbox.faraway.game.consumable.ConsumableModuleObserver;
+import org.smallbox.faraway.game.world.Parcel;
+import org.smallbox.faraway.game.world.WorldHelper;
 import org.smallbox.faraway.util.Constant;
 
 import java.util.Queue;
@@ -31,6 +36,7 @@ public class ConsumableLayer extends BaseMapLayer {
     @Inject private SpriteManager spriteManager;
     @Inject private ConsumableModule consumableModule;
     @Inject private MapRenderer mapRenderer;
+    @Inject private InputManager inputManager;
 
     private final Queue<TagDraw> tags = new ConcurrentLinkedQueue<>();
 
@@ -69,6 +75,8 @@ public class ConsumableLayer extends BaseMapLayer {
     }
 
     public void onDraw(BaseRenderer renderer, Viewport viewport, double animProgress, int frame) {
+        Parcel parcelOver = WorldHelper.getParcel(viewport.getWorldPosX(inputManager.getMouseX()), viewport.getWorldPosY(inputManager.getMouseY()), viewport.getFloor());
+
         consumableModule.getAll().stream()
                 .filter(item -> viewport.hasParcel(item.getParcel()))
                 .filter(item -> item.getTotalQuantity() > 0)
@@ -76,8 +84,9 @@ public class ConsumableLayer extends BaseMapLayer {
                     Parcel parcel = consumable.getParcel();
                     int offsetX = consumable.getGridPosition() == 1 || consumable.getGridPosition() == 3 ? Constant.HALF_TILE_SIZE : 0;
                     int offsetY = consumable.getGridPosition() == 2 || consumable.getGridPosition() == 3 ? Constant.HALF_TILE_SIZE : 0;
+                    Sprite sprite = spriteManager.getOrCreateSprite(consumable.getGraphic(), parcelOver == consumable.getParcel());
 
-                    renderer.drawSpriteOnMap(spriteManager.getOrCreateSprite(consumable.getGraphic()), parcel, offsetX, offsetY);
+                    renderer.drawSpriteOnMap(sprite, parcel, offsetX, offsetY);
 //                    renderer.drawRectangleOnMap(consumable.getParcel().x, consumable.getParcel().y, 40, 10, new Color(0x75D0D4FF), true, 0, 0);
                     String stringQuantity = consumable.getTotalQuantity() >= 1000 ? consumable.getTotalQuantity() / 1000 + "k" : String.valueOf(consumable.getTotalQuantity());
 //                    renderer.drawTextOnMap(consumable.getParcel().x, consumable.getParcel().y, stringQuantity, 30, Color.WHITE, 1, 51, true);

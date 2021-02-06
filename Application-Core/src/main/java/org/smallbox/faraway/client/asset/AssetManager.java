@@ -6,6 +6,7 @@ import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject
 import org.smallbox.faraway.util.log.Log;
 
 import java.util.UUID;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 @ApplicationObject
@@ -56,6 +57,24 @@ public class AssetManager extends com.badlogic.gdx.assets.AssetManager {
         pixmap.dispose();
         addAsset(key, Texture.class, texture);
         return texture;
+    }
+
+    public Texture createTextureFromTexturePixmap(String key, Texture textureIn, BiConsumer<Pixmap, Pixmap> pixmapConsumer) {
+        textureIn.getTextureData().prepare();
+        Pixmap pixmapIn = textureIn.getTextureData().consumePixmap();
+        Pixmap pixmapOut = new Pixmap(textureIn.getWidth(), textureIn.getHeight(), Pixmap.Format.RGBA8888);
+
+        pixmapConsumer.accept(pixmapIn, pixmapOut);
+
+        // Create texture and add to assets
+        Texture textureOut = new Texture(pixmapOut);
+        textureOut.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+        addAsset(key, Texture.class, textureOut);
+
+        pixmapIn.dispose();
+        pixmapOut.dispose();
+
+        return textureOut;
     }
 
     public Pixmap createPixmapFromTexture(String absolutePath) {

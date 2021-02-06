@@ -2,14 +2,12 @@ package org.smallbox.faraway.client.layer.item;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
+import org.smallbox.faraway.client.asset.AnimationManager;
 import org.smallbox.faraway.client.asset.AssetManager;
+import org.smallbox.faraway.client.asset.PixmapManager;
 import org.smallbox.faraway.client.asset.SpriteManager;
 import org.smallbox.faraway.client.input.InputManager;
 import org.smallbox.faraway.client.layer.BaseMapLayer;
@@ -33,8 +31,6 @@ import org.smallbox.faraway.game.character.model.PathModel;
 import org.smallbox.faraway.game.character.model.base.CharacterModel;
 import org.smallbox.faraway.game.consumable.Consumable;
 import org.smallbox.faraway.game.job.JobModel;
-import org.smallbox.faraway.game.world.Parcel;
-import org.smallbox.faraway.game.world.WorldHelper;
 import org.smallbox.faraway.util.Constant;
 
 import java.util.Optional;
@@ -46,8 +42,10 @@ public class CharacterLayer extends BaseMapLayer {
     @Inject private InputManager inputManager;
     @Inject private SpriteManager spriteManager;
     @Inject private CharacterModule characterModule;
+    @Inject private PixmapManager pixmapManager;
     @Inject private GameManager gameManager;
     @Inject private MapRenderer mapRenderer;
+    @Inject private AnimationManager animationManager;
     @Inject private Viewport viewport;
     @Inject private Game game;
 
@@ -57,30 +55,10 @@ public class CharacterLayer extends BaseMapLayer {
     private static final Color COLOR_WARNING = new Color(0xbbbb00ff);
     private static final Color COLOR_OK = new Color(0x448800ff);
 
-    public Animation<TextureRegion> runningAnimation;
-    public Animation<TextureRegion> runningAnimation2;
-
     @AfterGameLayerInit
     public void init() {
-//        TextureAtlas.AtlasRegion region = atlas.findRegion("hero_walk");
-//        Sprite sprite = atlas.createSprite("otherimagename");
-//        NinePatch patch = atlas.createPatch("patchimagename");
-
-        {
-            TextureAtlas atlas;
-            atlas = new TextureAtlas(Gdx.files.internal("data/graphics/player/player.atlas"));
-            atlas.getTextures().forEach(texture -> texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear));
-            atlas.getRegions().forEach(region -> region.flip(false, true));
-            runningAnimation = new Animation<>(0.045f, atlas.findRegions("hero_walk"), Animation.PlayMode.LOOP);
-        }
-
-        {
-            TextureAtlas atlas;
-            atlas = new TextureAtlas(Gdx.files.internal("data/graphics/player/ball.atlas"));
-            atlas.getTextures().forEach(texture -> texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear));
-            atlas.getRegions().forEach(region -> region.flip(false, true));
-            runningAnimation2 = new Animation<>(0.045f, atlas.findRegions("skeleton-animation"), Animation.PlayMode.LOOP);
-        }
+//        animationManager.init("player", "data/graphics/player/ball.atlas", "skeleton-animation", 0.045f, Animation.PlayMode.LOOP);
+        animationManager.init("player", "data/graphics/player/player.atlas", "hero_walk", 0.045f, Animation.PlayMode.LOOP);
     }
 
     @Override
@@ -143,17 +121,11 @@ public class CharacterLayer extends BaseMapLayer {
     }
 
     private void doDraw(BaseRenderer renderer, CharacterModel character, int posX, int posY, MovableModel.Direction dout) {
-//        if (positionCommon.isAlive()) {
         drawCharacter(renderer, character, posX, posY, dout);
         drawLabel(renderer, character, posX, posY);
         drawSelection(renderer, spriteManager, character, posX, posY, Constant.TILE_SIZE, (int) (Constant.TILE_SIZE * 1.25), 0, 0);
         drawInventory(renderer, character, posX, posY);
         drawJob(renderer, character, posX, posY);
-//        }
-//
-//        else {
-//            renderer.draw(posX, posY, spriteManager.getIcon("[base]/res/ic_dead.png"));
-//        }
     }
 
     /**
@@ -186,11 +158,10 @@ public class CharacterLayer extends BaseMapLayer {
      * Draw characters
      */
     private void drawCharacter(BaseRenderer renderer, CharacterModel character, int posX, int posY, MovableModel.Direction direction) {
-        TextureRegion currentFrame = runningAnimation2.getKeyFrame(character.stateTime, true);
+        String key = "player" + (hasCursorOver(character.getParcel()) ? "-overlay" : "");
 
-        Parcel parcelOver = WorldHelper.getParcel(viewport.getWorldPosX(inputManager.getMouseX()), viewport.getWorldPosY(inputManager.getMouseY()), viewport.getFloor());
+        TextureRegion currentFrame = animationManager.getFrame(key, character.stateTime);
 
-        // TODO: direction not applied to overlay
         if (character.getPath() != null) {
 
             if (direction == MovableModel.Direction.LEFT && currentFrame.isFlipX()) {
@@ -204,39 +175,13 @@ public class CharacterLayer extends BaseMapLayer {
             drawPath(character);
         }
 
-        if (parcelOver == character.getParcel()) {
-            drawOverlay(currentFrame, posX, posY);
-        } else {
+//        if (parcelOver == character.getParcel()) {
+//            drawOverlay(currentFrame, posX, posY);
+//        } else {
             renderer.drawTextureRegion(currentFrame, posX, posY);
-        }
+//        }
     }
 
-    private void drawOverlay(TextureRegion currentFrame, int posX, int posY) {
-        String key = "player-" + currentFrame.getRegionX() + "-" + currentFrame.getRegionY();
-
-        if (!assetManager.contains(key, Texture.class)) {
-            assetManager.createTextureFromPixmap(key, currentFrame.getRegionWidth(), currentFrame.getRegionHeight(), Pixmap.Format.RGBA8888, newPixmap -> {
-                currentFrame.getTexture().getTextureData().prepare();
-                Pixmap pixmap = currentFrame.getTexture().getTextureData().consumePixmap();
-                for (int x = 0; x < currentFrame.getRegionWidth(); x++) {
-                    for (int y = 0; y < currentFrame.getRegionHeight(); y++) {
-                        int colorInt = pixmap.getPixel(currentFrame.getRegionX() + x, currentFrame.getRegionY() - y);
-                        int r = (int) Math.min(((colorInt >> 24) & 0x000000ff) * 1.4 + 32, 255);
-                        int g = (int) Math.min(((colorInt >> 16) & 0x000000ff) * 1.4 + 32, 255);
-                        int b = (int) Math.min(((colorInt >> 8) & 0x000000ff) * 1.4 + 32, 255);
-                        newPixmap.drawPixel(x, y, (r << 24) + (g << 16) + (b << 8) + (colorInt & 0x000000ff));
-                    }
-                }
-                pixmap.dispose();
-            });
-        }
-
-        mapRenderer.drawSprite(new Sprite(assetManager.get(key, Texture.class)), posX, posY);
-    }
-
-    /**
-     * Draw inventory
-     */
     private void drawInventory(BaseRenderer renderer, CharacterModel character, int posX, int posY) {
         if (character.hasExtra(CharacterInventoryExtra.class)) {
             for (Consumable inventoryConsumable : character.getExtra(CharacterInventoryExtra.class).getAll()) {

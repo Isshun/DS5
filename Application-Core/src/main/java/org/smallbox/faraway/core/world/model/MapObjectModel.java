@@ -1,18 +1,21 @@
 package org.smallbox.faraway.core.world.model;
 
-import org.smallbox.faraway.game.world.ObjectModel;
 import org.smallbox.faraway.core.game.modelInfo.GraphicInfo;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.game.consumable.Consumable;
 import org.smallbox.faraway.game.job.JobModel;
+import org.smallbox.faraway.game.world.ObjectModel;
 import org.smallbox.faraway.game.world.Parcel;
 
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.Set;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ConcurrentSkipListSet;
 
 public abstract class MapObjectModel extends ObjectModel {
+    public final static Comparator<MapObjectModel> VERTICAL_COMPARATOR = (o1, o2) ->
+            (o2.getParcel().y * 2 + o2.getGridPosition() > 1 ? 1 : 0) - (o1.getParcel().y * 2 + o1.getGridPosition() > 1 ? 1 : 0);
 
     private String              _name;
     private int                 _mode;
