@@ -25,12 +25,16 @@ public class ApplicationConfigService {
 
         FileUtils.createRoamingDirectory();
 
-        File configFile = FileUtils.getUserDataFile("settings.json");
-        if (configFile.exists()) {
-            try (FileReader fileReader = new FileReader(configFile)) {
-                dependencyManager.register(applicationConfig = new Gson().fromJson(fileReader, ApplicationConfig.class));
-            } catch (IOException e) {
-                throw new GameException(ApplicationConfigService.class, e, "Unable to read config file");
+        applicationConfig = dependencyManager.getDependency(ApplicationConfig.class);
+
+        if (applicationConfig == null) {
+            File configFile = FileUtils.getUserDataFile("settings.json");
+            if (configFile.exists()) {
+                try (FileReader fileReader = new FileReader(configFile)) {
+                    dependencyManager.register(applicationConfig = new Gson().fromJson(fileReader, ApplicationConfig.class));
+                } catch (IOException e) {
+                    throw new GameException(ApplicationConfigService.class, e, "Unable to read config file");
+                }
             }
         }
 

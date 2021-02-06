@@ -66,4 +66,8 @@ public class UISlider extends CompositeView {
         this.value = value;
         positionX = (int) (geometry.getFinalX() + value * (geometry.getWidth() - handleWidth));
     }
+
+    public float getValue() {
+        return value;
+    }
 }

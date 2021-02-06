@@ -25,7 +25,7 @@ public abstract class DigJobFactory {
 
             job.setMainLabel("Dig");
             job.setSkillType(CharacterSkillExtra.SkillType.DIG);
-            job.setIcon("[base]/graphics/jobs/ic_mining.png");
+            job.setIcon("data/graphics/jobs/ic_mining.png");
             job.setColor(new Color(0x80391eff));
             job.setTotalDuration(applicationConfig.game.digTime);
 
@@ -34,9 +34,7 @@ public abstract class DigJobFactory {
 
             // Dig action
             job.addTask(new ActionTask("Dig", (character, hourInterval, localDateTime) -> {
-                if (digParcel.getRockInfo() != null) {
-                    job.addProgression(hourInterval);
-                }
+                job.addProgression(digParcel.getRockInfo() != null ? hourInterval : -1);
             }, () -> job.getDuration() >= job.getTotalDuration() ? TASK_COMPLETED : TASK_CONTINUE));
 
             // - Create output products

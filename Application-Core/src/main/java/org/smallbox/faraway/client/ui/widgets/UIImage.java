@@ -30,16 +30,19 @@ public class UIImage extends View {
     }
 
     public UIImage setImage(GraphicInfo graphicInfo) {
-        _sprite = spriteManager.getIcon(graphicInfo, geometry.getWidth(), geometry.getHeight());
+        _sprite = iconManager.getOrCreateIcon(graphicInfo, geometry.getWidth(), geometry.getHeight());
         _dirty = true;
         return this;
     }
 
     public UIImage setImage(String path) {
-        if (path != null && !path.equals(_path)) {
-            _sprite = null;
-            _path = path;
-            _dirty = true;
+        if (path != null) {
+            path = path.replace("[base]", "data");
+            if (!path.equals(_path)) {
+                _sprite = null;
+                _path = path;
+                _dirty = true;
+            }
         }
         return this;
     }
@@ -67,7 +70,7 @@ public class UIImage extends View {
 
                 if (_path != null) {
                     try {
-                        _sprite = spriteManager.getIcon(_path);
+                        _sprite = iconManager.getOrCreateIcon(_path);
                         _sprite.setRegion(0, 0, geometry.getOriginWidth(), geometry.getOriginHeight());
                         _sprite.setSize(geometry.getOriginWidth(), geometry.getOriginHeight());
                         _sprite.setScale((float) applicationConfig.uiScale);

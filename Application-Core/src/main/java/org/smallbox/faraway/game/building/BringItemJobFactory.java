@@ -26,7 +26,7 @@ public class BringItemJobFactory {
         BringItemJob job = new BringItemJob(sourceConsumable.getParcel());
 
         job.setMainLabel("Bring " + itemInfo.label + " to " + targetItem.getInfo().label);
-        job.setIcon("[base]/graphics/jobs/ic_haul.png");
+        job.setIcon("data/graphics/jobs/ic_haul.png");
         job.setSkillType(CharacterSkillExtra.SkillType.STORE);
         job.setColor(new Color(0xbb391eff));
 

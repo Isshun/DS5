@@ -1,8 +1,11 @@
 package org.smallbox.faraway.game.character;
 
+import org.smallbox.faraway.core.game.modelInfo.GraphicInfo;
 import org.smallbox.faraway.core.game.modelInfo.ObjectInfo;
 
 public class CharacterInfo extends ObjectInfo {
+    public GraphicInfo graphic;
+
     public CharacterInfo(String name) {
         this.name = name;
     }

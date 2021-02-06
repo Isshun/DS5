@@ -77,7 +77,11 @@ public class JobModel extends ObjectModel {
     }
 
     public void addProgression(double progression) {
-        duration += progression;
+        if (progression >= 0) {
+            duration += progression;
+        } else {
+            duration = totalDuration;
+        }
     }
 
     public void addAcceptedParcel(Parcel acceptedParcel) {

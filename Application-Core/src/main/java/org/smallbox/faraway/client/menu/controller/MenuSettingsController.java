@@ -4,13 +4,19 @@ import org.smallbox.faraway.client.controller.LuaController;
 import org.smallbox.faraway.client.controller.annotation.BindLua;
 import org.smallbox.faraway.client.controller.annotation.BindLuaAction;
 import org.smallbox.faraway.client.ui.widgets.UILabel;
+import org.smallbox.faraway.client.ui.widgets.UISlider;
 import org.smallbox.faraway.client.ui.widgets.View;
+import org.smallbox.faraway.core.config.ApplicationConfig;
+import org.smallbox.faraway.core.dependencyInjector.DependencyManager;
 import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
+import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnSettingsUpdate;
 
 @ApplicationObject
 public class MenuSettingsController extends LuaController {
     @Inject private MenuMainController menuMainController;
+    @Inject private DependencyManager dependencyManager;
+    @Inject private ApplicationConfig applicationConfig;
 
     @BindLua private UILabel btGraphic;
     @BindLua private UILabel btSound;
@@ -23,6 +29,9 @@ public class MenuSettingsController extends LuaController {
     @BindLua private View soundSubMenu;
     @BindLua private View bindingsSubMenu;
     @BindLua private View gameplaySubMenu;
+    @BindLua private UISlider sliderMusic;
+
+    private String screenMode;
 
     @BindLuaAction
     public void onOpenGraphic(View view) {
@@ -52,6 +61,10 @@ public class MenuSettingsController extends LuaController {
 
     @BindLuaAction
     public void onApply(View view) {
+        applicationConfig.musicVolume = sliderMusic.getValue();
+        applicationConfig.screen.mode = screenMode;
+
+        dependencyManager.callMethodAnnotatedBy(OnSettingsUpdate.class);
     }
 
     @BindLuaAction
@@ -59,6 +72,7 @@ public class MenuSettingsController extends LuaController {
         btScreenBorderless.setText("[x] Borderless");
         btScreenFullscreen.setText("[ ] Fullscreen");
         btScreenWindow.setText("[ ] Window");
+        screenMode = "borderless";
     }
 
     @BindLuaAction
@@ -66,6 +80,7 @@ public class MenuSettingsController extends LuaController {
         btScreenBorderless.setText("[ ] Borderless");
         btScreenFullscreen.setText("[x] Fullscreen");
         btScreenWindow.setText("[ ] Window");
+        screenMode = "fullscreen";
     }
 
     @BindLuaAction
@@ -73,6 +88,7 @@ public class MenuSettingsController extends LuaController {
         btScreenBorderless.setText("[ ] Borderless");
         btScreenFullscreen.setText("[ ] Fullscreen");
         btScreenWindow.setText("[x] Window");
+        screenMode = "window";
     }
 
     private void openSubMenu(UILabel button, View subMenu) {

@@ -3,6 +3,7 @@ package org.smallbox.faraway.game.character;
 import org.luaj.vm2.Globals;
 import org.luaj.vm2.LuaValue;
 import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject;
+import org.smallbox.faraway.core.game.modelInfo.GraphicInfo;
 import org.smallbox.faraway.core.module.ModuleBase;
 import org.smallbox.faraway.core.lua.data.DataExtendException;
 import org.smallbox.faraway.core.lua.data.LuaExtend;
@@ -23,7 +24,8 @@ public class LuaCharacterExtend extends LuaExtend {
         String id = getString(value, "id", null);
         CharacterInfo characterInfo = dataManager.characters.computeIfAbsent(id, k -> new CharacterInfo(id));
 
-        characterInfo.path = "data/characters/human.png";
+        characterInfo.path = "data";
+        characterInfo.graphic = new GraphicInfo("data", "/characters/human.png");
 
         LuaValue needs = value.get("needs");
         if (!needs.isnil()) {

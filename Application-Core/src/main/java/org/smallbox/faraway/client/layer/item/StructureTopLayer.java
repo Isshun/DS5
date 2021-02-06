@@ -63,7 +63,7 @@ public class StructureTopLayer extends BaseMapLayer {
     }
 
     private Sprite getSprite(StructureItem structure) {
-        return spriteManager.getSprite(structure.getInfo(), structure.getGraphic(), structure.isComplete() ? structure.getInfo().height : 0, 0, 255, false);
+        return spriteManager.getOrCreateSprite(structure.getGraphic());
     }
 
     @Override

@@ -35,7 +35,7 @@ public class StoreJobFactory {
             job.sourceConsumable = consumable;
             job.storageArea = storageArea;
             job.setMainLabel("Store");
-            job.setIcon("[base]/graphics/jobs/ic_store.png");
+            job.setIcon("data/graphics/jobs/ic_store.png");
             job.setSkillType(CharacterSkillExtra.SkillType.STORE);
             job.setColor(new Color(0xbb391eff));
             job.setAcceptedParcel(WorldHelper.getParcelAround(consumable.getParcel(), SurroundedPattern.SQUARE));

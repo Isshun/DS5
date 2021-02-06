@@ -57,7 +57,7 @@ ui:extend({
             { type = "list", id = "sound_sub_menu", visible = false, position = {0, 2}, size = {800, 490}, views = {
                 { type = "view", size = {window_width, 60}, position = {20, 0}, views = {
                     { type = "label", text = "Music", text_font = "sui", text_color = 0x000000cc, text_size = 24, size = {400, 60}, text_align = "LEFT", padding = 10},
-                    { type = "slider", size = {400, 6}, handle_size = {50, 20}, position = {650, 40}, handle_background = 0x000000ee, background = 0x00000088, views = {
+                    { type = "slider", id = "slider_music", size = {400, 6}, handle_size = {50, 20}, position = {650, 40}, handle_background = 0x000000ee, background = 0x00000088, views = {
                         { type = "label", text_size = 16, text_color = 0x000000cc, text_size = 24, text_font = "sui", position = {450, -5}},
                     }},
                 }},
@@ -69,7 +69,7 @@ ui:extend({
                 }},
             }},
 
-            -- Bindings
+            -- Bindingss
             { type = "list", id = "bindings_sub_menu", visible = false, position = {0, 2}, size = {800, 490}, views = {
                 { type = "label", text = "UI", text_size = 16, padding = 10},
                 { type = "label", text = "Game", text_size = 16, padding = 10},

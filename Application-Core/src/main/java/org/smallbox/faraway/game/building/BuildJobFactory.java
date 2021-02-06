@@ -30,7 +30,7 @@ public class BuildJobFactory {
 
         buildJob.setSkillType(CharacterSkillExtra.SkillType.BUILD);
         buildJob.setMainLabel("Build " + itemInfo.label);
-        buildJob.setIcon("[base]/graphics/jobs/ic_build.png");
+        buildJob.setIcon("data/graphics/jobs/ic_build.png");
         buildJob.setTotalDuration(item.getBuildCost());
         buildJob.setAcceptedParcel(WorldHelper.getParcelAround(targetParcel, SurroundedPattern.SQUARE));
 

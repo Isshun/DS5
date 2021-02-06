@@ -111,7 +111,7 @@ public class CharacterInfoStatusController extends LuaController {
             if (job instanceof StoreJob) {
                 if (CollectionUtils.isNotEmpty(((StoreJob) job).sourceConsumable.getInfo().graphics)) {
                     imgJob.setVisible(true);
-                    imgJob.setImage(spriteManager.getNewSprite(((StoreJob) job).sourceConsumable.getInfo().graphics.get(0)));
+                    imgJob.setImage(spriteManager.getOrCreateSprite(((StoreJob) job).sourceConsumable.getInfo().graphics.get(0)));
                 }
             }
 

@@ -53,9 +53,7 @@ public class PlantLayer extends BaseMapLayer {
         }
 
         if (!spriteMap.containsKey(plant)) {
-            Sprite sprite = new Sprite(spriteManager.getTexture(plant.getGraphic()), 0, 0, plant.getGraphic().width, plant.getGraphic().height);
-            sprite.setFlip(false, true);
-            spriteMap.put(plant, sprite);
+            spriteMap.put(plant, spriteManager.getOrCreateSprite(plant.getGraphic()));
         }
 
         if (!spriteMap2.containsKey(plant)) {

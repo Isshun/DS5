@@ -1,6 +1,7 @@
 package org.smallbox.faraway.game.character.model.base;
 
 import org.smallbox.faraway.GameTask;
+import org.smallbox.faraway.core.game.modelInfo.GraphicInfo;
 import org.smallbox.faraway.game.character.CharacterPositionCommon;
 import org.smallbox.faraway.util.GameException;
 import org.smallbox.faraway.core.game.model.MovableModel;
@@ -44,6 +45,7 @@ public abstract class CharacterModel extends MovableModel {
     public JobModel                     getJob() { return job; }
     public Parcel getParcel() { return _parcel; }
     public CharacterInfo                getType() { return _type; }
+    public GraphicInfo getGraphic() { return _type.graphic; }
     public abstract String              getName();
 
     public abstract void                addBodyStats(CharacterStatsExtra stats);

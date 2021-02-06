@@ -3,10 +3,11 @@ package org.smallbox.faraway.client.asset.music;
 import com.badlogic.gdx.audio.Music;
 import org.apache.commons.lang3.RandomUtils;
 import org.smallbox.faraway.client.asset.AssetManager;
+import org.smallbox.faraway.core.config.ApplicationConfig;
 import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnInit;
-import org.smallbox.faraway.core.config.ApplicationConfig;
+import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnSettingsUpdate;
 
 import java.util.Arrays;
 import java.util.List;
@@ -26,6 +27,11 @@ public class BackgroundMusicManager {
     @OnInit
     private void init() {
         load(getRandom(), false);
+    }
+
+    @OnSettingsUpdate
+    private void onSettingsUpdate() {
+        load(getRandom(), true);
     }
 
     public void start() {

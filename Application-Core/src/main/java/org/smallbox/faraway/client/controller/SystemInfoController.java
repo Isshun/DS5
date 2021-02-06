@@ -60,7 +60,7 @@ public class SystemInfoController extends LuaController {
         }
 
         // Display game speed
-        icSpeed.setImage("[base]/graphics/ic_speed_" + game.getSpeed() + ".png");
+        icSpeed.setImage("data/graphics/ic_speed_" + game.getSpeed() + ".png");
         lbSpeed.setText("x" + game.getSpeed());
         icSpeed.setVisible(game.getSpeed() <= 3);
         lbSpeed.setVisible(game.getSpeed() > 3);
@@ -69,12 +69,12 @@ public class SystemInfoController extends LuaController {
 
     @Override
     public void onGamePaused() {
-        icSpeed.setImage("[base]/graphics/ic_speed_0.png");
+        icSpeed.setImage("data/graphics/ic_speed_0.png");
     }
 
     @Override
     public void onGameResume() {
-        icSpeed.setImage("[base]/graphics/ic_speed_" + game.getSpeed() + ".png");
+        icSpeed.setImage("data/graphics/ic_speed_" + game.getSpeed() + ".png");
     }
 
     @BindLuaAction

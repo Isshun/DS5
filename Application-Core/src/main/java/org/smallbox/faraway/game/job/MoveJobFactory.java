@@ -16,7 +16,7 @@ public class MoveJobFactory {
         job.addAcceptedParcel(targetParcel);
         job.setMainLabel("Move");
         job.setCharacterRequire(character);
-        job.setIcon("[base]/graphics/jobs/ic_mining.png");
+        job.setIcon("data/graphics/jobs/ic_mining.png");
         job.setColor(new Color(0x80391eff));
 
         // Move character to parcel

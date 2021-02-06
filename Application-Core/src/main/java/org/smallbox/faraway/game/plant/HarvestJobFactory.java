@@ -28,7 +28,7 @@ public class HarvestJobFactory {
 
             job.setMainLabel("Harvest");
             job.setSkillType(CharacterSkillExtra.SkillType.GATHER);
-            job.setIcon("[base]/graphics/jobs/ic_gather.png");
+            job.setIcon("data/graphics/jobs/ic_gather.png");
             job.setColor(Color.CHARTREUSE);
             WorldHelper.getParcelAround(plant.getParcel(), SurroundedPattern.SQUARE, job::addAcceptedParcel);
 

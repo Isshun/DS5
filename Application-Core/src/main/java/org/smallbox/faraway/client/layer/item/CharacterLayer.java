@@ -241,7 +241,7 @@ public class CharacterLayer extends BaseMapLayer {
         if (character.hasExtra(CharacterInventoryExtra.class)) {
             for (Consumable inventoryConsumable : character.getExtra(CharacterInventoryExtra.class).getAll()) {
                 if (inventoryConsumable.getTotalQuantity() > 0) {
-                    renderer.drawSprite(spriteManager.getNewSprite(inventoryConsumable.getInfo()), posX, posY + 2);
+                    renderer.drawSprite(spriteManager.getOrCreateSprite(inventoryConsumable.getInfo()), posX, posY + 2);
                 }
             }
         }

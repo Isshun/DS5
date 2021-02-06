@@ -1,6 +1,7 @@
 package org.smallbox.faraway.client.ui.widgets;
 
 import com.badlogic.gdx.Gdx;
+import org.smallbox.faraway.client.asset.IconManager;
 import org.smallbox.faraway.client.asset.SpriteManager;
 import org.smallbox.faraway.client.asset.animation.RotateAnimation;
 import org.smallbox.faraway.client.asset.font.FontManager;
@@ -21,9 +22,8 @@ public abstract class View implements Comparable<View> {
 
     // Inject all dependency to view once for all, waiting for a clever solution
     protected final ApplicationConfig applicationConfig = DependencyManager.getInstance().getDependency(ApplicationConfig.class);
-    protected final SpriteManager spriteManager = DependencyManager.getInstance().getDependency(SpriteManager.class);
+    protected final IconManager iconManager = DependencyManager.getInstance().getDependency(IconManager.class);
     protected final UIEventManager uiEventManager = DependencyManager.getInstance().getDependency(UIEventManager.class);
-    protected final UIRenderer gdxRenderer = DependencyManager.getInstance().getDependency(UIRenderer.class);
     protected final FontManager fontManager = DependencyManager.getInstance().getDependency(FontManager.class);
     protected final UIManager uiManager = DependencyManager.getInstance().getDependency(UIManager.class);
     protected final DataManager dataManager = DependencyManager.getInstance().getDependency(DataManager.class);

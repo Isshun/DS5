@@ -7,7 +7,7 @@ import org.smallbox.faraway.core.game.GameTime;
 public class ApplicationConfig {
 
     public static class ApplicationConfigDebug {
-        public enum ActionOnLoad {NONE, LAST_SAVE, NEW_GAME}
+        public enum ActionOnLoad {NONE, CONTINUE, NEW_GAME}
         public ActionOnLoad actionOnLoad;
         public String scenario;
         public boolean log;

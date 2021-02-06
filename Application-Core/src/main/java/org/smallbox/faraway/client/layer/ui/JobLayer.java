@@ -1,6 +1,7 @@
 package org.smallbox.faraway.client.layer.ui;
 
 import com.badlogic.gdx.graphics.Color;
+import org.smallbox.faraway.client.asset.IconManager;
 import org.smallbox.faraway.client.asset.SpriteManager;
 import org.smallbox.faraway.client.renderer.BaseRenderer;
 import org.smallbox.faraway.client.layer.LayerManager;
@@ -18,6 +19,7 @@ import org.smallbox.faraway.game.storage.StoreJob;
 @GameLayer(level = LayerManager.JOB_LAYER_LEVEL, visible = true)
 public class JobLayer extends BaseMapLayer {
     @Inject private SpriteManager spriteManager;
+    @Inject private IconManager iconManager;
     @Inject private JobModule jobModule;
 
     public void onDraw(BaseRenderer renderer, Viewport viewport, double animProgress, int frame) {
@@ -28,7 +30,7 @@ public class JobLayer extends BaseMapLayer {
 
                 if (job instanceof StoreJob) {
                     if (((StoreJob)job).sourceConsumable.getActualQuantity() > 0 && ((StoreJob)job).sourceConsumable.getParcel() != null) {
-                        renderer.drawSpriteOnMap(spriteManager.getIcon("graphics/jobs/ic_store.png"), ((StoreJob)job).sourceConsumable.getParcel());
+                        renderer.drawSpriteOnMap(iconManager.getOrCreateIcon("data/graphics/jobs/ic_store.png"), ((StoreJob)job).sourceConsumable.getParcel());
                         renderer.drawTextOnMap(job.getTargetParcel(), "store", Color.CHARTREUSE, 10, 0, 0);
                     }
                 }
@@ -39,7 +41,7 @@ public class JobLayer extends BaseMapLayer {
 //            }
 
                 if (job instanceof BuildJob) {
-                    renderer.drawSpriteOnMap(spriteManager.getIcon("graphics/jobs/ic_build.png"), job.getTargetParcel());
+                    renderer.drawSpriteOnMap(iconManager.getOrCreateIcon("data/graphics/jobs/ic_build.png"), job.getTargetParcel());
                     renderer.drawTextOnMap(job.getTargetParcel(), "building", Color.CHARTREUSE, 10, 0, 0);
                 }
 
@@ -52,13 +54,13 @@ public class JobLayer extends BaseMapLayer {
                     if (job instanceof DigJob) {
 
                         if (job.getTargetParcel().z == viewport.getFloor()) {
-                            renderer.drawSpriteOnMap(spriteManager.getIcon("[base]/graphics/jobs/ic_mining.png"), job.getTargetParcel());
+                            renderer.drawSpriteOnMap(iconManager.getOrCreateIcon("data/graphics/jobs/ic_mining.png"), job.getTargetParcel());
                         } else if (job.getTargetParcel().z == viewport.getFloor() - 1) {
-                            renderer.drawSpriteOnMap(spriteManager.getIcon("[base]/graphics/jobs/ic_mining_under.png"), job.getTargetParcel());
+                            renderer.drawSpriteOnMap(iconManager.getOrCreateIcon("data/graphics/jobs/ic_mining_under.png"), job.getTargetParcel());
                         }
 
                     } else {
-                        renderer.drawSpriteOnMap(spriteManager.getIcon(job.getIcon()), job.getTargetParcel());
+                        renderer.drawSpriteOnMap(iconManager.getOrCreateIcon(job.getIcon()), job.getTargetParcel());
                     }
                 }
 

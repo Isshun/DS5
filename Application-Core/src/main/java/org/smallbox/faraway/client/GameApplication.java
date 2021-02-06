@@ -23,7 +23,7 @@ import org.smallbox.faraway.core.module.ModuleManager;
 import org.smallbox.faraway.core.save.SQLManager;
 import org.smallbox.faraway.core.task.TaskManager;
 
-public class GDXApplication extends ApplicationAdapter {
+public class GameApplication extends ApplicationAdapter {
     private final GDXApplicationListener listener;
     private MainRender mainRender;
 
@@ -31,7 +31,7 @@ public class GDXApplication extends ApplicationAdapter {
         void onCreate();
     }
 
-    public GDXApplication(GDXApplicationListener listener) {
+    public GameApplication(GDXApplicationListener listener) {
         this.listener = listener;
     }
 
@@ -61,7 +61,7 @@ public class GDXApplication extends ApplicationAdapter {
         taskManager.addLoadTask("Calling AfterApplicationLayerInit", false, () -> di.callMethodAnnotatedBy(AfterApplicationLayerInit.class));
         taskManager.addLoadTask("Background music", true, () -> di.getDependency(BackgroundMusicManager.class).start());
         taskManager.addLoadTask("Application ready", false, () -> Application.isLoaded = true);
-        taskManager.addLoadTask("(debug) Resume game", false, GDXApplication::onCreateCompleted);
+        taskManager.addLoadTask("(debug) Resume game", false, GameApplication::onCreateCompleted);
 
         mainRender = di.getDependency(MainRender.class);
     }
@@ -71,7 +71,7 @@ public class GDXApplication extends ApplicationAdapter {
 
         if (applicationConfig.debug != null && applicationConfig.debug.actionOnLoad != null) {
             switch (applicationConfig.debug.actionOnLoad) {
-                case LAST_SAVE -> DependencyManager.getInstance().getDependency(GameManager.class).loadLastGame();
+                case CONTINUE -> DependencyManager.getInstance().getDependency(GameManager.class).loadLastGame();
                 case NEW_GAME -> DependencyManager.getInstance().getDependency(GameFactory.class).create(applicationConfig.debug.scenario);
             }
         }

@@ -1,12 +1,14 @@
 package org.smallbox.farpoint.desktop;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Graphics;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
+import org.smallbox.faraway.core.config.ApplicationConfig;
+import org.smallbox.faraway.core.config.ApplicationConfigService;
 import org.smallbox.faraway.core.dependencyInjector.DependencyManager;
 import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject;
 import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnInit;
-import org.smallbox.faraway.core.config.ApplicationConfig;
-import org.smallbox.faraway.core.config.ApplicationConfigService;
+import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnSettingsUpdate;
 import org.smallbox.faraway.util.Constant;
 
 @ApplicationObject
@@ -34,23 +36,26 @@ public class LwjglConfig {
         lwjglConfig.samples = 2;
 //        applicationConfig.useGL30 = true;
         lwjglConfig.title = Constant.NAME + " " + Constant.VERSION;
-//
-//        DisplayMode mode = Gdx.graphics.getDisplayMode();
-//        if (screenManager.FULLSCREEN) {
-//            Gdx.graphics.setWindowedMode(Gdx.graphics.getDisplayMode().width, Gdx.graphics.getDisplayMode().height);
-//            Gdx.graphics.setFullscreenMode(mode);
-//        } else if (screenManager.WINDOWEDFULLSCREEN) {
-//            System.setProperty("org.lwjgl.opengl.Window.undecorated", "true");
-//            //Gdx.graphics.setFullscreenMode(mode);
-//        } else {
-//            Gdx.graphics.setWindowedMode(screenManager.WIDTH, screenManager.HEIGTH);
-//        }
     }
 
+    @OnSettingsUpdate
     public void applyConfig() {
+        ApplicationConfig applicationConfig = DependencyManager.getInstance().getDependency(ApplicationConfig.class);
+
+        Graphics.DisplayMode mode = Gdx.graphics.getDisplayMode();
+
         if ("borderless".equals(applicationConfig.screen.mode)) {
             System.setProperty("org.lwjgl.opengl.Window.undecorated", "true");
             Gdx.graphics.setWindowedMode(Gdx.graphics.getDisplayMode().width, Gdx.graphics.getDisplayMode().height);
+        }
+
+        else if ("fullscreen".equals(applicationConfig.screen.mode)) {
+            Gdx.graphics.setFullscreenMode(mode);
+        }
+
+        else if ("window".equals(applicationConfig.screen.mode)) {
+            System.setProperty("org.lwjgl.opengl.Window.undecorated", "false");
+            Gdx.graphics.setWindowedMode(Gdx.graphics.getDisplayMode().width - 200, Gdx.graphics.getDisplayMode().height - 200);
         }
     }
 

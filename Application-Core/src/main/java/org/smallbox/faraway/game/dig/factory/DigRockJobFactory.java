@@ -7,9 +7,6 @@ import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.path.PathManager;
 import org.smallbox.faraway.game.consumable.ConsumableModule;
 import org.smallbox.faraway.game.job.JobModel;
-import org.smallbox.faraway.game.world.WorldHelper;
-
-import java.util.Optional;
 
 @GameObject
 public class DigRockJobFactory extends DigJobFactory {
@@ -26,11 +23,11 @@ public class DigRockJobFactory extends DigJobFactory {
             job.getTargetParcel().setRockInfo(null);
             pathManager.refreshConnections(job.getTargetParcel());
 
-            // Remove ground for upper parcel
-            Optional.ofNullable(WorldHelper.getParcelOffset(job.getTargetParcel(), 0, 0, 1)).ifPresent(parcel -> {
-                parcel.setGroundInfo(null);
-                pathManager.refreshConnections(parcel);
-            });
+//            // Remove ground for upper parcel
+//            Optional.ofNullable(WorldHelper.getParcelOffset(job.getTargetParcel(), 0, 0, 1)).ifPresent(parcel -> {
+//                parcel.setGroundInfo(null);
+//                pathManager.refreshConnections(parcel);
+//            });
 
             Application.notify(gameObserver -> gameObserver.onRemoveRock(job.getTargetParcel()));
         }
