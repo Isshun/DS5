@@ -42,20 +42,20 @@ public class LwjglConfig {
     public void applyConfig() {
         ApplicationConfig applicationConfig = DependencyManager.getInstance().getDependency(ApplicationConfig.class);
 
-        Graphics.DisplayMode mode = Gdx.graphics.getDisplayMode();
+        Graphics.DisplayMode displayMode = Gdx.graphics.getDisplayMode();
+
+        if ("fullscreen".equals(applicationConfig.screen.mode)) {
+            Gdx.graphics.setFullscreenMode(displayMode);
+        }
 
         if ("borderless".equals(applicationConfig.screen.mode)) {
             System.setProperty("org.lwjgl.opengl.Window.undecorated", "true");
             Gdx.graphics.setWindowedMode(Gdx.graphics.getDisplayMode().width, Gdx.graphics.getDisplayMode().height);
         }
 
-        else if ("fullscreen".equals(applicationConfig.screen.mode)) {
-            Gdx.graphics.setFullscreenMode(mode);
-        }
-
-        else if ("window".equals(applicationConfig.screen.mode)) {
+        if ("window".equals(applicationConfig.screen.mode)) {
             System.setProperty("org.lwjgl.opengl.Window.undecorated", "false");
-            Gdx.graphics.setWindowedMode(Gdx.graphics.getDisplayMode().width - 200, Gdx.graphics.getDisplayMode().height - 200);
+            Gdx.graphics.setWindowedMode(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         }
     }
 

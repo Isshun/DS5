@@ -10,6 +10,7 @@ import org.smallbox.faraway.core.config.ApplicationConfig;
 import org.smallbox.faraway.core.dependencyInjector.DependencyManager;
 import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
+import org.smallbox.faraway.core.dependencyInjector.annotationEvent.AfterApplicationLayerInit;
 import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnSettingsUpdate;
 
 @ApplicationObject
@@ -32,6 +33,11 @@ public class MenuSettingsController extends LuaController {
     @BindLua private UISlider sliderMusic;
 
     private String screenMode;
+
+    @AfterApplicationLayerInit
+    public void onInit() {
+        sliderMusic.setValue(applicationConfig.musicVolume);
+    }
 
     @BindLuaAction
     public void onOpenGraphic(View view) {

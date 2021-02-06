@@ -29,12 +29,8 @@ public class UISlider extends CompositeView {
         super.draw(renderer, x, y);
 
         if (_isVisible) {
+            positionX = (int) (geometry.getFinalX() + value * (geometry.getWidth() - handleWidth));
 
-            if (positionX == 0) {
-                positionX = geometry.getFinalX();
-            }
-
-//            int position = (int) (geometry.getFinalX() + value * (getWidth() - handleWidth));
             renderer.drawRectangle(positionX, geometry.getFinalY() + getHeight() / 2 - handleHeight / 2, handleWidth, handleHeight, handleBackground);
 
             if (_views != null) {
@@ -64,7 +60,6 @@ public class UISlider extends CompositeView {
 
     public void setValue(float value) {
         this.value = value;
-        positionX = (int) (geometry.getFinalX() + value * (geometry.getWidth() - handleWidth));
     }
 
     public float getValue() {

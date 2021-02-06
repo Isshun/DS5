@@ -1,16 +1,18 @@
 package org.smallbox.faraway.core.config;
 
 import com.google.gson.Gson;
-import org.smallbox.faraway.util.GameException;
 import org.smallbox.faraway.core.dependencyInjector.DependencyManager;
 import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnInit;
+import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnSettingsUpdate;
 import org.smallbox.faraway.util.FileUtils;
+import org.smallbox.faraway.util.GameException;
 import org.smallbox.faraway.util.log.Log;
 
 import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 
 @ApplicationObject
@@ -39,7 +41,16 @@ public class ApplicationConfigService {
         }
 
         initScreenResolution();
+    }
 
+    @OnSettingsUpdate
+    private void onSettingsUpdate() {
+        File configFile = FileUtils.getUserDataFile("settings.json");
+        try (FileWriter fileWriter = new FileWriter(configFile)) {
+            fileWriter.write(new Gson().toJson(applicationConfig));
+        } catch (IOException e) {
+            throw new GameException(ApplicationConfigService.class, e, "Unable to write config file");
+        }
     }
 
     private void initScreenResolution() {
