@@ -7,6 +7,7 @@ import org.smallbox.faraway.core.module.GenericGameModule;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.model.MovableModel.Direction;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
+import org.smallbox.faraway.game.item.ItemModule;
 import org.smallbox.faraway.game.weather.WeatherModule;
 import org.smallbox.faraway.util.Constant;
 
@@ -20,6 +21,7 @@ import java.util.stream.Stream;
 @GameObject
 public class WorldModule extends GenericGameModule<Parcel> {
     @Inject private WeatherModule weatherModule;
+    @Inject private ItemModule itemModule;
     @Inject private Game game;
 
     private Parcel[][][] _parcels;
@@ -130,31 +132,19 @@ public class WorldModule extends GenericGameModule<Parcel> {
     }
 
     public Parcel getParcel(Parcel parcel, Direction direction) {
-        switch (direction) {
-            case NONE:
-                return parcel;
-            case TOP:
-                return WorldHelper.getParcel(parcel.x, parcel.y - 1, parcel.z);
-            case LEFT:
-                return WorldHelper.getParcel(parcel.x - 1, parcel.y, parcel.z);
-            case RIGHT:
-                return WorldHelper.getParcel(parcel.x + 1, parcel.y, parcel.z);
-            case BOTTOM:
-                return WorldHelper.getParcel(parcel.x, parcel.y + 1, parcel.z);
-            case TOP_LEFT:
-                return WorldHelper.getParcel(parcel.x - 1, parcel.y - 1, parcel.z);
-            case TOP_RIGHT:
-                return WorldHelper.getParcel(parcel.x + 1, parcel.y - 1, parcel.z);
-            case BOTTOM_LEFT:
-                return WorldHelper.getParcel(parcel.x - 1, parcel.y + 1, parcel.z);
-            case BOTTOM_RIGHT:
-                return WorldHelper.getParcel(parcel.x + 1, parcel.y + 1, parcel.z);
-            case UNDER:
-                return WorldHelper.getParcel(parcel.x, parcel.y, parcel.z - 1);
-            case OVER:
-                return WorldHelper.getParcel(parcel.x, parcel.y, parcel.z + 1);
-        }
-        return null;
+        return switch (direction) {
+            case NONE -> parcel;
+            case TOP -> WorldHelper.getParcel(parcel.x, parcel.y - 1, parcel.z);
+            case LEFT -> WorldHelper.getParcel(parcel.x - 1, parcel.y, parcel.z);
+            case RIGHT -> WorldHelper.getParcel(parcel.x + 1, parcel.y, parcel.z);
+            case BOTTOM -> WorldHelper.getParcel(parcel.x, parcel.y + 1, parcel.z);
+            case TOP_LEFT -> WorldHelper.getParcel(parcel.x - 1, parcel.y - 1, parcel.z);
+            case TOP_RIGHT -> WorldHelper.getParcel(parcel.x + 1, parcel.y - 1, parcel.z);
+            case BOTTOM_LEFT -> WorldHelper.getParcel(parcel.x - 1, parcel.y + 1, parcel.z);
+            case BOTTOM_RIGHT -> WorldHelper.getParcel(parcel.x + 1, parcel.y + 1, parcel.z);
+            case UNDER -> WorldHelper.getParcel(parcel.x, parcel.y, parcel.z - 1);
+            case OVER -> WorldHelper.getParcel(parcel.x, parcel.y, parcel.z + 1);
+        };
     }
 
     public Optional<Parcel> getOptional(Parcel parcel, Direction direction) {
@@ -172,4 +162,22 @@ public class WorldModule extends GenericGameModule<Parcel> {
     public Parcel getRandom(int floor) {
         return modelList.stream().filter(parcel -> parcel.z == floor).skip(new Random().nextInt(_width * _height)).findFirst().orElse(null);
     }
+
+    public void refreshGlue(Parcel parcel) {
+        int glue = 0;
+        glue = refreshGlue(parcel, getParcel(parcel, Direction.TOP), glue, 0b0001);
+        glue = refreshGlue(parcel, getParcel(parcel, Direction.RIGHT), glue, 0b0010);
+        glue = refreshGlue(parcel, getParcel(parcel, Direction.BOTTOM), glue, 0b0100);
+        glue = refreshGlue(parcel, getParcel(parcel, Direction.LEFT), glue, 0b1000);
+        parcel.setGlue(glue);
+    }
+
+    private int refreshGlue(Parcel parcel, Parcel parcelAround, int glue, int mask) {
+        return hasGlue(parcel) && hasGlue(parcelAround) ? glue | mask : glue;
+    }
+
+    private boolean hasGlue(Parcel parcel) {
+        return parcel.hasRock() || Optional.ofNullable(itemModule.getItem(parcel)).filter(item -> item.getInfo().glue).isPresent();
+    }
+
 }

@@ -1,6 +1,7 @@
 package org.smallbox.faraway.client.layer.item;
 
 import com.badlogic.gdx.graphics.Color;
+import org.smallbox.faraway.client.asset.AssetManager;
 import org.smallbox.faraway.client.asset.SpriteManager;
 import org.smallbox.faraway.client.layer.BaseMapLayer;
 import org.smallbox.faraway.client.layer.GameLayer;
@@ -11,19 +12,33 @@ import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.game.item.ItemModule;
 import org.smallbox.faraway.game.world.Parcel;
+import org.smallbox.faraway.game.world.WorldModule;
 
 @GameObject
 @GameLayer(level = LayerManager.ITEM_LAYER_LEVEL, visible = true)
 public class ItemLayer extends BaseMapLayer {
     @Inject private SpriteManager spriteManager;
+    @Inject private WorldModule worldModule;
     @Inject private ItemModule itemModule;
+    @Inject private AssetManager assetManager;
+    @Inject private WallGenerator wallGenerator;
 
     public void onDraw(BaseRenderer renderer, Viewport viewport, double animProgress, int frame) {
         itemModule.getAll().stream()
                 .filter(item -> viewport.hasParcel(item.getParcel()))
                 .forEach(item -> {
                     Parcel parcel = item.getParcel();
-                    renderer.drawSpriteOnMap(spriteManager.getOrCreateSprite(item.getGraphic()), item.getParcel());
+
+                    int tile = 0;
+
+                    if (item.getInfo().name.contains("wall")) {
+                        worldModule.refreshGlue(parcel);
+//                        Sprite sprite = new Sprite();
+//                        sprite.setFlip(false, true);
+                        renderer.drawTextureOnMap(item.getParcel(), wallGenerator.getOrCreateTexture(parcel.getGlue()));
+                    } else {
+                        renderer.drawSpriteOnMap(spriteManager.getOrCreateSprite(item.getGraphic(), tile, false, null, null), item.getParcel());
+                    }
 
                     if (item.getFactory() != null && item.getFactory().getCraftJob() != null) {
                         renderer.drawRectangleOnMap(parcel, (int) (32 * item.getFactory().getCraftJob().getProgress()), 6, Color.BLUE, 0, 0);

@@ -74,6 +74,7 @@ public class LuaItemExtend extends LuaExtend {
         itemInfo.category = value.get("category").optjstring(null);
         itemInfo.subCategory = value.get("sub_category").optjstring(null);
         itemInfo.type = getString(value, "type", null);
+        itemInfo.glue = getBoolean(value, "glue", false);
 
         if (!value.get("size").isnil()) {
             itemInfo.width = value.get("size").get(1).toint();

@@ -1,6 +1,5 @@
 package org.smallbox.faraway.client.asset;
 
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Interpolation;
@@ -13,6 +12,7 @@ import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.game.DataManager;
 import org.smallbox.faraway.core.game.modelInfo.GraphicInfo;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
+import org.smallbox.faraway.util.Constant;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -82,14 +82,16 @@ public class SpriteManager {
 
             // Create sprite from texture
             if (texture != null) {
+                int cols = texture.getWidth() / Constant.TILE_SIZE;
+                int tileX = cols != 0 ? (tile % cols) : 0;
+                int tileY = cols != 0 ? (tile / cols) : 0;
                 Sprite sprite = new Sprite(texture,
-                        (srcX + tile) * width,
-                        srcY * height,
+                        (srcX + tileX) * width,
+                        (srcY + tileY) * height,
                         width != 0 ? width : texture.getWidth(),
                         height != 0 ? height : texture.getHeight());
 
                 sprite.setFlip(false, true);
-                sprite.setColor(new Color(255, 255, 255, 1));
 
                 _sprites.put(key, sprite);
             }
@@ -97,7 +99,7 @@ public class SpriteManager {
         }
 
         Sprite sprite = _sprites.get(key);
-        sprite.setAlpha(255);
+        sprite.setAlpha(1);
 
         if (extra != null) {
             sprite.setFlip(extra.flip, true);

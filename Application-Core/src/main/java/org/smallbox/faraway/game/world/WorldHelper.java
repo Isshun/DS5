@@ -1,6 +1,7 @@
 package org.smallbox.faraway.game.world;
 
 import com.badlogic.gdx.math.MathUtils;
+import org.smallbox.faraway.core.game.model.MovableModel;
 import org.smallbox.faraway.util.GameException;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.save.GameInfo;
@@ -378,6 +379,32 @@ public class WorldHelper {
     public static Parcel getParcelOffset(Parcel parcel, int offsetX, int offsetY, int offsetZ) {
         if (inMapBounds(parcel.x + offsetX, parcel.y + offsetY, parcel.z + offsetZ)) {
             return _parcels[parcel.x + offsetX][parcel.y + offsetY][parcel.z + offsetZ];
+        }
+        return null;
+    }
+
+    public static Parcel getParcelOffset(Parcel parcel, MovableModel.Direction direction) {
+        int offsetX = 0;
+        int offsetY = 0;
+
+        if (direction == MovableModel.Direction.RIGHT) {
+            offsetX++;
+        }
+
+        if (direction == MovableModel.Direction.LEFT) {
+            offsetX--;
+        }
+
+        if (direction == MovableModel.Direction.TOP) {
+            offsetY--;
+        }
+
+        if (direction == MovableModel.Direction.BOTTOM) {
+            offsetY++;
+        }
+
+        if (inMapBounds(parcel.x + offsetX, parcel.y + offsetY, parcel.z)) {
+            return _parcels[parcel.x + offsetX][parcel.y + offsetY][parcel.z];
         }
         return null;
     }

@@ -24,6 +24,7 @@ public class UsableItem extends BuildableMapObject {
     private ItemFactoryModel                _factory;
     private int[]                           _storageSlot;
     private List<NetworkConnectionModel>    _networkConnections;
+    private int glue;
 
     public UsableItem(ItemInfo info, int id) {
         super(info, id);
@@ -31,6 +32,14 @@ public class UsableItem extends BuildableMapObject {
 
     public UsableItem(ItemInfo info) {
         super(info);
+    }
+
+    public int getGlue() {
+        return glue;
+    }
+
+    public void setGlue(int glue) {
+        this.glue = glue;
     }
 
     public int                          getTargetTemperature() { return _targetTemperature; }

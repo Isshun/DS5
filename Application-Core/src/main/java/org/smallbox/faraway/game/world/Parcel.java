@@ -40,6 +40,7 @@ public class Parcel extends ParcelCommon {
     private final Map<Class<? extends MapObjectModel>, MapObjectModel> _items = new ConcurrentHashMap<>();
     private boolean _connectionDirty;
     private MovableModel.Direction rampDirection;
+    private int glue;
 
     public Parcel(int index, int x, int y, int z) {
         this.x = x;
@@ -253,4 +254,11 @@ public class Parcel extends ParcelCommon {
         return rampDirection != null;
     }
 
+    public void setGlue(int glue) {
+        this.glue = glue;
+    }
+
+    public int getGlue() {
+        return glue;
+    }
 }

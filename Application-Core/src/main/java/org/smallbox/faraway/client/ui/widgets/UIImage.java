@@ -71,10 +71,10 @@ public class UIImage extends View {
                 if (_path != null) {
                     try {
                         _sprite = iconManager.getOrCreateIcon(_path);
-                        _sprite.setRegion(0, 0, geometry.getOriginWidth(), geometry.getOriginHeight());
-                        _sprite.setSize(geometry.getOriginWidth(), geometry.getOriginHeight());
-                        _sprite.setScale((float) applicationConfig.uiScale);
-                        _sprite.flip(false, true);
+//                        _sprite.setRegion(0, 0, geometry.getOriginWidth(), geometry.getOriginHeight());
+//                        _sprite.setSize(geometry.getOriginWidth(), geometry.getOriginHeight());
+//                        _sprite.setScale((float) applicationConfig.uiScale);
+//                        _sprite.flip(false, true);
                     } catch (GdxRuntimeException e) {
 //                e.printStackTrace();
                     }
@@ -100,6 +100,7 @@ public class UIImage extends View {
                     } else if (_animation != null) {
                         _animation.draw(renderer, _sprite, geometry.getFinalX(), geometry.getFinalY());
                     } else {
+//                        _sprite.setSize(geometry.getOriginWidth(), geometry.getOriginHeight());
                         renderer.drawSprite(_sprite, geometry.getFinalX(), geometry.getFinalY());
 //                        renderer.draw(_x + x, _y + y, _sprite);
                     }

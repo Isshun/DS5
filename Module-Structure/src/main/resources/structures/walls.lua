@@ -3,6 +3,7 @@ data:extend({
         id = "base.wall",
         type = "structure_group",
         category = "structure",
+        glue = true,
         is_wall = true,
         walkable = false
     },
@@ -12,9 +13,10 @@ data:extend({
         type = "structure",
         category = "structure",
         health = 200,
-        receipts = {label = "Sandstone", icon = "[base]/graphics/icons/material/wood.png", components = { item = "base.consumable.wood_log", quantity = 10} },
         permeability = 0.2,
+        glue = true,
         graphics = {path = "[base]/graphics/items/structures/wall_wood.png", type = "wall"},
+        receipts = {label = "Sandstone", icon = "[base]/graphics/icons/material/wood.png", components = { item = "base.consumable.wood_log", quantity = 10} },
         walkable = false
     },
     { label = "Sandstone wall",
@@ -23,6 +25,7 @@ data:extend({
         type = "structure",
         category = "structure",
         health = 250,
+        glue = true,
         graphics = {path = "[base]/graphics/items/structures/wall_wood.png", type = "wall"},
         receipts = {label = "Sandstone", icon = "[base]/graphics/icons/material/sandstone.png", components = { item = "base.sandstone_brick", quantity = 10} }
     },
@@ -32,6 +35,7 @@ data:extend({
         type = "structure",
         category = "structure",
         health = 350,
+        glue = true,
         graphics = {path = "[base]/graphics/items/structures/wall_wood.png", type = "wall"},
         receipts = {label = "Calcite", icon = "[base]/graphics/icons/material/calcite.png", components = { item = "base.calcite_brick", quantity = 10} }
     },
@@ -41,7 +45,8 @@ data:extend({
         type = "structure",
         category = "structure",
         health = 500,
-        graphics = {path = "[data]/graphics/structures/walls/wall_128_2.png", type = "wall", width = 128, height = 128},
+        glue = true,
+        graphics = {path = "[data]/graphics/structures/walls/wall_128.png", type = "wall", width = 128, height = 128},
         receipts = {label = "Granite", icon = "[base]/graphics/icons/material/granite.png", components = {} }
     },
     { label = "Iron wall",
@@ -50,6 +55,7 @@ data:extend({
         type = "structure",
         category = "structure",
         health = 450,
+        glue = true,
         graphics = {path = "[base]/graphics/items/structures/wall_wood.png", type = "wall"},
         receipts = {label = "Iron", icon = "[base]/graphics/icons/material/iron.png", components = { item = "base.iron_plate", quantity = 10} }
     },
@@ -59,6 +65,7 @@ data:extend({
         type = "structure",
         category = "structure",
         health = 800,
+        glue = true,
         graphics = {path = "[base]/graphics/items/structures/wall_wood.png", type = "wall"},
         receipts = {label = "Carbon fiber", icon = "[base]/graphics/icons/material/carbon_fiber.png", components = { item = "base.carbon_fiber_part", quantity = 10} }
     },

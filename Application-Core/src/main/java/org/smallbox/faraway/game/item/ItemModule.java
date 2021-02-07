@@ -135,6 +135,8 @@ public class ItemModule extends SuperGameModule<UsableItem, ItemModuleObserver> 
 
         add(item);
 
+        worldModule.refreshGlue(parcel);
+
         notifyObservers(obs -> obs.onAddItem(item.getParcel(), item));
 
         return item;
