@@ -2,11 +2,11 @@ package org.smallbox.faraway.client.layer.item;
 
 import java.util.function.BiFunction;
 
-class WallGeneratorMapper {
+class PatchTextureGeneratorMapper {
     private final BiFunction<Integer, Integer, Integer> xFunc;
     private final BiFunction<Integer, Integer, Integer> yFunc;
 
-    public WallGeneratorMapper(BiFunction<Integer, Integer, Integer> xFunc, BiFunction<Integer, Integer, Integer> yFunc) {
+    public PatchTextureGeneratorMapper(BiFunction<Integer, Integer, Integer> xFunc, BiFunction<Integer, Integer, Integer> yFunc) {
         this.xFunc = xFunc;
         this.yFunc = yFunc;
     }

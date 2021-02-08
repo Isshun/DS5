@@ -3,17 +3,18 @@ package org.smallbox.faraway.core.lua.data.extend;
 import org.luaj.vm2.Globals;
 import org.luaj.vm2.LuaValue;
 import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject;
-import org.smallbox.faraway.core.module.ModuleBase;
+import org.smallbox.faraway.core.game.DataManager;
 import org.smallbox.faraway.core.lua.data.DataExtendException;
 import org.smallbox.faraway.core.lua.data.LuaExtend;
-import org.smallbox.faraway.core.game.DataManager;
+import org.smallbox.faraway.core.module.ModuleBase;
 import org.smallbox.faraway.game.planet.PlanetInfo;
 import org.smallbox.faraway.game.planet.RegionInfo;
 import org.smallbox.faraway.game.weather.WeatherInfo;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 @ApplicationObject
 public class LuaPlanetExtend extends LuaExtend {
@@ -55,7 +56,7 @@ public class LuaPlanetExtend extends LuaExtend {
         }
 
         if (!value.get("day_times").isnil()) {
-            planetInfo.dayTimes = new ArrayList<>();
+            planetInfo.dayTimes = new ConcurrentHashMap<>();
             for (int i = 1; i <= value.get("day_times").length(); i++) {
                 readDayTime(planetInfo.dayTimes, value.get("day_times").get(i));
             }
@@ -155,10 +156,10 @@ public class LuaPlanetExtend extends LuaExtend {
         planetInfo.regions.add(regionInfo);
     }
 
-    private void readDayTime(List<PlanetInfo.DayTime> dayTimes, LuaValue value) {
-        dayTimes.add(new PlanetInfo.DayTime(
+    private void readDayTime(Map<Integer, PlanetInfo.DayTime> dayTimes, LuaValue value) {
+        dayTimes.put(value.get("hour").toint(), new PlanetInfo.DayTime(
                 value.get("hour").toint(),
-                value.get("color").optlong(0),
+                value.get("color").optint(0),
                 value.get("id").tojstring()
         ));
     }

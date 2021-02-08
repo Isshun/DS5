@@ -21,7 +21,7 @@ public class ItemLayer extends BaseMapLayer {
     @Inject private WorldModule worldModule;
     @Inject private ItemModule itemModule;
     @Inject private AssetManager assetManager;
-    @Inject private WallGenerator wallGenerator;
+    @Inject private PatchTextureGenerator patchTextureGenerator;
 
     public void onDraw(BaseRenderer renderer, Viewport viewport, double animProgress, int frame) {
         itemModule.getAll().stream()
@@ -35,7 +35,7 @@ public class ItemLayer extends BaseMapLayer {
                         worldModule.refreshGlue(parcel);
 //                        Sprite sprite = new Sprite();
 //                        sprite.setFlip(false, true);
-                        renderer.drawTextureOnMap(item.getParcel(), wallGenerator.getOrCreateTexture(parcel.getGlue()));
+                        renderer.drawTextureOnMap(item.getParcel(), patchTextureGenerator.getOrCreateTexture(item.getGraphic(), parcel.getGlue()));
                     } else {
                         renderer.drawSpriteOnMap(spriteManager.getOrCreateSprite(item.getGraphic(), tile, false, null, null), item.getParcel());
                     }

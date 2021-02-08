@@ -16,7 +16,6 @@ import org.smallbox.faraway.core.config.ApplicationConfig;
 import org.smallbox.faraway.core.dependencyInjector.DependencyManager;
 import org.smallbox.faraway.core.dependencyInjector.annotationEvent.AfterApplicationLayerInit;
 import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnApplicationLayerInit;
-import org.smallbox.faraway.core.game.GameFactory;
 import org.smallbox.faraway.core.game.GameManager;
 import org.smallbox.faraway.core.lua.ServerLuaModuleManager;
 import org.smallbox.faraway.core.module.ModuleManager;
@@ -68,13 +67,14 @@ public class GameApplication extends ApplicationAdapter {
 
     private static void onCreateCompleted() {
         ApplicationConfig applicationConfig = DependencyManager.getInstance().getDependency(ApplicationConfig.class);
-
-        if (applicationConfig.debug != null && applicationConfig.debug.actionOnLoad != null) {
-            switch (applicationConfig.debug.actionOnLoad) {
-                case CONTINUE -> DependencyManager.getInstance().getDependency(GameManager.class).loadLastGame();
-                case NEW_GAME -> DependencyManager.getInstance().getDependency(GameFactory.class).create(applicationConfig.debug.scenario);
-            }
-        }
+        DependencyManager.getInstance().getDependency(GameManager.class).loadLastGame();
+//
+//        if (applicationConfig.debug != null && applicationConfig.debug.actionOnLoad != null) {
+//            switch (applicationConfig.debug.actionOnLoad) {
+//                case CONTINUE -> DependencyManager.getInstance().getDependency(GameManager.class).loadLastGame();
+//                case NEW_GAME -> DependencyManager.getInstance().getDependency(GameFactory.class).create(applicationConfig.debug.scenario);
+//            }
+//        }
     }
 
     @Override

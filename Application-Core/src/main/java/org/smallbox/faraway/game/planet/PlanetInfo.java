@@ -3,6 +3,7 @@ package org.smallbox.faraway.game.planet;
 import org.smallbox.faraway.core.game.modelInfo.ObjectInfo;
 
 import java.util.List;
+import java.util.Map;
 
 public class PlanetInfo extends ObjectInfo {
 
@@ -41,17 +42,22 @@ public class PlanetInfo extends ObjectInfo {
 
     public static class DayTime {
         public int                      hour;
-        public long                     color;
+        public int                      color;
         public String                   name;
 
-        public DayTime(int hour, long color, String name) {
+        public DayTime(int hour, int color, String name) {
             this.name = name;
             this.hour = hour;
             this.color = color;
         }
+
+        @Override
+        public String toString() {
+            return name;
+        }
     }
 
-    public List<DayTime>                dayTimes;
+    public Map<Integer, DayTime> dayTimes;
     public String                        label;
     public String cls;
     public String                        desc;

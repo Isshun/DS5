@@ -58,4 +58,7 @@ public class WorldCameraManager {
         Log.info("Set zoom: " + _camera.zoom);
     }
 
+    public OrthographicCamera getCamera() {
+        return _camera;
+    }
 }

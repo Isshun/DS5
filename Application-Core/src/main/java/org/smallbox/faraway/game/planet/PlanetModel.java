@@ -77,10 +77,10 @@ public class PlanetModel {
     public PlanetAreaModel  getAreas(int x, int y) { return _areas[x][y]; }
 
     public PlanetInfo.DayTime getDayTime(int hour) {
-        return _info.dayTimes.stream().filter(day -> day.hour == hour).findFirst().orElse(null);
+        return _info.dayTimes.get(hour);
     }
 
     public Collection<PlanetInfo.DayTime> getDayTimes() {
-        return _info.dayTimes;
+        return _info.dayTimes.values();
     }
 }
