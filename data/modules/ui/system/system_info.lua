@@ -27,7 +27,7 @@ ui:extend({
 
                         -- Time and day
                         { type = "image", id = "img_time", src = "[base]/graphics/icons/daytimes/noon.png", size = {32, 32}, position = {2000, 2}},
-                        { type = "image", src = "[base]/graphics/icons/daytimes/sun.png", size = {minimap_header_height, minimap_header_height}, position = {-1, -1}},
+                        { type = "image", id = "img_daytime", size = {minimap_header_height, minimap_header_height}, position = {-1, -1}},
                         { type = "label", id = "lb_time", text = "lb_time", text_font = "font3", text_color = 0xffffffcc, text_size = 18, position = {52, 8} },
                         { type = "label", id = "lb_date", text = "lb_date", text_font = "font3", text_color = 0xffffff88, text_size = 13, position = {52, 31} },
 

@@ -33,6 +33,7 @@ public class SystemInfoController extends LuaController {
     @BindLua private UIImage imgWeather;
     @BindLua private UILabel lbTemperature;
     @BindLua private UIImage icSpeed;
+    @BindLua private UIImage imgDaytime;
     @BindLua private UILabel lbSpeed;
     @BindLua private UILabel lbFloor;
     @BindLua private UIFrame mapContainer;
@@ -61,6 +62,7 @@ public class SystemInfoController extends LuaController {
 
         // Display game speed
         icSpeed.setImage("data/graphics/ic_speed_" + game.getSpeed() + ".png");
+        imgDaytime.setImage("data/graphics/icons/daytimes/" + weatherModule.getDaytime().name + ".png");
         lbSpeed.setText("x" + game.getSpeed());
         icSpeed.setVisible(game.getSpeed() <= 3);
         lbSpeed.setVisible(game.getSpeed() > 3);

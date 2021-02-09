@@ -24,6 +24,7 @@ import java.util.stream.Collectors;
 public class LayerManager implements GameClientObserver {
     public static final int TOP = 999;
     public static final int MINI_MAP_LEVEL = 100;
+    public static final int LIGHT_LAYER_LEVEL = -98;
     public static final int PARTICLE_LAYER_LEVEL = -99;
     public static final int JOB_LAYER_LEVEL = -100;
     public static final int CHARACTER_LAYER_LEVEL = -101;

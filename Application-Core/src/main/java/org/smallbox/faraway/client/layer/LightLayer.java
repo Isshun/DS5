@@ -20,7 +20,7 @@ import org.smallbox.faraway.util.Constant;
 import java.util.ArrayList;
 
 @GameObject
-@GameLayer(level = LayerManager.TOP, visible = true)
+@GameLayer(level = LayerManager.LIGHT_LAYER_LEVEL, visible = true)
 public class LightLayer extends BaseLayer implements GameObserver {
     @Inject protected WorldCameraManager worldCameraManager;
     @Inject protected WeatherModule weatherModule;

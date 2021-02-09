@@ -169,4 +169,7 @@ public class WeatherModule extends SuperGameModule2<WeatherModuleObserver> imple
         return 0.5;
     }
 
+    public PlanetInfo.DayTime getDaytime() {
+        return currentDayTime;
+    }
 }
