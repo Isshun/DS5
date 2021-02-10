@@ -2,12 +2,12 @@ package org.smallbox.faraway.game.world;
 
 import com.badlogic.gdx.math.MathUtils;
 import org.smallbox.faraway.core.game.model.MovableModel;
-import org.smallbox.faraway.util.GameException;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.save.GameInfo;
 import org.smallbox.faraway.game.consumable.Consumable;
-import org.smallbox.faraway.game.structure.StructureItem;
 import org.smallbox.faraway.game.plant.model.PlantItem;
+import org.smallbox.faraway.game.structure.StructureItem;
+import org.smallbox.faraway.util.GameException;
 import org.smallbox.faraway.util.Utils;
 import org.smallbox.faraway.util.log.Log;
 
@@ -593,4 +593,5 @@ public class WorldHelper {
         }
 
     }
+
 }

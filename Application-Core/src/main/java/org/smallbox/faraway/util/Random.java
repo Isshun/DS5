@@ -24,4 +24,14 @@ public class Random {
         return Optional.ofNullable(of(collection));
     }
 
+    public static int interval(int[] interval) {
+        if (interval[0] == interval[1]) {
+            return interval[0];
+        }
+        return (int)(Math.random() * (interval[1] - interval[0]) + interval[0]);
+    }
+
+    public static double gaussianInterval(double interval) {
+        return Math.min(interval, Math.max(-interval, new java.util.Random().nextGaussian()));
+    }
 }

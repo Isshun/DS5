@@ -50,6 +50,11 @@ public class GameTime {
     public void add(double value) {
         localDateTime = localDateTime.plusSeconds((long) (value * 60 * 60));
 
+        if (localDateTime.getDayOfMonth() > 3) {
+            localDateTime = localDateTime.plusMonths(1);
+            localDateTime = localDateTime.minusDays(3);
+        }
+
         _minute = localDateTime.getMinute();
         _hour = localDateTime.getHour();
         _day = localDateTime.getDayOfMonth();

@@ -163,7 +163,7 @@ public class MinimapLayer extends BaseLayer {
 //                renderer.drawUI(_spriteMap);
 //            }
 
-            drawViewport(renderer);
+            //drawViewport(renderer);
             drawCharacters(renderer);
             drawUI(renderer);
         }

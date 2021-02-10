@@ -1,42 +1,28 @@
 package org.smallbox.faraway.game.room;
 
+import org.smallbox.faraway.core.config.ApplicationConfig;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.game.Game;
-import org.smallbox.faraway.core.module.SuperGameModule;
+import org.smallbox.faraway.core.module.GenericMapGameModule;
 import org.smallbox.faraway.game.item.ItemModule;
 import org.smallbox.faraway.game.room.model.*;
 import org.smallbox.faraway.game.weather.WeatherModule;
 import org.smallbox.faraway.game.world.Parcel;
-import org.smallbox.faraway.game.world.SurroundedPattern;
-import org.smallbox.faraway.game.world.WorldHelper;
 import org.smallbox.faraway.game.world.WorldModule;
-import org.smallbox.faraway.util.AsyncTask;
-import org.smallbox.faraway.util.GameException;
 
-import java.lang.reflect.InvocationTargetException;
-import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.Collection;
 import java.util.concurrent.LinkedBlockingQueue;
-import java.util.stream.Stream;
-
-import static org.smallbox.faraway.core.game.model.MovableModel.Direction.*;
 
 @GameObject
-public class RoomModule extends SuperGameModule {
+public class RoomModule extends GenericMapGameModule<String, RoomModel> {
     @Inject private WorldModule worldModule;
-    @Inject private ItemModule itemModule;
     @Inject private WeatherModule weatherModule;
+    @Inject private ApplicationConfig applicationConfig;
+    @Inject private ItemModule itemModule;
+    @Inject private RoomExplorer roomExplorer;
 
-    private final List<RoomModel>                               _exteriorRooms = new ArrayList<>();
-    private final Collection<RoomModel>                         _rooms = new ConcurrentLinkedQueue<>();
     private final Collection<Class<? extends RoomModel>>              _roomClasses = new LinkedBlockingQueue<>();
-    private boolean                                             _needRefresh;
-    private AsyncTask<List<RoomModel>>                          _task;
-    private boolean[]                                           _refresh;
-    private final HashSet<Parcel>                                _closeList = new HashSet<>();
-    private Map<String, RoomModel> roomMap = new ConcurrentHashMap<>();
 
     public boolean runOnMainThread() { return false; }
 
@@ -58,211 +44,14 @@ public class RoomModule extends SuperGameModule {
     }
 
     @Override
-    public void onGameStart(Game game) {
-
-//        _updateInterval = 10;
-//
-//        _needRefresh = true;
-//        _refresh = new boolean[game.getInfo().worldFloors];
-//        for (int floor = 0; floor < game.getInfo().worldFloors; floor++) {
-//            _refresh[floor] = true;
-//        }
-//
-//        _exteriorRooms.clear();
-//        for (int floor = 0; floor < game.getInfo().worldFloors; floor++) {
-//            _exteriorRooms.add(new RoomModel(RoomModel.RoomType.NONE, floor, null));
-//        }
-    }
-
-    public Collection<RoomModel> getRooms() { return _rooms; }
-
-    public Map<String, RoomModel> getRoomMap() {
-        return roomMap;
-    }
-
-    @Override
     public void onGameLongUpdate(Game game) {
-        itemModule.getAll().stream().filter(usableItem -> usableItem.getInfo().name.contains("door")).forEach(door -> {
-
-            if (Stream.of(worldModule.getParcel(door.getParcel(), LEFT), worldModule.getParcel(door.getParcel(), RIGHT)).filter(Parcel::isWalkable).count() == 2
-                    && Stream.of(worldModule.getParcel(door.getParcel(), TOP), worldModule.getParcel(door.getParcel(), BOTTOM)).filter(parcel -> !parcel.isWalkable()).count() == 2) {
-                discoverRoom(door.getParcel(), worldModule.getParcel(door.getParcel(), LEFT));
-                discoverRoom(door.getParcel(), worldModule.getParcel(door.getParcel(), RIGHT));
-            }
-
-            if (Stream.of(worldModule.getParcel(door.getParcel(), TOP), worldModule.getParcel(door.getParcel(), BOTTOM)).filter(Parcel::isWalkable).count() == 2
-                    && Stream.of(worldModule.getParcel(door.getParcel(), LEFT), worldModule.getParcel(door.getParcel(), RIGHT)).filter(parcel -> !parcel.isWalkable()).count() == 2) {
-                discoverRoom(door.getParcel(), worldModule.getParcel(door.getParcel(), TOP));
-                discoverRoom(door.getParcel(), worldModule.getParcel(door.getParcel(), BOTTOM));
-            }
-
-        });
-    }
-
-    private void discoverRoom(Parcel doorParcel, Parcel parcel) {
-        RoomModel room = new RoomModel(RoomModel.RoomType.NONE, parcel.z, parcel);
-        discoverRoom(room, doorParcel, parcel);
-        if (room.getParcels().size() <= 100) {
-            roomMap.put(room.buildKey(), room);
-        }
-    }
-
-    private void discoverRoom(RoomModel room, Parcel doorParcel, Parcel parcel) {
-        boolean isDoor = parcel.getItems().stream().anyMatch(item -> item.getInfo().name.contains("door"));
-
-        if (isDoor) {
-            room.addDoor(parcel);
-        }
-
-        if (room.getParcels().size() <= 100 && !isDoor && !room.hasParcel(parcel) && parcel.isWalkable()) {
-            room.addParcel(parcel);
-            WorldHelper.getParcelAround(parcel, SurroundedPattern.SQUARE, parcelAround -> discoverRoom(room, doorParcel, parcelAround));
-        }
-    }
-
-    @Override
-    protected void onModuleUpdate(Game game) {
-
-        // TODO
-        _rooms.forEach(room -> room.setTemperature(weatherModule.getTemperature()));
-        _rooms.forEach(room -> room.setLight(weatherModule.getLight()));
-
-//        if (_needRefresh) {
-//            _needRefresh = false;
-//            for (int floor = 0; floor < _refresh.length; floor++) {
-//                if (_refresh[floor]) {
-//                    refreshRooms(floor);
-//                }
-//            }
-//            for (int floor = 0; floor < _refresh.length; floor++) {
-//                if (_refresh[floor]) {
-//                    final int f = floor;
-//                    _rooms.stream().filter(room -> room.getFloor() >= f - 1 && room.getFloor() <= f + 1).forEach(room -> makeNeighborhood(_rooms, room));
-//                }
-//            }
-//            for (int floor = 0; floor < _refresh.length; floor++) {
-//                _refresh[floor] = false;
-//            }
-//        }
-//
-//        if (_task != null && _task.isComplete()) {
-//            _task.complete();
-//            _task = null;
-//        }
-    }
-
-    public <T extends RoomModel> T addRoom(Class<T> cls, Collection<Parcel> parcels) {
-        T existingArea = _rooms.stream()
-                .filter(cls::isInstance)
-                .filter(area -> area.getParcels().stream().anyMatch(parcels::contains))
-                .map(cls::cast)
-                .findAny().orElse(null);
-
-        // Add parcel to existing room
-        if (existingArea != null) {
-            parcels.forEach(existingArea::addParcel);
-            return existingArea;
-        }
-
-        // Create new room
-        try {
-            T room = cls.getConstructor().newInstance();
-            parcels.forEach(room::addParcel);
-            _rooms.add(room);
-            return room;
-        } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
-            throw new GameException(RoomModule.class, "Cannot create room: " + cls.getSimpleName());
-        }
-    }
-
-    public void removeArea(List<Parcel> parcels) {
-        _rooms.forEach(room -> parcels.forEach(room::removeParcel));
-        _rooms.removeIf(area -> area.getParcels().isEmpty());
+        roomExplorer.refresh();
     }
 
     public RoomModel getRoom(Parcel parcel) {
-        return _rooms.stream().filter(room -> room.hasParcel(parcel)).findFirst().orElse(null);
+        return getAll().stream().filter(room -> room.hasParcel(parcel)).findFirst().orElse(null);
     }
 
-//    public void refreshRooms(int floor) {
-//        Log.info("org.smallbox.faraway.module.room.RoomModule: onDisplayMultiple floor " + floor);
-//        long time = System.currentTimeMillis();
-//
-//        ParcelModel[][][] parcels = worldModule.getParcelsByType();
-//        int width = Application.gameManager.getGame().getInfo().worldWidth;
-//        int height = Application.gameManager.getGame().getInfo().worldHeight;
-//
-//        // Remove all room for this floor
-//        _rooms.removeIf(room -> room.getFloor() == floor);
-//
-//        // Make new rooms on free parcels
-//        _closeList.clear();
-//        List<RoomModel> newRooms = new ArrayList<>();
-//        RoomModel exteriorRoom = _exteriorRooms.get(floor);
-//        exteriorRoom.setExterior(true);
-//        newRooms.add(exteriorRoom);
-//        for (int x = 0; x < width; x++) {
-//            for (int y = 0; y < height; y++) {
-//                ParcelModel parcel = parcels[x][y][floor];
-//                if (!_closeList.contains(parcel)) {
-//                    if (parcel.isRoomOpen()) {
-////                        Log.info("Create new room for parcel " + x + "x" + y);
-//                        RoomModel room = new RoomModel(RoomModel.RoomType.NONE, floor, parcel);
-//                        explore(room, exteriorRoom, parcel, _closeList);
-//                        checkRoof(room);
-//                        newRooms.add(room);
-//                    } else {
-//                        parcel.setRoom(exteriorRoom);
-//                        exteriorRoom.getParcelsByType().add(parcel);
-//                    }
-//                }
-//            }
-//        }
-//
-//        // Add new rooms to list
-//        _rooms.addAll(newRooms);
-//
-//        Log.info("Room list: " + _rooms.size());
-//        Log.info("org.smallbox.faraway.module.room.RoomModule: onDisplayMultiple done " + (System.currentTimeMillis() - time));
-//    }
-//
-//    private void explore(RoomModel room, RoomModel exteriorRoom, ParcelModel parcel, Set<ParcelModel> closeList) {
-////        double temperature = 0;
-////        double light = 0;
-////        double oxygen = 0;
-//        int nbParcel = 0;
-//
-//        Queue<ParcelModel> openList = new ArrayDeque<>(Collections.singleton(parcel));
-//        while ((parcel = openList.poll()) != null) {
-//            if (parcel.getConnections() != null && parcel.isRoomOpen()) {
-//                // Keep old room info
-////                temperature += parcel.getRoom() != null ? parcel.getRoom().getTemperatureFloor() : _weatherModule.getTemperatureFloor(parcel.z);
-////                oxygen += parcel.getRoom() != null ? parcel.getRoom().getOxygen() : _oxygenModule.getOxygen();
-////                light += parcel.getRoom() != null ? parcel.getRoom().getLight() : _weatherModule.getLight();
-//                nbParcel++;
-//
-//                parcel.setRoom(room);
-//                room.getParcelsByType().add(parcel);
-//                for (Connection<ParcelModel> connection: parcel.getConnections()) {
-//                    ParcelModel toParcel = connection.getToNode();
-//                    if (parcel.z == toParcel.z && !closeList.contains(toParcel)) {
-//                        closeList.add(connection.getToNode());
-//                        if (toParcel.isRoomOpen()) {
-//                            openList.add(connection.getToNode());
-//                        } else {
-//                            connection.getToNode().setRoom(exteriorRoom);
-//                            exteriorRoom.getParcelsByType().add(connection.getToNode());
-//                        }
-//                    }
-//                }
-//            }
-//        }
-//
-////        room.setTemperature(temperature / nbParcel);
-////        room.setLight(light / nbParcel);
-////        room.setOxygen(oxygen / nbParcel);
-//    }
-//
 //    private void checkRoof(RoomModel room) {
 //        printInfo("[org.smallbox.faraway.module.room.RoomModule] Check roof: " + room.getName());
 //        for (ParcelModel parcel: room.getParcelsByType()) {

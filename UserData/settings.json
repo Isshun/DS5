@@ -119,6 +119,8 @@
       1
     ],
     "tickInterval": 10,
+    "dailyTemperatureVariation": 10,
+    "roomMaxSize": 400,
     "startGameTime": "2135-01-01 07:00:00",
     "startSpeed": 3,
     "roofMaxDistance": 6,
@@ -157,6 +159,10 @@
     {
       "name": "action/cancel",
       "key": "C"
+    },
+    {
+      "name": "action/destruct",
+      "key": "X"
     },
     {
       "name": "info/temperature",

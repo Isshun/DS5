@@ -15,7 +15,7 @@ import org.smallbox.faraway.game.world.WorldModule;
 import static org.smallbox.faraway.util.Constant.TILE_SIZE;
 
 @GameObject
-@GameLayer(level = LayerLevel.CONSUMABLE_LAYER_LEVEL + 1, visible = false)
+@GameLayer(level = LayerLevel.INFO_LEVEL, visible = false)
 public class InfoRoomLayer extends BaseMapLayer {
     @Inject private WorldModule worldModule;
     @Inject private RoomModule roomModule;
@@ -23,10 +23,12 @@ public class InfoRoomLayer extends BaseMapLayer {
     private Color color = new Color(0xff000088);
 
     public void    onDraw(BaseRenderer renderer, Viewport viewport, double animProgress, int frame) {
-        roomModule.getRoomMap().forEach((baseParcel, room) -> {
+        roomModule.getAll().forEach(room -> {
             room.getParcels().forEach(parcel -> {
                 renderer.drawRectangleOnMap(parcel, TILE_SIZE, TILE_SIZE, color, 0, 0);
             });
+            renderer.drawRectangleOnMap(room.getBaseParcel(), TILE_SIZE, TILE_SIZE, Color.FIREBRICK, 0, 0);
+            renderer.drawTextOnMap(room.getBaseParcel(), room.getName(), Color.CHARTREUSE, 42, 0, 0);
         });
     }
 

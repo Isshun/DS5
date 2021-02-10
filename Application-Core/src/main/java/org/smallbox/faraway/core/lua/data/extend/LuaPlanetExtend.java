@@ -80,18 +80,6 @@ public class LuaPlanetExtend extends LuaExtend {
         regionInfo.hostility = getInt(value, "hostility", 2);
         regionInfo.fertility = getInt(value, "fertility", 2);
 
-        if (!value.get("temperatures").isnil()) {
-            regionInfo.temperatures = new ArrayList<>();
-            for (int i = 1; i <= value.get("temperatures").length(); i++) {
-                LuaValue luaTemperature = value.get("temperatures").get(i);
-                RegionInfo.RegionTemperature regionTemperature = new RegionInfo.RegionTemperature();
-                regionTemperature.temperature = getDoubleInterval(luaTemperature, "value", null);
-                regionTemperature.fromFloor = Math.min(luaTemperature.get("floors").get(1).toint(), luaTemperature.get("floors").get(2).toint());
-                regionTemperature.toFloor = Math.max(luaTemperature.get("floors").get(1).toint(), luaTemperature.get("floors").get(2).toint());
-                regionInfo.temperatures.add(regionTemperature);
-            }
-        }
-
         if (!value.get("spots").isnil()) {
             regionInfo.spots = new ArrayList<>();
             for (int i = 1; i <= value.get("spots").length(); i++) {
@@ -117,6 +105,61 @@ public class LuaPlanetExtend extends LuaExtend {
                 terrainInfo.pattern = getString(luaTerrain, "pattern", null);
                 terrainInfo.condition = getString(luaTerrain, "condition", null);
                 regionInfo.terrains.add(terrainInfo);
+            }
+        }
+
+        if (!value.get("months").isnil()) {
+            regionInfo.months = new ArrayList<>();
+            for (int i = 1; i <= value.get("months").length(); i++) {
+                LuaValue luaMonth = value.get("months").get(i);
+                RegionInfo.RegionMonth regionMonth = new RegionInfo.RegionMonth();
+                regionMonth.index = getInt(luaMonth, "index", 0);
+                regionMonth.temperature = new int[] {
+                        luaMonth.get("temperature").get(1).toint(),
+                        luaMonth.get("temperature").get(2).toint()
+                };
+                regionMonth.temperatureHourlyVariations = new int[] {
+                        luaMonth.get("temperature_hourly_variations").get(1).toint(),
+                        luaMonth.get("temperature_hourly_variations").get(2).toint(),
+                        luaMonth.get("temperature_hourly_variations").get(3).toint(),
+                        luaMonth.get("temperature_hourly_variations").get(4).toint(),
+                        luaMonth.get("temperature_hourly_variations").get(5).toint(),
+                        luaMonth.get("temperature_hourly_variations").get(6).toint(),
+                        luaMonth.get("temperature_hourly_variations").get(7).toint(),
+                        luaMonth.get("temperature_hourly_variations").get(8).toint(),
+                        luaMonth.get("temperature_hourly_variations").get(9).toint(),
+                        luaMonth.get("temperature_hourly_variations").get(10).toint(),
+                        luaMonth.get("temperature_hourly_variations").get(11).toint(),
+                        luaMonth.get("temperature_hourly_variations").get(12).toint(),
+                        luaMonth.get("temperature_hourly_variations").get(13).toint(),
+                        luaMonth.get("temperature_hourly_variations").get(14).toint(),
+                        luaMonth.get("temperature_hourly_variations").get(15).toint(),
+                        luaMonth.get("temperature_hourly_variations").get(16).toint(),
+                        luaMonth.get("temperature_hourly_variations").get(17).toint(),
+                        luaMonth.get("temperature_hourly_variations").get(18).toint(),
+                        luaMonth.get("temperature_hourly_variations").get(19).toint(),
+                        luaMonth.get("temperature_hourly_variations").get(20).toint(),
+                        luaMonth.get("temperature_hourly_variations").get(21).toint(),
+                        luaMonth.get("temperature_hourly_variations").get(22).toint(),
+                        luaMonth.get("temperature_hourly_variations").get(23).toint(),
+                        luaMonth.get("temperature_hourly_variations").get(24).toint()
+                };
+                regionMonth.rain = getInt(luaMonth, "rain", 0);
+                regionInfo.months.add(regionMonth);
+            }
+        }
+
+        if (!value.get("seasons").isnil()) {
+            regionInfo.seasons = new ArrayList<>();
+            for (int i = 1; i <= value.get("seasons").length(); i++) {
+                LuaValue luaSeason = value.get("seasons").get(i);
+                RegionInfo.RegionSeason regionSeason = new RegionInfo.RegionSeason();
+                regionSeason.id = getString(luaSeason, "id", null);
+                regionSeason.from = getInt(luaSeason, "from", 0);
+                regionSeason.to = getInt(luaSeason, "to", 0);
+                regionSeason.dayOfMonth = getInt(luaSeason, "day_of_month", 0);
+                regionSeason.name = getString(luaSeason, "name", null);
+                regionInfo.seasons.add(regionSeason);
             }
         }
 

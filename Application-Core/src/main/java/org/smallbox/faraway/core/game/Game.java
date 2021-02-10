@@ -2,16 +2,19 @@ package org.smallbox.faraway.core.game;
 
 import org.smallbox.faraway.GameTaskManager;
 import org.smallbox.faraway.core.Application;
+import org.smallbox.faraway.core.config.ApplicationConfig;
 import org.smallbox.faraway.core.dependencyInjector.DependencyManager;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
+import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnGameNewDay;
+import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnGameNewHour;
+import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnGameNewMonth;
 import org.smallbox.faraway.core.module.AbsGameModule;
 import org.smallbox.faraway.core.module.ModuleBase;
+import org.smallbox.faraway.core.save.GameInfo;
 import org.smallbox.faraway.game.planet.PlanetInfo;
 import org.smallbox.faraway.game.planet.PlanetModel;
 import org.smallbox.faraway.game.planet.RegionInfo;
-import org.smallbox.faraway.core.save.GameInfo;
-import org.smallbox.faraway.core.config.ApplicationConfig;
 import org.smallbox.faraway.util.Utils;
 import org.smallbox.faraway.util.log.Log;
 
@@ -22,12 +25,14 @@ import java.util.concurrent.TimeUnit;
 
 @GameObject
 public class Game {
+    @Inject private DependencyManager dependencyManager;
     @Inject private GameTaskManager gameTaskManager;
     @Inject private GameTime gameTime;
 
     public static long interval = 1000;
     private final ApplicationConfig config;
     private double _tickPerHour;
+    private RegionInfo.RegionMonth currentMonth;
 
     public <T> T getModule(Class<T> cls) {
         return (T) _modules.stream().filter(module -> module.getClass() == cls).findAny().orElse(null);
@@ -35,6 +40,10 @@ public class Game {
 
     public double byTick(double value) {
         return value / _tickPerHour;
+    }
+
+    public RegionInfo.RegionMonth getCurrentMonth() {
+        return currentMonth;
     }
 
     public enum GameStatus {UNINITIALIZED, CREATED, STOPPED, STARTED}
@@ -196,7 +205,25 @@ public class Game {
             try {
                 if (_isRunning) {
                     _tick += 1;
+
+                    int hour = gameTime.getHour();
+                    int day = gameTime.getDay();
+                    int month = gameTime.getMonth();
+
                     gameTime.add(1 / _tickPerHour);
+
+                    if (gameTime.getMonth() > month) {
+                        currentMonth = _regionInfo.months.stream().filter(m -> m.index == gameTime.getMonth()).findFirst().orElse(null);
+                        dependencyManager.callMethodAnnotatedBy(OnGameNewMonth.class);
+                    }
+
+                    if (gameTime.getDay() > day) {
+                        dependencyManager.callMethodAnnotatedBy(OnGameNewDay.class);
+                    }
+
+                    if (gameTime.getHour() > hour) {
+                        dependencyManager.callMethodAnnotatedBy(OnGameNewHour.class);
+                    }
 
                     _modules.forEach(module -> {
                         try {

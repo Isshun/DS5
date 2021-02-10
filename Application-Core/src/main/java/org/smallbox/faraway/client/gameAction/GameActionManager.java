@@ -15,6 +15,7 @@ import org.smallbox.faraway.game.area.AreaModel;
 import org.smallbox.faraway.game.area.AreaModule;
 import org.smallbox.faraway.game.area.AreaTypeInfo;
 import org.smallbox.faraway.game.building.BuildJobFactory;
+import org.smallbox.faraway.game.building.DestructJobFactory;
 import org.smallbox.faraway.game.job.JobModule;
 import org.smallbox.faraway.game.plant.PlantModule;
 import org.smallbox.faraway.game.world.ObjectModel;
@@ -33,6 +34,7 @@ public class GameActionManager extends GameManager {
     @Inject private AreaModule areaModule;
     @Inject private JobModule jobModule;
     @Inject private BuildJobFactory buildJobFactory;
+    @Inject private DestructJobFactory destructJobFactory;
     @Inject private DependencyManager dependencyManager;
     @Inject private PlantModule plantModule;
 
@@ -80,11 +82,20 @@ public class GameActionManager extends GameManager {
         };
     }
 
+    @GameShortcut("action/cancel")
     public void setCancelAction() {
         this.mode = GameActionMode.CANCEL;
         this.actionColor = Colors.COLOR_CURSOR;
         this.actionLabel = "Cancel";
         this.areaAction = parcel -> jobModule.removeIf(job -> job.getTargetParcel() == parcel);
+    }
+
+    @GameShortcut("action/destruct")
+    public void setDestructAction() {
+        this.mode = GameActionMode.DESTRUCT;
+        this.actionColor = Colors.COLOR_CURSOR;
+        this.actionLabel = "Destruct";
+        this.areaAction = parcel -> jobModule.add(destructJobFactory.createJob(parcel));
     }
 
     public GameActionMode getMode() {
@@ -150,11 +161,6 @@ public class GameActionManager extends GameManager {
         gameActionsConsumers.get(annotation).entrySet().stream()
                 .filter(entry -> entry.getKey().value().isInstance(object))
                 .forEach(entry -> entry.getValue().accept(object));
-    }
-
-    @GameShortcut("action/cancel")
-    public void onPressCancel() {
-        setCancelAction();
     }
 
 }

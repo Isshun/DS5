@@ -20,10 +20,19 @@ public class RegionInfo {
         public int[]                quantity;
     }
 
-    public static class RegionTemperature {
-        public int                  fromFloor;
-        public int                  toFloor;
-        public double[]             temperature;
+    public static class RegionMonth {
+        public int                  index;
+        public int                  rain;
+        public int[]                temperature;
+        public int[]                temperatureHourlyVariations;
+    }
+
+    public static class RegionSeason {
+        public String               id;
+        public int                  from;
+        public int                  to;
+        public int                  dayOfMonth;
+        public String               name;
     }
 
     public static class RegionWeather {
@@ -49,5 +58,6 @@ public class RegionInfo {
     public List<RegionTerrain>      terrains;
     public List<RegionWeather>      weather;
     public List<RegionFauna>        fauna;
-    public List<RegionTemperature>  temperatures;
+    public List<RegionSeason>       seasons;
+    public List<RegionMonth>        months;
 }

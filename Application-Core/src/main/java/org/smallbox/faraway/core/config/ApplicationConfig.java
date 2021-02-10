@@ -45,6 +45,8 @@ public class ApplicationConfig {
     public static class ApplicationConfigGameInfo {
         public int[]            ticksPerHour;
         public int              tickInterval;
+        public int              dailyTemperatureVariation;
+        public int              roomMaxSize;
         public String           startGameTime;
         public int              startSpeed;
         public int              roofMaxDistance;

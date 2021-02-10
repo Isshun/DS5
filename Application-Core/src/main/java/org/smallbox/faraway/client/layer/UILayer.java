@@ -1,5 +1,6 @@
 package org.smallbox.faraway.client.layer;
 
+import org.smallbox.faraway.client.LayerLevel;
 import org.smallbox.faraway.client.renderer.BaseRenderer;
 import org.smallbox.faraway.client.renderer.Viewport;
 import org.smallbox.faraway.client.ui.UIManager;
@@ -8,7 +9,7 @@ import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 
 @GameObject
-@GameLayer(level = 1, visible = true)
+@GameLayer(level = LayerLevel.UI, visible = true)
 public class UILayer extends BaseLayer {
     @Inject private UIManager uiManager;
 

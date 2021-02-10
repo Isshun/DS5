@@ -11,6 +11,7 @@ public class JobTask implements JobInterface {
     public final TechnicalTaskAction technicalAction;
     public final JobTaskReturn taskReturn;
     public LocalDateTime startTime;
+    protected JobModel job;
 
     public void init(LocalDateTime localDateTime) {
         startTime = localDateTime;
@@ -32,6 +33,10 @@ public class JobTask implements JobInterface {
     @Override
     public JobTaskReturn onGetStatus(LocalDateTime localDateTime) {
         return null;
+    }
+
+    public void setJob(JobModel job) {
+        this.job = job;
     }
 
     public interface JobTaskAction {

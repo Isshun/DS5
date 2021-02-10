@@ -69,7 +69,7 @@ public class RoomLayer extends BaseMapLayer {
         int toX = fromX + viewport.getWidth() / Constant.TILE_SIZE;
         int toY = fromY + viewport.getHeight() / Constant.TILE_SIZE;
 
-        roomModule.getRooms().forEach(Room ->
+        roomModule.getAll().forEach(Room ->
                 Room.getParcels().forEach(parcel ->
                         renderer.drawTextureRegionOnMap(parcel, getTexture(Room.getClass()))));
 

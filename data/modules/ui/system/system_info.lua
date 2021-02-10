@@ -29,11 +29,11 @@ ui:extend({
                         { type = "image", id = "img_time", src = "[base]/graphics/icons/daytimes/noon.png", size = {32, 32}, position = {2000, 2}},
                         { type = "image", id = "img_daytime", size = {minimap_header_height, minimap_header_height}, position = {-1, -1}},
                         { type = "label", id = "lb_time", text = "lb_time", text_font = "font3", text_color = 0xffffffcc, text_size = 18, position = {52, 8} },
-                        { type = "label", id = "lb_date", text = "lb_date", text_font = "font3", text_color = 0xffffff88, text_size = 13, position = {52, 31} },
+                        { type = "label", id = "lb_date", text = "lb_date", text_font = "font3", text_color = 0xffffff88, text_size = 15, position = {52, 31} },
 
                         -- Weather
                         { type = "label", id = "lb_weather", text = "lb_weather", text_font = "font3", text_color = 0xffffffcc, text_size = 18, text_align = "TOP_RIGHT", text_length = 20, size = {200, 20}, position = {window_width - 252, 8}},
-                        { type = "label", id = "lb_temperature", text = "lb_temperature", text_font = "font3", text_color = 0xffffff88, text_size = 13, text_align = "TOP_RIGHT", text_length = 26, size = {200, 20}, position = {window_width - 252, 31}},
+                        { type = "label", id = "lb_temperature", text = "lb_temperature", text_font = "font3", text_color = 0xffffff88, text_size = 15, text_align = "TOP_RIGHT", text_length = 26, size = {200, 20}, position = {window_width - 252, 31}},
                         { type = "image", id = "img_weather", src = "[base]/graphics/icons/weather/regular.png", size = {32, 32}, position = {window_width - 46, 7}},
 
                         -- Game speed

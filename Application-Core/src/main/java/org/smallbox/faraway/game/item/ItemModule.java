@@ -23,6 +23,8 @@ import org.smallbox.faraway.game.world.WorldHelper;
 import org.smallbox.faraway.game.world.WorldModule;
 import org.smallbox.faraway.util.log.Log;
 
+import java.util.Optional;
+
 @GameObject
 public class ItemModule extends SuperGameModule<UsableItem, ItemModuleObserver> {
     @Inject private WorldModule worldModule;
@@ -82,6 +84,16 @@ public class ItemModule extends SuperGameModule<UsableItem, ItemModuleObserver> 
     }
 
     @Override
+    public void remove(UsableItem item) {
+        super.remove(item);
+
+        Optional.ofNullable(item.getParcel()).ifPresent(parcel -> parcel.getItems().remove(item));
+
+        jobModule.onCancelJobs(item.getParcel(), item);
+
+//        notifyObservers(obs -> obs.onRemoveItem(item.getParcel(), item));
+    }
+
     public void removeObject(MapObjectModel mapObjectModel) {
         if (mapObjectModel.isUserItem() && mapObjectModel instanceof UsableItem) {
             remove((UsableItem) mapObjectModel);

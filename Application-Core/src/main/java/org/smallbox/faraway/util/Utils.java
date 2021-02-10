@@ -9,13 +9,6 @@ import java.nio.charset.StandardCharsets;
 
 public class Utils {
 
-    public static int getRandom(int[] interval) {
-        if (interval[0] == interval[1]) {
-            return interval[0];
-        }
-        return (int)(Math.random() * (interval[1] - interval[0]) + interval[0]);
-    }
-
     public static JSONObject toJSON(FileInputStream fis) throws IOException {
         return new JSONObject(IOUtils.toString(fis, StandardCharsets.UTF_8));
     }

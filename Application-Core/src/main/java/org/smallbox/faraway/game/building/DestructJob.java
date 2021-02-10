@@ -6,9 +6,9 @@ import org.smallbox.faraway.game.job.JobCheckReturn;
 import org.smallbox.faraway.game.job.JobModel;
 import org.smallbox.faraway.game.world.Parcel;
 
-public class BuildJob extends JobModel {
+public class DestructJob extends JobModel {
 
-    public BuildJob(Parcel targetParcel) {
+    public DestructJob(Parcel targetParcel) {
         super(targetParcel);
     }
 

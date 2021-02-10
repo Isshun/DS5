@@ -2,10 +2,12 @@ package org.smallbox.faraway.client;
 
 public class LayerLevel {
     public static final int TOP = 999;
-    public static final int MINI_MAP_LEVEL = 100;
+    public static final int MINI_MAP_LEVEL = 101;
+    public static final int UI = 100;
+    public static final int INFO_POPUP_LEVEL = 81;
+    public static final int INFO_LEVEL = 80;
     public static final int LIGHT_LAYER_LEVEL = 51;
     public static final int PARTICLE_LAYER_LEVEL = 50;
-    public static final int INFO_LEVEL = 0;
     public static final int JOB_LAYER_LEVEL = -100;
     public static final int CHARACTER_LAYER_LEVEL = -101;
     public static final int CONSUMABLE_LAYER_LEVEL = -102;

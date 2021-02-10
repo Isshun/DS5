@@ -18,6 +18,12 @@ ui:extend({
             text_focus_color = 0xffffffff,
             text_align = "CENTER",
             size = {300, 65},
+        },
+        {
+            id = "menu_entry",
+            text_font = "font3",
+            text_color = 0x000000cc,
+            text_size = 18,
         }
     },
     views = {
@@ -71,7 +77,10 @@ ui:extend({
 
             -- Bindingss
             { type = "list", id = "bindings_sub_menu", visible = false, position = {0, 12}, size = {800, 490}, template = {
-                { type = "label", id = "lb_binding", text_color = 0x000000cc, text_focus_color = yellow, text_font = "sui", text_size = 22, size = {800, 32}, text_align = "LEFT", position = {14, 0}}
+                { type = "view", size = {800, 32}, views = {
+                    { type = "label", id = "lb_binding_name", text_focus_color = 0xffffffcc, style = "menu_entry", size = {800, 32}, text_align = "LEFT", position = {18, 0}},
+                    { type = "label", id = "lb_binding_key", style = "menu_entry", size = {200, 32}, text_align = "CENTER", position = {window_width - 218, 0}},
+                }},
             }},
 
             -- Gameplay

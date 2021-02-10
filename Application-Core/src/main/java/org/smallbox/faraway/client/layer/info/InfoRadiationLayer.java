@@ -15,7 +15,7 @@ import org.smallbox.faraway.game.world.WorldModule;
 import static org.smallbox.faraway.util.Constant.TILE_SIZE;
 
 @GameObject
-@GameLayer(level = LayerLevel.CONSUMABLE_LAYER_LEVEL + 1, visible = false)
+@GameLayer(level = LayerLevel.INFO_LEVEL, visible = false)
 public class InfoRadiationLayer extends BaseMapLayer {
     @Inject private WorldModule worldModule;
     @Inject private RadiationModule radiationModule;

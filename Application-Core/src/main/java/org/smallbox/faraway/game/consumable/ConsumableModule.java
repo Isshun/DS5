@@ -19,7 +19,7 @@ import org.smallbox.faraway.game.job.JobModule;
 import org.smallbox.faraway.game.job.JobStatus;
 import org.smallbox.faraway.game.structure.StructureModule;
 import org.smallbox.faraway.game.world.WorldModule;
-import org.smallbox.faraway.util.Utils;
+import org.smallbox.faraway.util.Random;
 import org.smallbox.faraway.util.log.Log;
 
 import java.util.*;
@@ -48,11 +48,11 @@ public class ConsumableModule extends SuperGameModule<Consumable, ConsumableModu
     }
 
     public void addConsumable(ItemInfo itemInfo, int[] quantity, int x, int y, int z) {
-        addConsumable(itemInfo, Utils.getRandom(quantity), x, y, z);
+        addConsumable(itemInfo, Random.interval(quantity), x, y, z);
     }
 
     public void addConsumable(ItemInfo itemInfo, int[] quantity, Parcel parcel) {
-        addConsumable(itemInfo, Utils.getRandom(quantity), parcel);
+        addConsumable(itemInfo, Random.interval(quantity), parcel);
     }
 
     public void addConsumable(ItemInfo itemInfo, int quantity, int x, int y, int z) {

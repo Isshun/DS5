@@ -24,7 +24,7 @@ data:extend({
         { hour = 4, id = "night", color = 0x8080f0ff },
         { hour = 5, id = "night", color = 0x8080f0ff },
         { hour = 6, id = "night", color = 0x8080f0ff },
-        { hour = 7, id = "night", color = 0x8080f0ff },
+        { hour = 7, id = "day", color = 0xf0f0f0ff },
         { hour = 8, id = "day", color = 0xf0f0f0ff },
         { hour = 9, id = "day", color = 0xf0f0f0ff },
         { hour = 10, id = "day", color = 0xf0f0f0ff },
@@ -46,9 +46,25 @@ data:extend({
         id = "continental",
         label = "Continental",
         color = 0x804f15ff,
-        temperatures = {
-            {floors = {-99, -1}, value = {15, 15}},
-            {floors = {0, 0}, value = {20, 20}},
+        months = {
+            {index = 1, temperature = {-1, 4}, temperature_hourly_variations = {-2, -2, -3, -4, -5, -5, -5, -4, -2, 0, 2, 4, 5, 6, 7, 6, 5, 4, 3, 2, 0, 0, -1, -1}, rain = 8},
+            {index = 2, temperature = {-1, 5}, temperature_hourly_variations = {-2, -2, -3, -4, -5, -5, -5, -4, -2, 0, 2, 4, 5, 6, 7, 6, 5, 4, 3, 2, 0, 0, -1, -1}, rain = 8},
+            {index = 3, temperature = {2, 10}, temperature_hourly_variations = {-2, -2, -3, -4, -5, -5, -5, -4, -2, 0, 2, 4, 5, 6, 7, 6, 5, 4, 3, 2, 0, 0, -1, -1}, rain = 8},
+            {index = 4, temperature = {5, 15}, temperature_hourly_variations = {-2, -2, -3, -4, -5, -5, -5, -4, -2, 0, 2, 4, 5, 6, 7, 6, 5, 4, 3, 2, 0, 0, -1, -1}, rain = 9},
+            {index = 5, temperature = {8, 18}, temperature_hourly_variations = {-2, -2, -3, -4, -5, -5, -5, -4, -2, 0, 2, 4, 5, 6, 7, 6, 5, 4, 3, 2, 0, 0, -1, -1}, rain = 10},
+            {index = 6, temperature = {13, 23}, temperature_hourly_variations = {-2, -2, -3, -4, -5, -5, -5, -4, -2, 0, 2, 4, 5, 6, 7, 6, 5, 4, 3, 2, 0, 0, -1, -1}, rain = 9},
+            {index = 7, temperature = {14, 25}, temperature_hourly_variations = {-2, -2, -3, -4, -5, -5, -5, -4, -2, 0, 2, 4, 5, 6, 7, 6, 5, 4, 3, 2, 0, 0, -1, -1}, rain = 7},
+            {index = 8, temperature = {14, 24}, temperature_hourly_variations = {-2, -2, -3, -4, -5, -5, -5, -4, -2, 0, 2, 4, 5, 6, 7, 6, 5, 4, 3, 2, 0, 0, -1, -1}, rain = 7},
+            {index = 9, temperature = {11, 20}, temperature_hourly_variations = {-2, -2, -3, -4, -5, -5, -5, -4, -2, 0, 2, 4, 5, 6, 7, 6, 5, 4, 3, 2, 0, 0, -1, -1}, rain = 8},
+            {index = 10, temperature = {7, 14}, temperature_hourly_variations = {-2, -2, -3, -4, -5, -5, -5, -4, -2, 0, 2, 4, 5, 6, 7, 6, 5, 4, 3, 2, 0, 0, -1, -1}, rain = 9},
+            {index = 11, temperature = {3, 8}, temperature_hourly_variations = {-2, -2, -3, -4, -5, -5, -5, -4, -2, 0, 2, 4, 5, 6, 7, 6, 5, 4, 3, 2, 0, 0, -1, -1}, rain = 9},
+            {index = 12, temperature = {-1, 4}, temperature_hourly_variations = {-2, -2, -3, -4, -5, -5, -5, -4, -2, 0, 2, 4, 5, 6, 7, 6, 5, 4, 3, 2, 0, 0, -1, -1}, rain = 9},
+        },
+        seasons = {
+            {id = "spring", from = 3, to = 6, day_of_month = 20, name = "Spring"},
+            {id = "summer", from = 6, to = 9, day_of_month = 20, name = "Summer"},
+            {id = "autumn", from = 9, to = 12, day_of_month = 20, name = "Autumn"},
+            {id = "winter", from = 12, to = 3, day_of_month = 20, name = "Winter"},
         },
         spots = {{latitude = {-90, 90}, frequency = 1}},
         terrains = {
@@ -61,11 +77,18 @@ data:extend({
         weather = {
 --            {id = "base.weather.sandwhirl", frequency = {2, 10}, duration = {1, 1}},
             {id = "base.weather.regular", frequency = {2, 10}, duration = {1, 1}},
-            {id = "base.weather.coldwave", frequency = {2, 10}, duration = {1, 1}},
-            {id = "base.weather.snow", frequency = {2, 10}, duration = {1, 1}},
+            {id = "base.weather.coldwave", frequency = {2, 10}, duration = {1, 1}, conditions = {
+                {season = "winter", temperature = {-100, 0}}
+            }},
+            {id = "base.weather.snow", frequency = {2, 10}, duration = {1, 1}, conditions = {
+                {season = "winter", temperature = {-100, 0}, rain = 1}
+            }},
             {id = "base.weather.storm", frequency = {2, 10}, duration = {1, 1}},
             {id = "base.weather.lightrain", frequency = {2, 10}, duration = {1, 1}},
-            {id = "base.weather.thunderstorm", frequency = {2, 10}, duration = {1, 1}},
+            {id = "base.weather.thunderstorm", frequency = {2, 10}, duration = {1, 1}, conditions = {
+                {season = "summer", temperature = {25, 100}},
+                {season = "autumn", temperature = {25, 100}},
+            }},
         },
     }, {
         id = "ocean",

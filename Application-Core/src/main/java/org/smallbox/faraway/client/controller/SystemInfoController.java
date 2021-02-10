@@ -15,9 +15,11 @@ import org.smallbox.faraway.core.game.GameManager;
 import org.smallbox.faraway.core.game.GameTime;
 import org.smallbox.faraway.game.weather.WeatherInfo;
 import org.smallbox.faraway.game.weather.WeatherModule;
+import org.smallbox.faraway.game.weather.WorldTemperatureModule;
 
 @GameObject
 public class SystemInfoController extends LuaController {
+    @Inject private WorldTemperatureModule worldTemperatureModule;
     @Inject private Game game;
     @Inject private GameTime gameTime;
     @Inject private GameManager gameManager;
@@ -55,7 +57,7 @@ public class SystemInfoController extends LuaController {
             lbWeather.setText(weatherInfo.label);
 //            lbWeather.setTextColor(weatherInfo.color2);
             imgWeather.setImage(weatherInfo.icon);
-            lbTemperature.setText(String.format("%.1f° / %.1fhp", weatherModule.getTemperature(), 12.7));
+            lbTemperature.setText(String.format("%d° / %.1fhp", Math.round(worldTemperatureModule.getTemperature()), 12.7));
 //            lbTemperature.setTextColor(weatherInfo.color2);
         }
 

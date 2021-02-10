@@ -86,7 +86,7 @@ public class JobModule extends SuperGameModule<JobModel, JobModuleObserver> {
     @Override
     public void add(JobModel job) {
         if (job == null) {
-            throw new GameException(JobModule.class, "Cannot create null job", job);
+            return;
         }
 
         if (modelList.contains(job)) {

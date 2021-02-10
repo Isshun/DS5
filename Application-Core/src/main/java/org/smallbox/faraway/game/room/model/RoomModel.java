@@ -6,14 +6,17 @@ import org.smallbox.faraway.core.world.model.MapObjectModel;
 import org.smallbox.faraway.game.character.model.base.CharacterModel;
 import org.smallbox.faraway.game.world.ObjectModel;
 import org.smallbox.faraway.game.world.Parcel;
+import org.smallbox.faraway.game.world.WorldHelper;
 import org.smallbox.faraway.util.GameException;
 
 import java.util.*;
+import java.util.concurrent.CopyOnWriteArraySet;
 import java.util.stream.Collectors;
+
+import static org.smallbox.faraway.game.world.SurroundedPattern.X_CROSS;
 
 public class RoomModel extends ObjectModel {
     int                                 _zoneId;
-    List<MapObjectModel>                _doors;
     private RoomType                    _type;
     private CharacterModel              _owner;
     private int                         _x;
@@ -36,7 +39,7 @@ public class RoomModel extends ObjectModel {
     private int                         _floor;
     private double                      _targetOxygen;
     private double                      _pressure;
-    private List<Parcel> doors = new ArrayList<>();
+    private Set<Parcel> doors = new HashSet<>();
 
     public boolean hasParcel(Parcel parcel) {
         return _parcels.contains(parcel);
@@ -50,12 +53,24 @@ public class RoomModel extends ObjectModel {
         doors.add(parcel);
     }
 
-    public List<Parcel> getDoors() {
+    public Collection<Parcel> getDoors() {
         return doors;
     }
 
     public String buildKey() {
-        return doors.stream().map(Parcel::toString).sorted().collect(Collectors.joining("-"));
+        return doors.stream()
+                .flatMap(doorParcel -> WorldHelper.getParcelAround(doorParcel, X_CROSS).stream().filter(this::hasParcel))
+                .map(Parcel::toString)
+                .sorted()
+                .collect(Collectors.joining("-"));
+    }
+
+    public void setParcels(Set<Parcel> parcels) {
+        this._parcels = parcels;
+    }
+
+    public void setDoors(Set<Parcel> doors) {
+        this.doors = doors;
     }
 
     public enum RoomType {
@@ -77,7 +92,7 @@ public class RoomModel extends ObjectModel {
 
     private void init(RoomType type, int floor) {
         _color = new Color(new Random().nextFloat(), new Random().nextFloat(), new Random().nextFloat(), 1f);
-        _parcels = new HashSet<>();
+        _parcels = new CopyOnWriteArraySet<>();
         _floor = floor;
         _isCommon = true;
         _maxX = Integer.MIN_VALUE;
@@ -85,7 +100,6 @@ public class RoomModel extends ObjectModel {
         _zoneId = 0;
         _permeability = 0.8;
         _type = type;
-        _doors = new ArrayList<>();
         _occupants = new HashSet<>();
         _connections = new ArrayList<>();
 

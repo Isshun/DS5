@@ -304,6 +304,8 @@ public class JobModel extends ObjectModel {
             label = jobTask.label;
         }
 
+        jobTask.setJob(this);
+
         tasks.add(jobTask);
     }
 

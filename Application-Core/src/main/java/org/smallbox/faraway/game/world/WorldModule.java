@@ -9,6 +9,7 @@ import org.smallbox.faraway.core.game.model.MovableModel.Direction;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.game.item.ItemModule;
 import org.smallbox.faraway.game.weather.WeatherModule;
+import org.smallbox.faraway.game.weather.WorldTemperatureModule;
 import org.smallbox.faraway.util.Constant;
 
 import java.util.ArrayList;
@@ -20,6 +21,7 @@ import java.util.stream.Stream;
 
 @GameObject
 public class WorldModule extends GenericGameModule<Parcel> {
+    @Inject private WorldTemperatureModule worldTemperatureModule;
     @Inject private WeatherModule weatherModule;
     @Inject private ItemModule itemModule;
     @Inject private Game game;
@@ -117,7 +119,7 @@ public class WorldModule extends GenericGameModule<Parcel> {
         if (parcel.getRoom() != null) {
             return parcel.getRoom().getTemperature();
         }
-        return weatherModule.getTemperature();
+        return worldTemperatureModule.getTemperature();
     }
 
     public double getLight(Parcel parcel) {

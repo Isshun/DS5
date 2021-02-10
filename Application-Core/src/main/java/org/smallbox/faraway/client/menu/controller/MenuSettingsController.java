@@ -46,14 +46,15 @@ public class MenuSettingsController extends LuaController {
 
         applicationConfig.shortcuts.forEach(configShortcut -> {
             CompositeView compositeView = bindingsSubMenu.createFromTemplate(CompositeView.class);
-            compositeView.findLabel("lb_binding").setText(configShortcut.name + ": " + configShortcut.key);
+            compositeView.findLabel("lb_binding_name").setText(configShortcut.name);
+            compositeView.findLabel("lb_binding_key").setText(configShortcut.key);
             compositeView.getEvents().setOnClickListener(() -> {
-                compositeView.findLabel("lb_binding").setText(configShortcut.name + ": ...");
+                compositeView.findLabel("lb_binding_key").setText("...");
                 frameNewBinding.setVisible(true);
                 menuRender.getNextKey((key, modifier) -> {
                     frameNewBinding.setVisible(false);
                     configShortcut.key = Input.Keys.toString(key);
-                    compositeView.findLabel("lb_binding").setText(configShortcut.name + ": " + configShortcut.key);
+                    compositeView.findLabel("lb_binding_key").setText(configShortcut.key);
                 });
             });
             bindingsSubMenu.addNextView(compositeView);

@@ -16,6 +16,7 @@ import org.smallbox.faraway.core.config.ApplicationConfig;
 import org.smallbox.faraway.core.dependencyInjector.DependencyManager;
 import org.smallbox.faraway.core.dependencyInjector.annotationEvent.AfterApplicationLayerInit;
 import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnApplicationLayerInit;
+import org.smallbox.faraway.core.game.GameManager;
 import org.smallbox.faraway.core.lua.ServerLuaModuleManager;
 import org.smallbox.faraway.core.module.ModuleManager;
 import org.smallbox.faraway.core.save.SQLManager;
@@ -66,7 +67,7 @@ public class GameApplication extends ApplicationAdapter {
 
     private static void onCreateCompleted() {
         ApplicationConfig applicationConfig = DependencyManager.getInstance().getDependency(ApplicationConfig.class);
-//        DependencyManager.getInstance().getDependency(GameManager.class).loadLastGame();
+        DependencyManager.getInstance().getDependency(GameManager.class).loadLastGame();
 //
 //        if (applicationConfig.debug != null && applicationConfig.debug.actionOnLoad != null) {
 //            switch (applicationConfig.debug.actionOnLoad) {
