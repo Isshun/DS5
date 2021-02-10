@@ -1,11 +1,11 @@
 package org.smallbox.faraway.client.layer.ui;
 
 import com.badlogic.gdx.graphics.Color;
+import org.smallbox.faraway.client.LayerLevel;
 import org.smallbox.faraway.client.gameAction.GameActionManager;
 import org.smallbox.faraway.client.input.GameEventManager;
 import org.smallbox.faraway.client.layer.BaseMapLayer;
 import org.smallbox.faraway.client.layer.GameLayer;
-import org.smallbox.faraway.client.layer.LayerManager;
 import org.smallbox.faraway.client.renderer.BaseRenderer;
 import org.smallbox.faraway.client.renderer.Viewport;
 import org.smallbox.faraway.client.selection.GameSelectionManager;
@@ -20,7 +20,7 @@ import org.smallbox.faraway.util.Constant;
  * Draw selection on map, according to the status of GameEventManager and GameActionManager
  */
 @GameObject
-@GameLayer(level = LayerManager.TOP, visible = true)
+@GameLayer(level = LayerLevel.TOP, visible = true)
 public class SelectionProjectionLayer extends BaseMapLayer {
     @Inject private GameEventManager gameEventManager;
     @Inject private GameActionManager gameActionManager;

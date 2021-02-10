@@ -3,13 +3,13 @@ package org.smallbox.faraway.client.layer.ui;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import org.apache.commons.lang3.StringUtils;
+import org.smallbox.faraway.client.LayerLevel;
 import org.smallbox.faraway.client.asset.AssetManager;
-import org.smallbox.faraway.client.renderer.BaseRenderer;
-import org.smallbox.faraway.client.layer.LayerManager;
-import org.smallbox.faraway.client.renderer.Viewport;
 import org.smallbox.faraway.client.layer.BaseLayer;
-import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.client.layer.GameLayer;
+import org.smallbox.faraway.client.renderer.BaseRenderer;
+import org.smallbox.faraway.client.renderer.Viewport;
+import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.game.Game;
@@ -17,7 +17,7 @@ import org.smallbox.faraway.game.weather.WeatherModule;
 import org.smallbox.faraway.util.log.Log;
 
 @GameObject
-@GameLayer(level = LayerManager.PARTICLE_LAYER_LEVEL, visible = true)
+@GameLayer(level = LayerLevel.PARTICLE_LAYER_LEVEL, visible = true)
 public class ParticleLayer extends BaseLayer {
     @Inject private WeatherModule weatherModule;
     @Inject private AssetManager assetManager;

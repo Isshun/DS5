@@ -3,6 +3,8 @@ package org.smallbox.faraway.core.config;
 import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject;
 import org.smallbox.faraway.core.game.GameTime;
 
+import java.util.List;
+
 @ApplicationObject
 public class ApplicationConfig {
 
@@ -33,6 +35,11 @@ public class ApplicationConfig {
 
     public static class ApplicationConfigUI {
         public int              panelWidth;
+    }
+
+    public static class ApplicationConfigShortcut {
+        public String name;
+        public String key;
     }
 
     public static class ApplicationConfigGameInfo {
@@ -67,6 +74,7 @@ public class ApplicationConfig {
     public ApplicationConfigScreenInfo screen;
     public ApplicationConfigGameInfo game;
     public ApplicationConfigUI ui;
+    public List<ApplicationConfigShortcut> shortcuts;
     public boolean              launchGui;
     public double               uiScale;
     public String               lang;

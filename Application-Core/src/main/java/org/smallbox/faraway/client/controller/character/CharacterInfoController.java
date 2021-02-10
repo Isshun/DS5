@@ -1,24 +1,23 @@
 package org.smallbox.faraway.client.controller.character;
 
-import com.badlogic.gdx.Input;
 import org.smallbox.faraway.client.controller.AbsInfoLuaController;
 import org.smallbox.faraway.client.controller.LuaController;
 import org.smallbox.faraway.client.controller.MainPanelController;
 import org.smallbox.faraway.client.controller.annotation.BindLua;
 import org.smallbox.faraway.client.controller.annotation.BindLuaAction;
 import org.smallbox.faraway.client.selection.GameSelectionManager;
-import org.smallbox.faraway.client.ui.extra.RawColors;
-import org.smallbox.faraway.client.ui.event.UIEventManager;
-import org.smallbox.faraway.client.ui.widgets.View;
-import org.smallbox.faraway.client.ui.widgets.UILabel;
 import org.smallbox.faraway.client.shortcut.GameShortcut;
+import org.smallbox.faraway.client.ui.event.UIEventManager;
+import org.smallbox.faraway.client.ui.extra.RawColors;
+import org.smallbox.faraway.client.ui.widgets.UILabel;
+import org.smallbox.faraway.client.ui.widgets.View;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.dependencyInjector.gameAction.OnGameSelectAction;
 import org.smallbox.faraway.core.game.Game;
-import org.smallbox.faraway.game.world.Parcel;
 import org.smallbox.faraway.game.character.CharacterModule;
 import org.smallbox.faraway.game.character.model.base.CharacterModel;
+import org.smallbox.faraway.game.world.Parcel;
 
 import java.util.Arrays;
 import java.util.Objects;
@@ -144,7 +143,7 @@ public class CharacterInfoController extends AbsInfoLuaController<CharacterModel
         display(character);
     }
 
-    @GameShortcut(key = Input.Keys.TAB)
+    @GameShortcut("ui.next")
     public void onNextTab() {
         if (characterInfoStatusController.isVisible()) {
             openPage(characterInfoInventoryController, btInventory);
@@ -174,7 +173,7 @@ public class CharacterInfoController extends AbsInfoLuaController<CharacterModel
         mainPanelController.openCrew();
     }
 
-    @GameShortcut(key = Input.Keys.ESCAPE)
+    @GameShortcut("escape")
     private void onClose() {
         setVisible(false);
         mainPanelController.setVisible(true);

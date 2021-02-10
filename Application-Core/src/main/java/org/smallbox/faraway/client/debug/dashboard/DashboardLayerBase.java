@@ -8,14 +8,19 @@ import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
 
 public abstract class DashboardLayerBase {
     @Inject private AssetManager assetManager;
 
     private int index;
     private int max = 0;
-    private long page = 0;
+    private int page = 0;
     private static final int ITEM_PER_PAGE = 50;
+    private Map<Integer, Runnable> listeners = new ConcurrentHashMap<>();
+    private int currentIndex = -1;
 
     public void draw(BaseRenderer renderer, int frame) {
         index = 0;
@@ -30,8 +35,15 @@ public abstract class DashboardLayerBase {
     protected abstract void onDraw(BaseRenderer renderer, int frame);
 
     protected void drawDebug(BaseRenderer renderer, String label, Object object) {
+        drawDebug(renderer, label, object, null);
+    }
+
+    protected void drawDebug(BaseRenderer renderer, String label, Object object, Runnable runnable) {
         if (index > page * ITEM_PER_PAGE && index < (page + 1) * ITEM_PER_PAGE) {
-            renderer.drawText(10, (index % ITEM_PER_PAGE * 20) + 130, "[" + label.toUpperCase() + "] " + object, Color.WHITE, 18, false, "sui", 1);
+            renderer.drawText(10, (index % ITEM_PER_PAGE * 20) + 130, "[" + label.toUpperCase() + "] " + object, index == currentIndex ? Color.YELLOW : Color.WHITE, 18, false, "sui", 1);
+            if (runnable != null) {
+                listeners.put(index, runnable);
+            }
         }
         max = Math.max(max, index++);
     }
@@ -54,4 +66,8 @@ public abstract class DashboardLayerBase {
         page++;
     }
 
+    public void runListener(int index) {
+        currentIndex = index;
+        Optional.ofNullable(listeners.get(index + page * ITEM_PER_PAGE)).ifPresent(Runnable::run);
+    }
 }

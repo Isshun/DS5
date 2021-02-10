@@ -35,7 +35,7 @@ data:extend({
         type = "structure",
         category = "structure",
         health = 500,
-        receipts = {{label = "Granite", icon = "[base]/graphics/icons/material/granite.png", components = { item = "base.granite_brick", quantity = 10}}}},
+        receipts = {{label = "Granite", icon = "[base]/graphics/icons/material/granite.png", components = {}}}},
     { label = "Iron door",
         id = "base.metal_door",
         parent = "base.door",

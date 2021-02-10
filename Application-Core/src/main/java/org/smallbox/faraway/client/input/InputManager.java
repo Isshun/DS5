@@ -5,11 +5,11 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.smallbox.faraway.client.debug.DebugService;
 import org.smallbox.faraway.client.gameAction.GameActionManager;
 import org.smallbox.faraway.client.gameContextMenu.GameContextMenuManager;
-import org.smallbox.faraway.client.shortcut.ShortcutManager;
 import org.smallbox.faraway.client.renderer.MapRenderer;
 import org.smallbox.faraway.client.renderer.Viewport;
 import org.smallbox.faraway.client.renderer.WorldCameraManager;
 import org.smallbox.faraway.client.selection.GameSelectionManager;
+import org.smallbox.faraway.client.shortcut.ShortcutManager;
 import org.smallbox.faraway.client.ui.UIManager;
 import org.smallbox.faraway.client.ui.event.GameEvent;
 import org.smallbox.faraway.client.ui.event.UIEventManager;
@@ -17,8 +17,10 @@ import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.game.GameManager;
-import org.smallbox.faraway.game.world.WorldHelper;
 import org.smallbox.faraway.game.world.Parcel;
+import org.smallbox.faraway.game.world.WorldHelper;
+
+import java.util.function.BiConsumer;
 
 import static com.badlogic.gdx.Input.Buttons;
 import static com.badlogic.gdx.Input.Keys;
@@ -48,6 +50,7 @@ public class InputManager implements InputProcessor {
     private int _touchDragY;
     private int _touchButton;
     private boolean _touchDrag;
+    private BiConsumer<Integer, GameEventListener.Modifier> nextKeyConsumer;
 
     @Override
     public boolean keyDown(int keycode) {
@@ -79,9 +82,13 @@ public class InputManager implements InputProcessor {
     @Override
     public boolean keyUp(int keycode) {
 
-        if (keycode == Keys.GRAVE) {
-            debugService.toggleDebugMode();
-            return false;
+//        if (keycode == Keys.GRAVE) {
+//            debugService.toggleDebugMode();
+//            return false;
+//        }
+
+        if (nextKeyConsumer != null) {
+            nextKeyConsumer.accept(keycode, _modifier);
         }
 
         if (debugService.isDebugMode()) {
@@ -301,4 +308,7 @@ public class InputManager implements InputProcessor {
         return _touchDragY;
     }
 
+    public void getNextKey(BiConsumer<Integer, GameEventListener.Modifier> consumer) {
+        nextKeyConsumer = consumer;
+    }
 }

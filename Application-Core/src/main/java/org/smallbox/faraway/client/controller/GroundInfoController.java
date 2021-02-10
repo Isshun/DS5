@@ -125,7 +125,7 @@ public class GroundInfoController extends AbsInfoLuaController<Parcel> {
         mainPanelController.setVisible(true);
     }
 
-    @GameShortcut(key = Input.Keys.ESCAPE)
+    @GameShortcut("escape")
     private void onClose() {
         mainPanelController.setVisible(true);
     }

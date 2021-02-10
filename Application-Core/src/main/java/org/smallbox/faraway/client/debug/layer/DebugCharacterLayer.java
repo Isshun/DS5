@@ -58,11 +58,6 @@ public class DebugCharacterLayer extends BaseMapLayer {
         return false;
     }
 
-    @GameShortcut(key = Input.Keys.F11)
-    public void onToggleVisibility() {
-        toggleVisibility();
-    }
-
     private void drawDebug(BaseRenderer renderer, String label, Object object) {
         renderer.drawText(12, (_index * 20) + 12, "[" + label.toUpperCase() + "] " + object, Color.BLACK, 18);
         renderer.drawText(11, (_index * 20) + 11, "[" + label.toUpperCase() + "] " + object, Color.BLACK, 18);

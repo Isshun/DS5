@@ -1,20 +1,19 @@
 package org.smallbox.faraway.client.controller;
 
-import com.badlogic.gdx.Input;
 import org.smallbox.faraway.client.controller.annotation.BindLua;
 import org.smallbox.faraway.client.controller.annotation.BindLuaAction;
 import org.smallbox.faraway.client.selection.GameSelectionManager;
+import org.smallbox.faraway.client.shortcut.GameShortcut;
 import org.smallbox.faraway.client.ui.event.UIEventManager;
-import org.smallbox.faraway.client.ui.widgets.View;
 import org.smallbox.faraway.client.ui.widgets.UIImage;
 import org.smallbox.faraway.client.ui.widgets.UILabel;
-import org.smallbox.faraway.client.shortcut.GameShortcut;
+import org.smallbox.faraway.client.ui.widgets.View;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.dependencyInjector.gameAction.OnGameSelectAction;
 import org.smallbox.faraway.game.consumable.Consumable;
-import org.smallbox.faraway.game.world.Parcel;
 import org.smallbox.faraway.game.consumable.ConsumableModule;
+import org.smallbox.faraway.game.world.Parcel;
 
 import java.util.Queue;
 
@@ -69,7 +68,7 @@ public class ConsumableInfoController extends AbsInfoLuaController<Consumable> {
         mainPanelController.setVisible(true);
     }
 
-    @GameShortcut(key = Input.Keys.ESCAPE)
+    @GameShortcut("escape")
     private void onClose() {
         mainPanelController.setVisible(true);
     }

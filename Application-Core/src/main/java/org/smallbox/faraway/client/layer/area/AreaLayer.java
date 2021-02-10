@@ -2,12 +2,12 @@ package org.smallbox.faraway.client.layer.area;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import org.smallbox.faraway.client.LayerLevel;
 import org.smallbox.faraway.client.asset.SpriteManager;
-import org.smallbox.faraway.client.renderer.BaseRenderer;
-import org.smallbox.faraway.client.layer.LayerManager;
-import org.smallbox.faraway.client.renderer.Viewport;
 import org.smallbox.faraway.client.layer.BaseMapLayer;
 import org.smallbox.faraway.client.layer.GameLayer;
+import org.smallbox.faraway.client.renderer.BaseRenderer;
+import org.smallbox.faraway.client.renderer.Viewport;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.game.Game;
@@ -21,7 +21,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import static org.smallbox.faraway.util.Constant.TILE_SIZE;
 
 @GameObject
-@GameLayer(level = LayerManager.AREA_LAYER_LEVEL, visible = true)
+@GameLayer(level = LayerLevel.AREA_LAYER_LEVEL, visible = true)
 public class AreaLayer extends BaseMapLayer {
     @Inject private SpriteManager spriteManager;
     @Inject private AreaModule areaModule;

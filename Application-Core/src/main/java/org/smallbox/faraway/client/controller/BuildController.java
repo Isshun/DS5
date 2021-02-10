@@ -1,20 +1,15 @@
 package org.smallbox.faraway.client.controller;
 
-import com.badlogic.gdx.Input;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.smallbox.faraway.client.asset.SpriteManager;
 import org.smallbox.faraway.client.controller.annotation.BindLua;
 import org.smallbox.faraway.client.gameAction.GameActionManager;
-import org.smallbox.faraway.client.asset.SpriteManager;
 import org.smallbox.faraway.client.selection.GameSelectionManager;
+import org.smallbox.faraway.client.shortcut.GameShortcut;
 import org.smallbox.faraway.client.ui.event.OnClickListener;
 import org.smallbox.faraway.client.ui.event.UIEventManager;
-import org.smallbox.faraway.client.ui.widgets.CompositeView;
-import org.smallbox.faraway.client.ui.widgets.View;
-import org.smallbox.faraway.client.ui.widgets.UIFrame;
-import org.smallbox.faraway.client.ui.widgets.UIGrid;
-import org.smallbox.faraway.client.ui.widgets.UILabel;
-import org.smallbox.faraway.client.shortcut.GameShortcut;
+import org.smallbox.faraway.client.ui.widgets.*;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.dependencyInjector.annotationEvent.AfterGameLayerInit;
@@ -203,7 +198,7 @@ public class BuildController extends LuaController {
         gridItems.switchViews();
     }
 
-    @GameShortcut(key = Input.Keys.B)
+    @GameShortcut("action/build")
     public void onPressT() {
         setVisible(true);
     }

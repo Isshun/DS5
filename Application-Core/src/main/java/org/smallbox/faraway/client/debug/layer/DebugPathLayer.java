@@ -1,21 +1,21 @@
 package org.smallbox.faraway.client.debug.layer;
 
 import com.badlogic.gdx.graphics.Color;
-import org.smallbox.faraway.client.renderer.BaseRenderer;
-import org.smallbox.faraway.client.layer.LayerManager;
-import org.smallbox.faraway.client.renderer.Viewport;
+import org.smallbox.faraway.client.LayerLevel;
 import org.smallbox.faraway.client.layer.BaseMapLayer;
 import org.smallbox.faraway.client.layer.GameLayer;
+import org.smallbox.faraway.client.renderer.BaseRenderer;
+import org.smallbox.faraway.client.renderer.Viewport;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
-import org.smallbox.faraway.game.world.WorldHelper;
 import org.smallbox.faraway.core.path.PathManager;
 import org.smallbox.faraway.game.character.CharacterModule;
+import org.smallbox.faraway.game.world.WorldHelper;
 import org.smallbox.faraway.game.world.WorldModule;
 import org.smallbox.faraway.util.Constant;
 
 @GameObject
-@GameLayer(level = LayerManager.CONSUMABLE_LAYER_LEVEL + 1, visible = false)
+@GameLayer(level = LayerLevel.CONSUMABLE_LAYER_LEVEL + 1, visible = false)
 public class DebugPathLayer extends BaseMapLayer {
     private static final Color GREEN = new Color(0x00ff00dd);
     private static final Color RED = new Color(0xff0000ff);

@@ -1,27 +1,32 @@
 package org.smallbox.faraway.game.room;
 
-import org.smallbox.faraway.util.GameException;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
-import org.smallbox.faraway.core.module.SuperGameModule;
 import org.smallbox.faraway.core.game.Game;
-import org.smallbox.faraway.game.world.Parcel;
+import org.smallbox.faraway.core.module.SuperGameModule;
+import org.smallbox.faraway.game.item.ItemModule;
 import org.smallbox.faraway.game.room.model.*;
 import org.smallbox.faraway.game.weather.WeatherModule;
+import org.smallbox.faraway.game.world.Parcel;
+import org.smallbox.faraway.game.world.SurroundedPattern;
+import org.smallbox.faraway.game.world.WorldHelper;
 import org.smallbox.faraway.game.world.WorldModule;
 import org.smallbox.faraway.util.AsyncTask;
+import org.smallbox.faraway.util.GameException;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.stream.Stream;
+
+import static org.smallbox.faraway.core.game.model.MovableModel.Direction.*;
 
 @GameObject
 public class RoomModule extends SuperGameModule {
     @Inject private WorldModule worldModule;
+    @Inject private ItemModule itemModule;
     @Inject private WeatherModule weatherModule;
 
     private final List<RoomModel>                               _exteriorRooms = new ArrayList<>();
@@ -31,6 +36,7 @@ public class RoomModule extends SuperGameModule {
     private AsyncTask<List<RoomModel>>                          _task;
     private boolean[]                                           _refresh;
     private final HashSet<Parcel>                                _closeList = new HashSet<>();
+    private Map<String, RoomModel> roomMap = new ConcurrentHashMap<>();
 
     public boolean runOnMainThread() { return false; }
 
@@ -69,6 +75,50 @@ public class RoomModule extends SuperGameModule {
     }
 
     public Collection<RoomModel> getRooms() { return _rooms; }
+
+    public Map<String, RoomModel> getRoomMap() {
+        return roomMap;
+    }
+
+    @Override
+    public void onGameLongUpdate(Game game) {
+        itemModule.getAll().stream().filter(usableItem -> usableItem.getInfo().name.contains("door")).forEach(door -> {
+
+            if (Stream.of(worldModule.getParcel(door.getParcel(), LEFT), worldModule.getParcel(door.getParcel(), RIGHT)).filter(Parcel::isWalkable).count() == 2
+                    && Stream.of(worldModule.getParcel(door.getParcel(), TOP), worldModule.getParcel(door.getParcel(), BOTTOM)).filter(parcel -> !parcel.isWalkable()).count() == 2) {
+                discoverRoom(door.getParcel(), worldModule.getParcel(door.getParcel(), LEFT));
+                discoverRoom(door.getParcel(), worldModule.getParcel(door.getParcel(), RIGHT));
+            }
+
+            if (Stream.of(worldModule.getParcel(door.getParcel(), TOP), worldModule.getParcel(door.getParcel(), BOTTOM)).filter(Parcel::isWalkable).count() == 2
+                    && Stream.of(worldModule.getParcel(door.getParcel(), LEFT), worldModule.getParcel(door.getParcel(), RIGHT)).filter(parcel -> !parcel.isWalkable()).count() == 2) {
+                discoverRoom(door.getParcel(), worldModule.getParcel(door.getParcel(), TOP));
+                discoverRoom(door.getParcel(), worldModule.getParcel(door.getParcel(), BOTTOM));
+            }
+
+        });
+    }
+
+    private void discoverRoom(Parcel doorParcel, Parcel parcel) {
+        RoomModel room = new RoomModel(RoomModel.RoomType.NONE, parcel.z, parcel);
+        discoverRoom(room, doorParcel, parcel);
+        if (room.getParcels().size() <= 100) {
+            roomMap.put(room.buildKey(), room);
+        }
+    }
+
+    private void discoverRoom(RoomModel room, Parcel doorParcel, Parcel parcel) {
+        boolean isDoor = parcel.getItems().stream().anyMatch(item -> item.getInfo().name.contains("door"));
+
+        if (isDoor) {
+            room.addDoor(parcel);
+        }
+
+        if (room.getParcels().size() <= 100 && !isDoor && !room.hasParcel(parcel) && parcel.isWalkable()) {
+            room.addParcel(parcel);
+            WorldHelper.getParcelAround(parcel, SurroundedPattern.SQUARE, parcelAround -> discoverRoom(room, doorParcel, parcelAround));
+        }
+    }
 
     @Override
     protected void onModuleUpdate(Game game) {

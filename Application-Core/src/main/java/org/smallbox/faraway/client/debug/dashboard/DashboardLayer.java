@@ -8,6 +8,7 @@ import org.smallbox.faraway.client.layer.GameLayer;
 import org.smallbox.faraway.client.renderer.BaseRenderer;
 import org.smallbox.faraway.client.renderer.Viewport;
 import org.smallbox.faraway.client.selection.GameSelectionManager;
+import org.smallbox.faraway.core.config.ApplicationConfig;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnInit;
@@ -20,6 +21,8 @@ import java.util.function.BiConsumer;
 @GameObject
 @GameLayer(level = 999, visible = false)
 public class DashboardLayer extends BaseLayer {
+    private static final int BUTTON_CHAR_WIDTH = 14;
+
     @Inject private GameSelectionManager gameSelectionManager;
     @Inject private ShortcutDashboardLayer shortcutDashboardLayer;
     @Inject private CharacterDashboardLayer characterDashboardLayer;
@@ -32,6 +35,7 @@ public class DashboardLayer extends BaseLayer {
     @Inject private JobDashboardLayer jobDashboardLayer;
     @Inject private TextureAssetsDashboardLayer textureAssetsDashboardLayer;
     @Inject private PixmapAssetsDashboardLayer pixmapAssetsDashboardLayer;
+    @Inject private WeatherDashboardLayer weatherDashboardLayer;
     @Inject private InterfaceDashboardLayer interfaceDashboardLayer;
     @Inject private DebugPathLayer debugPathLayer;
     @Inject private DebugCharacterLayer debugCharacterLayer;
@@ -39,6 +43,7 @@ public class DashboardLayer extends BaseLayer {
     @Inject private DebugGroundLayer debugGroundLayer;
     @Inject private DebugItemLayer debugItemLayer;
     @Inject private DebugViewLayer debugViewLayer;
+    @Inject private ApplicationConfig applicationConfig;
 
     private static class DashboardLayerButton {
         public String label;
@@ -50,7 +55,7 @@ public class DashboardLayer extends BaseLayer {
         }
     }
 
-    private static final Color BG_COLOR = new Color(0f, 0f, 0f, 0.5f);
+    private static final Color BG_COLOR = new Color(0f, 0f, 0f, 0.75f);
     private static final Color BUTTON_BG_COLOR = new Color(0f, 0.5f, 0.7f, 0.5f);
 
     private DashboardMode dashboardMode = DashboardMode.CONSOLE;
@@ -71,7 +76,7 @@ public class DashboardLayer extends BaseLayer {
 
         int offset = 10;
         for (DashboardMode dashboardMode : DashboardMode.values()) {
-            int width = dashboardMode.name().length() * 10 + 60;
+            int width = dashboardMode.name().length() * BUTTON_CHAR_WIDTH + 60;
             int finalOffset = offset;
             buttons.add((x, y) -> {
                 if (y >= 5 && y < 35 && x >= finalOffset && x < finalOffset + width) {
@@ -83,7 +88,7 @@ public class DashboardLayer extends BaseLayer {
 
         offset = 10;
         for (DashboardLayerButton button : debugLayers) {
-            int width = button.label.length() * 10 + 60;
+            int width = button.label.length() * BUTTON_CHAR_WIDTH + 60;
             int finalOffset = offset;
             buttons.add((x, y) -> {
                 if (y >= 50 && y < 85 && x >= finalOffset && x < finalOffset + width - 10) {
@@ -97,6 +102,7 @@ public class DashboardLayer extends BaseLayer {
     @Override
     public void onDraw(BaseRenderer renderer, Viewport viewport, double animProgress, int frame) {
         if (isVisible()) {
+            renderer.drawRectangle(0, 0, applicationConfig.getResolutionWidth(), applicationConfig.getResolutionHeight(), BG_COLOR);
             drawHeaders(renderer);
             drawDebugLayer(renderer);
             Optional.ofNullable(currentDashboard()).ifPresent(dashboardLayer -> dashboardLayer.draw(renderer, frame));
@@ -104,44 +110,42 @@ public class DashboardLayer extends BaseLayer {
     }
 
     private DashboardLayerBase currentDashboard() {
-        switch (dashboardMode) {
-            case CONSOLE: return consoleDashboardLayer;
-            case CONSUMABLE: return consumableDashboardLayer;
-            case ITEM: return itemDashboardLayer;
-            case PLANT: return plantDashboardLayer;
-            case LAYER: return layerDashboardLayer;
-            case JOB: return jobDashboardLayer;
-            case CHARACTER: return characterDashboardLayer;
-            case MODULE: return moduleDashboardLayer;
-            case SHORTCUTS: return shortcutDashboardLayer;
-            case UI: return interfaceDashboardLayer;
-            case TEXTURE: return textureAssetsDashboardLayer;
-            case PIXMAP: return pixmapAssetsDashboardLayer;
-        }
-        return null;
+        return switch (dashboardMode) {
+            case CONSOLE -> consoleDashboardLayer;
+            case CONSUMABLE -> consumableDashboardLayer;
+            case ITEM -> itemDashboardLayer;
+            case PLANT -> plantDashboardLayer;
+            case LAYER -> layerDashboardLayer;
+            case JOB -> jobDashboardLayer;
+            case CHARACTER -> characterDashboardLayer;
+            case MODULE -> moduleDashboardLayer;
+            case SHORTCUTS -> shortcutDashboardLayer;
+            case UI -> interfaceDashboardLayer;
+            case TEXTURE -> textureAssetsDashboardLayer;
+            case PIXMAP -> pixmapAssetsDashboardLayer;
+            case WEATHER -> weatherDashboardLayer;
+        };
     }
 
     private void drawDebugLayer(BaseRenderer renderer) {
         int offset = 0;
         for (DashboardLayerButton button : debugLayers) {
-            drawButton(renderer, (offset * 10) + 4, 54, " [" + button.label.toUpperCase() + "] ", button.layer.isVisible());
-            offset += button.label.length() + 6;
+            drawButton(renderer, offset + 4, 54, " [" + button.label.toUpperCase() + "] ", button.layer.isVisible());
+            offset += (button.label.length() * BUTTON_CHAR_WIDTH) + 60;
         }
     }
 
     private void drawHeaders(BaseRenderer renderer) {
         int offset = 0;
         for (DashboardMode dashboardMode : DashboardMode.values()) {
-            drawButton(renderer, (offset * 10) + 4, 4, " [" + dashboardMode.name().toUpperCase() + "] ", this.dashboardMode == dashboardMode);
-            offset += dashboardMode.name().length() + 6;
+            drawButton(renderer, offset + 4, 4, " [" + dashboardMode.name().toUpperCase() + "] ", this.dashboardMode == dashboardMode);
+            offset += (dashboardMode.name().length() * BUTTON_CHAR_WIDTH) + 60;
         }
     }
 
     private void drawButton(BaseRenderer renderer, int x, int y, String label, boolean isActive) {
-        renderer.drawRectangle(x, y, label.length() * 10, 30, BUTTON_BG_COLOR, true);
-        renderer.drawText(x + 2, y + 5, label, Color.BLACK, 18);
-        renderer.drawText(x + 1, y + 6, label, Color.BLACK, 18);
-        renderer.drawText(x, y + 7, label, isActive ? Color.CORAL : Color.WHITE, 18);
+        renderer.drawRectangle(x, y, label.length() * BUTTON_CHAR_WIDTH, 30, BUTTON_BG_COLOR, true);
+        renderer.drawText(x, y + 7, label, isActive ? Color.CORAL : Color.WHITE, 18, false, "sui", 2);
     }
 
     public void pageUp() {
@@ -157,6 +161,10 @@ public class DashboardLayer extends BaseLayer {
     }
 
     public void click(int x, int y) {
-        buttons.forEach(consumer -> consumer.accept(x, y));
+        if (y < 120) {
+            buttons.forEach(consumer -> consumer.accept(x, y));
+        } else {
+            currentDashboard().runListener((y - 130) / 20);
+        }
     }
 }

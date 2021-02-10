@@ -58,7 +58,7 @@ public class GameMenuLoadController extends LuaController {
         imgDetail.setImage(sprite);
     }
 
-    @GameShortcut(key = Input.Keys.ESCAPE)
+    @GameShortcut("escape")
     public void onEscape() {
         if (isVisible()) {
             setVisible(false);

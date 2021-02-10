@@ -4,6 +4,7 @@ import box2dLight.Light;
 import box2dLight.RayHandler;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
+import org.smallbox.faraway.client.LayerLevel;
 import org.smallbox.faraway.client.renderer.BaseRenderer;
 import org.smallbox.faraway.client.renderer.Viewport;
 import org.smallbox.faraway.client.renderer.WorldCameraManager;
@@ -20,7 +21,7 @@ import org.smallbox.faraway.util.Constant;
 import java.util.ArrayList;
 
 @GameObject
-@GameLayer(level = LayerManager.LIGHT_LAYER_LEVEL, visible = true)
+@GameLayer(level = LayerLevel.LIGHT_LAYER_LEVEL, visible = true)
 public class LightLayer extends BaseLayer implements GameObserver {
     @Inject protected WorldCameraManager worldCameraManager;
     @Inject protected WeatherModule weatherModule;

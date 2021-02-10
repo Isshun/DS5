@@ -1,14 +1,15 @@
 package org.smallbox.faraway.game.room.model;
 
 import com.badlogic.gdx.graphics.Color;
-import org.smallbox.faraway.util.GameException;
 import org.smallbox.faraway.core.world.model.ItemFilter;
 import org.smallbox.faraway.core.world.model.MapObjectModel;
 import org.smallbox.faraway.game.character.model.base.CharacterModel;
 import org.smallbox.faraway.game.world.ObjectModel;
 import org.smallbox.faraway.game.world.Parcel;
+import org.smallbox.faraway.util.GameException;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class RoomModel extends ObjectModel {
     int                                 _zoneId;
@@ -35,6 +36,7 @@ public class RoomModel extends ObjectModel {
     private int                         _floor;
     private double                      _targetOxygen;
     private double                      _pressure;
+    private List<Parcel> doors = new ArrayList<>();
 
     public boolean hasParcel(Parcel parcel) {
         return _parcels.contains(parcel);
@@ -42,6 +44,18 @@ public class RoomModel extends ObjectModel {
 
     public RoomTypeInfo getInfo() {
         return getClass().getAnnotation(RoomTypeInfo.class);
+    }
+
+    public void addDoor(Parcel parcel) {
+        doors.add(parcel);
+    }
+
+    public List<Parcel> getDoors() {
+        return doors;
+    }
+
+    public String buildKey() {
+        return doors.stream().map(Parcel::toString).sorted().collect(Collectors.joining("-"));
     }
 
     public enum RoomType {

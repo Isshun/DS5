@@ -1,11 +1,13 @@
 package org.smallbox.faraway.client.menu.controller;
 
+import com.badlogic.gdx.Input;
 import org.smallbox.faraway.client.controller.LuaController;
 import org.smallbox.faraway.client.controller.annotation.BindLua;
 import org.smallbox.faraway.client.controller.annotation.BindLuaAction;
-import org.smallbox.faraway.client.ui.widgets.UILabel;
-import org.smallbox.faraway.client.ui.widgets.UISlider;
-import org.smallbox.faraway.client.ui.widgets.View;
+import org.smallbox.faraway.client.input.InputManager;
+import org.smallbox.faraway.client.render.MenuRender;
+import org.smallbox.faraway.client.shortcut.ShortcutManager;
+import org.smallbox.faraway.client.ui.widgets.*;
 import org.smallbox.faraway.core.config.ApplicationConfig;
 import org.smallbox.faraway.core.dependencyInjector.DependencyManager;
 import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject;
@@ -18,6 +20,9 @@ public class MenuSettingsController extends LuaController {
     @Inject private MenuMainController menuMainController;
     @Inject private DependencyManager dependencyManager;
     @Inject private ApplicationConfig applicationConfig;
+    @Inject private ShortcutManager shortcutManager;
+    @Inject private InputManager inputManager;
+    @Inject private MenuRender menuRender;
 
     @BindLua private UILabel btGraphic;
     @BindLua private UILabel btSound;
@@ -28,8 +33,9 @@ public class MenuSettingsController extends LuaController {
     @BindLua private UILabel btScreenWindow;
     @BindLua private View graphicSubMenu;
     @BindLua private View soundSubMenu;
-    @BindLua private View bindingsSubMenu;
+    @BindLua private UIList bindingsSubMenu;
     @BindLua private View gameplaySubMenu;
+    @BindLua private View frameNewBinding;
     @BindLua private UISlider sliderMusic;
 
     private String screenMode;
@@ -37,6 +43,23 @@ public class MenuSettingsController extends LuaController {
     @AfterApplicationLayerInit
     public void onInit() {
         sliderMusic.setValue(applicationConfig.musicVolume);
+
+        applicationConfig.shortcuts.forEach(configShortcut -> {
+            CompositeView compositeView = bindingsSubMenu.createFromTemplate(CompositeView.class);
+            compositeView.findLabel("lb_binding").setText(configShortcut.name + ": " + configShortcut.key);
+            compositeView.getEvents().setOnClickListener(() -> {
+                compositeView.findLabel("lb_binding").setText(configShortcut.name + ": ...");
+                frameNewBinding.setVisible(true);
+                menuRender.getNextKey((key, modifier) -> {
+                    frameNewBinding.setVisible(false);
+                    configShortcut.key = Input.Keys.toString(key);
+                    compositeView.findLabel("lb_binding").setText(configShortcut.name + ": " + configShortcut.key);
+                });
+            });
+            bindingsSubMenu.addNextView(compositeView);
+        });
+
+        bindingsSubMenu.switchViews();
     }
 
     @BindLuaAction

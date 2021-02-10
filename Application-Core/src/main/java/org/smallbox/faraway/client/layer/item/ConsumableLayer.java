@@ -1,11 +1,11 @@
 package org.smallbox.faraway.client.layer.item;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import org.smallbox.faraway.client.LayerLevel;
 import org.smallbox.faraway.client.asset.SpriteManager;
 import org.smallbox.faraway.client.input.InputManager;
 import org.smallbox.faraway.client.layer.BaseMapLayer;
 import org.smallbox.faraway.client.layer.GameLayer;
-import org.smallbox.faraway.client.layer.LayerManager;
 import org.smallbox.faraway.client.renderer.BaseRenderer;
 import org.smallbox.faraway.client.renderer.MapRenderer;
 import org.smallbox.faraway.client.renderer.Viewport;
@@ -29,7 +29,7 @@ import static com.badlogic.gdx.graphics.Color.CYAN;
 import static com.badlogic.gdx.graphics.Color.WHITE;
 
 @GameObject
-@GameLayer(level = LayerManager.CONSUMABLE_LAYER_LEVEL, visible = true)
+@GameLayer(level = LayerLevel.CONSUMABLE_LAYER_LEVEL, visible = true)
 public class ConsumableLayer extends BaseMapLayer {
     private final static TextStyle consumableQuantityStyle = TextStyleBuilder.build("sf", 12, WHITE).autoScale(true).shadow(1).get();
 

@@ -44,6 +44,7 @@ data:extend({
         parent = "base.wall",
         type = "structure",
         category = "structure",
+        walkable = false,
         health = 500,
         glue = true,
         graphics = {path = "[data]/graphics/structures/walls/wall_128.png", type = "wall", width = 128, height = 128},

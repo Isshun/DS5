@@ -61,9 +61,4 @@ public class JobController extends LuaController {
         return job.getStatus().name();
     }
 
-    @GameShortcut(key = Input.Keys.T)
-    public void onPressT() {
-        setVisible(true);
-    }
-
 }

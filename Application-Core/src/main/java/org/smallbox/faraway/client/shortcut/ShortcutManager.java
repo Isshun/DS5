@@ -1,6 +1,9 @@
 package org.smallbox.faraway.client.shortcut;
 
+import com.badlogic.gdx.Input;
 import org.apache.commons.lang3.StringUtils;
+import org.smallbox.faraway.core.config.ApplicationConfig;
+import org.smallbox.faraway.core.dependencyInjector.DependencyManager;
 import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject;
 import org.smallbox.faraway.util.log.Log;
 
@@ -9,12 +12,23 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 @ApplicationObject
 public class ShortcutManager {
-
     private static final Collection<ShortcutStrategy> shortcutStrategies = new LinkedBlockingQueue<>();
 
-    public void addBinding(String label, int key, Runnable runnable) {
+    public void addBinding(String label, GameShortcut gameShortcut, Runnable runnable) {
         shortcutStrategies.removeIf(shortcutStrategy -> StringUtils.equals(shortcutStrategy.label, label));
-        shortcutStrategies.add(new ShortcutStrategy(label, key, runnable));
+
+        int key = getKey(gameShortcut);
+        if (key != -1) {
+            shortcutStrategies.add(new ShortcutStrategy(label, key, runnable));
+        }
+    }
+
+    private int getKey(GameShortcut gameShortcut) {
+        return DependencyManager.getInstance().getDependency(ApplicationConfig.class).shortcuts.stream()
+                .filter(shortcutConfig -> StringUtils.equals(shortcutConfig.name, gameShortcut.value()))
+                .mapToInt(shortcutConfig -> Input.Keys.valueOf(shortcutConfig.key))
+                .findFirst()
+                .orElse(-1);
     }
 
     public Collection<ShortcutStrategy> getBindings() {

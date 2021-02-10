@@ -1,29 +1,28 @@
 package org.smallbox.faraway.client.controller.area;
 
-import com.badlogic.gdx.Input;
 import org.smallbox.faraway.client.controller.AbsInfoLuaController;
 import org.smallbox.faraway.client.controller.MainPanelController;
 import org.smallbox.faraway.client.controller.annotation.BindLua;
 import org.smallbox.faraway.client.controller.annotation.BindLuaAction;
 import org.smallbox.faraway.client.selection.GameSelectionManager;
+import org.smallbox.faraway.client.shortcut.GameShortcut;
 import org.smallbox.faraway.client.ui.event.UIEventManager;
 import org.smallbox.faraway.client.ui.extra.RawColors;
 import org.smallbox.faraway.client.ui.widgets.CompositeView;
-import org.smallbox.faraway.client.ui.widgets.View;
 import org.smallbox.faraway.client.ui.widgets.UILabel;
 import org.smallbox.faraway.client.ui.widgets.UIList;
-import org.smallbox.faraway.client.shortcut.GameShortcut;
+import org.smallbox.faraway.client.ui.widgets.View;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnGameLayerInit;
 import org.smallbox.faraway.core.dependencyInjector.gameAction.OnGameSelectAction;
 import org.smallbox.faraway.core.game.DataManager;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
-import org.smallbox.faraway.game.world.Parcel;
 import org.smallbox.faraway.game.area.AreaModel;
 import org.smallbox.faraway.game.area.AreaModule;
 import org.smallbox.faraway.game.storage.StorageArea;
 import org.smallbox.faraway.game.storage.StorageModule;
+import org.smallbox.faraway.game.world.Parcel;
 
 import java.util.Comparator;
 import java.util.List;
@@ -316,7 +315,7 @@ public class AreaInfoStorageController extends AbsInfoLuaController<AreaModel> {
         mainPanelController.setVisible(true);
     }
 
-    @GameShortcut(key = Input.Keys.ESCAPE)
+    @GameShortcut("escape")
     private void onClose() {
         mainPanelController.setVisible(true);
     }

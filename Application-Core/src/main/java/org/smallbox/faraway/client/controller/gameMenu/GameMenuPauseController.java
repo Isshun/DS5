@@ -1,11 +1,10 @@
 package org.smallbox.faraway.client.controller.gameMenu;
 
-import com.badlogic.gdx.Input;
 import org.smallbox.faraway.client.controller.LuaController;
 import org.smallbox.faraway.client.controller.annotation.BindLua;
 import org.smallbox.faraway.client.controller.annotation.BindLuaAction;
-import org.smallbox.faraway.client.ui.widgets.View;
 import org.smallbox.faraway.client.shortcut.GameShortcut;
+import org.smallbox.faraway.client.ui.widgets.View;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.game.Game;
@@ -48,7 +47,7 @@ public class GameMenuPauseController extends LuaController {
         gameManager.closeGame();
     }
 
-    @GameShortcut(key = Input.Keys.ESCAPE)
+    @GameShortcut("escape")
     public void onEscape() {
         if (game.isRunning()) {
             game.setRunning(false);

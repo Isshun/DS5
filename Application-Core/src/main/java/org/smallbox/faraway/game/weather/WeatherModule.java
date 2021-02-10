@@ -98,9 +98,7 @@ public class WeatherModule extends SuperGameModule2<WeatherModuleObserver> imple
         // Check light
         PlanetInfo.DayTime dayTime = game.getPlanetInfo().dayTimes.get(gameTime.getHour());
         if (dayTime != null && dayTime != currentDayTime) {
-            Log.info("Set daytime to " + dayTime);
-            ambientLightTransition = new ColorTransition(currentDayTime.color, dayTime.color, gameTime.now(), gameTime.plus(1, TimeUnit.HOURS));
-            currentDayTime = dayTime;
+            loadDayTime(dayTime);
         }
 
         // Set temperature
@@ -123,6 +121,12 @@ public class WeatherModule extends SuperGameModule2<WeatherModuleObserver> imple
             ambientLight = new Color(ambientLightTransition.getValue(gameTime.now()));
         }
 
+    }
+
+    public void loadDayTime(PlanetInfo.DayTime dayTime) {
+        Log.info("Set daytime to " + dayTime);
+        ambientLightTransition = new ColorTransition(currentDayTime.color, dayTime.color, gameTime.now(), gameTime.plus(1, TimeUnit.HOURS));
+        currentDayTime = dayTime;
     }
 
     public void loadWeather(WeatherInfo weather) {
@@ -172,4 +176,5 @@ public class WeatherModule extends SuperGameModule2<WeatherModuleObserver> imple
     public PlanetInfo.DayTime getDaytime() {
         return currentDayTime;
     }
+
 }

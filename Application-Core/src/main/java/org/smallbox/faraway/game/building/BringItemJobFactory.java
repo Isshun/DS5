@@ -32,14 +32,9 @@ public class BringItemJobFactory {
 
         // Init
         job.addPrerequisiteTask(() -> {
-
-            if (job.sourceConsumable != null) {
-                job.sourceConsumable = sourceConsumable;
-                job.setAcceptedParcel(WorldHelper.getParcelAround(job.sourceConsumable.getParcel(), SurroundedPattern.SQUARE));
-                return true;
-            }
-
-            return false;
+            job.sourceConsumable = sourceConsumable;
+            job.setAcceptedParcel(WorldHelper.getParcelAround(job.sourceConsumable.getParcel(), SurroundedPattern.SQUARE));
+            return true;
         });
 
         job.addTask(new TechnicalTask(j -> {

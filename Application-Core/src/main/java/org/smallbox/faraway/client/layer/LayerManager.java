@@ -1,14 +1,13 @@
 package org.smallbox.faraway.client.layer;
 
-import com.badlogic.gdx.Input;
 import org.smallbox.faraway.client.input.GameClientObserver;
 import org.smallbox.faraway.client.input.InputManager;
 import org.smallbox.faraway.client.input.WorldInputManager;
 import org.smallbox.faraway.client.renderer.MapRenderer;
 import org.smallbox.faraway.client.renderer.UIRenderer;
 import org.smallbox.faraway.client.renderer.Viewport;
-import org.smallbox.faraway.client.ui.UIManager;
 import org.smallbox.faraway.client.shortcut.GameShortcut;
+import org.smallbox.faraway.client.ui.UIManager;
 import org.smallbox.faraway.core.dependencyInjector.DependencyManager;
 import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
@@ -22,20 +21,6 @@ import java.util.stream.Collectors;
 
 @ApplicationObject
 public class LayerManager implements GameClientObserver {
-    public static final int TOP = 999;
-    public static final int MINI_MAP_LEVEL = 100;
-    public static final int LIGHT_LAYER_LEVEL = -98;
-    public static final int PARTICLE_LAYER_LEVEL = -99;
-    public static final int JOB_LAYER_LEVEL = -100;
-    public static final int CHARACTER_LAYER_LEVEL = -101;
-    public static final int CONSUMABLE_LAYER_LEVEL = -102;
-    public static final int PLANT_LAYER_LEVEL = -103;
-    public static final int ITEM_LAYER_LEVEL = -104;
-    public static final int STRUCTURE_LAYER_LEVEL = -204;
-    public static final int AREA_LAYER_LEVEL = -305;
-    public static final int ROOM_LAYER_LEVEL = -305;
-    public static final int WORLD_GROUND_LAYER_LEVEL = -406;
-    public static final int WORLD_TOP_LAYER_LEVEL = -407;
     public static final int MOVE_OFFSET = 30;
 
     @Inject private LayerManager layerManager;
@@ -154,12 +139,12 @@ public class LayerManager implements GameClientObserver {
         }
     }
 
-    @GameShortcut(key = Input.Keys.PAGE_UP)
+    @GameShortcut("map/floor_up")
     public void onFloorUp() {
         viewport.setFloor(viewport.getFloor() + 1);
     }
 
-    @GameShortcut(key = Input.Keys.PAGE_DOWN)
+    @GameShortcut("map/floor_down")
     public void onFloorDown() {
         viewport.setFloor(viewport.getFloor() - 1);
     }

@@ -4,6 +4,7 @@ import com.badlogic.gdx.Input;
 import org.smallbox.faraway.client.debug.dashboard.DashboardLayer;
 import org.smallbox.faraway.client.debug.dashboard.MiniDashboardLayer;
 import org.smallbox.faraway.client.debug.interpreter.DebugCommandInterpreterService;
+import org.smallbox.faraway.client.shortcut.GameShortcut;
 import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 
@@ -23,10 +24,15 @@ public class DebugService {
     @Inject private MiniDashboardLayer miniDashboardLayer;
     @Inject private DebugCommandInterpreterService debugCommandInterpreterService;
 
+    @GameShortcut("debug/toggle")
     public void toggleDebugMode() {
-        debugMode = !debugMode;
-        dashboardLayer.setVisibility(debugMode);
-        miniDashboardLayer.setVisibility(!debugMode);
+        display(!debugMode);
+    }
+
+    private void display(boolean visible) {
+        debugMode = visible;
+        dashboardLayer.setVisibility(visible);
+        miniDashboardLayer.setVisibility(!visible);
     }
 
     public boolean isDebugMode() {
@@ -79,6 +85,10 @@ public class DebugService {
                 dashboardLayer.pageDown();
                 break;
 
+            case Input.Keys.F12:
+                display(false);
+                break;
+
         }
 
         debugCommandInterpreterService.setCommandInput(commandInputSb.toString());
@@ -95,4 +105,5 @@ public class DebugService {
     public void click(int x, int y) {
         dashboardLayer.click(x, y);
     }
+
 }

@@ -1,12 +1,9 @@
 package org.smallbox.faraway.client.gameAction;
 
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import org.apache.commons.lang3.StringUtils;
-import org.smallbox.faraway.client.ui.extra.Colors;
-import org.smallbox.faraway.game.plant.PlantModule;
-import org.smallbox.faraway.game.world.ObjectModel;
 import org.smallbox.faraway.client.shortcut.GameShortcut;
+import org.smallbox.faraway.client.ui.extra.Colors;
 import org.smallbox.faraway.core.dependencyInjector.DependencyManager;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
@@ -14,12 +11,14 @@ import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnInit;
 import org.smallbox.faraway.core.dependencyInjector.gameAction.OnGameSelectAction;
 import org.smallbox.faraway.core.game.GameManager;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
-import org.smallbox.faraway.game.world.Parcel;
 import org.smallbox.faraway.game.area.AreaModel;
 import org.smallbox.faraway.game.area.AreaModule;
 import org.smallbox.faraway.game.area.AreaTypeInfo;
 import org.smallbox.faraway.game.building.BuildJobFactory;
 import org.smallbox.faraway.game.job.JobModule;
+import org.smallbox.faraway.game.plant.PlantModule;
+import org.smallbox.faraway.game.world.ObjectModel;
+import org.smallbox.faraway.game.world.Parcel;
 import org.smallbox.faraway.util.log.Log;
 
 import java.lang.annotation.Annotation;
@@ -153,7 +152,7 @@ public class GameActionManager extends GameManager {
                 .forEach(entry -> entry.getValue().accept(object));
     }
 
-    @GameShortcut(key = Input.Keys.C)
+    @GameShortcut("action/cancel")
     public void onPressCancel() {
         setCancelAction();
     }

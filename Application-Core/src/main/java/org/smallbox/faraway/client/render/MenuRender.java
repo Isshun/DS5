@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Interpolation;
 import org.smallbox.faraway.client.asset.AssetManager;
+import org.smallbox.faraway.client.input.GameEventListener;
 import org.smallbox.faraway.client.layer.Animator;
 import org.smallbox.faraway.client.renderer.UIRenderer;
 import org.smallbox.faraway.client.shortcut.ShortcutManager;
@@ -19,6 +20,8 @@ import org.smallbox.faraway.client.ui.widgets.View;
 import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnInit;
+
+import java.util.function.BiConsumer;
 
 @ApplicationObject
 public class MenuRender {
@@ -32,6 +35,7 @@ public class MenuRender {
     private Animator backgroundAnimator1;
     private Animator backgroundAnimator2;
     private Animator backgroundAnimator3;
+    private BiConsumer<Integer, GameEventListener.Modifier> nextKeyConsumer;
 
     private final InputProcessor _menuInputAdapter = new InputAdapter() {
 
@@ -48,6 +52,11 @@ public class MenuRender {
 
         @Override
         public boolean keyUp (int keycode) {
+            if (nextKeyConsumer != null) {
+                nextKeyConsumer.accept(keycode, null);
+                return false;
+            }
+
             shortcutManager.action(keycode);
             return false;
         }
@@ -135,4 +144,7 @@ public class MenuRender {
         return view.isVisible();
     }
 
+    public void getNextKey(BiConsumer<Integer, GameEventListener.Modifier> consumer) {
+        nextKeyConsumer = consumer;
+    }
 }

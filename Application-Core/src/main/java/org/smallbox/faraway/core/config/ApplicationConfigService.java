@@ -1,6 +1,7 @@
 package org.smallbox.faraway.core.config;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import org.smallbox.faraway.core.dependencyInjector.DependencyManager;
 import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
@@ -47,7 +48,7 @@ public class ApplicationConfigService {
     private void onSettingsUpdate() {
         File configFile = FileUtils.getUserDataFile("settings.json");
         try (FileWriter fileWriter = new FileWriter(configFile)) {
-            fileWriter.write(new Gson().toJson(applicationConfig));
+            fileWriter.write(new GsonBuilder().setPrettyPrinting().create().toJson(applicationConfig));
         } catch (IOException e) {
             throw new GameException(ApplicationConfigService.class, e, "Unable to write config file");
         }

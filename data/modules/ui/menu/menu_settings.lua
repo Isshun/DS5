@@ -70,9 +70,8 @@ ui:extend({
             }},
 
             -- Bindingss
-            { type = "list", id = "bindings_sub_menu", visible = false, position = {0, 2}, size = {800, 490}, views = {
-                { type = "label", text = "UI", text_size = 16, padding = 10},
-                { type = "label", text = "Game", text_size = 16, padding = 10},
+            { type = "list", id = "bindings_sub_menu", visible = false, position = {0, 12}, size = {800, 490}, template = {
+                { type = "label", id = "lb_binding", text_color = 0x000000cc, text_focus_color = yellow, text_font = "sui", text_size = 22, size = {800, 32}, text_align = "LEFT", position = {14, 0}}
             }},
 
             -- Gameplay
@@ -98,7 +97,9 @@ ui:extend({
         { type = "view", size = {800, 45}, views = {
             { type = "label", text = "Close", style = "action_button", action = "onClose", text_align = "LEFT", position = {30, window_height - 75} },
             { type = "label", text = "Apply", style = "action_button", action = "onApply", text_align = "RIGHT", position = {window_width - 270, window_height - 75} },
-        }}
+        } },
+
+        { type = "view", background = 0x00000088, id = "frame_new_binding", visible = false},
 
     },
 

@@ -3,16 +3,17 @@ package org.smallbox.faraway.core.dependencyInjector;
 import org.reflections.Reflections;
 import org.smallbox.faraway.client.controller.LuaController;
 import org.smallbox.faraway.client.lua.LuaControllerManager;
-import org.smallbox.faraway.client.shortcut.ShortcutManager;
-import org.smallbox.faraway.game.world.ObjectModel;
-import org.smallbox.faraway.core.Application;
-import org.smallbox.faraway.util.GameException;
 import org.smallbox.faraway.client.shortcut.GameShortcut;
+import org.smallbox.faraway.client.shortcut.ShortcutManager;
+import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnInit;
+import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnSettingsUpdate;
 import org.smallbox.faraway.core.game.GameObserver;
+import org.smallbox.faraway.game.world.ObjectModel;
+import org.smallbox.faraway.util.GameException;
 import org.smallbox.faraway.util.log.Log;
 
 import java.lang.annotation.Annotation;
@@ -145,10 +146,11 @@ public class DependencyManager {
 
         _applicationObjectPoolByClass.values().stream().map(dependencyInfo -> dependencyInfo.dependency).forEach(host -> {
             Log.debug("Inject dependency to: " + host.getClass().getSimpleName());
-            doInjectShortcut(host);
             doInjectDependency(host, host.getClass(), false);
             callInitMethod(host, false);
         });
+
+        _applicationObjectPoolByClass.values().stream().map(dependencyInfo -> dependencyInfo.dependency).forEach(this::doInjectShortcut);
     }
 
     /**
@@ -167,10 +169,16 @@ public class DependencyManager {
         objects.addAll(_gameObjectPoolByClass.values());
         objects.stream().map(dependencyInfo -> dependencyInfo.dependency).forEach(host -> {
             Log.info("Inject dependency to game object: " + host.getClass().getSimpleName());
-            doInjectShortcut(host);
             doInjectDependency(host, host.getClass(), true);
         });
+        _gameObjectPoolByClass.values().stream().map(dependencyInfo -> dependencyInfo.dependency).forEach(this::doInjectShortcut);
         _gameObjectPoolByClass.values().stream().map(dependencyInfo -> dependencyInfo.dependency).forEach(host -> callInitMethod(host, true));
+    }
+
+    @OnSettingsUpdate
+    private void injectShortcuts() {
+        _applicationObjectPoolByClass.values().stream().map(dependencyInfo -> dependencyInfo.dependency).forEach(this::doInjectShortcut);
+        _gameObjectPoolByClass.values().stream().map(dependencyInfo -> dependencyInfo.dependency).forEach(this::doInjectShortcut);
     }
 
     private void doInjectShortcut(Object host) {
@@ -179,7 +187,7 @@ public class DependencyManager {
             GameShortcut gameShortcut = method.getAnnotation(GameShortcut.class);
             if (gameShortcut != null) {
                 Log.debug(String.format("Try to inject %s to %s", method.getName(), host.getClass().getSimpleName()));
-                getDependency(ShortcutManager.class).addBinding(host.getClass().getSimpleName() + "." + method.getName(), gameShortcut.key(), () -> {
+                getDependency(ShortcutManager.class).addBinding(host.getClass().getSimpleName() + "." + method.getName(), gameShortcut, () -> {
                     try {
                         method.invoke(host);
                     } catch (IllegalAccessException | InvocationTargetException e) {

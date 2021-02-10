@@ -1,10 +1,10 @@
 package org.smallbox.faraway.core.game;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
+import org.smallbox.faraway.client.shortcut.GameShortcut;
 import org.smallbox.faraway.client.ui.UIManager;
 import org.smallbox.faraway.core.Application;
-import org.smallbox.faraway.client.shortcut.GameShortcut;
+import org.smallbox.faraway.core.config.ApplicationConfig;
 import org.smallbox.faraway.core.dependencyInjector.DependencyManager;
 import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
@@ -12,9 +12,8 @@ import org.smallbox.faraway.core.dependencyInjector.annotationEvent.AfterGameLay
 import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnGameLayerInit;
 import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnGameStart;
 import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnGameStop;
-import org.smallbox.faraway.core.save.*;
-import org.smallbox.faraway.core.config.ApplicationConfig;
 import org.smallbox.faraway.core.path.PathManager;
+import org.smallbox.faraway.core.save.*;
 import org.smallbox.faraway.game.world.factory.WorldFactory;
 import org.smallbox.faraway.util.FileUtils;
 import org.smallbox.faraway.util.log.Log;
@@ -161,7 +160,7 @@ public class GameManager implements GameObserver {
                 });
     }
 
-    @GameShortcut(key = Input.Keys.F5)
+    @GameShortcut("game/save")
     public void actionQuickSaveGame() {
         Log.info("quickSaveGame");
         gameSaveManager.saveGame(GameSaveType.FAST);

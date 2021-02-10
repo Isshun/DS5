@@ -5,28 +5,28 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import org.apache.commons.lang3.StringUtils;
+import org.smallbox.faraway.client.LayerLevel;
 import org.smallbox.faraway.client.asset.AssetManager;
 import org.smallbox.faraway.client.controller.SystemInfoController;
-import org.smallbox.faraway.client.renderer.BaseRenderer;
-import org.smallbox.faraway.client.layer.LayerManager;
-import org.smallbox.faraway.client.renderer.Viewport;
 import org.smallbox.faraway.client.layer.BaseLayer;
+import org.smallbox.faraway.client.layer.GameLayer;
+import org.smallbox.faraway.client.renderer.BaseRenderer;
+import org.smallbox.faraway.client.renderer.Viewport;
 import org.smallbox.faraway.client.ui.extra.Colors;
 import org.smallbox.faraway.client.ui.widgets.View;
-import org.smallbox.faraway.client.layer.GameLayer;
+import org.smallbox.faraway.core.config.ApplicationConfig;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.dependencyInjector.annotationEvent.AfterGameLayerInit;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameManager;
-import org.smallbox.faraway.game.world.WorldHelper;
-import org.smallbox.faraway.core.config.ApplicationConfig;
-import org.smallbox.faraway.game.world.Parcel;
-import org.smallbox.faraway.game.structure.StructureItem;
 import org.smallbox.faraway.game.character.CharacterModule;
 import org.smallbox.faraway.game.consumable.ConsumableModule;
 import org.smallbox.faraway.game.item.ItemModule;
 import org.smallbox.faraway.game.plant.PlantModule;
+import org.smallbox.faraway.game.structure.StructureItem;
+import org.smallbox.faraway.game.world.Parcel;
+import org.smallbox.faraway.game.world.WorldHelper;
 import org.smallbox.faraway.game.world.WorldModule;
 
 import java.util.Arrays;
@@ -38,7 +38,7 @@ import java.util.function.Predicate;
 import static org.smallbox.faraway.util.Constant.TILE_SIZE;
 
 @GameObject
-@GameLayer(level = LayerManager.MINI_MAP_LEVEL, visible = true)
+@GameLayer(level = LayerLevel.MINI_MAP_LEVEL, visible = true)
 public class MinimapLayer extends BaseLayer {
     //    private static final int    COLOR_background = 0xfffff9bdff;
     private static final int COLOR_ROCK = 0x60442dff;

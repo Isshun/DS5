@@ -1,6 +1,5 @@
 package org.smallbox.faraway.game.dig;
 
-import com.badlogic.gdx.Input;
 import org.apache.commons.collections4.CollectionUtils;
 import org.smallbox.faraway.client.gameAction.GameActionManager;
 import org.smallbox.faraway.client.gameAction.GameActionMode;
@@ -57,7 +56,7 @@ public class DigModule extends AreaModuleBase<DigAction> {
         return digAction;
     }
 
-    @GameShortcut(key = Input.Keys.G)
+    @GameShortcut("action/dig")
     public void digMode() {
         if (gameActionManager.getAction() == digAction) {
             gameActionManager.setAreaAction(GameActionMode.ADD_AREA, digUnderAction);

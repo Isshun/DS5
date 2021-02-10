@@ -1,20 +1,20 @@
 package org.smallbox.faraway.client.gameContextMenu;
 
 import com.badlogic.gdx.graphics.Color;
+import org.smallbox.faraway.client.LayerLevel;
 import org.smallbox.faraway.client.input.InputManager;
-import org.smallbox.faraway.client.renderer.BaseRenderer;
-import org.smallbox.faraway.client.layer.LayerManager;
-import org.smallbox.faraway.client.renderer.Viewport;
 import org.smallbox.faraway.client.layer.BaseLayer;
-import org.smallbox.faraway.client.ui.extra.Colors;
 import org.smallbox.faraway.client.layer.GameLayer;
+import org.smallbox.faraway.client.renderer.BaseRenderer;
+import org.smallbox.faraway.client.renderer.Viewport;
+import org.smallbox.faraway.client.ui.extra.Colors;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 
 import java.util.Optional;
 
 @GameObject
-@GameLayer(level = LayerManager.AREA_LAYER_LEVEL, visible = true)
+@GameLayer(level = LayerLevel.AREA_LAYER_LEVEL, visible = true)
 public class GameContextMenuLayer extends BaseLayer {
     @Inject private GameContextMenuManager gameContextMenuManager;
     @Inject private InputManager inputManager;

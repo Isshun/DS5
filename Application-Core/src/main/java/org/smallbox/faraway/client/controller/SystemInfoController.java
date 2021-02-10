@@ -1,14 +1,13 @@
 package org.smallbox.faraway.client.controller;
 
-import com.badlogic.gdx.Input;
 import org.smallbox.faraway.client.controller.annotation.BindLua;
 import org.smallbox.faraway.client.controller.annotation.BindLuaAction;
 import org.smallbox.faraway.client.renderer.Viewport;
-import org.smallbox.faraway.client.ui.widgets.View;
+import org.smallbox.faraway.client.shortcut.GameShortcut;
 import org.smallbox.faraway.client.ui.widgets.UIFrame;
 import org.smallbox.faraway.client.ui.widgets.UIImage;
 import org.smallbox.faraway.client.ui.widgets.UILabel;
-import org.smallbox.faraway.client.shortcut.GameShortcut;
+import org.smallbox.faraway.client.ui.widgets.View;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.game.Game;
@@ -84,17 +83,17 @@ public class SystemInfoController extends LuaController {
         game.setRunning(false);
     }
 
-    @GameShortcut(key = Input.Keys.SPACE)
+    @GameShortcut("game/pause")
     public void actionPause() {
         game.toggleRunning();
     }
 
-    @GameShortcut(key = Input.Keys.PLUS)
+    @GameShortcut("game/speed_up")
     public void actionSpeedUp() {
         game.setSpeed(game.getSpeed() + 1);
     }
 
-    @GameShortcut(key = Input.Keys.MINUS)
+    @GameShortcut("game/speed_down")
     public void actionSpeedDown() {
         game.setSpeed(game.getSpeed() - 1);
     }

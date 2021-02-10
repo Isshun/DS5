@@ -1,6 +1,5 @@
 package org.smallbox.faraway.client.menu.controller;
 
-import com.badlogic.gdx.Input;
 import org.smallbox.faraway.client.controller.LuaController;
 import org.smallbox.faraway.client.controller.annotation.BindLua;
 import org.smallbox.faraway.client.controller.annotation.BindLuaAction;
@@ -100,12 +99,12 @@ public class MenuPlanetController extends LuaController {
         menuCrewController.setVisible(true);
     }
 
-    @GameShortcut(key = Input.Keys.UP)
+    @GameShortcut("ui/up")
     public void onPressUp() {
         selectPlanet(safePlanet(dataManager.planets.indexOf(planet) - 1));
     }
 
-    @GameShortcut(key = Input.Keys.DOWN)
+    @GameShortcut("ui/down")
     public void onPressDown() {
         selectPlanet(safePlanet(dataManager.planets.indexOf(planet) + 1));
     }

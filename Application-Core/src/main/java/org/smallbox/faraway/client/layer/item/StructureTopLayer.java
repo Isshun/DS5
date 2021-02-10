@@ -1,10 +1,10 @@
 package org.smallbox.faraway.client.layer.item;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import org.smallbox.faraway.client.LayerLevel;
 import org.smallbox.faraway.client.asset.SpriteManager;
 import org.smallbox.faraway.client.layer.BaseMapLayer;
 import org.smallbox.faraway.client.layer.GameLayer;
-import org.smallbox.faraway.client.layer.LayerManager;
 import org.smallbox.faraway.client.renderer.BaseRenderer;
 import org.smallbox.faraway.client.renderer.Viewport;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
@@ -14,7 +14,7 @@ import org.smallbox.faraway.game.structure.StructureItem;
 import org.smallbox.faraway.game.structure.StructureModule;
 
 @GameObject
-@GameLayer(level = LayerManager.STRUCTURE_LAYER_LEVEL, visible = true)
+@GameLayer(level = LayerLevel.STRUCTURE_LAYER_LEVEL, visible = true)
 public class StructureTopLayer extends BaseMapLayer {
     @Inject private SpriteManager spriteManager;
     @Inject private StructureModule structureModule;

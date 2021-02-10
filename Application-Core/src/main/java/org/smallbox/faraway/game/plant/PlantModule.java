@@ -1,6 +1,5 @@
 package org.smallbox.faraway.game.plant;
 
-import com.badlogic.gdx.Input;
 import org.smallbox.faraway.GameTaskManager;
 import org.smallbox.faraway.client.gameAction.GameActionManager;
 import org.smallbox.faraway.client.gameAction.GameActionMode;
@@ -127,7 +126,7 @@ public class PlantModule extends GenericGameModule<PlantItem> {
         return optional.orElse(null);
     }
 
-    @GameShortcut(key = Input.Keys.H)
+    @GameShortcut("action/harvest")
     public void harvestMode() {
         gameActionManager.setAreaAction(GameActionMode.ADD_AREA, harvestAction);
     }

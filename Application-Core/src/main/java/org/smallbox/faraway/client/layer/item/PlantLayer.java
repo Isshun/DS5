@@ -1,10 +1,10 @@
 package org.smallbox.faraway.client.layer.item;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import org.smallbox.faraway.client.LayerLevel;
 import org.smallbox.faraway.client.asset.SpriteManager;
 import org.smallbox.faraway.client.layer.BaseMapLayer;
 import org.smallbox.faraway.client.layer.GameLayer;
-import org.smallbox.faraway.client.layer.LayerManager;
 import org.smallbox.faraway.client.layer.SpriteExtra;
 import org.smallbox.faraway.client.renderer.BaseRenderer;
 import org.smallbox.faraway.client.renderer.Viewport;
@@ -18,7 +18,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 @GameObject
-@GameLayer(level = LayerManager.PLANT_LAYER_LEVEL, visible = true)
+@GameLayer(level = LayerLevel.PLANT_LAYER_LEVEL, visible = true)
 public class PlantLayer extends BaseMapLayer {
     @Inject private SpriteManager spriteManager;
     @Inject private PlantModule plantModule;

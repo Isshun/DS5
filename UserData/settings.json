@@ -103,7 +103,6 @@
       20,
       20
     ],
-    "mode": "window",
     "foregroundFPS": 60,
     "backgroundFPS": 30
   },
@@ -138,6 +137,80 @@
   "ui": {
     "panelWidth": 400
   },
+  "shortcuts": [
+    {
+      "name": "debug/toggle",
+      "key": "F12"
+    },
+    {
+      "name": "action/dig",
+      "key": "G"
+    },
+    {
+      "name": "action/build",
+      "key": "B"
+    },
+    {
+      "name": "action/harvest",
+      "key": "H"
+    },
+    {
+      "name": "action/cancel",
+      "key": "C"
+    },
+    {
+      "name": "info/temperature",
+      "key": "F1"
+    },
+    {
+      "name": "info/atmosphere",
+      "key": "F2"
+    },
+    {
+      "name": "info/radiation",
+      "key": "F3"
+    },
+    {
+      "name": "info/decoration",
+      "key": "F4"
+    },
+    {
+      "name": "info/resources",
+      "key": "F5"
+    },
+    {
+      "name": "info/rooms",
+      "key": "F6"
+    },
+    {
+      "name": "map/floor_up",
+      "key": "Page Up"
+    },
+    {
+      "name": "map/floor_down",
+      "key": "Page Down"
+    },
+    {
+      "name": "game/save",
+      "key": "I"
+    },
+    {
+      "name": "game/speed_up",
+      "key": "Plus"
+    },
+    {
+      "name": "game/speed_down",
+      "key": "-"
+    },
+    {
+      "name": "game/pause",
+      "key": "Space"
+    },
+    {
+      "name": "escape",
+      "key": "Escape"
+    }
+  ],
   "launchGui": true,
   "uiScale": 1.0,
   "lang": "en",

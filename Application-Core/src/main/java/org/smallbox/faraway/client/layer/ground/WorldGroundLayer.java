@@ -2,21 +2,21 @@ package org.smallbox.faraway.client.layer.ground;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
+import org.smallbox.faraway.client.LayerLevel;
 import org.smallbox.faraway.client.asset.AssetManager;
-import org.smallbox.faraway.client.renderer.MapRenderer;
-import org.smallbox.faraway.client.renderer.BaseRenderer;
-import org.smallbox.faraway.client.layer.LayerManager;
-import org.smallbox.faraway.client.renderer.Viewport;
 import org.smallbox.faraway.client.layer.BaseMapLayer;
+import org.smallbox.faraway.client.layer.GameLayer;
 import org.smallbox.faraway.client.layer.ground.impl.GroundTileGenerator;
 import org.smallbox.faraway.client.layer.ground.impl.RockTileGenerator;
+import org.smallbox.faraway.client.renderer.BaseRenderer;
+import org.smallbox.faraway.client.renderer.MapRenderer;
+import org.smallbox.faraway.client.renderer.Viewport;
 import org.smallbox.faraway.client.selection.GameSelectionManager;
-import org.smallbox.faraway.client.layer.GameLayer;
+import org.smallbox.faraway.core.config.ApplicationConfig;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnGameStart;
 import org.smallbox.faraway.core.game.Game;
-import org.smallbox.faraway.core.config.ApplicationConfig;
 import org.smallbox.faraway.game.world.Parcel;
 import org.smallbox.faraway.game.world.WorldModule;
 import org.smallbox.faraway.util.Constant;
@@ -25,7 +25,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 @GameObject
-@GameLayer(level = LayerManager.WORLD_GROUND_LAYER_LEVEL, visible = true)
+@GameLayer(level = LayerLevel.WORLD_GROUND_LAYER_LEVEL, visible = true)
 public class WorldGroundLayer extends BaseMapLayer {
     @Inject private GroundTileGenerator groundTileGenerator;
     @Inject private RockTileGenerator rockTileGenerator;

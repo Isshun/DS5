@@ -1,13 +1,13 @@
 package org.smallbox.faraway.client.layer.ui;
 
 import com.badlogic.gdx.graphics.Color;
+import org.smallbox.faraway.client.LayerLevel;
 import org.smallbox.faraway.client.asset.IconManager;
 import org.smallbox.faraway.client.asset.SpriteManager;
-import org.smallbox.faraway.client.renderer.BaseRenderer;
-import org.smallbox.faraway.client.layer.LayerManager;
-import org.smallbox.faraway.client.renderer.Viewport;
 import org.smallbox.faraway.client.layer.BaseMapLayer;
 import org.smallbox.faraway.client.layer.GameLayer;
+import org.smallbox.faraway.client.renderer.BaseRenderer;
+import org.smallbox.faraway.client.renderer.Viewport;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.game.building.BuildJob;
@@ -16,7 +16,7 @@ import org.smallbox.faraway.game.job.JobModule;
 import org.smallbox.faraway.game.storage.StoreJob;
 
 @GameObject
-@GameLayer(level = LayerManager.JOB_LAYER_LEVEL, visible = true)
+@GameLayer(level = LayerLevel.JOB_LAYER_LEVEL, visible = true)
 public class JobLayer extends BaseMapLayer {
     @Inject private SpriteManager spriteManager;
     @Inject private IconManager iconManager;
