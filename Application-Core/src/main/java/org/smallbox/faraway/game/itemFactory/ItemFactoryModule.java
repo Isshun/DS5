@@ -21,9 +21,6 @@ public class ItemFactoryModule extends SuperGameModule {
     @Inject private JobModule jobModule;
     @Inject private StructureModule structureModule;
     @Inject private ConsumableModule consumableModule;
-
-//    @Inject
-//    private WorldInteractionModule worldInteractionModule;
     @Inject private ItemModule itemModule;
 
     @Override
