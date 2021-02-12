@@ -26,7 +26,7 @@ public class WorldTemperatureModule extends SuperGameModule2<WeatherModuleObserv
     private double dailyTemperatureVariation;
     private double hourlyTemperatureVariation;
     private double monthlyTemperature;
-    private double _temperature;
+    private double temperature;
 
     @OnGameNewHour
     public void refreshHourlyTemperatureVariation() {
@@ -47,7 +47,7 @@ public class WorldTemperatureModule extends SuperGameModule2<WeatherModuleObserv
     }
 
     @Override
-    public void onGameUpdate(Game game) {
+    public void onGameUpdate() {
 
         // Refresh temperatureTransition if weather has changed since last update
         if (weatherTemperatureVariation != weatherModule.getTemperatureVariation()) {
@@ -57,18 +57,18 @@ public class WorldTemperatureModule extends SuperGameModule2<WeatherModuleObserv
 
         // Refresh temperature based on temperatureTransition
         if (temperatureTransition != null) {
-            _temperature = temperatureTransition.getValue(gameTime.now());
+            temperature = temperatureTransition.getValue(gameTime.now());
         }
 
     }
 
     private void refreshTemperatureTransition() {
-        temperatureTransition = new DoubleTransition(_temperature, monthlyTemperature + dailyTemperatureVariation + hourlyTemperatureVariation + weatherModule.getTemperatureVariation());
+        temperatureTransition = new DoubleTransition(temperature, monthlyTemperature + dailyTemperatureVariation + hourlyTemperatureVariation + weatherModule.getTemperatureVariation());
         temperatureTransition.setInterval(gameTime.now(), gameTime.plus(1, TimeUnit.HOURS));
     }
 
     public double getTemperature() {
-        return _temperature;
+        return temperature;
     }
 
 }

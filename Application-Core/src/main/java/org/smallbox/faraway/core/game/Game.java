@@ -1,6 +1,5 @@
 package org.smallbox.faraway.core.game;
 
-import org.smallbox.faraway.GameTaskManager;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.config.ApplicationConfig;
 import org.smallbox.faraway.core.dependencyInjector.DependencyManager;
@@ -19,14 +18,10 @@ import org.smallbox.faraway.util.Utils;
 import org.smallbox.faraway.util.log.Log;
 
 import java.util.*;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 
 @GameObject
 public class Game {
     @Inject private DependencyManager dependencyManager;
-    @Inject private GameTaskManager gameTaskManager;
     @Inject private GameTime gameTime;
 
     public static long interval = 1000;
@@ -46,6 +41,31 @@ public class Game {
         return currentMonth;
     }
 
+    public void addTick() {
+        _tick++;
+    }
+
+    public void update() {
+        int hour = gameTime.getHour();
+        int day = gameTime.getDay();
+        int month = gameTime.getMonth();
+
+        gameTime.add(1 / _tickPerHour);
+
+        if (gameTime.getMonth() > month) {
+            currentMonth = _regionInfo.months.stream().filter(m -> m.index == gameTime.getMonth()).findFirst().orElse(null);
+            dependencyManager.callMethodAnnotatedBy(OnGameNewMonth.class);
+        }
+
+        if (gameTime.getDay() > day) {
+            dependencyManager.callMethodAnnotatedBy(OnGameNewDay.class);
+        }
+
+        if (gameTime.getHour() > hour) {
+            dependencyManager.callMethodAnnotatedBy(OnGameNewHour.class);
+        }
+    }
+
     public enum GameStatus {UNINITIALIZED, CREATED, STOPPED, STARTED}
 
     // Update
@@ -61,16 +81,8 @@ public class Game {
     private int                             _lastSpeed;
     private List<AbsGameModule> _modules;
     private GameStatus                      _status = GameStatus.UNINITIALIZED;
-    private final ScheduledExecutorService  _moduleScheduler = Executors.newScheduledThreadPool(1);
-    private final ScheduledExecutorService  _moduleScheduler2 = Executors.newScheduledThreadPool(1);
-    private final ScheduledExecutorService  _moduleScheduler3 = Executors.newScheduledThreadPool(1);
-    private final ScheduledExecutorService  _moduleScheduler4 = Executors.newScheduledThreadPool(1);
     private final PlanetInfo                _planetInfo;
     private final RegionInfo                _regionInfo;
-
-    public ScheduledExecutorService getScheduler() {
-        return _moduleScheduler;
-    }
 
     public void setDisplay(String displayName, boolean isActive) {
         _displays.put(displayName, isActive);
@@ -178,13 +190,11 @@ public class Game {
 
     public void start() {
         _modules.stream().filter(ModuleBase::isLoaded).forEach(module -> module.startGame(this));
-
         _status = GameStatus.STARTED;
     }
 
     public void stop() {
         _status = GameStatus.STOPPED;
-        _moduleScheduler.shutdown();
     }
 
     public GameInfo getInfo() { return _info; }
@@ -199,85 +209,4 @@ public class Game {
         }
     }
 
-    public void launchBackgroundThread(GameManager.GameListener listener) {
-
-        _moduleScheduler.scheduleAtFixedRate(() -> {
-            try {
-                if (_isRunning) {
-                    _tick += 1;
-
-                    int hour = gameTime.getHour();
-                    int day = gameTime.getDay();
-                    int month = gameTime.getMonth();
-
-                    gameTime.add(1 / _tickPerHour);
-
-                    if (gameTime.getMonth() > month) {
-                        currentMonth = _regionInfo.months.stream().filter(m -> m.index == gameTime.getMonth()).findFirst().orElse(null);
-                        dependencyManager.callMethodAnnotatedBy(OnGameNewMonth.class);
-                    }
-
-                    if (gameTime.getDay() > day) {
-                        dependencyManager.callMethodAnnotatedBy(OnGameNewDay.class);
-                    }
-
-                    if (gameTime.getHour() > hour) {
-                        dependencyManager.callMethodAnnotatedBy(OnGameNewHour.class);
-                    }
-
-                    _modules.forEach(module -> {
-                        try {
-                            module.updateGame(Game.this);
-                        } catch (Exception e) {
-                            Log.error(e);
-                        }
-                    });
-
-                    Application.notify(gameObserver -> gameObserver.onGameUpdate(Game.this));
-
-                    if (listener != null) {
-                        listener.onGameUpdate(this);
-                    }
-                }
-            } catch (Exception e) {
-                Log.error(e);
-            }
-        }, 0, 40, TimeUnit.MILLISECONDS);
-
-//        _moduleScheduler2.scheduleAtFixedRate(() -> {
-//            try {
-//                if (_isRunning) {
-//                    Application.dependencyInjector.getDependency(GameTaskManager.class).update();
-//                }
-//            } catch (Error e) {
-//                Log.error(e);
-//                e.printStackTrace();
-//            }
-//        }, 0, interval, TimeUnit.MILLISECONDS);
-
-        _moduleScheduler3.scheduleAtFixedRate(() -> {
-            try {
-                if (_isRunning) {
-                    gameTaskManager.update();
-                    Application.notify(gameObserver -> gameObserver.onGameRender(Game.this));
-                }
-            } catch (Error e) {
-                Log.error(e);
-                e.printStackTrace();
-            }
-        }, 0, 16, TimeUnit.MILLISECONDS);
-
-        _moduleScheduler4.scheduleAtFixedRate(() -> {
-            try {
-                if (_isRunning) {
-                    gameTaskManager.update();
-                    Application.notify(gameObserver -> gameObserver.onGameLongUpdate(Game.this));
-                }
-            } catch (Error e) {
-                Log.error(e);
-                e.printStackTrace();
-            }
-        }, 0, 1, TimeUnit.SECONDS);
-
-    }
 }

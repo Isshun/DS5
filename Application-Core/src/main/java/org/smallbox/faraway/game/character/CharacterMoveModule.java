@@ -36,18 +36,13 @@ public class CharacterMoveModule extends SuperGameModule2<CharacterModuleObserve
     }
 
     @Override
-    public void onModuleUpdate(Game game) {
+    public void onGameUpdate() {
 //        fixCharacterPosition();
 
         characterModule.getAll().forEach(character -> {
             character.setDirection(MovableModel.Direction.NONE);
             doMove(character);
         });
-    }
-
-    @Override
-    public void onGameRender(Game game) {
-//        characterModule.getAll().forEach(this::move);
     }
 
     public CharacterMoveStatus move(CharacterModel character, JobModel job) {

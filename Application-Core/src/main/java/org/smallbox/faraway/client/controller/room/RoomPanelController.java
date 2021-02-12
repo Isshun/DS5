@@ -3,7 +3,6 @@ package org.smallbox.faraway.client.controller.room;
 import org.smallbox.faraway.client.controller.LuaController;
 import org.smallbox.faraway.client.controller.MainPanelController;
 import org.smallbox.faraway.client.controller.annotation.BindLua;
-import org.smallbox.faraway.client.layer.area.RoomLayer;
 import org.smallbox.faraway.client.selection.GameSelectionManager;
 import org.smallbox.faraway.client.ui.event.UIEventManager;
 import org.smallbox.faraway.client.ui.widgets.UIList;
@@ -14,19 +13,13 @@ import org.smallbox.faraway.game.room.RoomModule;
 
 @GameObject
 public class RoomPanelController extends LuaController {
-
-    @Inject
-    protected GameSelectionManager gameSelectionManager;
+    @Inject private GameSelectionManager gameSelectionManager;
+    @Inject private MainPanelController mainPanelController;
     @Inject private UIEventManager uiEventManager;
     @Inject private RoomModule roomModule;
 
-    @BindLua
-    private UIList listRoomsAdd;
-
-    @BindLua
-    private UIList listRoomsSub;
-    @Inject private MainPanelController mainPanelController;
-    @Inject private RoomLayer roomLayer;
+    @BindLua private UIList listRoomsAdd;
+    @BindLua private UIList listRoomsSub;
 
     @AfterGameLayerInit
     public void afterGameLayerInit() {
@@ -77,12 +70,4 @@ public class RoomPanelController extends LuaController {
 //
     }
 
-    @Override
-    public void onRefreshUI(int frame) {
-
-    }
-
-    @Override
-    public void onMouseMove(int x, int y, int button) {
-    }
 }

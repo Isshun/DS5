@@ -4,7 +4,6 @@ import org.smallbox.faraway.core.module.ModuleInfoAnnotation;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.module.SuperGameModule;
-import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.game.modelInfo.ReceiptGroupInfo;
 import org.smallbox.faraway.game.consumable.Consumable;
@@ -28,7 +27,7 @@ public class ItemFactoryModule extends SuperGameModule {
     @Inject private ItemModule itemModule;
 
     @Override
-    protected void onModuleUpdate(Game game) {
+    public void onGameUpdate() {
         itemModule.getAll().stream()
                 .filter(item -> item.getFactory() != null)
                 .forEach(item -> {

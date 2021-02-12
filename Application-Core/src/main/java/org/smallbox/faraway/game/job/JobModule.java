@@ -32,9 +32,10 @@ public class JobModule extends SuperGameModule<JobModel, JobModuleObserver> {
     @Inject private ConsumableModule consumableModule;
     @Inject private ApplicationConfig applicationConfig;
     @Inject private GameTime gameTime;
+    @Inject private Game game;
 
     @Override
-    protected void onModuleUpdate(Game game) {
+    public void onGameUpdate() {
 
         // Check all jobs
         modelList.forEach(job -> {

@@ -50,7 +50,7 @@ public class WeatherModule extends SuperGameModule2<WeatherModuleObserver> imple
     public void onGameStart(Game game) {
         _floors = game.getInfo().worldFloors;
         _weather = game.getInfo().region.weather.get(0).info;
-        currentDayTime = game.getInfo().planet.dayTimes.get(0);
+        currentDayTime = game.getInfo().planet.dayTimes.get(gameTime.getHour());
 
         Random.ofNullable(dataManager.weathers).ifPresent(this::loadWeather);
 
@@ -104,7 +104,7 @@ public class WeatherModule extends SuperGameModule2<WeatherModuleObserver> imple
     }
 
     @Override
-    public void onGameUpdate(Game game) {
+    public void onGameUpdate() {
 
         // Set light
         if (ambientLightTransition != null) {

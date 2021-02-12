@@ -19,7 +19,6 @@ public class Viewport {
     @Inject private MapRenderer mapRenderer;
     @Inject private Game game;
 
-    private final static int ANIM_FRAME = 10;
     public final static float[] ZOOM_LEVELS = new float[]{
             0.1f,
             0.25f,
@@ -32,14 +31,9 @@ public class Viewport {
     private int _lastPosX;
     private int _lastPosY;
     private int _width;
-    private int _toScale;
     private int _height;
-    private int _fromScale;
-    private int _scaleAnim;
     private final int _zoom = ZOOM_LEVELS.length - 1;
     private int _floor;
-    private int _worldX;
-    private int _worldY;
 
     public Viewport() {
         _lastPosX = 0;
@@ -69,35 +63,13 @@ public class Viewport {
         }
     }
 
-//    public void moveTo(int x, int y) {
-//        setPosition(
-//                (-x * Constant.TILE_WIDTH) + (50/2 * Constant.TILE_WIDTH),
-//                (-y * Constant.TILE_HEIGHT) + (40/2 * Constant.TILE_HEIGHT));
-//    }
-
     public void setPosition(int x, int y) {
         Log.debug("set position to: " + x + "x" + y);
 
+        //worldCameraManager.setPosition(x, y);
+
         _posX = x;
         _posY = y;
-
-        _worldX = (int) Math.max(0, (-_posX / Constant.TILE_SIZE) * getScale());
-        _worldY = (int) Math.max(0, (-_posY / Constant.TILE_SIZE) * getScale());
-    }
-
-    public void setPositionX(int x) {
-        _posX = x;
-        _worldX = (int) Math.max(0, (-_posX / Constant.TILE_SIZE) * getScale());
-    }
-
-    public void setPositionY(int y) {
-        _posY = y;
-        _worldY = (int) Math.max(0, (-_posY / Constant.TILE_SIZE) * getScale());
-    }
-
-    public void refresh() {
-        _worldX = (int) Math.max(0, (-_posX / Constant.TILE_SIZE) * getScale());
-        _worldY = (int) Math.max(0, (-_posY / Constant.TILE_SIZE) * getScale());
     }
 
     public int getPosX() {
@@ -136,21 +108,9 @@ public class Viewport {
         return parcelY * Constant.TILE_SIZE + getPosY();
     }
 
-//    public void setZoom(int zoom) {
-//        setPosition(
-//                (int)(_posX + ((ZOOM_LEVELS[_zoom] * 1500) - (ZOOM_LEVELS[zoom] * 1500))),
-//                (int)(_posY + ((ZOOM_LEVELS[_zoom] * 1200) - (ZOOM_LEVELS[zoom] * 1200))));
-//        _zoom = zoom;
-//    }
-
     public float getScale() {
         return ZOOM_LEVELS[_zoom];
     }
-
-//    public void startMove(int x, int y) {
-//        _lastPosX = (int) ((x * (1 + (1 - ZOOM_LEVELS[_zoom]))) * 4);
-//        _lastPosY = (int) ((y * (1 + (1 - ZOOM_LEVELS[_zoom]))) * 4);
-//    }
 
     public void move(int x, int y) {
         setPosition(_posX + (int) ((x * (1 + (1 - 0.5))) * 1), _posY + (int) ((y * (1 + (1 - 0.5))) * 1));
@@ -168,11 +128,6 @@ public class Viewport {
             }
         }
     }
-
-//    public void setPosition(int x, int y, int z) {
-//        setPosition(x, y);
-//        _floor = z;
-//    }
 
     // TODO
     public boolean hasParcel(Parcel parcel) {

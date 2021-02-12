@@ -1,13 +1,17 @@
 package org.smallbox.faraway.util.log;
 
-import org.smallbox.faraway.core.dependencyInjector.DependencyManager;
+import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.apache.commons.lang3.tuple.Pair;
 import org.smallbox.faraway.core.config.ApplicationConfig;
+import org.smallbox.faraway.core.dependencyInjector.DependencyManager;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.Objects;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
 
 public class Log {
@@ -17,6 +21,7 @@ public class Log {
     public static Queue<String> _history = new ConcurrentLinkedQueue<>();
     public static String _lastErrorMessage;
     public static long _lastErrorTime;
+    public static List<Pair<String, Long>> errorMessages = new CopyOnWriteArrayList<>();
 
     private static final String[] debugPackages = {
             "org.smallbox.faraway.core.engine",
@@ -69,7 +74,7 @@ public class Log {
     }
 
     public static void error(Throwable throwable) {
-        error(throwable, null);
+        error(throwable, throwable.getMessage());
     }
 
     public static void error(Class<?> cls, String message) {
@@ -85,6 +90,10 @@ public class Log {
     }
 
     public static void error(Throwable throwable, String message) {
+        _lastErrorMessage = message;
+        _lastErrorTime = System.currentTimeMillis();
+
+        errorMessages.add(new ImmutablePair<>(message, System.currentTimeMillis()));
 
         if (message != null) {
             print(LogLevel.ERROR, message);
@@ -103,7 +112,8 @@ public class Log {
             }
 
             if (throwable.getCause() != null) {
-                error(throwable.getCause(), "Caused by");
+                print(LogLevel.ERROR, "Caused by");
+                error(throwable.getCause());
             }
 
         }

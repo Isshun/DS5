@@ -70,7 +70,7 @@ public class StructureModule extends SuperGameModule<StructureItem, StructureMod
     }
 
     @Override
-    protected void onModuleUpdate(Game game) {
+    public void onGameUpdate() {
 //        createBuildJobs(jobModule, consumableModule, buildJobFactory, _structures);
 //        createRepairJobs(jobModule, _structures);
     }

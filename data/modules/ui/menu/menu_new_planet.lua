@@ -7,7 +7,7 @@ local right_pane_width = max_width * 0.75;
 ui:extend({
     type = "view",
     id = "base.ui.menu.new_planet",
-    controller = "org.smallbox.faraway.client.menu.controller.MenuPlanetController",
+    controller = "org.smallbox.faraway.client.controller.menu.MenuPlanetController",
     size = {application.screen_width, application.screen_height},
     in_game = false,
     visible = false,

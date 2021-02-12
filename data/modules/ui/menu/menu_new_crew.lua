@@ -7,7 +7,7 @@ local right_pane_width = max_width * 0.75;
 ui:extend({
     type = "view",
     id = "base.ui.menu.new_crew",
-    controller = "org.smallbox.faraway.client.menu.controller.MenuCrewController",
+    controller = "org.smallbox.faraway.client.controller.menu.MenuCrewController",
     size = {application.screen_width, application.screen_height},
     in_game = false,
     visible = false,

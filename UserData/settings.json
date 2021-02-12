@@ -145,6 +145,10 @@
       "key": "F12"
     },
     {
+      "name": "debug/refresh",
+      "key": "F11"
+    },
+    {
       "name": "action/dig",
       "key": "G"
     },
@@ -187,6 +191,18 @@
     {
       "name": "info/rooms",
       "key": "F6"
+    },
+    {
+      "name": "info/jobs",
+      "key": "F7"
+    },
+    {
+      "name": "info/electricity",
+      "key": "F8"
+    },
+    {
+      "name": "info/network",
+      "key": "F9"
     },
     {
       "name": "map/floor_up",

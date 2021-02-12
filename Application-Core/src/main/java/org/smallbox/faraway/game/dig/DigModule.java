@@ -7,7 +7,6 @@ import org.smallbox.faraway.client.shortcut.GameShortcut;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnInit;
-import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.game.area.AreaModule;
 import org.smallbox.faraway.game.area.AreaModuleBase;
 import org.smallbox.faraway.game.dig.action.DigAction;
@@ -37,7 +36,7 @@ public class DigModule extends AreaModuleBase<DigAction> {
     }
 
     @Override
-    protected void onModuleUpdate(Game game) {
+    public void onGameUpdate() {
         List<Parcel> parcelInDigArea = areaModule.getParcelsByType(DigAction.class);
         List<Parcel> parcelInDigJob = jobModule.getAll().stream()
                 .filter(job -> job instanceof DigJob)

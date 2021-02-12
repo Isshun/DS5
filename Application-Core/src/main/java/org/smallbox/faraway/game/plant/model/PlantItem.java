@@ -28,7 +28,7 @@ public class PlantItem extends MapObjectModel {
     }
 
     public void                 setGrowingInfo(GrowingInfo growState) { _growingInfo = growState; }
-    public void                 setMaturity(double maturity) { _maturity = maturity; }
+    public void                 setMaturity(double maturity) { _maturity = Utils.bound(0, 1, maturity); }
     public void                 setGarden(GardenArea garden) { _garden = garden; }
     public void                 setSeed(boolean hasSeed) { _hasSeed = hasSeed; }
     public void                 setNourish(double nourish) { _nourish = nourish; }

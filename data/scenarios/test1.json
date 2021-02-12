@@ -1,8 +1,8 @@
 {
   "planet": "base.planet.corrin",
   "region": "continental",
-  "width": 50,
-  "height": 30,
+  "width": 250,
+  "height": 250,
   "level": 10,
   "centerOnMap": [36, 8],
   "generateMountains": true,

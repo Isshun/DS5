@@ -329,7 +329,7 @@ public class ConsumableModule extends SuperGameModule<Consumable, ConsumableModu
     }
 
     @Override
-    protected void onModuleUpdate(Game game) {
+    public void onGameUpdate() {
         getAll().forEach(Consumable::fixPosition);
 
         // Retire les consomables ayant comme quantité 0

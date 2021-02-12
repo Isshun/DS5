@@ -1,4 +1,4 @@
-package org.smallbox.faraway.client.menu.controller;
+package org.smallbox.faraway.client.controller.menu;
 
 import org.smallbox.faraway.client.controller.LuaController;
 import org.smallbox.faraway.client.controller.annotation.BindLuaAction;
@@ -20,6 +20,7 @@ public class MenuMainController extends LuaController {
     @Inject private ApplicationConfig applicationConfig;
     @Inject private MenuSettingsController menuSettingsController;
     @Inject private MenuPlanetController menuPlanetController;
+    @Inject private MenuLoadController menuLoadController;
 
     @AfterApplicationLayerInit
     private void afterApplicationLayerInit() {
@@ -54,7 +55,8 @@ public class MenuMainController extends LuaController {
 
     @BindLuaAction
     private void onActionLoad(View view) {
-        System.out.println("gg");
+        setVisible(false);
+        menuLoadController.setVisible(true);
     }
 
     @BindLuaAction

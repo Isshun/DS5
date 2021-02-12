@@ -42,10 +42,7 @@ public class TemperatureModule extends SuperGameModule {
 
     @Override
     public void onGameLongUpdate(Game game) {
-        worldModule.getAll().forEach(parcel -> temperatureByParcel.put(parcel, worldTemperatureModule.getTemperature()));
-//        worldModule.getAll().forEach(parcel -> temperatureByParcel.putIfAbsent(parcel, (double) RandomUtils.nextInt(0, 200) - 80));
-//        worldModule.getAll().forEach(parcel -> temperatureByParcel.put(parcel, weatherModule.getTemperature()));
-//        roomModule.getRoomMap().values().forEach(room -> room.getParcels().forEach(parcel -> temperatureByParcel.put(parcel, weatherModule.getTemperature() + 20)));
+//        worldModule.getAll().forEach(parcel -> temperatureByParcel.computeIfAbsent(parcel, p -> worldTemperatureModule.getTemperature()));
     }
 
     public double getTemperature(Parcel parcel) {
@@ -53,7 +50,7 @@ public class TemperatureModule extends SuperGameModule {
     }
 
     @Override
-    public void onModuleUpdate(Game game) {
+    public void onGameUpdate() {
 //        if (roomModule != null) {
 //            roomModule.getAll().forEach(room -> {
 //                if (room.isExterior()) {

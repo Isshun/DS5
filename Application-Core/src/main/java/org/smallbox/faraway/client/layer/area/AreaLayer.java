@@ -13,7 +13,6 @@ import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.game.area.AreaModel;
 import org.smallbox.faraway.game.area.AreaModule;
-import org.smallbox.faraway.game.area.AreaTypeInfo;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -29,13 +28,6 @@ public class AreaLayer extends BaseMapLayer {
     private final Map<Class, TextureRegion> _textureByClass = new ConcurrentHashMap<>();
     private TextureRegion[] _regions;
     private TextureRegion[] _regionsSelected;
-    private int _mouseX;
-    private int _mouseY;
-
-    public enum Mode {NONE, ADD, SUB}
-
-    private Mode _mode;
-    private Class<? extends AreaModel> _cls;
 
     private final Color[] COLORS = new Color[] {
             new Color(0.5f, 0.5f, 1f, 0.4f),
@@ -63,22 +55,10 @@ public class AreaLayer extends BaseMapLayer {
 
     @Override
     public void    onDraw(BaseRenderer renderer, Viewport viewport, double animProgress, int frame) {
-        int fromX = -viewport.getPosX() / TILE_SIZE;
-        int fromY = -viewport.getPosY() / TILE_SIZE;
-        int toX = fromX + viewport.getWidth() / TILE_SIZE;
-        int toY = fromY + viewport.getHeight() / TILE_SIZE;
-
         areaModule.getAreas().forEach(area ->
                 area.getParcels().forEach(parcel ->
                         renderer.drawTextureRegionOnMap(parcel, getTexture(area.getClass()))));
 
-        if (_mode == Mode.ADD) {
-            renderer.drawText(_mouseX - 20, _mouseY - 20, "Add " + _cls.getAnnotation(AreaTypeInfo.class).label() + " area", Color.CHARTREUSE, 16);
-        }
-
-        if (_mode == Mode.SUB) {
-            renderer.drawText(_mouseX - 20, _mouseY - 20, "Sub " + _cls.getAnnotation(AreaTypeInfo.class).label() + " area", Color.CHARTREUSE, 16);
-        }
     }
 
     private TextureRegion getTexture(Class<? extends AreaModel> cls) {
@@ -93,8 +73,4 @@ public class AreaLayer extends BaseMapLayer {
         return true;
     }
 
-    public void setMode(Mode mode, Class cls) {
-        _mode = mode;
-        _cls = cls;
-    }
 }

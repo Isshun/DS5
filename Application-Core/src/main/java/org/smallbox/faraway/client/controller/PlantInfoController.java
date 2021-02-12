@@ -6,7 +6,6 @@ import org.smallbox.faraway.client.ui.widgets.View;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.dependencyInjector.gameAction.OnGameSelectAction;
-import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.game.plant.PlantModule;
 import org.smallbox.faraway.game.plant.model.PlantItem;
 import org.smallbox.faraway.game.world.Parcel;
@@ -47,7 +46,7 @@ public class PlantInfoController extends AbsInfoLuaController<PlantItem> {
     }
 
     @Override
-    public void onGameUpdate(Game game) {
+    public void onGameUpdate() {
         displayPlant();
     }
 

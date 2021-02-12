@@ -3,7 +3,6 @@ package org.smallbox.faraway.game.characterDisease;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.module.SuperGameModule2;
-import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.game.character.CharacterModule;
 import org.smallbox.faraway.game.character.CharacterModuleObserver;
 import org.smallbox.faraway.game.character.model.base.CharacterDiseasesExtra;
@@ -16,7 +15,7 @@ public class CharacterDiseaseModule extends SuperGameModule2<CharacterModuleObse
     @Inject private CharacterModule characterModule;
 
     @Override
-    public void onModuleUpdate(Game game) {
+    public void onGameUpdate() {
     }
 
     public void addDisease(DiseaseInfo info, CharacterModel character) {

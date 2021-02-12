@@ -21,9 +21,7 @@ public class BringItemJobFactory {
     @Inject private JobModule jobModule;
 
     public BringItemJob createJob(BuildJob parent, BuildableMapObject targetItem, ItemInfo itemInfo, int quantity) {
-        Consumable sourceConsumable = consumableModule.find(itemInfo);
-
-        BringItemJob job = new BringItemJob(sourceConsumable.getParcel());
+        BringItemJob job = new BringItemJob(parent.getTargetParcel());
 
         job.setMainLabel("Bring " + itemInfo.label + " to " + targetItem.getInfo().label);
         job.setIcon("data/graphics/jobs/ic_haul.png");
@@ -32,9 +30,12 @@ public class BringItemJobFactory {
 
         // Init
         job.addPrerequisiteTask(() -> {
-            job.sourceConsumable = sourceConsumable;
-            job.setAcceptedParcel(WorldHelper.getParcelAround(job.sourceConsumable.getParcel(), SurroundedPattern.SQUARE));
-            return true;
+            job.sourceConsumable = consumableModule.find(itemInfo);
+            if (job.sourceConsumable != null) {
+                job.setAcceptedParcel(WorldHelper.getParcelAround(job.sourceConsumable.getParcel(), SurroundedPattern.SQUARE));
+                return true;
+            }
+            return false;
         });
 
         job.addTask(new TechnicalTask(j -> {

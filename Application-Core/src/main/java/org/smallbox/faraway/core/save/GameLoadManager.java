@@ -6,6 +6,7 @@ import org.apache.commons.compress.archivers.ArchiveInputStream;
 import org.apache.commons.compress.archivers.ArchiveStreamFactory;
 import org.apache.commons.compress.utils.IOUtils;
 import org.smallbox.faraway.core.Application;
+import org.smallbox.faraway.core.ApplicationException;
 import org.smallbox.faraway.core.dependencyInjector.DependencyManager;
 import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
@@ -24,7 +25,7 @@ public class GameLoadManager {
     @Inject private DataManager dataManager;
     @Inject private Game game;
 
-    public void load(File gameDirectory, String prefixName, GameSerializerInterface listener) {
+    public void load(File gameDirectory, String prefixName, GameSerializerInterface listener) throws ApplicationException {
         Log.info("============ LOAD GAME ============");
 
         Application.notify(observer -> observer.onCustomEvent("load_game.begin", null));
@@ -42,7 +43,7 @@ public class GameLoadManager {
                 Log.info("Load game completed " + (System.currentTimeMillis() - time));
             });
         } catch (IOException | ArchiveException e) {
-            Log.error(e);
+            throw new ApplicationException(e, "Cannot load save " + gameDirectory + " / " + prefixName);
         }
     }
 

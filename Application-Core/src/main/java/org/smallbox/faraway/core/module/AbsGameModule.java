@@ -68,14 +68,14 @@ public abstract class AbsGameModule extends ModuleBase implements GameObserver {
         _isStarted = true;
     }
 
-    protected void onModuleUpdate(Game game) {}
+//    protected void onModuleUpdate(Game game) {}
 
     public void updateGame(Game game) {
         long time = System.nanoTime() / 1000;
         _tick = game.getTick();
         _tickInterval = _tick - _lastTick;
         _hourInterval = _tickInterval / game.getTickPerHour();
-        onModuleUpdate(game);
+//        onModuleUpdate(game);
         _lastTick = game.getTick();
         _lastTime = System.nanoTime() / 1000 - time;
         _cumulateTime += _lastTime;

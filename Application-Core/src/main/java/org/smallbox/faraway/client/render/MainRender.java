@@ -7,10 +7,9 @@ import org.smallbox.faraway.core.game.Game;
 
 @ApplicationObject
 public class MainRender {
+    @Inject private MinimalRender minimalRender;
     @Inject private GameRender gameRender;
     @Inject private MenuRender menuRender;
-    @Inject private MinimalRender minimalRender;
-    @Inject private ErrorRender errorRender;
     @Inject private Game game;
 
     public void render() {
@@ -21,10 +20,6 @@ public class MainRender {
         } else if (minimalRender != null) {
             minimalRender.render();
         }
-
-//        if (errorRender != null) {
-//            errorRender.render(batch);
-//        }
     }
 
 }

@@ -49,7 +49,7 @@ public class CharacterNeedModule extends SuperGameModule {
     private final Map<NeedEntry, JobModel> _jobs = new ConcurrentHashMap<>();
 
     @Override
-    public void onModuleUpdate(Game game) {
+    public void onGameUpdate() {
         characterModule.getAll().forEach(character -> {
             if (character.hasExtra(CharacterNeedsExtra.class)) {
                 CharacterNeedsExtra needs = character.getExtra(CharacterNeedsExtra.class);

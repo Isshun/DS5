@@ -1,6 +1,5 @@
 package org.smallbox.faraway.client.layer.area;
 
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import org.smallbox.faraway.client.LayerLevel;
 import org.smallbox.faraway.client.asset.SpriteManager;
@@ -11,13 +10,8 @@ import org.smallbox.faraway.client.renderer.Viewport;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnGameLayerInit;
-import org.smallbox.faraway.game.area.AreaModel;
-import org.smallbox.faraway.game.area.AreaTypeInfo;
 import org.smallbox.faraway.game.plant.GardenModule;
 import org.smallbox.faraway.util.Constant;
-
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 @GameObject
 @GameLayer(level = LayerLevel.AREA_LAYER_LEVEL, visible = true)
@@ -25,15 +19,7 @@ public class GardenLayer extends BaseMapLayer {
     @Inject private SpriteManager spriteManager;
     @Inject private GardenModule gardenModule;
 
-    private final Map<Class, TextureRegion> _textureByClass = new ConcurrentHashMap<>();
     private TextureRegion[] _regions;
-    private int _mouseX;
-    private int _mouseY;
-
-    public enum Mode {NONE, ADD, SUB}
-
-    private Mode _mode;
-    private Class<? extends AreaModel> _cls;
 
     @OnGameLayerInit
     public void onGameLayerInit() {
@@ -43,36 +29,14 @@ public class GardenLayer extends BaseMapLayer {
 
     @Override
     public void    onDraw(BaseRenderer renderer, Viewport viewport, double animProgress, int frame) {
-        int fromX = -viewport.getPosX() / Constant.TILE_SIZE;
-        int fromY = -viewport.getPosY() / Constant.TILE_SIZE;
-        int toX = fromX + viewport.getWidth() / Constant.TILE_SIZE;
-        int toY = fromY + viewport.getHeight() / Constant.TILE_SIZE;
-
-        gardenModule.getAreas().stream().flatMap(area -> area.getParcels().stream()).forEach(parcel -> renderer.drawTextureRegionOnMap(parcel, _regions[0]));
-
-        if (_mode == Mode.ADD) {
-            renderer.drawText(_mouseX - 20, _mouseY - 20, "Add " + _cls.getAnnotation(AreaTypeInfo.class).label() + " area", Color.CHARTREUSE, 16);
-        }
-
-        if (_mode == Mode.SUB) {
-            renderer.drawText(_mouseX - 20, _mouseY - 20, "Sub " + _cls.getAnnotation(AreaTypeInfo.class).label() + " area", Color.CHARTREUSE, 16);
-        }
-    }
-
-    private TextureRegion getTexture(Class<? extends AreaModel> cls) {
-        if (!_textureByClass.containsKey(cls)) {
-            _textureByClass.put(cls, _regions[Math.min(_textureByClass.size(), 4)]);
-        }
-
-        return _textureByClass.get(cls);
+        gardenModule.getAreas().stream()
+                .flatMap(area -> area.getParcels().stream())
+                .filter(parcel -> parcel.z == viewport.getFloor())
+                .forEach(parcel -> renderer.drawTextureRegionOnMap(parcel, _regions[0]));
     }
 
     public boolean isMandatory() {
         return true;
     }
 
-    public void setMode(Mode mode, Class cls) {
-        _mode = mode;
-        _cls = cls;
-    }
 }

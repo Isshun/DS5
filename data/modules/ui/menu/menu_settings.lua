@@ -4,7 +4,7 @@ local window_height = 900
 ui:extend({
     type = "view",
     id = "base.ui.menu.settings",
-    controller = "org.smallbox.faraway.client.menu.controller.MenuSettingsController",
+    controller = "org.smallbox.faraway.client.controller.menu.MenuSettingsController",
     in_game = false,
     visible = false,
     size = {window_width, window_height},

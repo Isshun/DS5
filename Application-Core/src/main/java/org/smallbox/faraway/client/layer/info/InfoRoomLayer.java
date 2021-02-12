@@ -20,7 +20,7 @@ public class InfoRoomLayer extends BaseMapLayer {
     @Inject private WorldModule worldModule;
     @Inject private RoomModule roomModule;
 
-    private Color color = new Color(0xff000088);
+    private final Color color = new Color(0xff000088);
 
     public void    onDraw(BaseRenderer renderer, Viewport viewport, double animProgress, int frame) {
         roomModule.getAll().forEach(room -> {

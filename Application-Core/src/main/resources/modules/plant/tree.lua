@@ -57,7 +57,7 @@ data:extend({
         actions = {
             type = "gather",
             cost = 20,
-            products = { { item = "base.consumable.vegetable.carrot", quantity = { 1, 1 }, rate = 1 } }
+            products = { { item = "base.consumable.wood_log", quantity = {10, 20}, rate = 1 } }
         },
         graphics = {
             { path = "[data]/graphics/trees/pine1/pine_300.png", width = 300, height = 408, animation = { id = "wind", value = 1, speed = 0.002 }  },

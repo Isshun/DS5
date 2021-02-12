@@ -1,12 +1,10 @@
 package org.smallbox.faraway.game.character;
 
 import org.apache.commons.collections4.CollectionUtils;
-import org.smallbox.faraway.GameTaskManager;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnInit;
 import org.smallbox.faraway.core.game.DataManager;
-import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.module.SuperGameModule;
 import org.smallbox.faraway.game.character.model.CharacterInfoAnnotation;
 import org.smallbox.faraway.game.character.model.HumanModel;
@@ -31,7 +29,6 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 @GameObject
 public class CharacterModule extends SuperGameModule<CharacterModel, CharacterModuleObserver> {
-    @Inject private GameTaskManager gameTaskManager;
     @Inject private JobModule jobModule;
     @Inject private ConsumableModule consumableModule;
     @Inject private ItemModule itemModule;
@@ -46,7 +43,7 @@ public class CharacterModule extends SuperGameModule<CharacterModel, CharacterMo
     }
 
     @Override
-    public void onModuleUpdate(Game game) {
+    public void onGameUpdate() {
 
 //        modelList.stream()
 //                .filter(CharacterModel::isFree)

@@ -1,5 +1,6 @@
 package org.smallbox.faraway.client.layer;
 
+import box2dLight.DirectionalLight;
 import box2dLight.Light;
 import box2dLight.RayHandler;
 import com.badlogic.gdx.math.Vector2;
@@ -13,6 +14,7 @@ import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnInit;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameObserver;
+import org.smallbox.faraway.core.game.GameTime;
 import org.smallbox.faraway.game.item.ItemModule;
 import org.smallbox.faraway.game.item.UsableItem;
 import org.smallbox.faraway.game.weather.WeatherModule;
@@ -23,17 +25,20 @@ import java.util.ArrayList;
 @GameObject
 @GameLayer(level = LayerLevel.LIGHT_LAYER_LEVEL, visible = true)
 public class LightLayer extends BaseLayer implements GameObserver {
+    private final static float SECONDS_IN_DAY = 24 * 60 * 60;
+
     @Inject protected WorldCameraManager worldCameraManager;
     @Inject protected WeatherModule weatherModule;
     @Inject protected ItemModule itemModule;
+    @Inject protected GameTime gameTime;
 
     private RayHandler rayHandler;
     private World world;
     private Body groundBody;
     ArrayList<Body> balls = new ArrayList<>(42);
-    float sunDirection = -90f;
     ArrayList<Light> lights = new ArrayList<>(42);
     static final int RAYS_PER_BALL = 128;
+    private DirectionalLight sunLight;
 
     @OnInit
     private void init() {
@@ -51,10 +56,12 @@ public class LightLayer extends BaseLayer implements GameObserver {
     }
 
     @Override
-    protected void onDraw(BaseRenderer renderer, Viewport viewport, double animProgress, int frame) {
-//        sunDirection += Gdx.graphics.getDeltaTime() * 4f;
-//        lights.get(0).setDirection(sunDirection);
+    public void onGameUpdate() {
+//        sunLight.setDirection(gameTime.now().toLocalDate().atStartOfDay().until(gameTime.now(), ChronoUnit.SECONDS) / SECONDS_IN_DAY * 360);
+    }
 
+    @Override
+    protected void onDraw(BaseRenderer renderer, Viewport viewport, double animProgress, int frame) {
         rayHandler.setAmbientLight(weatherModule.getAmbientLight());
 //        rayHandler.setAmbientLight(0.5f, 0.5f, 0.5f, 1);
         rayHandler.setCombinedMatrix(worldCameraManager.getCamera());
@@ -69,15 +76,15 @@ public class LightLayer extends BaseLayer implements GameObserver {
     void initDirectionalLight() {
         clearLights();
 
-//        {
-////            groundBody.setActive(false);
-////            sunDirection = MathUtils.random(0f, 360f);
-//
-//            DirectionalLight light = new DirectionalLight(rayHandler, 4 * RAYS_PER_BALL, null, sunDirection);
-//            light.setColor(0.2f, 0.2f, 0.5f, 0.5f);
-//            lights.add(light);
-//        }
-//
+        {
+//            groundBody.setActive(false);
+//            sunDirection = MathUtils.random(0f, 360f);
+
+//            sunLight = new DirectionalLight(rayHandler, 128, null, 0);
+//            sunLight.setColor(0.2f, 0.2f, 0.5f, 0.5f);
+//            lights.add(sunLight);
+        }
+
 //        {
 //            PointLight light = new PointLight(
 //                    rayHandler, RAYS_PER_BALL, null, 300, 0f, 0f);

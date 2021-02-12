@@ -29,6 +29,10 @@ public class GameTime {
         localDateTime = LocalDateTime.parse(applicationConfig.game.startGameTime, FORMATTER);
     }
 
+    public void setLocalDateTime(LocalDateTime localDateTime) {
+        this.localDateTime = localDateTime;
+    }
+
     public int getMinute() { return _minute; }
     public int getHour() { return _hour; }
     public int getDay() { return _day; }

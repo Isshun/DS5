@@ -12,7 +12,7 @@ import org.smallbox.faraway.util.log.Log;
 @ApplicationObject
 public class WorldCameraManager {
     protected final static float MAX_ZOOM_IN = 1f;
-    protected final static float MAX_ZOOM_OUT = 3f;
+    protected final static float MAX_ZOOM_OUT = 6f;
     protected final static float ZOOM_INTERVAL = 0.125f;
 
     @Inject Viewport viewport;
@@ -42,23 +42,27 @@ public class WorldCameraManager {
         _camera.zoom = zoom;
     }
 
+    public void setPosition(int x, int y) {
+        _camera.position.x = x;
+        _camera.position.y = y;
+    }
+
     public void update() {
         _camera.update();
     }
 
     public void zoomOut() {
         _camera.zoom = Math.min(_camera.zoom + ZOOM_INTERVAL, MAX_ZOOM_OUT);
-        viewport.refresh();
         Log.info("Set zoom: " + _camera.zoom);
     }
 
     public void zoomIn() {
         _camera.zoom = Math.max(_camera.zoom - ZOOM_INTERVAL, MAX_ZOOM_IN);
-        viewport.refresh();
         Log.info("Set zoom: " + _camera.zoom);
     }
 
     public OrthographicCamera getCamera() {
         return _camera;
     }
+
 }

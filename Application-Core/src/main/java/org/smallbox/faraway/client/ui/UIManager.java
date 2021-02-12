@@ -134,11 +134,13 @@ public class UIManager {
 
     @GameShortcut("debug/refresh")
     public void refreshUI() {
+        List<String> visibleMenuViews = _menuViews.values().stream().filter(RootView::isVisible).map(RootView::getName).collect(Collectors.toList());
         clearViews();
         reloadStyles();
         reloadViews();
         refreshApplication();
         refreshGame();
+        _menuViews.values().stream().filter(rootView -> visibleMenuViews.contains(rootView.getName())).forEach(rootView -> rootView.setVisible(true));
     }
 
     private void callMethodAnnotatedBy(LuaController controller, Class<? extends Annotation> cls) {

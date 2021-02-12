@@ -39,25 +39,18 @@ public class GameFactory {
     public void create(String scenarioPath) {
         GameScenario scenario = loadScenario(scenarioPath);
 
-        gameManager.createGame(gameInfoFactory.create(scenario), new GameManager.GameListener() {
-            @Override
-            public void onGameCreate(Game game) {
-                Optional.ofNullable(scenario.characters).ifPresent(characters -> characters.forEach(characterEntity -> {
-                    CharacterModel character = characterModule.addRandom();
-                    character.setParcel(worldModule.getParcel(characterEntity.x, characterEntity.y, characterEntity.z));
-                    viewport.centerOnMap(characterEntity.x, characterEntity.y);
-                }));
-                Optional.ofNullable(scenario.consumables).ifPresent(consumables -> consumables.forEach(c -> consumableModule.addConsumable(c.name, c.quantity, c.x, c.y, c.z, c.stack)));
-                Optional.ofNullable(scenario.items).ifPresent(items -> items.forEach(i -> itemModule.addItem(i.name, true, i.x, i.y, i.z)));
-                Optional.ofNullable(scenario.plants).ifPresent(plants -> plants.forEach(i -> plantModule.addPlant(i.name, i.x, i.y, i.z)));
-                Optional.ofNullable(scenario.resources).ifPresent(resources -> resources.forEach(i -> worldModule.getParcel(i.x, i.y, i.z).setRockInfo(dataManager.getItemInfo("base.granite"))));
-                if (scenario.centerOnMap != null && scenario.centerOnMap.length == 2) {
-                    viewport.centerOnMap(scenario.centerOnMap[0], scenario.centerOnMap[1]);
-                }
-            }
-
-            @Override
-            public void onGameUpdate(Game game) {
+        gameManager.createGame(gameInfoFactory.create(scenario), () -> {
+            Optional.ofNullable(scenario.characters).ifPresent(characters -> characters.forEach(characterEntity -> {
+                CharacterModel character = characterModule.addRandom();
+                character.setParcel(worldModule.getParcel(characterEntity.x, characterEntity.y, characterEntity.z));
+                viewport.centerOnMap(characterEntity.x, characterEntity.y);
+            }));
+            Optional.ofNullable(scenario.consumables).ifPresent(consumables -> consumables.forEach(c -> consumableModule.addConsumable(c.name, c.quantity, c.x, c.y, c.z, c.stack)));
+            Optional.ofNullable(scenario.items).ifPresent(items -> items.forEach(i -> itemModule.addItem(i.name, true, i.x, i.y, i.z)));
+            Optional.ofNullable(scenario.plants).ifPresent(plants -> plants.forEach(i -> plantModule.addPlant(i.name, i.x, i.y, i.z)));
+            Optional.ofNullable(scenario.resources).ifPresent(resources -> resources.forEach(i -> worldModule.getParcel(i.x, i.y, i.z).setRockInfo(dataManager.getItemInfo("base.granite"))));
+            if (scenario.centerOnMap != null && scenario.centerOnMap.length == 2) {
+                viewport.centerOnMap(scenario.centerOnMap[0], scenario.centerOnMap[1]);
             }
         });
     }

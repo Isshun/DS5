@@ -4,7 +4,6 @@ import org.smallbox.faraway.client.controller.area.AreaInfoStorageController;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnInit;
-import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.path.PathManager;
 import org.smallbox.faraway.game.consumable.Consumable;
@@ -36,7 +35,7 @@ public class StorageModule extends AreaModuleBase<StorageArea> {
     }
 
     @Override
-    public void onModuleUpdate(Game game) {
+    public void onGameUpdate() {
 
         if (_checkQueue.isEmpty()) {
             _checkQueue.addAll(consumableModule.getAll());

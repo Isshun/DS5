@@ -3,7 +3,6 @@ package org.smallbox.faraway.game.characterRelation;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.module.SuperGameModule;
-import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.game.character.CharacterModule;
 import org.smallbox.faraway.game.character.CharacterMoveModule;
 import org.smallbox.faraway.game.character.model.base.CharacterModel;
@@ -14,7 +13,7 @@ public class CharacterRelationModule extends SuperGameModule {
     @Inject private CharacterMoveModule characterMoveModule;
 
     @Override
-    public void onModuleUpdate(Game game) {
+    public void onGameUpdate() {
         characterModule.getAll().forEach(this::updateCharacter);
     }
 

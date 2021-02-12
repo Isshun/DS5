@@ -66,7 +66,7 @@ public class ItemModule extends SuperGameModule<UsableItem, ItemModuleObserver> 
     }
 
     @Override
-    protected void onModuleUpdate(Game game) {
+    public void onGameUpdate() {
 //        createBuildJobs(jobModule, consumableModule, buildJobFactory, _items);
 //        createRepairJobs(jobModule, _items);
     }

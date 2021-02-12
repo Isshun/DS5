@@ -14,7 +14,6 @@ import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnApplicationLayerInit;
 import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnGameLayerInit;
-import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameObserver;
 import org.smallbox.faraway.util.log.Log;
 
@@ -78,7 +77,7 @@ public class LuaControllerManager implements GameObserver {
     }
 
     @Override
-    public void onGameUpdate(Game game) {
+    public void onGameUpdate() {
         if (System.currentTimeMillis() - _lastUpdate > 100) {
             _lastUpdate = System.currentTimeMillis();
             _controllers.forEach((clsName, controller) -> controller.controllerUpdate());

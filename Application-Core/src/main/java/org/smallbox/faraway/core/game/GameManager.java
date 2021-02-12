@@ -22,6 +22,7 @@ import java.io.File;
 
 @ApplicationObject
 public class GameManager implements GameObserver {
+    @Inject private ThreadManager threadManager;
     @Inject private WorldFactory worldFactory;
     @Inject private GameSaveManager gameSaveManager;
     @Inject private GameLoadManager gameLoadManager;
@@ -35,11 +36,10 @@ public class GameManager implements GameObserver {
     private Game _game;
 
     public interface GameListener {
-        void onGameCreate(Game game);
-        void onGameUpdate(Game game);
+        void onGameCreate();
     }
 
-    public void createGame(GameInfo gameInfo, GameListener listener) {
+    public void createGame(GameInfo gameInfo, Runnable listener) {
         Gdx.app.postRunnable(() -> {
             long time = System.currentTimeMillis();
 
@@ -59,7 +59,7 @@ public class GameManager implements GameObserver {
         });
     }
 
-    public void loadGame(GameInfo gameInfo, GameSaveInfo gameSaveInfo, GameListener listener) {
+    public void loadGame(GameInfo gameInfo, GameSaveInfo gameSaveInfo, Runnable listener) {
         Gdx.app.postRunnable(() -> {
             try {
                 long time = System.currentTimeMillis();
@@ -101,11 +101,11 @@ public class GameManager implements GameObserver {
         dependencyManager.callMethodAnnotatedBy(AfterGameLayerInit.class);
     }
 
-    private void phase2(GameListener listener) {
+    private void phase2(Runnable listener) {
         _game.createModules();
 
         if (listener != null) {
-            listener.onGameCreate(_game);
+            listener.run();
         }
 
         pathManager.initParcels();
@@ -116,7 +116,7 @@ public class GameManager implements GameObserver {
         _game.getModules().forEach(module -> module.startGame(_game));
 
         // Launch background thread
-        _game.launchBackgroundThread(listener);
+        threadManager.launchBackgroundThread();
 
         dependencyManager.callMethodAnnotatedBy(OnGameStart.class);
     }
@@ -125,6 +125,8 @@ public class GameManager implements GameObserver {
         if (_game != null) {
             _game.stop();
             _game = null;
+
+            threadManager.getScheduler().shutdown();
 
             dependencyManager.callMethodAnnotatedBy(OnGameStop.class);
             dependencyManager.destroyGameObjects();

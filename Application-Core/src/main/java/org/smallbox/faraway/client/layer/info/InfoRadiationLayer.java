@@ -20,7 +20,7 @@ public class InfoRadiationLayer extends BaseMapLayer {
     @Inject private WorldModule worldModule;
     @Inject private RadiationModule radiationModule;
 
-    private Color color = new Color(0x34e13d88);
+    private final Color color = new Color(0x34e13d88);
 
     public void    onDraw(BaseRenderer renderer, Viewport viewport, double animProgress, int frame) {
         worldModule.getAll().stream()

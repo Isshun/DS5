@@ -1,4 +1,4 @@
-package org.smallbox.faraway.client.menu.controller;
+package org.smallbox.faraway.client.controller.menu;
 
 import org.smallbox.faraway.client.controller.LuaController;
 import org.smallbox.faraway.client.controller.annotation.BindLuaAction;

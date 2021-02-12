@@ -33,7 +33,7 @@ public class CharacterBuffModule extends GenericGameModule<BuffModel> {
     }
 
     @Override
-    protected void onModuleUpdate(Game game) {
+    public void onGameUpdate() {
         characterModule.getAll().forEach(this::addMissingBuffs);
 
         modelList.forEach(BuffModel::update);

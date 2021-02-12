@@ -1,6 +1,5 @@
 package org.smallbox.faraway.game.plant;
 
-import org.smallbox.faraway.GameTaskManager;
 import org.smallbox.faraway.client.gameAction.GameActionManager;
 import org.smallbox.faraway.client.gameAction.GameActionMode;
 import org.smallbox.faraway.client.shortcut.GameShortcut;
@@ -8,7 +7,6 @@ import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnInit;
 import org.smallbox.faraway.core.game.DataManager;
-import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.module.GenericGameModule;
 import org.smallbox.faraway.game.area.AreaModule;
@@ -29,7 +27,6 @@ public class PlantModule extends GenericGameModule<PlantItem> {
     @Inject private ConsumableModule consumableModule;
     @Inject private JobModule jobModule;
     @Inject private AreaModule areaModule;
-    @Inject private GameTaskManager gameTaskManager;
     @Inject private GameActionManager gameActionManager;
     @Inject private HarvestAction harvestAction;
 
@@ -39,7 +36,7 @@ public class PlantModule extends GenericGameModule<PlantItem> {
     }
 
     @Override
-    public void onGameUpdate(Game game) {
+    public void onGameUpdate() {
 //        // Fait pousser les plantes
 //        modelList.stream()
 //                .filter(plant -> plant.task == null && plant.hasSeed() && computeGrowingInfo(plant))
