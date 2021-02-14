@@ -14,7 +14,6 @@ import org.smallbox.faraway.game.character.CharacterJobModule;
 import org.smallbox.faraway.game.character.model.base.CharacterModel;
 import org.smallbox.faraway.game.consumable.ConsumableModule;
 import org.smallbox.faraway.game.world.Parcel;
-import org.smallbox.faraway.util.Constant;
 import org.smallbox.faraway.util.GameException;
 import org.smallbox.faraway.util.log.Log;
 
@@ -147,10 +146,6 @@ public class JobModule extends SuperGameModule<JobModel, JobModuleObserver> {
                 remove(job);
             }
         });
-    }
-
-    public int getModulePriority() {
-        return Constant.MODULE_JOB_PRIORITY;
     }
 
     public boolean hasJob(JobModel job) {

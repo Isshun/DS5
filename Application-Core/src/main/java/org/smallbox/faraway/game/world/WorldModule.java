@@ -112,11 +112,6 @@ public class WorldModule extends GenericGameModule<Parcel> {
         return value;
     }
 
-    @Override
-    public int getModulePriority() {
-        return Constant.MODULE_WORLD_PRIORITY;
-    }
-
     public double getTemperature(Parcel parcel) {
         if (parcel.getRoom() != null) {
             return parcel.getRoom().getTemperature();

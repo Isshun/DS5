@@ -54,7 +54,7 @@ public class GameLoadManager {
 
         // Call modules serializers
         dependencyManager.getSubTypesOf(GameSerializer.class).stream()
-                .sorted(Comparator.comparingInt(GameSerializer::getModulePriority))
+                .sorted(Comparator.comparingInt(value -> value.getPriority().getPriority()))
                 .forEach(serializer -> serializer.load(sqlManager));
 
         sqlManager.closeDB();

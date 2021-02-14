@@ -6,12 +6,12 @@ import com.almworks.sqlite4java.SQLiteStatement;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.game.DataManager;
+import org.smallbox.faraway.core.game.GameSerializerPriority;
 import org.smallbox.faraway.core.save.GenericGameCollectionSerializer;
-import org.smallbox.faraway.game.world.WorldHelper;
 import org.smallbox.faraway.game.character.model.HumanModel;
 import org.smallbox.faraway.game.character.model.base.CharacterModel;
 import org.smallbox.faraway.game.character.model.base.CharacterPersonalsExtra;
-import org.smallbox.faraway.util.Constant;
+import org.smallbox.faraway.game.world.WorldHelper;
 
 import java.util.Collection;
 
@@ -21,7 +21,7 @@ public class CharacterModuleCollectionSerializer extends GenericGameCollectionSe
     @Inject private CharacterModule characterModule;
 
     @Override
-    public int getModulePriority() { return Constant.MODULE_CHARACTER_PRIORITY; }
+    public GameSerializerPriority getPriority() { return GameSerializerPriority.MODULE_CHARACTER_PRIORITY; }
 
     @Override
     public void onCreateTable(SQLiteConnection db) throws SQLiteException {

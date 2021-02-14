@@ -2,15 +2,15 @@ package org.smallbox.faraway.game.world;
 
 import com.almworks.sqlite4java.SQLiteException;
 import com.almworks.sqlite4java.SQLiteStatement;
-import org.smallbox.faraway.core.game.model.MovableModel;
-import org.smallbox.faraway.util.GameException;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.game.DataManager;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameSerializer;
+import org.smallbox.faraway.core.game.GameSerializerPriority;
+import org.smallbox.faraway.core.game.model.MovableModel;
 import org.smallbox.faraway.core.save.SQLManager;
-import org.smallbox.faraway.util.Constant;
+import org.smallbox.faraway.util.GameException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +22,7 @@ public class WorldModuleSerializer extends GameSerializer {
     @Inject private Game game;
 
     @Override
-    public int getModulePriority() { return Constant.MODULE_WORLD_PRIORITY; }
+    public GameSerializerPriority getPriority() { return GameSerializerPriority.MODULE_WORLD_PRIORITY; }
 
     @Override
     public void onSave(SQLManager sqlManager) {

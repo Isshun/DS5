@@ -7,9 +7,9 @@ import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.game.DataManager;
 import org.smallbox.faraway.core.game.Game;
-import org.smallbox.faraway.core.save.GenericGameCollectionSerializer;
+import org.smallbox.faraway.core.game.GameSerializerPriority;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
-import org.smallbox.faraway.util.Constant;
+import org.smallbox.faraway.core.save.GenericGameCollectionSerializer;
 
 import java.util.Collection;
 
@@ -20,7 +20,7 @@ public class ConsumableCollectionSerializer extends GenericGameCollectionSeriali
     @Inject private ConsumableModule consumableModule;
 
     @Override
-    public int getModulePriority() { return Constant.MODULE_ITEM_PRIORITY; }
+    public GameSerializerPriority getPriority() { return GameSerializerPriority.MODULE_ITEM_PRIORITY; }
 
     @Override
     public void onCreateTable(SQLiteConnection db) throws SQLiteException {

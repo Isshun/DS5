@@ -29,13 +29,6 @@ public class CharacterMoveModule extends SuperGameModule2<CharacterModuleObserve
     @Inject private GameManager gameManager;
     @Inject private Game game;
 
-//    private Map<CharacterModel, PathModel> paths = new ConcurrentHashMap<>();
-
-    @Override
-    public int getModulePriority() {
-        return Constant.MODULE_CHARACTER_PRIORITY;
-    }
-
     @OnGameUpdate
     public void onGameUpdate() {
 //        fixCharacterPosition();

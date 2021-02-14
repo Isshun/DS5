@@ -7,7 +7,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 
-public abstract class GenericMapGameModule<T_KEY, T_MODEL extends ObjectModel> extends AbsGameModule {
+public abstract class GenericMapGameModule<T_KEY, T_MODEL extends ObjectModel> extends ModuleBase {
     protected Map<T_KEY, T_MODEL> modelMap = new ConcurrentHashMap<>();
 
     public int getCount() {

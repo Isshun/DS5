@@ -118,11 +118,6 @@ public class CharacterModule extends SuperGameModule<CharacterModel, CharacterMo
         }
     }
 
-    @Override
-    public int getModulePriority() {
-        return Constant.MODULE_CHARACTER_PRIORITY;
-    }
-
     private void fixCharacterInventory() {
 //        modelList.stream()
 //                .filter(character -> character.hasExtra(CharacterInventoryExtra.class))

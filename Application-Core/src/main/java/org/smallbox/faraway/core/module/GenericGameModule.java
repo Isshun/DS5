@@ -8,7 +8,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
-public abstract class GenericGameModule<T_MODEL extends ObjectModel> extends AbsGameModule {
+public abstract class GenericGameModule<T_MODEL extends ObjectModel> extends ModuleBase {
     protected Collection<T_MODEL> modelList = new LinkedBlockingQueue<>();
 
     public int getCount() {

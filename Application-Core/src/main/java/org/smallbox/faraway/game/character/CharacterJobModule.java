@@ -26,11 +26,6 @@ public class CharacterJobModule extends SuperGameModule2<CharacterModuleObserver
     @Inject private GameTime gameTime;
     @Inject private Game game;
 
-    @Override
-    public int getModulePriority() {
-        return Constant.MODULE_CHARACTER_PRIORITY;
-    }
-
     @OnGameUpdate
     public void onGameUpdate() {
         double hourInterval = threadManager.getTickInterval() / game.getTickPerHour();
