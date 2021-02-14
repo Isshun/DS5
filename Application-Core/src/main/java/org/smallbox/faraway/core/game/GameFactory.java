@@ -39,7 +39,7 @@ public class GameFactory {
     public void create(String scenarioPath) {
         GameScenario scenario = loadScenario(scenarioPath);
 
-        gameManager.createGame(gameInfoFactory.create(scenario), () -> {
+        gameManager.newGame(gameInfoFactory.create(scenario), () -> {
             Optional.ofNullable(scenario.characters).ifPresent(characters -> characters.forEach(characterEntity -> {
                 CharacterModel character = characterModule.addRandom();
                 character.setParcel(worldModule.getParcel(characterEntity.x, characterEntity.y, characterEntity.z));

@@ -22,7 +22,7 @@ public class LayerDashboardLayer extends DashboardLayerBase {
                                     render.getClass().getSimpleName(),
                                     render.isVisible() ? "x" : " ",
                                     render.getCumulateTime() / 1000,
-                                    render.getCumulateTime() / 1000 / (double)game.getTick())));
+                                    render.getCumulateTime() / 1000f)));
         }
     }
 

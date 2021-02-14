@@ -4,6 +4,7 @@ import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.game.Game;
+import org.smallbox.faraway.core.game.GameStatus;
 
 @ApplicationObject
 public class MainRender {
@@ -13,7 +14,7 @@ public class MainRender {
     @Inject private Game game;
 
     public void render() {
-        if (game != null && game.getState() == Game.GameStatus.STARTED) {
+        if (game != null && game.getStatus() == GameStatus.STARTED) {
             gameRender.render();
         } else if (Application.isLoaded) {
             menuRender.render();

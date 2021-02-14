@@ -374,7 +374,7 @@ public class UIManager {
         camera.zoom = 0.5f;
 
         _rootViews.stream()
-                .filter(view -> view.isVisible() && (gameRunning || !view.inGame()) && (view.getModule() == null || view.getModule().isLoaded()))
+                .filter(view -> view.isVisible() && (gameRunning || !view.inGame()))
                 .forEach(view -> view.draw(renderer, 0, 0));
         _dropsDowns.forEach(view -> view.drawDropDown(renderer, 0, 0));
     }

@@ -44,7 +44,7 @@ public class GameMenuPauseController extends LuaController {
     @BindLuaAction
     public void onActionExit(View view) {
         setVisible(false);
-        gameManager.closeGame();
+        gameManager.destroyGame();
     }
 
     @GameShortcut("escape")

@@ -43,7 +43,7 @@ public class ThreadManager {
     }
 
     private void callGameMethod(Class<? extends Annotation> cls) {
-        if (game != null && game.getState() == Game.GameStatus.STARTED) {
+        if (game != null && game.getStatus() == GameStatus.STARTED) {
             dependencyManager.callMethodAnnotatedBy(cls);
         }
     }

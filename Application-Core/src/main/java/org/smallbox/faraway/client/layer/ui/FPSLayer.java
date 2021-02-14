@@ -26,7 +26,7 @@ public class FPSLayer extends BaseLayer {
 //        Map<String, String> wmiObjectProperties2 = WMI4Java.get().getWMIObject("win32_process");
 //        Map<String, String> wmiObjectProperties = WMI4Java.get().getWMIObject("Win32_PerfFormattedData_PerfProc_Process");
         renderer.drawText(applicationConfig.getResolutionWidth() - 530, applicationConfig.getResolutionHeight() - 80 + 10, "Heap: " + (heapSize - heapFreeSize) / 1000 / 1000, Color.WHITE, 12);
-        renderer.drawText(applicationConfig.getResolutionWidth() - 530, applicationConfig.getResolutionHeight() - 80 + 25, "T " + game.getTick(), Color.WHITE, 12);
+//        renderer.drawText(applicationConfig.getResolutionWidth() - 530, applicationConfig.getResolutionHeight() - 80 + 25, "T " + game.getTick(), Color.WHITE, 12);
         renderer.drawText(applicationConfig.getResolutionWidth() - 530, applicationConfig.getResolutionHeight() - 80 + 40, "F " + frame, Color.WHITE, 12);
         renderer.drawRectangle(applicationConfig.getResolutionWidth() - 530 + frame / 5 % 32, applicationConfig.getResolutionHeight() - 80 + 55, 2, 2, Color.WHITE);
     }

@@ -8,6 +8,7 @@ import org.smallbox.faraway.client.renderer.UIRenderer;
 import org.smallbox.faraway.client.renderer.Viewport;
 import org.smallbox.faraway.client.shortcut.GameShortcut;
 import org.smallbox.faraway.client.ui.UIManager;
+import org.smallbox.faraway.core.config.ApplicationConfig;
 import org.smallbox.faraway.core.dependencyInjector.DependencyManager;
 import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
@@ -33,6 +34,7 @@ public class LayerManager implements GameClientObserver {
     @Inject private UIRenderer UIRenderer;
     @Inject private WorldInputManager worldInputManager;
     @Inject private DependencyManager dependencyManager;
+    @Inject private ApplicationConfig applicationConfig;
     @Inject private Game game;
 
     private long _renderTime;
@@ -82,7 +84,7 @@ public class LayerManager implements GameClientObserver {
 
         // Draw
         if (gameManager.isRunning()) {
-            _animationProgress = 1 - ((double) (game.getNextUpdate() - System.currentTimeMillis()) / game.getTickInterval());
+            _animationProgress = 1 - ((double) (game.getNextUpdate() - System.currentTimeMillis()) / applicationConfig.game.tickInterval);
         }
 
         layerManager.draw(viewport, _animationProgress, _frame);

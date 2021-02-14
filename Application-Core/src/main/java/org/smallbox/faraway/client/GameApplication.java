@@ -18,7 +18,6 @@ import org.smallbox.faraway.core.dependencyInjector.DependencyManager;
 import org.smallbox.faraway.core.dependencyInjector.annotationEvent.AfterApplicationLayerInit;
 import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnApplicationLayerInit;
 import org.smallbox.faraway.core.lua.ServerLuaModuleManager;
-import org.smallbox.faraway.core.module.ModuleManager;
 import org.smallbox.faraway.core.save.SQLManager;
 import org.smallbox.faraway.core.task.TaskManager;
 
@@ -49,7 +48,7 @@ public class GameApplication extends ApplicationAdapter {
         taskManager.addLoadTask("Init MapRenderer", true, () -> di.getDependency(MapRenderer.class).init());
         taskManager.addLoadTask("Init UIRenderer", true, () -> di.getDependency(UIRenderer.class).init());
         taskManager.addLoadTask("Launch DB thread", false, () -> taskManager.launchBackgroundThread(di.getDependency(SQLManager.class)::update, 16));
-        taskManager.addLoadTask("Load modules", false, () -> di.getDependency(ModuleManager.class).loadModules(null));
+//        taskManager.addLoadTask("Load modules", false, () -> di.getDependency(ModuleManager.class).loadModules(null));
         taskManager.addLoadTask("Load server lua modules", false, () -> di.getDependency(ServerLuaModuleManager.class).init(true));
         taskManager.addLoadTask("Load sprites", false, () -> di.getDependency(SpriteManager.class).init());
         taskManager.addLoadTask("Load terrains", false, () -> di.getDependency(TerrainManager.class).init());

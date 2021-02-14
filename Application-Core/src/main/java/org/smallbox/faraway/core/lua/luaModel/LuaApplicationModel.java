@@ -8,7 +8,6 @@ import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnInit;
 import org.smallbox.faraway.core.module.ModuleBase;
-import org.smallbox.faraway.core.module.ModuleManager;
 import org.smallbox.faraway.core.lua.LuaModule;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameManager;
@@ -21,18 +20,11 @@ import java.util.Collection;
 @ApplicationObject
 public class LuaApplicationModel {
     @Inject private ServerLuaModuleManager serverLuaModuleManager;
-    @Inject private ModuleManager moduleManager;
     @Inject private ApplicationConfig applicationConfig;
     @Inject private GameManager gameManager;
-
-    @Inject
-    public Game game;
     @Inject private GameTime gameTime;
+    @Inject public Game game;
 
-    public long tick;
-    public int day;
-    public int hour;
-    public int year;
     public int screen_width;
     public int screen_height;
     public Collection<LuaModule> luaModules;
@@ -42,29 +34,8 @@ public class LuaApplicationModel {
     @OnInit
     public void init() {
         luaModules = serverLuaModuleManager.getModules();
-        modules = moduleManager.getModules();
-        moduleThirds = moduleManager.getModulesThird();
         screen_width = applicationConfig.getResolutionWidth();
         screen_height = applicationConfig.getResolutionHeight();
-    }
-
-    public void update() {
-        this.tick = game.getTick();
-        this.hour = gameTime.getHour();
-        this.day = gameTime.getDay();
-        this.year = gameTime.getYear();
-    }
-
-    public ModuleBase getModule(String name) {
-        return this.modules.stream().filter(module -> module.getInfo().name.equals(name)).findFirst().orElse(null);
-    }
-
-    public void setDisplay(String display) {
-        game.setDisplay(display, true);
-    }
-
-    public void toggleDisplay(String display) {
-        game.toggleDisplay(display);
     }
 
     public void setPlan(String plan) {
