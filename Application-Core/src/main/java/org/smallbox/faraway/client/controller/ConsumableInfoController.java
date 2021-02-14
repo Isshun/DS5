@@ -29,11 +29,6 @@ public class ConsumableInfoController extends AbsInfoLuaController<Consumable> {
     @BindLua private UILabel lbJob;
     @BindLua private UIImage image;
 
-    @Override
-    public void onReloadUI() {
-        gameSelectionManager.registerSelection(this);
-    }
-
     @OnGameSelectAction(Consumable.class)
     private void onSelectConsumable(Consumable consumable) {
         setVisible(true);

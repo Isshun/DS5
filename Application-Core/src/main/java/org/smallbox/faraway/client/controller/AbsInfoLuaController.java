@@ -3,12 +3,11 @@ package org.smallbox.faraway.client.controller;
 import com.badlogic.gdx.Input;
 import org.apache.commons.collections4.CollectionUtils;
 import org.smallbox.faraway.client.selection.GameSelectionManager;
-import org.smallbox.faraway.game.world.ObjectModel;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
+import org.smallbox.faraway.game.world.ObjectModel;
 import org.smallbox.faraway.game.world.Parcel;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
@@ -38,7 +37,7 @@ public abstract class AbsInfoLuaController<T extends ObjectModel> extends LuaCon
         displayObjects();
     }
 
-    @Override
+    @Deprecated
     public boolean onKeyPress(int key) {
         if (key == Input.Keys.ESCAPE && CollectionUtils.isNotEmpty(listSelected)) {
 //            mainPanelController.setVisible(true);
@@ -46,31 +45,6 @@ public abstract class AbsInfoLuaController<T extends ObjectModel> extends LuaCon
             return true;
         }
         return false;
-    }
-
-    @Override
-    public boolean onClickOnParcel(List<Parcel> parcels) {
-//        list = parcels.stream()
-//                .map(this::getObjectOnParcel)
-//                .filter(Objects::nonNull)
-//                .collect(Collectors.toList());
-//
-//        if (CollectionUtils.isNotEmpty(list)) {
-//            setVisible(true);
-//            displayObjects();
-//        }
-//
-//        return CollectionUtils.isNotEmpty(list);
-        return false;
-    }
-
-    @Override
-    public void onControllerUpdate() {
-//        if (CollectionUtils.isNotEmpty(listSelected)) {
-//            displayObjects();
-//        } else {
-//            mainPanelController.setVisible(true);
-//        }
     }
 
     protected void closePanel() {

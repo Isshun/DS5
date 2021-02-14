@@ -30,11 +30,6 @@ public class AreaInfoGardenController extends AbsInfoLuaController<AreaModel> {
     @BindLua private UIList listPlants;
 
     @Override
-    public void onReloadUI() {
-        gameSelectionManager.registerSelection(this, areaInfoController);
-    }
-
-    @Override
     @OnGameSelectAction(GardenArea.class)
     protected void onDisplayUnique(AreaModel area) {
         setVisible(true);

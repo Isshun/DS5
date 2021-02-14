@@ -26,16 +26,16 @@ public class UIEventManager implements EventManager {
     @Inject private GameManager gameManager;
     @Inject private Viewport viewport;
 
-    private final Map<View, OnDragListener>       _onDragListeners;
-    private final Map<View, OnClickListener>      _onClickListeners;
-    private final Map<View, OnClickListener>      _onRightClickListeners;
-    private final Map<View, OnClickListener>      _onMouseWheelUpListeners;
-    private final Map<View, OnClickListener>      _onMouseWheelDownListeners;
-    private final Map<View, OnFocusListener>      _onFocusListeners;
-    private final Map<View, OnKeyListener>        _onKeysListeners;
-    private UIDropDown                      _currentDropDown;
-    private final Map<View, Object>               _dropViews;
-    private OnDragListener                  _dragListener;
+    private final Map<View, OnDragListener> _onDragListeners;
+    private final Map<View, OnClickListener> _onClickListeners;
+    private final Map<View, OnClickListener> _onRightClickListeners;
+    private final Map<View, OnClickListener> _onMouseWheelUpListeners;
+    private final Map<View, OnClickListener> _onMouseWheelDownListeners;
+    private final Map<View, OnFocusListener> _onFocusListeners;
+    private final Map<View, OnKeyListener> _onKeysListeners;
+    private UIDropDown _currentDropDown;
+    private final Map<View, Object> _dropViews;
+    private OnDragListener _dragListener;
     private View focusView;
 
     public UIEventManager() {
@@ -132,14 +132,18 @@ public class UIEventManager implements EventManager {
         public View hoverView;
 
         public abstract void onDrag(int x, int y);
+
         public abstract void onDragMove(int x, int y);
+
         public abstract void onDrop(int x, int y, View dropView);
+
         public abstract void onHover(int x, int y, View dropView);
+
         public abstract void onHoverExit(int x, int y, View dropView);
     }
 
     public OnDragListener drag(int x, int y) {
-        for (Map.Entry<View, OnDragListener> entry: _onDragListeners.entrySet()) {
+        for (Map.Entry<View, OnDragListener> entry : _onDragListeners.entrySet()) {
             if (entry.getKey().contains(x, y)) {
                 entry.getValue().onDrag(x, y);
                 return entry.getValue();
@@ -152,7 +156,7 @@ public class UIEventManager implements EventManager {
         View bestView = null;
         int bestDepth = -1;
 
-        for (View view: _onClickListeners.keySet()) {
+        for (View view : _onClickListeners.keySet()) {
             if (view.isActive() && hasVisibleHierarchy(view) && view.contains(x, y) && view.getDeep() > bestDepth) {
                 bestDepth = view.getDeep();
                 bestView = view;
@@ -160,7 +164,7 @@ public class UIEventManager implements EventManager {
         }
 
         if (bestView == null) {
-            for (View view: uiManager.getViews()) {
+            for (View view : uiManager.getViews()) {
                 if (view.isActive() && hasVisibleHierarchy(view) && view.contains(x, y) && view.getDeep() > bestDepth) {
                     bestDepth = view.getDeep();
                     bestView = view;
@@ -281,6 +285,7 @@ public class UIEventManager implements EventManager {
 
         return false;
     }
+
     @Override
     public boolean onMouseMove(int x, int y, boolean pressed) {
 
@@ -292,7 +297,7 @@ public class UIEventManager implements EventManager {
         View bestView = null;
         int bestDepth = -1;
 
-        for (View view: _onFocusListeners.keySet()) {
+        for (View view : _onFocusListeners.keySet()) {
             if (view.isActive() && hasVisibleHierarchy(view) && view.contains(x, y) && view.getDeep() > bestDepth) {
                 bestDepth = view.getDeep();
                 bestView = view;
@@ -313,7 +318,7 @@ public class UIEventManager implements EventManager {
     }
 
     public boolean rightClick(int x, int y) {
-        for (View view: _onRightClickListeners.keySet()) {
+        for (View view : _onRightClickListeners.keySet()) {
             if (view.isActive() && hasVisibleHierarchy(view) && view.contains(x, y)) {
                 _onRightClickListeners.get(view).onClick();
                 return true;
@@ -323,7 +328,7 @@ public class UIEventManager implements EventManager {
     }
 
     public boolean mouseWheelUp(int x, int y) {
-        for (View view: _onMouseWheelUpListeners.keySet()) {
+        for (View view : _onMouseWheelUpListeners.keySet()) {
             if (view.isActive() && hasVisibleHierarchy(view) && view.contains(x, y)) {
                 _onMouseWheelUpListeners.get(view).onClick();
                 return true;
@@ -333,7 +338,7 @@ public class UIEventManager implements EventManager {
     }
 
     public boolean mouseWheelDown(int x, int y) {
-        for (View view: _onMouseWheelDownListeners.keySet()) {
+        for (View view : _onMouseWheelDownListeners.keySet()) {
             if (view.isActive() && hasVisibleHierarchy(view) && view.contains(x, y)) {
                 _onMouseWheelDownListeners.get(view).onClick();
                 return true;
@@ -351,7 +356,7 @@ public class UIEventManager implements EventManager {
     }
 
     public boolean keyRelease(int key) {
-        for (View view: _onKeysListeners.keySet()) {
+        for (View view : _onKeysListeners.keySet()) {
             if (view.isActive() && hasVisibleHierarchy(view) && hasFocus(view)) {
                 _onKeysListeners.get(view).onKeyRelease(view, key);
                 return true;
@@ -365,7 +370,7 @@ public class UIEventManager implements EventManager {
     }
 
     public boolean has(int x, int y) {
-        for (View view: uiManager.getViews()) {
+        for (View view : uiManager.getViews()) {
             if (hasVisibleHierarchy(view) && view.contains(x, y)) {
                 return true;
             }

@@ -18,25 +18,25 @@ ui:extend({
 
                 -- BUTTONS
                 { type = "grid", columns = button_number, column_width = panel_width / 4, row_height = button_height, size = {panel_width, button_height}, views = {
-                    { type = "view", id = "bt_crew", size = {panel_width / 4, button_height}, views = {
+                    { type = "view", action = "openPaneCrew", size = {panel_width / 4, button_height}, views = {
                         { type = "view", size = {fill, 4}, background = yellow},
                         { type = "view", id = "focus_crew", background = yellow},
                         { type = "label", id = "lb_crew", text = "CREW", text_size = 22, text_font = "font3", text_color = blue_dark_4, text_align = "center", size = {fill, button_height - 8}, position = {0, 4}},
                         { type = "view", id = "mask_crew", size = {panel_width / 4, button_height - 4}, background = 0x00000088},
                     }},
-                    { type = "view", id = "bt_build", size = {panel_width / 4, button_height}, views = {
+                    { type = "view", action = "openPaneBuild", size = {panel_width / 4, button_height}, views = {
                         { type = "view", size = {fill, 4}, background = blue},
                         { type = "view", id = "focus_build", background = blue},
                         { type = "label", id = "lb_build", text = "BUILD", text_size = 22, text_font = "font3", text_color = blue_dark_4, text_align = "center", size = {fill, button_height - 8}, position = {0, 4}},
                         { type = "view", id = "mask_build", size = {panel_width / 4, button_height - 4}, background = 0x00000088},
                     }},
-                    { type = "view", id = "bt_area", size = {panel_width / 4, button_height}, views = {
+                    { type = "view", action = "openPaneArea", size = {panel_width / 4, button_height}, views = {
                         { type = "view", size = {fill, 4}, background = green},
                         { type = "view", id = "focus_area", background = green},
                         { type = "label", id = "lb_area", text = "RES.", text_size = 22, text_font = "font3", text_color = blue_dark_4, text_align = "center", size = {fill, button_height - 8}, position = {0, 4}},
                         { type = "view", id = "mask_area", size = {panel_width / 4, button_height - 4}, background = 0x00000088},
                     }},
-                    { type = "view", id = "bt_jobs", size = {panel_width / 4, button_height}, views = {
+                    { type = "view", action = "openPaneJobs", size = {panel_width / 4, button_height}, views = {
                         { type = "view", size = {fill, 4}, background = red},
                         { type = "view", id = "focus_jobs", background = red},
                         { type = "label", id = "lb_jobs", text = "JOBS", text_size = 22, text_font = "font3", text_color = blue_dark_4, text_align = "center", size = {fill, button_height - 8}, position = {0, 4}},

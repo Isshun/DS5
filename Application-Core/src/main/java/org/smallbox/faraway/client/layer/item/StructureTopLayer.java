@@ -19,8 +19,6 @@ public class StructureTopLayer extends BaseMapLayer {
     @Inject private SpriteManager spriteManager;
     @Inject private StructureModule structureModule;
 
-    protected MapObjectModel    _itemSelected;
-
 //    @Override
 //    protected void onRenderUpdate() {
 //        structureModule.getStructures().forEach(structure -> {
@@ -65,8 +63,4 @@ public class StructureTopLayer extends BaseMapLayer {
         return spriteManager.getOrCreateSprite(structure.getGraphic(), 4, false, null, null);
     }
 
-    @Override
-    public void onDeselect() {
-        _itemSelected = null;
-    }
 }

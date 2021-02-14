@@ -1,8 +1,7 @@
 package org.smallbox.faraway.client.layer;
 
-import org.smallbox.faraway.client.input.GameClientObserver;
 import org.smallbox.faraway.client.input.InputManager;
-import org.smallbox.faraway.client.input.WorldInputManager;
+import org.smallbox.faraway.client.input.CameraMoveInputManager;
 import org.smallbox.faraway.client.renderer.MapRenderer;
 import org.smallbox.faraway.client.renderer.UIRenderer;
 import org.smallbox.faraway.client.renderer.Viewport;
@@ -22,7 +21,7 @@ import java.util.Comparator;
 import java.util.stream.Collectors;
 
 @ApplicationObject
-public class LayerManager implements GameClientObserver {
+public class LayerManager {
     public static final int MOVE_OFFSET = 30;
 
     @Inject private LayerManager layerManager;
@@ -31,7 +30,7 @@ public class LayerManager implements GameClientObserver {
     @Inject private GameManager gameManager;
     @Inject private MapRenderer mapRenderer;
     @Inject private UIRenderer UIRenderer;
-    @Inject private WorldInputManager worldInputManager;
+    @Inject private CameraMoveInputManager cameraMoveInputManager;
     @Inject private DependencyManager dependencyManager;
     @Inject private ApplicationConfig applicationConfig;
     @Inject private Viewport viewport;
@@ -65,16 +64,16 @@ public class LayerManager implements GameClientObserver {
 
         // Move viewport
         if (game.isRunning()) {
-            if (worldInputManager.getDirection()[0]) {
+            if (cameraMoveInputManager.isMovingLeft()) {
                 viewport.move(MOVE_OFFSET, 0);
             }
-            if (worldInputManager.getDirection()[1]) {
+            if (cameraMoveInputManager.isMovingUp()) {
                 viewport.move(0, MOVE_OFFSET);
             }
-            if (worldInputManager.getDirection()[2]) {
+            if (cameraMoveInputManager.isMovingRight()) {
                 viewport.move(-MOVE_OFFSET, 0);
             }
-            if (worldInputManager.getDirection()[3]) {
+            if (cameraMoveInputManager.isMovingDown()) {
                 viewport.move(0, -MOVE_OFFSET);
             }
         }

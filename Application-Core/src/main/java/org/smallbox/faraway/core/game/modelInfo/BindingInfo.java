@@ -1,6 +1,6 @@
 package org.smallbox.faraway.core.game.modelInfo;
 
-import org.smallbox.faraway.client.input.GameEventListener;
+import org.smallbox.faraway.client.input.KeyModifier;
 
 public class BindingInfo extends ObjectInfo {
     public interface BindingCheckInterface {
@@ -12,7 +12,7 @@ public class BindingInfo extends ObjectInfo {
     }
 
     public int key;
-    public GameEventListener.Modifier   modifier = GameEventListener.Modifier.NONE;
+    public KeyModifier keyModifier = KeyModifier.NONE;
     public String                       label;
     public BindingCheckInterface        check;
     public BindingActionInterface       action;

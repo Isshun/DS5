@@ -58,11 +58,6 @@ public class ItemInfoController extends AbsInfoLuaController<UsableItem> {
 
     private UsableItem item;
 
-    @Override
-    public void onReloadUI() {
-        gameSelectionManager.registerSelection(this);
-    }
-
     @OnGameLongUpdate
     public void onGameLongUpdate() {
 

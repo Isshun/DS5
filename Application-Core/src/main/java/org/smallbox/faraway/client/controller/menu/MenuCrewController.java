@@ -18,10 +18,6 @@ public class MenuCrewController extends LuaController {
     @Inject private MenuSettingsController menuSettingsController;
     @Inject private MenuPlanetController menuPlanetController;
 
-    @OnApplicationLayerComplete
-    private void afterApplicationLayerInit() {
-    }
-
     @BindLuaAction
     private void onActionBack(View view) {
         setVisible(false);

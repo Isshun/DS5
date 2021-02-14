@@ -10,6 +10,7 @@ import org.smallbox.faraway.client.ui.widgets.UILabel;
 import org.smallbox.faraway.client.ui.widgets.View;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
+import org.smallbox.faraway.core.dependencyInjector.annotation.callback.gameEvent.OnGameUpdate;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameManager;
 import org.smallbox.faraway.core.game.GameTime;
@@ -43,7 +44,7 @@ public class SystemInfoController extends LuaController {
         return mapContainer;
     }
 
-    @Override
+    @OnGameUpdate
     protected void onControllerUpdate() {
 
         // Display game time

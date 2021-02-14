@@ -13,6 +13,7 @@ import org.smallbox.faraway.client.ui.widgets.UILabel;
 import org.smallbox.faraway.client.ui.widgets.UIList;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
+import org.smallbox.faraway.core.dependencyInjector.annotation.callback.gameEvent.OnGameUpdate;
 import org.smallbox.faraway.game.character.CharacterModule;
 import org.smallbox.faraway.game.character.model.CharacterSkillExtra;
 import org.smallbox.faraway.game.character.model.base.CharacterNeedsExtra;
@@ -34,7 +35,7 @@ public class CrewController extends LuaController {
 
     @BindLua private UIList listCrew;
 
-    @Override
+    @OnGameUpdate
     public void onControllerUpdate() {
         if (listCrew != null) {
             Gdx.app.postRunnable(() -> {

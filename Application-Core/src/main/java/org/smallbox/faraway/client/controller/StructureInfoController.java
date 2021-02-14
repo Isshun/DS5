@@ -32,11 +32,6 @@ public class StructureInfoController extends AbsInfoLuaController<StructureItem>
     @BindLua private UIList listBuildComponents;
 
     @Override
-    public void onReloadUI() {
-        gameSelectionManager.registerSelection(this);
-    }
-
-    @Override
     protected void onDisplayUnique(StructureItem structure) {
         lbName.setText(structure.getLabel());
         lbHealth.setText(String.valueOf(structure.getHealth()));

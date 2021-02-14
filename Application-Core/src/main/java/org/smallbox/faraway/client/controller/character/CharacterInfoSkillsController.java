@@ -3,11 +3,12 @@ package org.smallbox.faraway.client.controller.character;
 import org.smallbox.faraway.client.controller.LuaController;
 import org.smallbox.faraway.client.controller.annotation.BindLua;
 import org.smallbox.faraway.client.ui.event.UIEventManager;
-import org.smallbox.faraway.client.ui.widgets.View;
 import org.smallbox.faraway.client.ui.widgets.UIFrame;
 import org.smallbox.faraway.client.ui.widgets.UIList;
+import org.smallbox.faraway.client.ui.widgets.View;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
+import org.smallbox.faraway.core.dependencyInjector.annotation.callback.gameEvent.OnGameUpdate;
 import org.smallbox.faraway.game.character.model.CharacterSkillExtra;
 import org.smallbox.faraway.game.character.model.base.CharacterModel;
 import org.smallbox.faraway.util.Utils;
@@ -27,13 +28,11 @@ public class CharacterInfoSkillsController extends LuaController {
         listSkills.removeAllViews();
     }
 
-    @Override
+    @OnGameUpdate
     protected void onControllerUpdate() {
-
         if (_selected != null && listSkills.getViews().isEmpty()) {
             refreshSkills();
         }
-
     }
 
     private void refreshSkills() {

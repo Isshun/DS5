@@ -3,7 +3,7 @@ package org.smallbox.faraway.core.lua.data.extend;
 import com.badlogic.gdx.Input;
 import org.luaj.vm2.Globals;
 import org.luaj.vm2.LuaValue;
-import org.smallbox.faraway.client.input.GameEventListener;
+import org.smallbox.faraway.client.input.KeyModifier;
 import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject;
 import org.smallbox.faraway.core.game.DataManager;
 import org.smallbox.faraway.core.game.modelInfo.BindingInfo;
@@ -32,7 +32,7 @@ public class LuaBindingsExtend extends LuaExtend {
             }
 
             if (!value.get("modifier").isnil()) {
-                bindingInfo.modifier = GameEventListener.Modifier.valueOf(getString(value, "modifier", null));
+                bindingInfo.keyModifier = KeyModifier.valueOf(getString(value, "modifier", null));
             }
 
             bindingInfo.label = getString(value, "label", null);

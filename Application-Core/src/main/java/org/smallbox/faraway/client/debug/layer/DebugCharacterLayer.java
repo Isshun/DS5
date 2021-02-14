@@ -11,9 +11,7 @@ import org.smallbox.faraway.game.character.CharacterModule;
 import org.smallbox.faraway.game.character.model.CharacterInventoryExtra;
 import org.smallbox.faraway.game.character.model.base.CharacterModel;
 import org.smallbox.faraway.game.character.model.base.CharacterPersonalsExtra;
-import org.smallbox.faraway.game.world.Parcel;
 
-import java.util.List;
 import java.util.stream.Collectors;
 
 @GameObject
@@ -43,17 +41,6 @@ public class DebugCharacterLayer extends BaseMapLayer {
                             .map(entry -> entry.getInfo().label + "x" + entry.getTotalQuantity())
                             .collect(Collectors.joining(", ")));
         }
-    }
-
-    @Override
-    public boolean onClickOnParcel(List<Parcel> parcels) {
-        parcels.forEach(parcel -> {
-            CharacterModel character = characterModule.getCharacter(parcel);
-            if (character != null) {
-                _character = character;
-            }
-        });
-        return false;
     }
 
     private void drawDebug(BaseRenderer renderer, String label, Object object) {

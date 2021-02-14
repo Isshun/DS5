@@ -2,15 +2,15 @@ package org.smallbox.faraway.client.controller.character;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.smallbox.faraway.client.asset.SpriteManager;
 import org.smallbox.faraway.client.controller.LuaController;
 import org.smallbox.faraway.client.controller.annotation.BindLua;
-import org.smallbox.faraway.client.asset.SpriteManager;
-import org.smallbox.faraway.client.ui.widgets.View;
 import org.smallbox.faraway.client.ui.widgets.*;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
-import org.smallbox.faraway.core.dependencyInjector.annotation.callback.gameEvent.OnGameLayerComplete;
 import org.smallbox.faraway.core.dependencyInjector.annotation.callback.gameEvent.OnGameLayerBegin;
+import org.smallbox.faraway.core.dependencyInjector.annotation.callback.gameEvent.OnGameLayerComplete;
+import org.smallbox.faraway.core.dependencyInjector.annotation.callback.gameEvent.OnGameUpdate;
 import org.smallbox.faraway.game.character.model.base.CharacterModel;
 import org.smallbox.faraway.game.character.model.base.CharacterNeedsExtra;
 import org.smallbox.faraway.game.character.model.base.NeedEntry;
@@ -59,7 +59,7 @@ public class CharacterInfoStatusController extends LuaController {
         needs.forEach(frame -> gridNeeds.addView(frame));
     }
 
-    @Override
+    @OnGameUpdate
     public void onControllerUpdate() {
         if (isVisible() && _selected != null) {
             selectCharacter(_selected);

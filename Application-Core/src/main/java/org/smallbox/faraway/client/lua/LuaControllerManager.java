@@ -13,7 +13,6 @@ import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.callback.applicationEvent.OnApplicationLayerBegin;
 import org.smallbox.faraway.core.dependencyInjector.annotation.callback.gameEvent.OnGameLayerBegin;
-import org.smallbox.faraway.core.dependencyInjector.annotation.callback.gameEvent.OnGameUpdate;
 import org.smallbox.faraway.util.GameException;
 import org.smallbox.faraway.util.log.Log;
 
@@ -71,17 +70,6 @@ public class LuaControllerManager {
 
         // Bind action methods
         bindMethodsForController(controller);
-
-        // Call OnReloadUI
-        controller.onReloadUI();
-    }
-
-    @OnGameUpdate
-    public void onGameUpdate() {
-        if (System.currentTimeMillis() - _lastUpdate > 100) {
-            _lastUpdate = System.currentTimeMillis();
-            _controllers.forEach((clsName, controller) -> controller.controllerUpdate());
-        }
     }
 
     private void bindRootViewToController(LuaController controller) {
@@ -172,7 +160,12 @@ public class LuaControllerManager {
                             try {
                                 Log.debug(LuaControllerManager.class, "Method: %s", method.getName());
                                 Log.debug(LuaControllerManager.class, "View: %s", view.getId());
-                                method.invoke(controller, view);
+                                if (method.getParameterCount() == 0) {
+                                    method.invoke(controller);
+                                }
+                                if (method.getParameterCount() == 1) {
+                                    method.invoke(controller, view);
+                                }
                             } catch (IllegalArgumentException | IllegalAccessException | InvocationTargetException e) {
                                 throw new GameException(LuaControllerManager.class, e);
                             }

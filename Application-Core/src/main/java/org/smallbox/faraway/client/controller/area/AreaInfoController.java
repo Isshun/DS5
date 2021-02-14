@@ -30,11 +30,6 @@ public class AreaInfoController extends AbsInfoLuaController<AreaModel> {
     @BindLua
     private UILabel lbParcels;
 
-    @Override
-    public void onReloadUI() {
-        gameSelectionManager.registerSelection(this);
-    }
-
 //    @OnGameSelectAction(AreaModel.class)
 //    private void onSelectArea(AreaModel area) {
 //        lbName.setText(area.getName());

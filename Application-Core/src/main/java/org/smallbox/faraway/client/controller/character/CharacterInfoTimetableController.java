@@ -2,12 +2,13 @@ package org.smallbox.faraway.client.controller.character;
 
 import org.smallbox.faraway.client.controller.LuaController;
 import org.smallbox.faraway.client.controller.annotation.BindLua;
-import org.smallbox.faraway.client.ui.widgets.View;
 import org.smallbox.faraway.client.ui.widgets.UIFrame;
 import org.smallbox.faraway.client.ui.widgets.UILabel;
 import org.smallbox.faraway.client.ui.widgets.UIList;
+import org.smallbox.faraway.client.ui.widgets.View;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
+import org.smallbox.faraway.core.dependencyInjector.annotation.callback.gameEvent.OnGameUpdate;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameTime;
 import org.smallbox.faraway.game.character.CharacterTimetableExtra;
@@ -26,7 +27,7 @@ public class CharacterInfoTimetableController extends LuaController {
 
     private CharacterModel _selected;
 
-    @Override
+    @OnGameUpdate
     public void onControllerUpdate() {
         if (isVisible() && _selected != null) {
             selectCharacter(_selected);

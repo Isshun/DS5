@@ -1,13 +1,12 @@
 package org.smallbox.faraway.client.controller;
 
-import com.badlogic.gdx.Input;
 import org.smallbox.faraway.client.controller.annotation.BindLua;
 import org.smallbox.faraway.client.ui.widgets.CompositeView;
 import org.smallbox.faraway.client.ui.widgets.UIFrame;
 import org.smallbox.faraway.client.ui.widgets.UIList;
-import org.smallbox.faraway.client.shortcut.GameShortcut;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
+import org.smallbox.faraway.core.dependencyInjector.annotation.callback.gameEvent.OnGameUpdate;
 import org.smallbox.faraway.game.character.CharacterModule;
 import org.smallbox.faraway.game.job.JobCharacterStatus;
 import org.smallbox.faraway.game.job.JobModel;
@@ -21,7 +20,7 @@ public class JobController extends LuaController {
 
     @BindLua private UIList listJobs;
 
-    @Override
+    @OnGameUpdate
     public void onControllerUpdate() {
         jobModule.getAll().stream().filter(JobModel::isVisible).forEach(job -> {
             UIFrame frame = listJobs.createFromTemplate(UIFrame.class);

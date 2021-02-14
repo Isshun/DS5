@@ -1,7 +1,5 @@
 package org.smallbox.faraway.client.ui;
 
-import org.smallbox.faraway.client.input.GameClientObserver;
-import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.game.area.AreaModel;
 import org.smallbox.faraway.game.character.model.base.CharacterModel;

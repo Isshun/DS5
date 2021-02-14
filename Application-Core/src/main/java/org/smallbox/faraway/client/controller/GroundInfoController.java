@@ -38,11 +38,6 @@ public class GroundInfoController extends AbsInfoLuaController<Parcel> {
     @BindLua private UILabel lbItem;
     @BindLua private UILabel lbConsumable;
 
-    @Override
-    public void onReloadUI() {
-        gameSelectionManager.registerSelection(this);
-    }
-
     @OnInit
     public void init() {
 //        gameSelectionManager.registerSelectionParcelListener(this);

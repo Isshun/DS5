@@ -11,9 +11,7 @@ import org.smallbox.faraway.client.renderer.WorldCameraManager;
 import org.smallbox.faraway.client.selection.GameSelectionManager;
 import org.smallbox.faraway.client.shortcut.ShortcutManager;
 import org.smallbox.faraway.client.ui.UIManager;
-import org.smallbox.faraway.client.ui.event.GameEvent;
 import org.smallbox.faraway.client.ui.event.UIEventManager;
-import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.game.GameManager;
@@ -34,14 +32,14 @@ public class InputManager implements InputProcessor {
     @Inject private GameActionManager gameActionManager;
     @Inject private UIEventManager uiEventManager;
     @Inject private UIManager uiManager;
-    @Inject private WorldInputManager worldInputManager;
+    @Inject private CameraMoveInputManager cameraMoveInputManager;
     @Inject private GameManager gameManager;
     @Inject private ShortcutManager shortcutManager;
     @Inject private Viewport viewport;
     @Inject private MapRenderer mapRenderer;
     @Inject private WorldCameraManager worldCameraManager;
 
-    private GameEventListener.Modifier _modifier = GameEventListener.Modifier.NONE;
+    private KeyModifier _Key_modifier = KeyModifier.NONE;
     private int _lastPosX;
     private int _lastPosY;
     private int _touchDownX;
@@ -50,31 +48,29 @@ public class InputManager implements InputProcessor {
     private int _touchDragY;
     private int _touchButton;
     private boolean _touchDrag;
-    private BiConsumer<Integer, GameEventListener.Modifier> nextKeyConsumer;
+    private BiConsumer<Integer, KeyModifier> nextKeyConsumer;
 
     @Override
     public boolean keyDown(int keycode) {
-        if (keycode == Keys.GRAVE) {
-            return false;
-        }
-
         if (debugService.isDebugMode()) {
             return false;
         }
 
         if (keycode == Keys.CONTROL_LEFT) {
-            _modifier = GameEventListener.Modifier.CONTROL;
+            _Key_modifier = KeyModifier.CONTROL;
         }
 
         if (keycode == Keys.ALT_LEFT) {
-            _modifier = GameEventListener.Modifier.ALT;
+            _Key_modifier = KeyModifier.ALT;
         }
 
         if (keycode == Keys.SHIFT_LEFT) {
-            _modifier = GameEventListener.Modifier.SHIFT;
+            _Key_modifier = KeyModifier.SHIFT;
         }
 
-        worldInputManager.keyDown(keycode);
+        if (cameraMoveInputManager.keyDown(keycode)) {
+            return true;
+        }
 
         return false;
     }
@@ -82,13 +78,8 @@ public class InputManager implements InputProcessor {
     @Override
     public boolean keyUp(int keycode) {
 
-//        if (keycode == Keys.GRAVE) {
-//            debugService.toggleDebugMode();
-//            return false;
-//        }
-
         if (nextKeyConsumer != null) {
-            nextKeyConsumer.accept(keycode, _modifier);
+            nextKeyConsumer.accept(keycode, _Key_modifier);
         }
 
         if (debugService.isDebugMode()) {
@@ -96,18 +87,20 @@ public class InputManager implements InputProcessor {
             return false;
         }
 
-        worldInputManager.keyUp(keycode);
+        if (cameraMoveInputManager.keyUp(keycode)) {
+            return false;
+        }
 
         if (keycode == Keys.CONTROL_LEFT) {
-            _modifier = GameEventListener.Modifier.NONE;
+            _Key_modifier = KeyModifier.NONE;
         }
 
         if (keycode == Keys.ALT_LEFT) {
-            _modifier = GameEventListener.Modifier.NONE;
+            _Key_modifier = KeyModifier.NONE;
         }
 
         if (keycode == Keys.SHIFT_LEFT) {
-            _modifier = GameEventListener.Modifier.NONE;
+            _Key_modifier = KeyModifier.NONE;
         }
 
         // Clear UiEventManager selection listener when escape key is pushed
@@ -116,12 +109,8 @@ public class InputManager implements InputProcessor {
             return false;
         }
 
-        if (uiManager.onKeyEvent(GameEventListener.Action.RELEASED, keycode, _modifier)) {
+        if (uiManager.onKeyEvent(MouseAction.RELEASED, keycode, _Key_modifier)) {
             return false;
-        }
-
-        if (gameManager.isLoaded()) {
-            GameEvent event = new GameEvent(keycode);
         }
 
         // TODO: A deplacer dans ApplicationShortcutManage
@@ -304,7 +293,7 @@ public class InputManager implements InputProcessor {
         return _touchDragY;
     }
 
-    public void getNextKey(BiConsumer<Integer, GameEventListener.Modifier> consumer) {
+    public void getNextKey(BiConsumer<Integer, KeyModifier> consumer) {
         nextKeyConsumer = consumer;
     }
 }

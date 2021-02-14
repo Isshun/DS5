@@ -5,6 +5,7 @@ import org.smallbox.faraway.client.controller.annotation.BindLua;
 import org.smallbox.faraway.client.ui.widgets.CompositeView;
 import org.smallbox.faraway.client.ui.widgets.UIGrid;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
+import org.smallbox.faraway.core.dependencyInjector.annotation.callback.gameEvent.OnGameUpdate;
 import org.smallbox.faraway.game.character.model.CharacterInventoryExtra;
 import org.smallbox.faraway.game.character.model.base.CharacterModel;
 
@@ -15,7 +16,7 @@ public class CharacterInfoInventoryController extends LuaController {
 
     private CharacterModel _character;
 
-    @Override
+    @OnGameUpdate
     protected void onControllerUpdate() {
         if (_character != null && _character.hasExtra(CharacterInventoryExtra.class)) {
             _character.getExtra(CharacterInventoryExtra.class).getAll().forEach(inventoryConsumable -> {

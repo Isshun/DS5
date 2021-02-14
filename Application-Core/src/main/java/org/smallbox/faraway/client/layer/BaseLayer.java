@@ -2,7 +2,6 @@ package org.smallbox.faraway.client.layer;
 
 import com.badlogic.gdx.graphics.Color;
 import org.smallbox.faraway.client.asset.SpriteManager;
-import org.smallbox.faraway.client.input.GameClientObserver;
 import org.smallbox.faraway.client.renderer.BaseRenderer;
 import org.smallbox.faraway.client.renderer.Viewport;
 import org.smallbox.faraway.client.selection.GameSelectionManager;
@@ -13,7 +12,7 @@ import org.smallbox.faraway.util.Constant;
 import org.smallbox.faraway.util.GameException;
 import org.smallbox.faraway.util.log.Log;
 
-public abstract class BaseLayer implements GameClientObserver {
+public abstract class BaseLayer {
     @Inject private GameSelectionManager gameSelectionManager;
     @Inject private Game game;
 
@@ -33,14 +32,6 @@ public abstract class BaseLayer implements GameClientObserver {
     private long                _cumulateTime;
     private double _selectionChange = 0.5;
     private double _selectionOffset;
-
-    // Current mouse position
-    protected int _mouseX;
-    protected int _mouseY;
-
-    // On press mouse position
-    protected int _mouseDownX;
-    protected int _mouseDownY;
 
     public void onInitLayer() {}
     public void onUpdate(Object object) {}
@@ -137,18 +128,6 @@ public abstract class BaseLayer implements GameClientObserver {
 
     public boolean isMandatory() {
         return false;
-    }
-
-    @Override
-    public final void onMouseMove(int x, int y, int button) {
-        _mouseX = x;
-        _mouseY = y;
-    }
-
-    @Override
-    public final void onMousePress(int x, int y, int button) {
-        _mouseDownX = x;
-        _mouseDownY = y;
     }
 
 }

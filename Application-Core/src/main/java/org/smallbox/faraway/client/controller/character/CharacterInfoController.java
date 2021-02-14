@@ -19,7 +19,6 @@ import org.smallbox.faraway.game.character.model.base.CharacterModel;
 import org.smallbox.faraway.game.world.Parcel;
 
 import java.util.Arrays;
-import java.util.Objects;
 import java.util.Queue;
 
 @GameObject
@@ -44,11 +43,6 @@ public class CharacterInfoController extends AbsInfoLuaController<CharacterModel
     @BindLua private View btInfo;
 
     private CharacterModel character;
-
-    @Override
-    public void onReloadUI() {
-        gameSelectionManager.registerSelection(this);
-    }
 
     @Override
     public CharacterModel getObjectOnParcel(Parcel parcel) {
@@ -120,19 +114,9 @@ public class CharacterInfoController extends AbsInfoLuaController<CharacterModel
         controller.setVisible(true);
     }
 
-    @Override
-    public void onControllerUpdate() {
-        if (Objects.nonNull(character)) {
-
-            if (Objects.nonNull(character.getParcel())) {
-            }
-
-        }
-    }
-
     @OnGameSelectAction(CharacterModel.class)
     public void onSelectCharacter(CharacterModel character) {
-        mainPanelController.openCrew();
+        mainPanelController.openPaneCrew();
         setVisible(true);
         display(character);
     }
@@ -164,14 +148,14 @@ public class CharacterInfoController extends AbsInfoLuaController<CharacterModel
     private void onClose(View view) {
         setVisible(false);
         mainPanelController.setVisible(true);
-        mainPanelController.openCrew();
+        mainPanelController.openPaneCrew();
     }
 
     @GameShortcut("escape")
     private void onClose() {
         setVisible(false);
         mainPanelController.setVisible(true);
-        mainPanelController.openCrew();
+        mainPanelController.openPaneCrew();
     }
 
 }

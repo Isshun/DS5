@@ -20,7 +20,7 @@ public class ItemInfoReceiptController extends AbsInfoLuaController<ItemFactoryM
     @BindLua private UIList listActions;
     @Inject private ItemInfoController itemInfoController;
 
-    @Override
+    @Deprecated
     public boolean onKeyPress(int key) {
         if (key == Input.Keys.ESCAPE && CollectionUtils.isNotEmpty(listSelected)) {
             itemInfoController.setVisible(true);

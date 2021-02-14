@@ -17,6 +17,7 @@ import org.smallbox.faraway.client.ui.widgets.View;
 import org.smallbox.faraway.core.config.ApplicationConfig;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
+import org.smallbox.faraway.core.dependencyInjector.annotation.callback.gameAction.OnGameFloorChange;
 import org.smallbox.faraway.core.dependencyInjector.annotation.callback.gameAction.OnGameMapChange;
 import org.smallbox.faraway.core.dependencyInjector.annotation.callback.gameEvent.OnGameLayerComplete;
 import org.smallbox.faraway.core.dependencyInjector.annotation.callback.gameEvent.OnGameLongUpdate;
@@ -144,9 +145,9 @@ public class MinimapLayer extends BaseLayer {
         _pixmap.dispose();
     }
 
-    @Override
-    public void onFloorChange(int floor) {
-        _floor = floor;
+    @OnGameFloorChange
+    public void onFloorChange() {
+        _floor = viewport.getFloor();
         _dirty = true;
     }
 

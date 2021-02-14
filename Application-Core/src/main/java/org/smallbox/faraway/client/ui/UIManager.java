@@ -36,8 +36,9 @@ import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.stream.Collectors;
 
-import static org.smallbox.faraway.client.input.GameEventListener.Action;
-import static org.smallbox.faraway.client.input.GameEventListener.Modifier;
+import org.smallbox.faraway.client.input.MouseAction;
+
+import org.smallbox.faraway.client.input.KeyModifier;
 
 @ApplicationObject
 public class UIManager {
@@ -322,7 +323,7 @@ public class UIManager {
 //                        .forEach(subview -> subview.setVisible(true)));
 //    }
 
-    public boolean onKeyEvent(Action action, int key, Modifier modifier) {
+    public boolean onKeyEvent(MouseAction action, int key, KeyModifier keyModifier) {
 //        if (action == Action.RELEASED) {
 //            if (checkKeyboard(new GameEvent(key), key)) {
 //                return false;
@@ -341,7 +342,7 @@ public class UIManager {
      * @param rightPressed
      * @return L'evenement est consommé
      */
-    public boolean onMouseEvent(Action action, int button, int x, int y, boolean rightPressed) {
+    public boolean onMouseEvent(MouseAction action, int button, int x, int y, boolean rightPressed) {
 
 //        if (action == Action.RELEASED && button == MouseButton.LEFT) {
 //            if (ApplicationClient.uiEventManager.rightClick(x, y)) {
@@ -355,7 +356,7 @@ public class UIManager {
         return false;
     }
 
-    public void onWindowEvent(Action action) {
+    public void onWindowEvent(MouseAction action) {
     }
 
 //    public void    onMouseWheel(int delta, int x, int y) {

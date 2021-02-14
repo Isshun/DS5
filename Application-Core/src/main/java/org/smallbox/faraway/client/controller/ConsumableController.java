@@ -7,6 +7,7 @@ import org.smallbox.faraway.client.ui.widgets.UIList;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.callback.gameEvent.OnGameLayerComplete;
+import org.smallbox.faraway.core.dependencyInjector.annotation.callback.gameEvent.OnGameUpdate;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.game.consumable.ConsumableModule;
 
@@ -23,7 +24,7 @@ public class ConsumableController extends LuaController {
     public void afterGameLayerInit() {
     }
 
-    @Override
+    @OnGameUpdate
     public void onControllerUpdate() {
         consumableList.removeAllViews();
 

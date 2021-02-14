@@ -23,14 +23,13 @@ import java.util.Comparator;
 
 @GameObject
 public class AreaPanelController extends LuaController {
-
-    @Inject private UIEventManager uiEventManager;
     @Inject private GameSelectionManager gameSelectionManager;
-    @Inject private AreaModule areaModule;
     @Inject private MainPanelController mainPanelController;
-    @Inject private AreaLayer areaLayer;
     @Inject private GameActionManager gameActionManager;
     @Inject private DependencyManager dependencyManager;
+    @Inject private UIEventManager uiEventManager;
+    @Inject private AreaModule areaModule;
+    @Inject private AreaLayer areaLayer;
 
     @BindLua private UIList listAreasAdd;
     @BindLua private UIList listAreasSub;
@@ -51,15 +50,6 @@ public class AreaPanelController extends LuaController {
                 });
 
         listAreasAdd.switchViews();
-    }
-
-    @Override
-    public void onRefreshUI(int frame) {
-
-    }
-
-    @Override
-    public void onMouseMove(int x, int y, int button) {
     }
 
 }
