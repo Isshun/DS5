@@ -4,11 +4,12 @@ import org.apache.commons.lang3.StringUtils;
 import org.smallbox.faraway.core.dependencyInjector.DependencyManager;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
+import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnGameUpdate;
 import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnInit;
-import org.smallbox.faraway.core.module.GenericGameModule;
 import org.smallbox.faraway.core.game.DataManager;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameTime;
+import org.smallbox.faraway.core.module.GenericGameModule;
 import org.smallbox.faraway.game.character.CharacterModule;
 import org.smallbox.faraway.game.character.model.base.CharacterModel;
 import org.smallbox.faraway.game.characterNeed.CharacterNeedModule;
@@ -32,7 +33,7 @@ public class CharacterBuffModule extends GenericGameModule<BuffModel> {
         buffFactories = dependencyManager.getSubTypesOf(BuffFactory.class);
     }
 
-    @Override
+    @OnGameUpdate
     public void onGameUpdate() {
         characterModule.getAll().forEach(this::addMissingBuffs);
 

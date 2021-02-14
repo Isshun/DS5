@@ -5,6 +5,7 @@ import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnGameNewDay;
 import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnGameNewHour;
 import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnGameNewMonth;
+import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnGameUpdate;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameObserver;
 import org.smallbox.faraway.core.game.GameTime;
@@ -46,7 +47,7 @@ public class WorldTemperatureModule extends SuperGameModule2<WeatherModuleObserv
         Optional.ofNullable(game.getCurrentMonth()).ifPresent(currentMonth -> monthlyTemperature = Random.interval(currentMonth.temperature));
     }
 
-    @Override
+    @OnGameUpdate
     public void onGameUpdate() {
 
         // Refresh temperatureTransition if weather has changed since last update

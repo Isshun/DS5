@@ -5,8 +5,10 @@ import org.smallbox.faraway.client.gameAction.GameActionMode;
 import org.smallbox.faraway.client.shortcut.GameShortcut;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
+import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnGameUpdate;
 import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnInit;
 import org.smallbox.faraway.core.game.DataManager;
+import org.smallbox.faraway.core.game.ThreadManager;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.module.GenericGameModule;
 import org.smallbox.faraway.game.area.AreaModule;
@@ -22,6 +24,7 @@ import java.util.stream.IntStream;
 
 @GameObject
 public class PlantModule extends GenericGameModule<PlantItem> {
+    @Inject private ThreadManager threadManager;
     @Inject private DataManager dataManager;
     @Inject private WorldModule worldModule;
     @Inject private ConsumableModule consumableModule;
@@ -35,7 +38,7 @@ public class PlantModule extends GenericGameModule<PlantItem> {
         areaModule.addAreaClass(GardenArea.class);
     }
 
-    @Override
+    @OnGameUpdate
     public void onGameUpdate() {
 //        // Fait pousser les plantes
 //        modelList.stream()
@@ -45,7 +48,7 @@ public class PlantModule extends GenericGameModule<PlantItem> {
         // Fait pousser les plantes
         modelList.stream()
                 .filter(plant -> computeGrowingInfo(plant))
-                .forEach(plant -> plant.grow(getHourInterval()));
+                .forEach(plant -> plant.grow(threadManager.getHourInterval()));
 
 //        // Récolte les plantes arrivées à maturité
 //        modelList.stream()

@@ -11,8 +11,9 @@ import org.smallbox.faraway.client.renderer.Viewport;
 import org.smallbox.faraway.client.renderer.WorldCameraManager;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
+import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnGameLongUpdate;
+import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnGameUpdate;
 import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnInit;
-import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameObserver;
 import org.smallbox.faraway.core.game.GameTime;
 import org.smallbox.faraway.game.item.ItemModule;
@@ -55,7 +56,7 @@ public class LightLayer extends BaseLayer implements GameObserver {
 
     }
 
-    @Override
+    @OnGameUpdate
     public void onGameUpdate() {
 //        sunLight.setDirection(gameTime.now().toLocalDate().atStartOfDay().until(gameTime.now(), ChronoUnit.SECONDS) / SECONDS_IN_DAY * 360);
     }
@@ -68,8 +69,8 @@ public class LightLayer extends BaseLayer implements GameObserver {
         rayHandler.updateAndRender();
     }
 
-    @Override
-    public void onGameLongUpdate(Game game) {
+    @OnGameLongUpdate
+    public void onGameLongUpdate() {
         itemModule.getAll().forEach(this::createBoxes);
     }
 

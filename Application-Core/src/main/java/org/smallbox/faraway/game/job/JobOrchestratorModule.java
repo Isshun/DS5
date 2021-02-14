@@ -3,6 +3,7 @@ package org.smallbox.faraway.game.job;
 import org.smallbox.faraway.core.config.ApplicationConfig;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
+import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnGameLongUpdate;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameTime;
 import org.smallbox.faraway.core.module.SuperGameModule;
@@ -31,8 +32,8 @@ public class JobOrchestratorModule extends SuperGameModule<JobModel, JobModuleOb
     @Inject private GameTime gameTime;
     @Inject private Game game;
 
-    @Override
-    public void onGameLongUpdate(Game game) {
+    @OnGameLongUpdate
+    public void onGameLongUpdate() {
         List<JobModel> potentialJobs = jobModule.getAll().stream()
                 .filter(JobModel::isAvailable)
                 .filter(JobModel::isFree)

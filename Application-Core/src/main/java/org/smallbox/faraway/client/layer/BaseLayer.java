@@ -144,12 +144,10 @@ public abstract class BaseLayer implements GameObserver, GameClientObserver {
     public long getLastDrawDelay() { return _lastDrawDelay; }
 
     public final void gameStart(Game game) {
-        Log.debug(getClass(), "start rendere");
+        Log.debug(getClass(), "start renderer");
 
         _width = game.getInfo().worldWidth;
         _height = game.getInfo().worldHeight;
-
-        onGameStart(game);
 
         _isLoaded = true;
     }

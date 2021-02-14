@@ -13,10 +13,6 @@ public class LuaModule extends AbsGameModule {
         _directory = directory;
     }
 
-    @Override
-    protected void onGameUpdate(Game game, int tick) {
-    }
-
     public void setActivate(boolean isActivate) { _isActivate = isActivate; }
 
     public File getDirectory() {

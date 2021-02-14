@@ -6,6 +6,7 @@ import org.smallbox.faraway.client.gameAction.GameActionMode;
 import org.smallbox.faraway.client.shortcut.GameShortcut;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
+import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnGameUpdate;
 import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnInit;
 import org.smallbox.faraway.game.area.AreaModule;
 import org.smallbox.faraway.game.area.AreaModuleBase;
@@ -35,7 +36,7 @@ public class DigModule extends AreaModuleBase<DigAction> {
         areaModule.addAreaClass(DigAction.class);
     }
 
-    @Override
+    @OnGameUpdate
     public void onGameUpdate() {
         List<Parcel> parcelInDigArea = areaModule.getParcelsByType(DigAction.class);
         List<Parcel> parcelInDigJob = jobModule.getAll().stream()

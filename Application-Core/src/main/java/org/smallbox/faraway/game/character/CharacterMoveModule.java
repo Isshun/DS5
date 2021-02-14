@@ -1,18 +1,19 @@
 package org.smallbox.faraway.game.character;
 
+import org.smallbox.faraway.core.config.ApplicationConfig;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
-import org.smallbox.faraway.core.module.SuperGameModule2;
+import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnGameUpdate;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameManager;
-import org.smallbox.faraway.game.job.JobModel;
-import org.smallbox.faraway.game.world.WorldHelper;
 import org.smallbox.faraway.core.game.model.MovableModel;
-import org.smallbox.faraway.core.config.ApplicationConfig;
+import org.smallbox.faraway.core.module.SuperGameModule2;
 import org.smallbox.faraway.core.path.PathManager;
-import org.smallbox.faraway.game.world.Parcel;
 import org.smallbox.faraway.game.character.model.PathModel;
 import org.smallbox.faraway.game.character.model.base.CharacterModel;
+import org.smallbox.faraway.game.job.JobModel;
+import org.smallbox.faraway.game.world.Parcel;
+import org.smallbox.faraway.game.world.WorldHelper;
 import org.smallbox.faraway.util.Constant;
 import org.smallbox.faraway.util.GameException;
 import org.smallbox.faraway.util.MoveListener;
@@ -35,7 +36,7 @@ public class CharacterMoveModule extends SuperGameModule2<CharacterModuleObserve
         return Constant.MODULE_CHARACTER_PRIORITY;
     }
 
-    @Override
+    @OnGameUpdate
     public void onGameUpdate() {
 //        fixCharacterPosition();
 

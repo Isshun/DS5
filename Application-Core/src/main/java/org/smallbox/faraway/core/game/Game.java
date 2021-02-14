@@ -5,11 +5,8 @@ import org.smallbox.faraway.core.config.ApplicationConfig;
 import org.smallbox.faraway.core.dependencyInjector.DependencyManager;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
-import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnGameNewDay;
-import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnGameNewHour;
-import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnGameNewMonth;
+import org.smallbox.faraway.core.dependencyInjector.annotationEvent.*;
 import org.smallbox.faraway.core.module.AbsGameModule;
-import org.smallbox.faraway.core.module.ModuleBase;
 import org.smallbox.faraway.core.save.GameInfo;
 import org.smallbox.faraway.game.planet.PlanetInfo;
 import org.smallbox.faraway.game.planet.PlanetModel;
@@ -41,11 +38,10 @@ public class Game {
         return currentMonth;
     }
 
-    public void addTick() {
+    @OnGameUpdate
+    private void onGameUpdate() {
         _tick++;
-    }
 
-    public void update() {
         int hour = gameTime.getHour();
         int day = gameTime.getDay();
         int month = gameTime.getMonth();
@@ -103,7 +99,6 @@ public class Game {
 
     public void                             setRunning(boolean running) {
         _isRunning = running;
-        Application.notify(_isRunning ? GameObserver::onGameResume : GameObserver::onGamePaused);
     }
 
     public double                           getTickPerHour() { return _tickPerHour; }
@@ -169,7 +164,6 @@ public class Game {
 
         _modules.forEach(Application::addObserver);
 //        _modules.forEach(Application.dependencyInjector::register);
-        _modules.forEach(ModuleBase::create);
     }
 
     /**
@@ -183,16 +177,17 @@ public class Game {
         // Call onGameInit method to each modules
 //        _modules = Application.moduleManager.getGameModules().stream().filter(ModuleBase::isLoaded).collect(Collectors.toList());
         _modules.sort((o1, o2) -> o2.getModulePriority() - o1.getModulePriority());
-        _modules.forEach(module -> module.createGame(this));
+        _modules.forEach(AbsGameModule::createGame);
 
         _status = GameStatus.CREATED;
     }
 
-    public void start() {
-        _modules.stream().filter(ModuleBase::isLoaded).forEach(module -> module.startGame(this));
+    @OnGameStart
+    private void onGameStart() {
         _status = GameStatus.STARTED;
     }
 
+    @OnGameStop
     public void stop() {
         _status = GameStatus.STOPPED;
     }

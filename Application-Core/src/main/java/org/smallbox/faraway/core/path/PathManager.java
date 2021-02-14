@@ -6,6 +6,8 @@ import com.badlogic.gdx.ai.pfa.GraphPath;
 import com.badlogic.gdx.ai.pfa.indexed.IndexedAStarPathFinder;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
+import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnGameStart;
+import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnGameUpdate;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.module.SuperGameModule;
 import org.smallbox.faraway.core.path.graph.ParcelGraph;
@@ -42,12 +44,13 @@ public class PathManager extends SuperGameModule {
         _runnable = new ArrayList<>();
     }
 
+    @OnGameStart
     public void initParcels() {
         parcelGraph = new ParcelGraph(worldModule.getAll());
     }
 
-    @Override
-    protected void onGameUpdate(Game game, int tick) {
+    @OnGameUpdate
+    private void onGameUpdate() {
         _runnable.forEach(java.lang.Runnable::run);
         _runnable.clear();
     }

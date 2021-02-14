@@ -12,6 +12,7 @@ import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnInit;
 import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnSettingsUpdate;
 import org.smallbox.faraway.core.game.GameObserver;
+import org.smallbox.faraway.core.game.ThreadManager;
 import org.smallbox.faraway.game.world.ObjectModel;
 import org.smallbox.faraway.util.GameException;
 import org.smallbox.faraway.util.log.Log;
@@ -34,7 +35,9 @@ public class DependencyManager {
     private boolean _init = false;
     private boolean _initGame = false;
 
-    public static DependencyManager getInstance() { return _self; }
+    public static DependencyManager getInstance() {
+        return _self;
+    }
 
     private DependencyManager() {
         register(this);
@@ -75,7 +78,7 @@ public class DependencyManager {
             }
 
             if (object instanceof GameObserver) {
-                Application.addObserver((GameObserver)object);
+                Application.addObserver((GameObserver) object);
             }
 
             register(object);
@@ -92,7 +95,7 @@ public class DependencyManager {
         T object = create(cls);
         doInjectShortcut(object);
         doInjectDependency(object, cls, false);
-        callInitMethod(object, false);
+        callInitMethod(object);
         return object;
     }
 
@@ -147,7 +150,7 @@ public class DependencyManager {
         _applicationObjectPoolByClass.values().stream().map(dependencyInfo -> dependencyInfo.dependency).forEach(host -> {
             Log.debug("Inject dependency to: " + host.getClass().getSimpleName());
             doInjectDependency(host, host.getClass(), false);
-            callInitMethod(host, false);
+            callInitMethod(host);
         });
 
         _applicationObjectPoolByClass.values().stream().map(dependencyInfo -> dependencyInfo.dependency).forEach(this::doInjectShortcut);
@@ -172,7 +175,7 @@ public class DependencyManager {
             doInjectDependency(host, host.getClass(), true);
         });
         _gameObjectPoolByClass.values().stream().map(dependencyInfo -> dependencyInfo.dependency).forEach(this::doInjectShortcut);
-        _gameObjectPoolByClass.values().stream().map(dependencyInfo -> dependencyInfo.dependency).forEach(host -> callInitMethod(host, true));
+        _gameObjectPoolByClass.values().stream().map(dependencyInfo -> dependencyInfo.dependency).forEach(host -> callInitMethod(host));
     }
 
     @OnSettingsUpdate
@@ -203,7 +206,7 @@ public class DependencyManager {
             doInjectDependency(host, superClass, gameExists);
         }
 
-        for (Field field: cls.getDeclaredFields()) {
+        for (Field field : cls.getDeclaredFields()) {
 
             try {
                 field.setAccessible(true);
@@ -246,7 +249,7 @@ public class DependencyManager {
 
         // For each ApplicationObject, set to null every field annotated with @Inject representing a GameObject
         _applicationObjectPoolByClass.values().forEach(dependencyInfo -> {
-            for (Field field: dependencyInfo.dependency.getClass().getDeclaredFields()) {
+            for (Field field : dependencyInfo.dependency.getClass().getDeclaredFields()) {
                 try {
                     field.setAccessible(true);
                     if (field.isAnnotationPresent(Inject.class) && field.getType().isAnnotationPresent(GameObject.class)) {
@@ -291,7 +294,7 @@ public class DependencyManager {
         return _gameObjectPoolByClass.values();
     }
 
-    private <T> void callInitMethod(T model, boolean gameExists) {
+    private <T> void callInitMethod(T model) {
         callMethodAnnotatedBy(model, OnInit.class);
     }
 
@@ -300,16 +303,24 @@ public class DependencyManager {
         _gameObjectPoolByClass.values().forEach(dependencyInfo -> callMethodAnnotatedBy(dependencyInfo.dependency, annotationClass));
     }
 
-    public <T> void callMethodAnnotatedBy(T model, Class<? extends Annotation> annotationClass) {
-        for (Method method: model.getClass().getDeclaredMethods()) {
-            try {
-                method.setAccessible(true);
-                if (method.isAnnotationPresent(annotationClass)) {
-                    method.invoke(model);
+    private <T> void callMethodAnnotatedBy(T model, Class<? extends Annotation> annotationClass) {
+        for (Method method : model.getClass().getDeclaredMethods()) {
+            method.setAccessible(true);
+            if (method.isAnnotationPresent(annotationClass)) {
+                if (annotationClass.getSimpleName().equals("OnGameUpdate") || annotationClass.getSimpleName().equals("OnGameLongUpdate")) {
+                    getDependency(ThreadManager.class).addRunnable(model, () -> invokeMethod(model, method));
+                } else {
+                    invokeMethod(model, method);
                 }
-            } catch (IllegalAccessException | InvocationTargetException e) {
-                throw new GameException(DependencyManager.class, e);
             }
+        }
+    }
+
+    private <T> void invokeMethod(T model, Method method) {
+        try {
+            method.invoke(model);
+        } catch (Exception e) {
+            Log.error(e);
         }
     }
 
@@ -323,7 +334,7 @@ public class DependencyManager {
         List<Class<?>> toRemove = collection.values().stream()
                 .map(dependencyInfo -> dependencyInfo.dependency)
                 .filter(o -> o instanceof LuaController)
-                .map(o -> (LuaController)o)
+                .map(o -> (LuaController) o)
                 .filter(controller -> luaControllerManager.getFileName(controller.getClass().getCanonicalName()) == null)
                 .map(LuaController::getClass)
                 .collect(Collectors.toList());

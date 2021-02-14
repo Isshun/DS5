@@ -2,8 +2,10 @@ package org.smallbox.faraway.game.character;
 
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
+import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnGameUpdate;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameTime;
+import org.smallbox.faraway.core.game.ThreadManager;
 import org.smallbox.faraway.core.module.SuperGameModule2;
 import org.smallbox.faraway.game.character.model.base.CharacterModel;
 import org.smallbox.faraway.game.job.*;
@@ -19,6 +21,7 @@ import java.util.concurrent.TimeUnit;
 public class CharacterJobModule extends SuperGameModule2<CharacterModuleObserver> {
     @Inject private CharacterMoveModule characterMoveModule;
     @Inject private CharacterModule characterModule;
+    @Inject private ThreadManager threadManager;
     @Inject private JobModule jobModule;
     @Inject private GameTime gameTime;
     @Inject private Game game;
@@ -28,9 +31,9 @@ public class CharacterJobModule extends SuperGameModule2<CharacterModuleObserver
         return Constant.MODULE_CHARACTER_PRIORITY;
     }
 
-    @Override
+    @OnGameUpdate
     public void onGameUpdate() {
-        double hourInterval = getTickInterval() / game.getTickPerHour();
+        double hourInterval = threadManager.getTickInterval() / game.getTickPerHour();
 
         characterModule.getAll().forEach(character -> {
             Optional.ofNullable(character.getJob()).ifPresent(job -> actionJob(character, job, hourInterval));

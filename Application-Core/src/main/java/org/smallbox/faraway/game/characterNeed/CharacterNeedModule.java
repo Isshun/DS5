@@ -2,14 +2,14 @@ package org.smallbox.faraway.game.characterNeed;
 
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
-import org.smallbox.faraway.core.module.SuperGameModule;
+import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnGameUpdate;
 import org.smallbox.faraway.core.game.DataManager;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameManager;
 import org.smallbox.faraway.core.game.GameTime;
-import org.smallbox.faraway.game.character.CharacterInfo;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
-import org.smallbox.faraway.game.consumable.Consumable;
+import org.smallbox.faraway.core.module.SuperGameModule;
+import org.smallbox.faraway.game.character.CharacterInfo;
 import org.smallbox.faraway.game.character.CharacterModule;
 import org.smallbox.faraway.game.character.CharacterTimetableExtra;
 import org.smallbox.faraway.game.character.model.base.CharacterModel;
@@ -17,6 +17,7 @@ import org.smallbox.faraway.game.character.model.base.CharacterNeedsExtra;
 import org.smallbox.faraway.game.character.model.base.NeedEntry;
 import org.smallbox.faraway.game.characterBuff.CharacterBuffModule;
 import org.smallbox.faraway.game.characterRelation.CharacterRelationModule;
+import org.smallbox.faraway.game.consumable.Consumable;
 import org.smallbox.faraway.game.consumable.ConsumableModule;
 import org.smallbox.faraway.game.consumable.ConsumeJob;
 import org.smallbox.faraway.game.consumable.ConsumeJobFactory;
@@ -48,7 +49,7 @@ public class CharacterNeedModule extends SuperGameModule {
 
     private final Map<NeedEntry, JobModel> _jobs = new ConcurrentHashMap<>();
 
-    @Override
+    @OnGameUpdate
     public void onGameUpdate() {
         characterModule.getAll().forEach(character -> {
             if (character.hasExtra(CharacterNeedsExtra.class)) {

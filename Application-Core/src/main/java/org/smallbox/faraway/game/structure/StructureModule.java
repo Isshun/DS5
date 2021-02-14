@@ -1,10 +1,10 @@
 package org.smallbox.faraway.game.structure;
 
-import org.smallbox.faraway.util.GameException;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
+import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnGameUpdate;
+import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnInit;
 import org.smallbox.faraway.core.game.DataManager;
-import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.module.SuperGameModule;
 import org.smallbox.faraway.core.path.PathManager;
@@ -16,6 +16,7 @@ import org.smallbox.faraway.game.job.JobModule;
 import org.smallbox.faraway.game.job.JobModuleObserver;
 import org.smallbox.faraway.game.world.Parcel;
 import org.smallbox.faraway.game.world.WorldModule;
+import org.smallbox.faraway.util.GameException;
 import org.smallbox.faraway.util.log.Log;
 
 @GameObject
@@ -27,8 +28,8 @@ public class StructureModule extends SuperGameModule<StructureItem, StructureMod
     @Inject private BuildJobFactory buildJobFactory;
     @Inject private DataManager dataManager;
 
-    @Override
-    public void onGameCreate(Game game) {
+    @OnInit
+    public void onGameCreate() {
 //        worldInteractionModule.addObserver(new WorldInteractionModuleObserver() {
 //            public StructureItem _lastStructure;
 //
@@ -65,11 +66,7 @@ public class StructureModule extends SuperGameModule<StructureItem, StructureMod
         });
     }
 
-    @Override
-    public void onGameStart(Game game) {
-    }
-
-    @Override
+    @OnGameUpdate
     public void onGameUpdate() {
 //        createBuildJobs(jobModule, consumableModule, buildJobFactory, _structures);
 //        createRepairJobs(jobModule, _structures);
@@ -103,14 +100,12 @@ public class StructureModule extends SuperGameModule<StructureItem, StructureMod
         }
     }
 
-    @Override
     public void removeObject(MapObjectModel mapObjectModel) {
         if (mapObjectModel.isStructure() && mapObjectModel instanceof StructureItem) {
             removeStructure((StructureItem) mapObjectModel);
         }
     }
 
-    @Override
     public void putObject(Parcel parcel, ItemInfo itemInfo, int data, boolean complete) {
         if (itemInfo.isStructure) {
             putStructure(parcel, itemInfo, data, complete);

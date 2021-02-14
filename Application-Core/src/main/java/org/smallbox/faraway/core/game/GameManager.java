@@ -3,7 +3,6 @@ package org.smallbox.faraway.core.game;
 import com.badlogic.gdx.Gdx;
 import org.smallbox.faraway.client.shortcut.GameShortcut;
 import org.smallbox.faraway.client.ui.UIManager;
-import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.config.ApplicationConfig;
 import org.smallbox.faraway.core.dependencyInjector.DependencyManager;
 import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject;
@@ -108,25 +107,12 @@ public class GameManager implements GameObserver {
             listener.run();
         }
 
-        pathManager.initParcels();
-
-        Application.notify(observer -> observer.onGameStart(_game));
-
-        _game.start();
-        _game.getModules().forEach(module -> module.startGame(_game));
-
-        // Launch background thread
-        threadManager.launchBackgroundThread();
-
         dependencyManager.callMethodAnnotatedBy(OnGameStart.class);
     }
 
     public void closeGame() {
         if (_game != null) {
-            _game.stop();
             _game = null;
-
-            threadManager.getScheduler().shutdown();
 
             dependencyManager.callMethodAnnotatedBy(OnGameStop.class);
             dependencyManager.destroyGameObjects();

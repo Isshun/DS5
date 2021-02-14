@@ -93,7 +93,7 @@ public class Log {
         _lastErrorMessage = message;
         _lastErrorTime = System.currentTimeMillis();
 
-        errorMessages.add(new ImmutablePair<>(message, System.currentTimeMillis()));
+        errorMessages.add(new ImmutablePair<>(String.valueOf(message), System.currentTimeMillis()));
 
         if (message != null) {
             print(LogLevel.ERROR, message);

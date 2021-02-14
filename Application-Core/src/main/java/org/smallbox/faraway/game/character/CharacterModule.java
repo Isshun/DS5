@@ -3,6 +3,7 @@ package org.smallbox.faraway.game.character;
 import org.apache.commons.collections4.CollectionUtils;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
+import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnGameUpdate;
 import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnInit;
 import org.smallbox.faraway.core.game.DataManager;
 import org.smallbox.faraway.core.module.SuperGameModule;
@@ -42,7 +43,7 @@ public class CharacterModule extends SuperGameModule<CharacterModel, CharacterMo
         modelList = new LinkedBlockingQueue<>();
     }
 
-    @Override
+    @OnGameUpdate
     public void onGameUpdate() {
 
 //        modelList.stream()

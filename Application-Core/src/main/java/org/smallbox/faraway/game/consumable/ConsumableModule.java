@@ -1,24 +1,24 @@
 package org.smallbox.faraway.game.consumable;
 
-import org.smallbox.faraway.util.GameException;
+import org.smallbox.faraway.core.config.ApplicationConfig;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
-import org.smallbox.faraway.core.module.SuperGameModule;
+import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnGameUpdate;
 import org.smallbox.faraway.core.game.DataManager;
-import org.smallbox.faraway.core.game.Game;
-import org.smallbox.faraway.game.world.WorldHelper;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
-import org.smallbox.faraway.core.config.ApplicationConfig;
+import org.smallbox.faraway.core.module.SuperGameModule;
 import org.smallbox.faraway.core.path.PathManager;
 import org.smallbox.faraway.core.world.model.ItemFilter;
 import org.smallbox.faraway.core.world.model.MapObjectModel;
-import org.smallbox.faraway.game.world.Parcel;
 import org.smallbox.faraway.game.character.model.PathModel;
 import org.smallbox.faraway.game.job.JobModel;
 import org.smallbox.faraway.game.job.JobModule;
 import org.smallbox.faraway.game.job.JobStatus;
 import org.smallbox.faraway.game.structure.StructureModule;
+import org.smallbox.faraway.game.world.Parcel;
+import org.smallbox.faraway.game.world.WorldHelper;
 import org.smallbox.faraway.game.world.WorldModule;
+import org.smallbox.faraway.util.GameException;
 import org.smallbox.faraway.util.Random;
 import org.smallbox.faraway.util.log.Log;
 
@@ -303,32 +303,7 @@ public class ConsumableModule extends SuperGameModule<Consumable, ConsumableModu
 
     private final Collection<ConsumableJobLock> _locks = new ConcurrentLinkedQueue<>();
 
-    @Override
-    public void onGameCreate(Game game) {
-//        worldInteractionModule.addObserver(new WorldInteractionModuleObserver() {
-//            private ConsumableItem _lastConsumable;
-//            private ConsumableItem _currentConsumable;
-//
-//            @Override
-//            public void onSelect(GameEvent event, Collection<ParcelModel> parcels) {
-//                _currentConsumable = null;
-//                _consumables.stream()
-//                        .filter(consumable -> parcels.contains(consumable.getParcel()))
-//                        .forEach(consumable -> {
-//                            _currentConsumable = consumable;
-//                            notifyObservers(obs -> obs.onSelectConsumable(consumable));
-//                        });
-//
-//                if (_lastConsumable != null && _currentConsumable == null) {
-//                    notifyObservers(obs -> obs.onDeselectConsumable(_lastConsumable));
-//                }
-//
-//                _lastConsumable = _currentConsumable;
-//            }
-//        });
-    }
-
-    @Override
+    @OnGameUpdate
     public void onGameUpdate() {
         getAll().forEach(Consumable::fixPosition);
 
@@ -475,14 +450,12 @@ public class ConsumableModule extends SuperGameModule<Consumable, ConsumableModu
         }
     }
 
-    @Override
     public void putObject(Parcel parcel, ItemInfo itemInfo, int data, boolean complete) {
         if (itemInfo.isConsumable) {
             putConsumable(parcel, itemInfo, data);
         }
     }
 
-    @Override
     public void removeObject(MapObjectModel mapObjectModel) {
         if (mapObjectModel.isConsumable() && mapObjectModel instanceof Consumable) {
             removeConsumable((Consumable) mapObjectModel);

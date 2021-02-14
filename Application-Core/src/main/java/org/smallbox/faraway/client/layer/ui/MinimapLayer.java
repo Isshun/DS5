@@ -18,6 +18,9 @@ import org.smallbox.faraway.core.config.ApplicationConfig;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.dependencyInjector.annotationEvent.AfterGameLayerInit;
+import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnGameLongUpdate;
+import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnGameStop;
+import org.smallbox.faraway.core.dependencyInjector.gameAction.OnGameMapChange;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameManager;
 import org.smallbox.faraway.game.character.CharacterModule;
@@ -125,8 +128,8 @@ public class MinimapLayer extends BaseLayer {
         }
     }
 
-    @Override
-    public void onGameLongUpdate(Game game) {
+    @OnGameLongUpdate
+    public void onGameLongUpdate() {
         if (mainPanelController != null) {
             Optional.ofNullable(mainPanelController.getMapContainer()).ifPresent(container -> {
                 if (miniMapWidth != (int) (container.getWidth() * applicationConfig.uiScale) || miniMapHeight != (int) (container.getHeight() * applicationConfig.uiScale)) {
@@ -136,8 +139,8 @@ public class MinimapLayer extends BaseLayer {
         }
     }
 
-    @Override
-    public void onGameStop(Game game) {
+    @OnGameStop
+    public void onGameStop() {
         _pixmap.dispose();
     }
 
@@ -147,8 +150,8 @@ public class MinimapLayer extends BaseLayer {
         _dirty = true;
     }
 
-    @Override
-    public void onRemoveRock(Parcel parcel) {
+    @OnGameMapChange
+    public void onGameMapChange() {
         _dirty = true;
     }
 

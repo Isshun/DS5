@@ -12,7 +12,7 @@ import org.smallbox.faraway.client.renderer.Viewport;
 import org.smallbox.faraway.core.config.ApplicationConfig;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
-import org.smallbox.faraway.core.game.Game;
+import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnGameLongUpdate;
 import org.smallbox.faraway.game.world.Parcel;
 import org.smallbox.faraway.game.world.WorldModule;
 import org.smallbox.faraway.util.Constant;
@@ -31,8 +31,8 @@ public class WorldGroundLayer extends BaseMapLayer {
     private final Map<Parcel, Texture> cachedGrounds = new ConcurrentHashMap<>();
     private final Map<Parcel, Texture> cachedRocks = new ConcurrentHashMap<>();
 
-    @Override
-    public void onGameLongUpdate(Game game) {
+    @OnGameLongUpdate
+    public void onGameLongUpdate() {
         cachedGrounds.clear();
         cachedRocks.clear();
     }

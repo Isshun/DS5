@@ -5,7 +5,10 @@ import org.smallbox.faraway.client.asset.music.BackgroundMusicManager;
 import org.smallbox.faraway.core.config.ApplicationConfig;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
+import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnGameLongUpdate;
 import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnGameNewDay;
+import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnGameStart;
+import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnGameUpdate;
 import org.smallbox.faraway.core.game.DataManager;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameObserver;
@@ -46,8 +49,8 @@ public class WeatherModule extends SuperGameModule2<WeatherModuleObserver> imple
     private PlanetInfo.DayTime currentDayTime;
     private RegionInfo.RegionSeason currentSeason;
 
-    @Override
-    public void onGameStart(Game game) {
+    @OnGameStart
+    public void onGameStart() {
         _floors = game.getInfo().worldFloors;
         _weather = game.getInfo().region.weather.get(0).info;
         currentDayTime = game.getInfo().planet.dayTimes.get(gameTime.getHour());
@@ -77,11 +80,11 @@ public class WeatherModule extends SuperGameModule2<WeatherModuleObserver> imple
                 .findFirst().orElse(null);
     }
 
-    @Override
-    public void onGameLongUpdate(Game game) {
+    @OnGameLongUpdate
+    public void onGameLongUpdate() {
 
         // Change weather
-        if (gameTime.now().isAfter(lastChange.plus(24, HOURS))) {
+        if (lastChange == null || gameTime.now().isAfter(lastChange.plus(24, HOURS))) {
             loadWeather(Random.ofNullable(game.getInfo().region.weather).map(regionWeather -> regionWeather.info).orElse(dataManager.weathers.get("base.weather.regular")));
         }
 
@@ -103,7 +106,7 @@ public class WeatherModule extends SuperGameModule2<WeatherModuleObserver> imple
 //        notifyObservers(observer -> observer.onTemperatureChange(_temperatureByFloor[WorldHelper.getGroundFloor()]));
     }
 
-    @Override
+    @OnGameUpdate
     public void onGameUpdate() {
 
         // Set light

@@ -39,8 +39,8 @@ public abstract class DashboardLayerBase {
     }
 
     protected void drawDebug(BaseRenderer renderer, String label, Object object, Runnable runnable) {
-        if (index > page * ITEM_PER_PAGE && index < (page + 1) * ITEM_PER_PAGE) {
-            renderer.drawText(10, (index % ITEM_PER_PAGE * 20) + 130, "[" + label.toUpperCase() + "] " + object, index == currentIndex ? Color.YELLOW : Color.WHITE, 18, false, "sui", 1);
+        if (index >= page * ITEM_PER_PAGE && index < (page + 1) * ITEM_PER_PAGE) {
+            renderer.drawText(10, (index % ITEM_PER_PAGE * 20) + 130, "[" + label.toUpperCase() + "] " + object, index == currentIndex ? Color.YELLOW : Color.WHITE, 18, false, "monoMMM_5", 1);
             if (runnable != null) {
                 listeners.put(index, runnable);
             }

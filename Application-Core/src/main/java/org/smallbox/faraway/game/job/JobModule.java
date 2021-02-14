@@ -1,12 +1,13 @@
 package org.smallbox.faraway.game.job;
 
 import org.apache.commons.collections4.CollectionUtils;
-import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.config.ApplicationConfig;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
+import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnGameUpdate;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameTime;
+import org.smallbox.faraway.core.game.ThreadManager;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.module.SuperGameModule;
 import org.smallbox.faraway.game.character.CharacterJobModule;
@@ -31,10 +32,11 @@ public class JobModule extends SuperGameModule<JobModel, JobModuleObserver> {
     @Inject private CharacterJobModule characterJobModule;
     @Inject private ConsumableModule consumableModule;
     @Inject private ApplicationConfig applicationConfig;
+    @Inject private ThreadManager threadManager;
     @Inject private GameTime gameTime;
     @Inject private Game game;
 
-    @Override
+    @OnGameUpdate
     public void onGameUpdate() {
 
         // Check all jobs
@@ -58,7 +60,7 @@ public class JobModule extends SuperGameModule<JobModel, JobModuleObserver> {
         modelList.removeIf(job -> job.hasStatus(JOB_INVALID) || job.hasStatus(JOB_COMPLETE));
 
         // Run auto job
-        modelList.stream().filter(JobModel::isAuto).forEach(job -> characterJobModule.actionJob(null, job, getTickInterval() * game.getTickPerHour()));
+        modelList.stream().filter(JobModel::isAuto).forEach(job -> characterJobModule.actionJob(null, job, threadManager.getTickInterval() * game.getTickPerHour()));
 
     }
 
@@ -109,8 +111,6 @@ public class JobModule extends SuperGameModule<JobModel, JobModuleObserver> {
         }
 
         sortJobs();
-
-        Application.notify(observer -> observer.onJobCreate(job));
     }
 
     private void sortJobs() {

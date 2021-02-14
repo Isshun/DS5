@@ -149,7 +149,6 @@ public class ModuleManager implements GameObserver {
 
         _applicationModules.forEach(Application::addObserver);
         _applicationModules.forEach(dependencyManager::register);
-        _applicationModules.forEach(ModuleBase::create);
     }
 
     // Check if all modules have been loaded

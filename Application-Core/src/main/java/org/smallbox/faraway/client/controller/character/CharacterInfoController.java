@@ -14,7 +14,6 @@ import org.smallbox.faraway.client.ui.widgets.View;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.dependencyInjector.gameAction.OnGameSelectAction;
-import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.game.character.CharacterModule;
 import org.smallbox.faraway.game.character.model.base.CharacterModel;
 import org.smallbox.faraway.game.world.Parcel;
@@ -77,11 +76,6 @@ public class CharacterInfoController extends AbsInfoLuaController<CharacterModel
 
     @Override
     protected void onDisplayMultiple(Queue<CharacterModel> characterList) {
-    }
-
-    @Override
-    public void onGameStart(Game game) {
-//        openPage(pageStatus, btOpenStatus);
     }
 
     @BindLuaAction

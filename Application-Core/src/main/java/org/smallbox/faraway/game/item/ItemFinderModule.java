@@ -99,7 +99,4 @@ public class ItemFinderModule extends SuperGameModule {
         return null;
     }
 
-    @Override
-    protected void onGameUpdate(Game game, int tick) {
-    }
 }

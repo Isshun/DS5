@@ -7,17 +7,16 @@ import org.smallbox.faraway.client.ui.UIManager;
 import org.smallbox.faraway.client.ui.widgets.CompositeView;
 import org.smallbox.faraway.client.ui.widgets.View;
 import org.smallbox.faraway.core.Application;
-import org.smallbox.faraway.util.GameException;
 import org.smallbox.faraway.core.dependencyInjector.DependencyManager;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
-import org.smallbox.faraway.core.module.ModuleBase;
-import org.smallbox.faraway.core.module.ModuleInfo;
+import org.smallbox.faraway.core.game.DataManager;
+import org.smallbox.faraway.core.game.GameObserver;
 import org.smallbox.faraway.core.lua.data.DataExtendException;
 import org.smallbox.faraway.core.lua.data.LuaExtend;
-import org.smallbox.faraway.core.game.DataManager;
-import org.smallbox.faraway.core.game.Game;
-import org.smallbox.faraway.core.game.GameObserver;
+import org.smallbox.faraway.core.module.ModuleBase;
+import org.smallbox.faraway.core.module.ModuleInfo;
 import org.smallbox.faraway.util.FileUtils;
+import org.smallbox.faraway.util.GameException;
 import org.smallbox.faraway.util.Utils;
 import org.smallbox.faraway.util.log.Log;
 
@@ -91,12 +90,6 @@ public abstract class LuaModuleManager implements GameObserver {
 
     public Collection<LuaExtend> getExtends() {
         return _extends;
-    }
-
-    // TODO: start twice ?
-    @Override
-    public void onGameStart(Game game) {
-        _luaModules.forEach(module -> module.startGame(game));
     }
 
     public void init(boolean initGui) {

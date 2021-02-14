@@ -3,12 +3,13 @@ package org.smallbox.faraway.game.storage;
 import org.smallbox.faraway.client.controller.area.AreaInfoStorageController;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
+import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnGameUpdate;
 import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnInit;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.path.PathManager;
-import org.smallbox.faraway.game.consumable.Consumable;
 import org.smallbox.faraway.game.area.AreaModule;
 import org.smallbox.faraway.game.area.AreaModuleBase;
+import org.smallbox.faraway.game.consumable.Consumable;
 import org.smallbox.faraway.game.consumable.ConsumableModule;
 import org.smallbox.faraway.game.job.JobModule;
 import org.smallbox.faraway.game.world.WorldModule;
@@ -34,7 +35,7 @@ public class StorageModule extends AreaModuleBase<StorageArea> {
         areaModule.addAreaClass(StorageArea.class);
     }
 
-    @Override
+    @OnGameUpdate
     public void onGameUpdate() {
 
         if (_checkQueue.isEmpty()) {

@@ -1,6 +1,5 @@
 package org.smallbox.faraway.client.controller;
 
-import com.badlogic.gdx.Input;
 import org.apache.commons.collections4.CollectionUtils;
 import org.smallbox.faraway.client.controller.annotation.BindLua;
 import org.smallbox.faraway.client.controller.annotation.BindLuaAction;
@@ -10,8 +9,8 @@ import org.smallbox.faraway.client.ui.event.UIEventManager;
 import org.smallbox.faraway.client.ui.widgets.*;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
+import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnGameLongUpdate;
 import org.smallbox.faraway.core.dependencyInjector.gameAction.OnGameSelectAction;
-import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.game.item.ItemModule;
 import org.smallbox.faraway.game.item.UsableItem;
 import org.smallbox.faraway.game.itemFactory.ItemFactoryModel;
@@ -64,8 +63,8 @@ public class ItemInfoController extends AbsInfoLuaController<UsableItem> {
         gameSelectionManager.registerSelection(this);
     }
 
-    @Override
-    public void onGameLongUpdate(Game game) {
+    @OnGameLongUpdate
+    public void onGameLongUpdate() {
 
         // Refresh inventory
         if (item != null) {
@@ -277,9 +276,6 @@ public class ItemInfoController extends AbsInfoLuaController<UsableItem> {
 
     @BindLuaAction
     public void onCancelBuild(View view) {
-        if (listSelected.size() == 1) {
-            itemModule.removeObject(listSelected.peek());
-        }
     }
 
     @BindLuaAction

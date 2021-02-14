@@ -2,13 +2,14 @@ package org.smallbox.faraway.game.temperature;
 
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
-import org.smallbox.faraway.core.game.Game;
+import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnGameLongUpdate;
+import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnGameUpdate;
+import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnInit;
 import org.smallbox.faraway.core.module.SuperGameModule;
 import org.smallbox.faraway.game.item.ItemModule;
 import org.smallbox.faraway.game.room.RoomModule;
 import org.smallbox.faraway.game.room.model.RoomModel;
 import org.smallbox.faraway.game.weather.WeatherModule;
-import org.smallbox.faraway.game.weather.WeatherModuleObserver;
 import org.smallbox.faraway.game.weather.WorldTemperatureModule;
 import org.smallbox.faraway.game.world.Parcel;
 import org.smallbox.faraway.game.world.WorldModule;
@@ -26,30 +27,25 @@ public class TemperatureModule extends SuperGameModule {
 
     private Map<Parcel, Double> temperatureByParcel = new ConcurrentHashMap<>();
 
-    @Override
-    public void onGameCreate(Game game) {
-        weatherModule.addObserver(new WeatherModuleObserver() {
-            @Override
-            public void onTemperatureChange(double temperature) {
-            }
-        });
+    @OnInit
+    public void onInit() {
+//        weatherModule.addObserver(new WeatherModuleObserver() {
+//            @Override
+//            public void onTemperatureChange(double temperature) {
+//            }
+//        });
     }
 
-    @Override
-    public void onGameStart(Game game) {
-        _updateInterval = 10;
-    }
-
-    @Override
-    public void onGameLongUpdate(Game game) {
-//        worldModule.getAll().forEach(parcel -> temperatureByParcel.computeIfAbsent(parcel, p -> worldTemperatureModule.getTemperature()));
+    @OnGameLongUpdate
+    public void onGameLongUpdate() {
+        worldModule.getAll().forEach(parcel -> temperatureByParcel.put(parcel, worldTemperatureModule.getTemperature()));
     }
 
     public double getTemperature(Parcel parcel) {
         return temperatureByParcel.getOrDefault(parcel, worldTemperatureModule.getTemperature());
     }
 
-    @Override
+    @OnGameUpdate
     public void onGameUpdate() {
 //        if (roomModule != null) {
 //            roomModule.getAll().forEach(room -> {

@@ -14,7 +14,7 @@ import org.smallbox.faraway.client.renderer.extra.TextStyleBuilder;
 import org.smallbox.faraway.client.ui.widgets.UILabel;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
-import org.smallbox.faraway.core.game.Game;
+import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnGameStart;
 import org.smallbox.faraway.game.consumable.Consumable;
 import org.smallbox.faraway.game.consumable.ConsumableModule;
 import org.smallbox.faraway.game.consumable.ConsumableModuleObserver;
@@ -45,8 +45,8 @@ public class ConsumableLayer extends BaseMapLayer {
         public abstract void onTagdraw(BaseRenderer renderer, Viewport viewport);
     }
 
-    @Override
-    public void onGameStart(Game game) {
+    @OnGameStart
+    public void onGameStart() {
         consumableModule.addObserver(new ConsumableModuleObserver() {
             @Override
             public void onAddConsumable(Parcel parcel, Consumable consumable) {

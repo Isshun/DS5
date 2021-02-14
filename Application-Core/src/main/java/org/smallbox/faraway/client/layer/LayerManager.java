@@ -12,6 +12,7 @@ import org.smallbox.faraway.core.dependencyInjector.DependencyManager;
 import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnGameLayerInit;
+import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnGameStart;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameManager;
 
@@ -69,8 +70,8 @@ public class LayerManager implements GameClientObserver {
         //DependencyInjector.getInstance().register(_viewport);
     }
 
-    @Override
-    public void onGameStart(Game game) {
+    @OnGameStart
+    public void onGameStart() {
         _frame = 0;
 
         // Call gameStart on each layer

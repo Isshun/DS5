@@ -3,7 +3,8 @@ package org.smallbox.faraway.game.room;
 import org.smallbox.faraway.core.config.ApplicationConfig;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
-import org.smallbox.faraway.core.game.Game;
+import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnGameLongUpdate;
+import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnInit;
 import org.smallbox.faraway.core.module.GenericMapGameModule;
 import org.smallbox.faraway.game.item.ItemModule;
 import org.smallbox.faraway.game.room.model.*;
@@ -34,8 +35,8 @@ public class RoomModule extends GenericMapGameModule<String, RoomModel> {
         return _roomClasses;
     }
 
-    @Override
-    public void onGameCreate(Game game) {
+    @OnInit
+    public void onGameCreate() {
         addRoomClass(QuarterRoom.class);
         addRoomClass(SickbayRoom.class);
         addRoomClass(CommonRoom.class);
@@ -43,8 +44,8 @@ public class RoomModule extends GenericMapGameModule<String, RoomModel> {
         addRoomClass(TechnicalRoom.class);
     }
 
-    @Override
-    public void onGameLongUpdate(Game game) {
+    @OnGameLongUpdate
+    public void onGameLongUpdate() {
         roomExplorer.refresh();
     }
 

@@ -1,19 +1,20 @@
 package org.smallbox.faraway.game.item;
 
-import org.smallbox.faraway.game.item.job.OnUseCallback;
-import org.smallbox.faraway.game.item.job.UseJobFactory;
-import org.smallbox.faraway.util.GameException;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
+import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnGameStart;
+import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnGameUpdate;
+import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnInit;
 import org.smallbox.faraway.core.game.DataManager;
-import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.module.SuperGameModule;
 import org.smallbox.faraway.core.world.model.MapObjectModel;
 import org.smallbox.faraway.game.area.AreaModule;
 import org.smallbox.faraway.game.building.BuildJobFactory;
 import org.smallbox.faraway.game.consumable.ConsumableModule;
+import org.smallbox.faraway.game.item.job.OnUseCallback;
 import org.smallbox.faraway.game.item.job.UseJob;
+import org.smallbox.faraway.game.item.job.UseJobFactory;
 import org.smallbox.faraway.game.job.JobModel;
 import org.smallbox.faraway.game.job.JobModule;
 import org.smallbox.faraway.game.job.JobModuleObserver;
@@ -21,6 +22,7 @@ import org.smallbox.faraway.game.structure.StructureModule;
 import org.smallbox.faraway.game.world.Parcel;
 import org.smallbox.faraway.game.world.WorldHelper;
 import org.smallbox.faraway.game.world.WorldModule;
+import org.smallbox.faraway.util.GameException;
 import org.smallbox.faraway.util.log.Log;
 
 import java.util.Optional;
@@ -41,8 +43,8 @@ public class ItemModule extends SuperGameModule<UsableItem, ItemModuleObserver> 
         return useJob;
     }
 
-    @Override
-    public void onGameCreate(Game game) {
+    @OnInit
+    public void onGameCreate() {
         jobModule.addObserver(new JobModuleObserver() {
             @Override
             public void onJobCancel(JobModel job) {
@@ -58,20 +60,19 @@ public class ItemModule extends SuperGameModule<UsableItem, ItemModuleObserver> 
 //        jobModule.addJoyCheck(new CheckJoyItem());
     }
 
-    @Override
-    public void onGameStart(Game game) {
+    @OnGameStart
+    public void onGameStart() {
         getAll().stream()
                 .filter(item -> item.getBuildValue() < item.getBuildCost())
                 .forEach(this::launchBuild);
     }
 
-    @Override
+    @OnGameUpdate
     public void onGameUpdate() {
 //        createBuildJobs(jobModule, consumableModule, buildJobFactory, _items);
 //        createRepairJobs(jobModule, _items);
     }
 
-    @Override
     public void putObject(Parcel parcel, ItemInfo itemInfo, int data, boolean complete) {
         if (itemInfo.isUserItem) {
             UsableItem item = new UsableItem(itemInfo, data);

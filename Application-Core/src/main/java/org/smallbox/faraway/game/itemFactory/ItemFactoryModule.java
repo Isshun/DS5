@@ -1,11 +1,12 @@
 package org.smallbox.faraway.game.itemFactory;
 
-import org.smallbox.faraway.core.module.ModuleInfoAnnotation;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
-import org.smallbox.faraway.core.module.SuperGameModule;
+import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnGameUpdate;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.game.modelInfo.ReceiptGroupInfo;
+import org.smallbox.faraway.core.module.ModuleInfoAnnotation;
+import org.smallbox.faraway.core.module.SuperGameModule;
 import org.smallbox.faraway.game.consumable.Consumable;
 import org.smallbox.faraway.game.consumable.ConsumableModule;
 import org.smallbox.faraway.game.item.ItemModule;
@@ -23,7 +24,7 @@ public class ItemFactoryModule extends SuperGameModule {
     @Inject private ConsumableModule consumableModule;
     @Inject private ItemModule itemModule;
 
-    @Override
+    @OnGameUpdate
     public void onGameUpdate() {
         itemModule.getAll().stream()
                 .filter(item -> item.getFactory() != null)

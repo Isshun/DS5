@@ -62,22 +62,12 @@ public class SystemInfoController extends LuaController {
         }
 
         // Display game speed
-        icSpeed.setImage("data/graphics/ic_speed_" + game.getSpeed() + ".png");
+        icSpeed.setImage("data/graphics/ic_speed_" + (game.isRunning() ? 0 : game.getSpeed()) + ".png");
         imgDaytime.setImage("data/graphics/icons/daytimes/" + weatherModule.getDaytime().name + ".png");
         lbSpeed.setText("x" + game.getSpeed());
         icSpeed.setVisible(game.getSpeed() <= 3);
         lbSpeed.setVisible(game.getSpeed() > 3);
         lbFloor.setText(String.valueOf(viewport.getFloor()));
-    }
-
-    @Override
-    public void onGamePaused() {
-        icSpeed.setImage("data/graphics/ic_speed_0.png");
-    }
-
-    @Override
-    public void onGameResume() {
-        icSpeed.setImage("data/graphics/ic_speed_" + game.getSpeed() + ".png");
     }
 
     @BindLuaAction
