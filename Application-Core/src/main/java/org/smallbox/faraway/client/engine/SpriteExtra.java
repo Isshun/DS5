@@ -1,4 +1,6 @@
-package org.smallbox.faraway.client.layer;
+package org.smallbox.faraway.client.engine;
+
+import org.smallbox.faraway.client.engine.animator.Animator;
 
 public class SpriteExtra {
     public Animator animator;

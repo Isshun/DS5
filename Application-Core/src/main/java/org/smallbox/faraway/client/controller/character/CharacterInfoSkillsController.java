@@ -28,7 +28,7 @@ public class CharacterInfoSkillsController extends LuaController {
         listSkills.removeAllViews();
     }
 
-    @OnGameUpdate
+    @OnGameUpdate(runOnMainThread = true)
     protected void onControllerUpdate() {
         if (_selected != null && listSkills.getViews().isEmpty()) {
             refreshSkills();

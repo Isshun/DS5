@@ -35,7 +35,7 @@ public class CrewController extends LuaController {
 
     @BindLua private UIList listCrew;
 
-    @OnGameUpdate
+    @OnGameUpdate(runOnMainThread = true)
     public void onControllerUpdate() {
         if (listCrew != null) {
             Gdx.app.postRunnable(() -> {

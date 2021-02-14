@@ -53,7 +53,7 @@ public class LayerManager {
         _frame = 0;
     }
 
-    public void render(Game game) {
+    public void render() {
 
         // Draw
         if (gameManager.isRunning()) {

@@ -1,6 +1,7 @@
 package org.smallbox.faraway.game.world;
 
 import org.smallbox.faraway.core.dependencyInjector.DependencyManager;
+import org.smallbox.faraway.core.dependencyInjector.DependencyNotifier;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.callback.gameAction.OnGameMapChange;
@@ -22,6 +23,7 @@ import java.util.stream.Stream;
 @GameObject
 public class WorldModule extends GenericGameModule<Parcel> {
     @Inject private DependencyManager dependencyManager;
+    @Inject private DependencyNotifier dependencyNotifier;
     @Inject private WorldTemperatureModule worldTemperatureModule;
     @Inject private WeatherModule weatherModule;
     @Inject private ItemModule itemModule;
@@ -90,7 +92,7 @@ public class WorldModule extends GenericGameModule<Parcel> {
             Parcel parcelBottom = WorldHelper.getParcel(parcel.x, parcel.y, parcel.z - 1);
             if (parcelBottom != null && !parcelBottom.hasRock()) {
                 parcel.setGroundInfo(groundInfo);
-                dependencyManager.notify(OnGameMapChange.class);
+                dependencyNotifier.notify(OnGameMapChange.class);
             }
         }
     }

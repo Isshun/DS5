@@ -44,7 +44,7 @@ public class SystemInfoController extends LuaController {
         return mapContainer;
     }
 
-    @OnGameUpdate
+    @OnGameUpdate(runOnMainThread = true)
     protected void onControllerUpdate() {
 
         // Display game time

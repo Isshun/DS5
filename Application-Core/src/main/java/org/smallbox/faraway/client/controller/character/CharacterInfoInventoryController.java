@@ -16,7 +16,7 @@ public class CharacterInfoInventoryController extends LuaController {
 
     private CharacterModel _character;
 
-    @OnGameUpdate
+    @OnGameUpdate(runOnMainThread = true)
     protected void onControllerUpdate() {
         if (_character != null && _character.hasExtra(CharacterInventoryExtra.class)) {
             _character.getExtra(CharacterInventoryExtra.class).getAll().forEach(inventoryConsumable -> {

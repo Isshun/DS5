@@ -24,7 +24,7 @@ public class ConsumableController extends LuaController {
     public void afterGameLayerInit() {
     }
 
-    @OnGameUpdate
+    @OnGameUpdate(runOnMainThread = true)
     public void onControllerUpdate() {
         consumableList.removeAllViews();
 

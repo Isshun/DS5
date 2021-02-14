@@ -46,7 +46,7 @@ public class PlantInfoController extends AbsInfoLuaController<PlantItem> {
         displayPlant();
     }
 
-    @OnGameUpdate
+    @OnGameUpdate(runOnMainThread = true)
     public void onGameUpdate() {
         displayPlant();
     }

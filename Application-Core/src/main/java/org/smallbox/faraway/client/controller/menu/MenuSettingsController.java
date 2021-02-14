@@ -10,6 +10,7 @@ import org.smallbox.faraway.client.shortcut.ShortcutManager;
 import org.smallbox.faraway.client.ui.widgets.*;
 import org.smallbox.faraway.core.config.ApplicationConfig;
 import org.smallbox.faraway.core.dependencyInjector.DependencyManager;
+import org.smallbox.faraway.core.dependencyInjector.DependencyNotifier;
 import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.callback.applicationEvent.OnApplicationLayerComplete;
@@ -19,6 +20,7 @@ import org.smallbox.faraway.core.dependencyInjector.annotation.callback.applicat
 public class MenuSettingsController extends LuaController {
     @Inject private MenuMainController menuMainController;
     @Inject private DependencyManager dependencyManager;
+    @Inject private DependencyNotifier dependencyNotifier;
     @Inject private ApplicationConfig applicationConfig;
     @Inject private ShortcutManager shortcutManager;
     @Inject private InputManager inputManager;
@@ -94,7 +96,7 @@ public class MenuSettingsController extends LuaController {
         applicationConfig.musicVolume = sliderMusic.getValue();
         applicationConfig.screen.mode = screenMode;
 
-        dependencyManager.notify(OnSettingsUpdate.class);
+        dependencyNotifier.notify(OnSettingsUpdate.class);
     }
 
     @BindLuaAction

@@ -7,6 +7,7 @@ import org.apache.commons.compress.archivers.ArchiveStreamFactory;
 import org.apache.commons.compress.utils.IOUtils;
 import org.smallbox.faraway.core.ApplicationException;
 import org.smallbox.faraway.core.dependencyInjector.DependencyManager;
+import org.smallbox.faraway.core.dependencyInjector.DependencyNotifier;
 import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.callback.applicationEvent.OnLoadBegin;
@@ -22,6 +23,7 @@ import java.util.Comparator;
 @ApplicationObject
 public class GameLoadManager {
     @Inject private DependencyManager dependencyManager;
+    @Inject private DependencyNotifier dependencyNotifier;
     @Inject private SQLManager sqlManager;
     @Inject private DataManager dataManager;
     @Inject private Game game;
@@ -29,7 +31,7 @@ public class GameLoadManager {
     public void load(File gameDirectory, String prefixName, GameSerializerInterface listener) throws ApplicationException {
         Log.info("============ LOAD GAME ============");
 
-        dependencyManager.notify(OnLoadBegin.class);
+        dependencyNotifier.notify(OnLoadBegin.class);
         long time = System.currentTimeMillis();
 
         try {
@@ -40,7 +42,7 @@ public class GameLoadManager {
                 System.gc();
                 listener.onSerializerComplete();
                 deleteFiles(gameDirectory, prefixName);
-                dependencyManager.notify(OnLoadComplete.class);
+                dependencyNotifier.notify(OnLoadComplete.class);
                 Log.info("Load game completed " + (System.currentTimeMillis() - time));
             });
         } catch (IOException | ArchiveException e) {

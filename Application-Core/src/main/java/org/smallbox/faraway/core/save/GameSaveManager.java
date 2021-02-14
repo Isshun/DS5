@@ -12,6 +12,7 @@ import org.apache.commons.compress.archivers.ArchiveStreamFactory;
 import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
 import org.apache.commons.compress.utils.IOUtils;
 import org.smallbox.faraway.core.dependencyInjector.DependencyManager;
+import org.smallbox.faraway.core.dependencyInjector.DependencyNotifier;
 import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.callback.applicationEvent.OnSaveBegin;
@@ -37,6 +38,7 @@ public class GameSaveManager {
     @Inject private SQLManager sqlManager;
     @Inject private CharacterModule characterModule;
     @Inject private DependencyManager dependencyManager;
+    @Inject private DependencyNotifier dependencyNotifier;
     @Inject private GameTime gameTime;
     @Inject private DataManager dataManager;
     @Inject private Game game;
@@ -44,7 +46,7 @@ public class GameSaveManager {
     public void saveGame(GameSaveType type) {
         long time = System.currentTimeMillis();
 
-        dependencyManager.notify(OnSaveBegin.class);
+        dependencyNotifier.notify(OnSaveBegin.class);
 
         Date date = new Date();
         String prefixName = new SimpleDateFormat("yyyy-MM-dd-hh-hh-mm-ss").format(date);
@@ -61,7 +63,7 @@ public class GameSaveManager {
                     deleteFiles(gameDirectory, prefixName);
 
                     Log.info("Save game completed (" + (System.currentTimeMillis() - time) + "ms)");
-                    dependencyManager.notify(OnSaveComplete.class);
+                    dependencyNotifier.notify(OnSaveComplete.class);
                 } catch (IOException | ArchiveException e) {
                     throw new GameException(GameSaveManager.class, e, "Error during game save");
                 }

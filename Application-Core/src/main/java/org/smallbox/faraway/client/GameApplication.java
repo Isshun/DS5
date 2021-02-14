@@ -15,6 +15,7 @@ import org.smallbox.faraway.client.renderer.UIRenderer;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.config.ApplicationConfig;
 import org.smallbox.faraway.core.dependencyInjector.DependencyManager;
+import org.smallbox.faraway.core.dependencyInjector.DependencyNotifier;
 import org.smallbox.faraway.core.dependencyInjector.annotation.callback.applicationEvent.OnApplicationLayerComplete;
 import org.smallbox.faraway.core.dependencyInjector.annotation.callback.applicationEvent.OnApplicationLayerBegin;
 import org.smallbox.faraway.core.lua.ServerLuaModuleManager;
@@ -56,8 +57,8 @@ public class GameApplication extends ApplicationAdapter {
         taskManager.addLoadTask("Set textures filter", false, () -> di.getDependency(SpriteManager.class).setTexturesFilter());
         taskManager.addLoadTask("Load client lua modules", false, () -> di.getDependency(ClientLuaModuleManager.class).init(true));
         taskManager.addLoadTask("Destroy useless controller", false, di::destroyNonBindControllers);
-        taskManager.addLoadTask("Calling OnApplicationLayerInit", false, () -> di.notify(OnApplicationLayerBegin.class));
-        taskManager.addLoadTask("Calling AfterApplicationLayerInit", false, () -> di.notify(OnApplicationLayerComplete.class));
+        taskManager.addLoadTask("Calling OnApplicationLayerInit", false, () -> di.getDependency(DependencyNotifier.class).notify(OnApplicationLayerBegin.class));
+        taskManager.addLoadTask("Calling AfterApplicationLayerInit", false, () -> di.getDependency(DependencyNotifier.class).notify(OnApplicationLayerComplete.class));
         taskManager.addLoadTask("Background music", true, () -> di.getDependency(BackgroundMusicManager.class).start());
         taskManager.addLoadTask("Application ready", false, () -> Application.isLoaded = true);
         taskManager.addLoadTask("(debug) Resume game", false, GameApplication::onCreateCompleted);

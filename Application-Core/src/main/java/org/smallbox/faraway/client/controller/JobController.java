@@ -20,7 +20,7 @@ public class JobController extends LuaController {
 
     @BindLua private UIList listJobs;
 
-    @OnGameUpdate
+    @OnGameUpdate(runOnMainThread = true)
     public void onControllerUpdate() {
         jobModule.getAll().stream().filter(JobModel::isVisible).forEach(job -> {
             UIFrame frame = listJobs.createFromTemplate(UIFrame.class);

@@ -18,7 +18,11 @@ public class ConsumableDashboardLayer extends DashboardLayerBase {
         if (consumableModule != null && consumableModule.getAll() != null) {
             consumableModule.getAll().forEach(consumable -> {
                 Parcel parcel = consumable.getParcel();
-                drawDebug(renderer, "Consumable", consumable.getInfo().label + " x " + consumable.getTotalQuantity() + " at " + (parcel != null ? parcel : "???"));
+                drawDebug(renderer, "Consumable", String.format("%-32s %-16d %-16s",
+                        consumable.getInfo().label,
+                        consumable.getTotalQuantity(),
+                        (parcel != null ? parcel : "???")
+                ));
 //                consumables.put(consumable.getInfo(), quantity + consumable.getFreeQuantity());
             });
 

@@ -1,4 +1,4 @@
-package org.smallbox.faraway.client.layer;
+package org.smallbox.faraway.client.engine.animator;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Interpolation;
@@ -6,7 +6,7 @@ import com.badlogic.gdx.math.Interpolation;
 import java.util.Random;
 import java.util.function.BiConsumer;
 
-public class Animator {
+public class Animator implements IAnimator {
     private final Interpolation interpolation;
     private final BiConsumer<Sprite, Float> spriteSupplier;
     private final float fromValue;

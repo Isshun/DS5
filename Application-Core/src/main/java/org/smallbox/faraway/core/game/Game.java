@@ -2,6 +2,7 @@ package org.smallbox.faraway.core.game;
 
 import org.smallbox.faraway.core.config.ApplicationConfig;
 import org.smallbox.faraway.core.dependencyInjector.DependencyManager;
+import org.smallbox.faraway.core.dependencyInjector.DependencyNotifier;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.callback.gameEvent.*;
@@ -14,6 +15,7 @@ import org.smallbox.faraway.util.Utils;
 @GameObject
 public class Game {
     @Inject private DependencyManager dependencyManager;
+    @Inject private DependencyNotifier dependencyNotifier;
     @Inject private GameTime gameTime;
 
     private final ApplicationConfig config;
@@ -61,15 +63,15 @@ public class Game {
 
         if (gameTime.getMonth() > month) {
             currentMonth = _regionInfo.months.stream().filter(m -> m.index == gameTime.getMonth()).findFirst().orElse(null);
-            dependencyManager.notify(OnGameNewMonth.class);
+            dependencyNotifier.notify(OnGameNewMonth.class);
         }
 
         if (gameTime.getDay() > day) {
-            dependencyManager.notify(OnGameNewDay.class);
+            dependencyNotifier.notify(OnGameNewDay.class);
         }
 
         if (gameTime.getHour() > hour) {
-            dependencyManager.notify(OnGameNewHour.class);
+            dependencyNotifier.notify(OnGameNewHour.class);
         }
     }
 

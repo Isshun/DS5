@@ -49,28 +49,6 @@ public class UIEventManager implements EventManager {
         _dropViews = new ConcurrentSkipListMap<>();
     }
 
-//    @AfterApplicationLayerInit
-//    private void afterApplicationLayerInit() {
-//        uiManager.getViews().stream()
-//                .filter(view -> view.getStyle().getBackgroundFocusColor() != null)
-//                .forEach(view -> view.getEvents().setOnFocusListener(new OnFocusListener() {
-//                    @Override
-//                    public void onEnter(View view) {
-//                        view.setFocus(true);
-//                    }
-//
-//                    @Override
-//                    public void onExit(View view) {
-//                        view.setFocus(false);
-//                    }
-//                }));
-//    }
-
-//    @AfterGameLayerInit
-//    private void afterGameLayerInit() {
-//
-//    }
-
     public void setOnFocusListener(View view, OnFocusListener onFocusListener) {
         if (onFocusListener == null) {
             _onFocusListeners.remove(view);

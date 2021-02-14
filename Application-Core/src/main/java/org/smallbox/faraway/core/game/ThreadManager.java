@@ -1,6 +1,7 @@
 package org.smallbox.faraway.core.game;
 
 import org.smallbox.faraway.core.dependencyInjector.DependencyManager;
+import org.smallbox.faraway.core.dependencyInjector.DependencyNotifier;
 import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.callback.applicationEvent.OnInit;
@@ -23,7 +24,7 @@ public class ThreadManager {
     private final static int GAME_LONG_UPDATE_DELAY = 1000;
 
     @Inject private DependencyManager dependencyManager;
-    @Inject private MonitoringManager monitoringManager;
+    @Inject private DependencyNotifier dependencyNotifier;
     @Inject private GameTime gameTime;
     @Inject private Game game;
 
@@ -44,12 +45,12 @@ public class ThreadManager {
 
     private void callGameMethod(Class<? extends Annotation> cls) {
         if (game != null && game.getStatus() == GameStatus.STARTED) {
-            dependencyManager.notify(cls);
+            dependencyNotifier.notify(cls);
         }
     }
 
-    public void addRunnable(Object model, Runnable runnable) {
-        threadPoolExecutor.submit(() -> monitoringManager.encapsulate(model, runnable).run());
+    public void addRunnable(Runnable runnable) {
+        threadPoolExecutor.submit(runnable);
     }
 //
 //    public void addRunnable2(Object model, Runnable runnable) {

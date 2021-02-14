@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import org.smallbox.faraway.client.shortcut.GameShortcut;
 import org.smallbox.faraway.core.config.ApplicationConfig;
 import org.smallbox.faraway.core.dependencyInjector.DependencyManager;
+import org.smallbox.faraway.core.dependencyInjector.DependencyNotifier;
 import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.callback.gameEvent.OnGameLayerBegin;
@@ -22,6 +23,7 @@ import java.util.Optional;
 public class GameManager {
     @Inject private ApplicationConfig applicationConfig;
     @Inject private DependencyManager dependencyManager;
+    @Inject private DependencyNotifier dependencyNotifier;
     @Inject private GameFileManager gameFileManager;
     @Inject private GameSaveManager gameSaveManager;
     @Inject private GameLoadManager gameLoadManager;
@@ -44,7 +46,7 @@ public class GameManager {
 
             Optional.ofNullable(listener).ifPresent(Runnable::run);
 
-            dependencyManager.notify(OnGameStart.class);
+            dependencyNotifier.notify(OnGameStart.class);
 
             Log.info("New game (" + (System.currentTimeMillis() - time) + "ms)");
         });
@@ -60,7 +62,7 @@ public class GameManager {
                 gameLoadManager.load(FileUtils.getSaveDirectory(gameInfo.name), gameSaveInfo.filename, () -> {
                     Optional.ofNullable(listener).ifPresent(Runnable::run);
 
-                    dependencyManager.notify(OnGameStart.class);
+                    dependencyNotifier.notify(OnGameStart.class);
 
                     Log.info("Load game (" + (System.currentTimeMillis() - time) + "ms)");
                 });
@@ -79,12 +81,12 @@ public class GameManager {
         // Inject GameObjects
         dependencyManager.destroyNonBindControllers();
         dependencyManager.injectGameDependencies();
-        dependencyManager.notify(OnGameLayerBegin.class);
-        dependencyManager.notify(OnGameLayerComplete.class);
+        dependencyNotifier.notify(OnGameLayerBegin.class);
+        dependencyNotifier.notify(OnGameLayerComplete.class);
     }
 
     public void destroyGame() {
-        dependencyManager.notify(OnGameStop.class);
+        dependencyNotifier.notify(OnGameStop.class);
         dependencyManager.destroyGameObjects();
     }
 

@@ -59,7 +59,7 @@ public class CharacterInfoStatusController extends LuaController {
         needs.forEach(frame -> gridNeeds.addView(frame));
     }
 
-    @OnGameUpdate
+    @OnGameUpdate(runOnMainThread = true)
     public void onControllerUpdate() {
         if (isVisible() && _selected != null) {
             selectCharacter(_selected);
