@@ -13,7 +13,7 @@ import org.smallbox.faraway.client.ui.widgets.UILabel;
 import org.smallbox.faraway.client.ui.widgets.View;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
-import org.smallbox.faraway.core.dependencyInjector.gameAction.OnGameSelectAction;
+import org.smallbox.faraway.core.dependencyInjector.annotation.callback.gameAction.OnGameSelectAction;
 import org.smallbox.faraway.game.character.CharacterModule;
 import org.smallbox.faraway.game.character.model.base.CharacterModel;
 import org.smallbox.faraway.game.world.Parcel;

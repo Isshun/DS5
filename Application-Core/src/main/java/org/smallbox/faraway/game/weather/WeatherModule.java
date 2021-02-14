@@ -5,13 +5,12 @@ import org.smallbox.faraway.client.asset.music.BackgroundMusicManager;
 import org.smallbox.faraway.core.config.ApplicationConfig;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
-import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnGameLongUpdate;
-import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnGameNewDay;
-import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnGameStart;
-import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnGameUpdate;
+import org.smallbox.faraway.core.dependencyInjector.annotation.callback.gameEvent.OnGameLongUpdate;
+import org.smallbox.faraway.core.dependencyInjector.annotation.callback.gameEvent.OnGameNewDay;
+import org.smallbox.faraway.core.dependencyInjector.annotation.callback.gameEvent.OnGameStart;
+import org.smallbox.faraway.core.dependencyInjector.annotation.callback.gameEvent.OnGameUpdate;
 import org.smallbox.faraway.core.game.DataManager;
 import org.smallbox.faraway.core.game.Game;
-import org.smallbox.faraway.core.game.GameObserver;
 import org.smallbox.faraway.core.game.GameTime;
 import org.smallbox.faraway.core.module.SuperGameModule2;
 import org.smallbox.faraway.game.planet.PlanetInfo;
@@ -27,7 +26,7 @@ import java.util.concurrent.TimeUnit;
 import static java.time.temporal.ChronoUnit.HOURS;
 
 @GameObject
-public class WeatherModule extends SuperGameModule2<WeatherModuleObserver> implements GameObserver {
+public class WeatherModule extends SuperGameModule2<WeatherModuleObserver> {
     @Inject private DataManager dataManager;
     @Inject private ApplicationConfig applicationConfig;
     @Inject private GameTime gameTime;

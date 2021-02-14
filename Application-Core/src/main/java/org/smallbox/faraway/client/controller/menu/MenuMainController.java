@@ -7,9 +7,9 @@ import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.config.ApplicationConfig;
 import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
-import org.smallbox.faraway.core.dependencyInjector.annotationEvent.AfterApplicationLayerInit;
-import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnGameStart;
-import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnGameStop;
+import org.smallbox.faraway.core.dependencyInjector.annotation.callback.applicationEvent.OnApplicationLayerComplete;
+import org.smallbox.faraway.core.dependencyInjector.annotation.callback.gameEvent.OnGameStart;
+import org.smallbox.faraway.core.dependencyInjector.annotation.callback.gameEvent.OnGameStop;
 import org.smallbox.faraway.core.game.GameFactory;
 import org.smallbox.faraway.core.game.GameManager;
 
@@ -22,7 +22,7 @@ public class MenuMainController extends LuaController {
     @Inject private MenuPlanetController menuPlanetController;
     @Inject private MenuLoadController menuLoadController;
 
-    @AfterApplicationLayerInit
+    @OnApplicationLayerComplete
     private void afterApplicationLayerInit() {
         setVisible(true);
     }

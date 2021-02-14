@@ -1,9 +1,9 @@
 package org.smallbox.faraway.game.character;
 
 import org.smallbox.faraway.GameTask;
-import org.smallbox.faraway.game.world.WorldHelper;
-import org.smallbox.faraway.game.world.Parcel;
 import org.smallbox.faraway.game.character.model.base.CharacterModel;
+import org.smallbox.faraway.game.world.Parcel;
+import org.smallbox.faraway.game.world.WorldHelper;
 
 import static org.smallbox.faraway.util.Utils.second;
 

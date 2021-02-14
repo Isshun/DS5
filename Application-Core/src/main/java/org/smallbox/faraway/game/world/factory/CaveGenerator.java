@@ -4,10 +4,10 @@ import com.badlogic.gdx.graphics.Pixmap;
 import org.smallbox.faraway.client.asset.AssetManager;
 import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
-import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnInit;
+import org.smallbox.faraway.core.dependencyInjector.annotation.callback.applicationEvent.OnInit;
 import org.smallbox.faraway.core.game.DataManager;
-import org.smallbox.faraway.game.world.Parcel;
 import org.smallbox.faraway.game.world.FastNoise;
+import org.smallbox.faraway.game.world.Parcel;
 
 import java.util.ArrayList;
 import java.util.List;

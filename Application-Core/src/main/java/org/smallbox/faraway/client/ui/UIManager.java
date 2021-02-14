@@ -17,7 +17,12 @@ import org.smallbox.faraway.client.ui.widgets.*;
 import org.smallbox.faraway.core.dependencyInjector.DependencyManager;
 import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
-import org.smallbox.faraway.core.dependencyInjector.annotationEvent.*;
+import org.smallbox.faraway.core.dependencyInjector.annotation.callback.applicationEvent.OnApplicationLayerBegin;
+import org.smallbox.faraway.core.dependencyInjector.annotation.callback.applicationEvent.OnApplicationLayerComplete;
+import org.smallbox.faraway.core.dependencyInjector.annotation.callback.applicationEvent.OnInit;
+import org.smallbox.faraway.core.dependencyInjector.annotation.callback.gameEvent.OnGameLayerBegin;
+import org.smallbox.faraway.core.dependencyInjector.annotation.callback.gameEvent.OnGameLayerComplete;
+import org.smallbox.faraway.core.dependencyInjector.annotation.callback.gameEvent.OnGameStart;
 import org.smallbox.faraway.core.game.GameManager;
 import org.smallbox.faraway.util.log.Log;
 
@@ -117,16 +122,16 @@ public class UIManager {
     public void refreshApplication() {
         dependencyManager.getSubTypesOf(LuaController.class).forEach(controller -> {
             callMethodAnnotatedBy(controller, OnInit.class);
-            callMethodAnnotatedBy(controller, OnApplicationLayerInit.class);
-            callMethodAnnotatedBy(controller, AfterApplicationLayerInit.class);
+            callMethodAnnotatedBy(controller, OnApplicationLayerBegin.class);
+            callMethodAnnotatedBy(controller, OnApplicationLayerComplete.class);
         });
     }
 
     public void refreshGame() {
         if (gameManager.isRunning()) {
             dependencyManager.getSubTypesOf(LuaController.class).forEach(controller -> {
-                callMethodAnnotatedBy(controller, OnGameLayerInit.class);
-                callMethodAnnotatedBy(controller, AfterGameLayerInit.class);
+                callMethodAnnotatedBy(controller, OnGameLayerBegin.class);
+                callMethodAnnotatedBy(controller, OnGameLayerComplete.class);
                 callMethodAnnotatedBy(controller, OnGameStart.class);
             });
         }

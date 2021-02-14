@@ -3,7 +3,7 @@
 //import org.apache.commons.collections4.CollectionUtils;
 //import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 //import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
-//import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnInit;
+//import org.smallbox.faraway.core.dependencyInjector.annotation.callback.applicationEvent.OnInit;
 //import org.smallbox.faraway.core.game.Game;
 //import org.smallbox.faraway.game.world.Parcel;
 //import org.smallbox.faraway.modules.area.AreaModule;

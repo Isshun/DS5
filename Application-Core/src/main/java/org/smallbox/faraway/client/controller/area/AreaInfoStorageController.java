@@ -14,8 +14,8 @@ import org.smallbox.faraway.client.ui.widgets.UIList;
 import org.smallbox.faraway.client.ui.widgets.View;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
-import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnGameLayerInit;
-import org.smallbox.faraway.core.dependencyInjector.gameAction.OnGameSelectAction;
+import org.smallbox.faraway.core.dependencyInjector.annotation.callback.gameEvent.OnGameLayerBegin;
+import org.smallbox.faraway.core.dependencyInjector.annotation.callback.gameAction.OnGameSelectAction;
 import org.smallbox.faraway.core.game.DataManager;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.game.area.AreaModel;
@@ -50,7 +50,7 @@ public class AreaInfoStorageController extends AbsInfoLuaController<AreaModel> {
 
     private StorageArea area;
 
-    @OnGameLayerInit
+    @OnGameLayerBegin
     private void onGameLayerInit() {
         btPriority1.getEvents().setOnClickListener(() -> setPriority(btPriority1, 1));
         btPriority2.getEvents().setOnClickListener(() -> setPriority(btPriority2, 2));

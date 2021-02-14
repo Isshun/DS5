@@ -19,7 +19,7 @@ import org.smallbox.faraway.client.renderer.Viewport;
 import org.smallbox.faraway.client.ui.extra.Colors;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
-import org.smallbox.faraway.core.dependencyInjector.annotationEvent.AfterGameLayerInit;
+import org.smallbox.faraway.core.dependencyInjector.annotation.callback.gameEvent.OnGameLayerComplete;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameManager;
 import org.smallbox.faraway.core.game.model.MovableModel;
@@ -55,7 +55,7 @@ public class CharacterLayer extends BaseMapLayer {
     private static final Color COLOR_WARNING = new Color(0xbbbb00ff);
     private static final Color COLOR_OK = new Color(0x448800ff);
 
-    @AfterGameLayerInit
+    @OnGameLayerComplete
     public void init() {
 //        animationManager.init("player", "data/graphics/player/ball.atlas", "skeleton-animation", 0.045f, Animation.PlayMode.LOOP);
         animationManager.init("player", "data/graphics/player/player.atlas", "hero_walk", 0.045f, Animation.PlayMode.LOOP);

@@ -8,10 +8,10 @@ import org.smallbox.faraway.core.game.modelInfo.NetworkInfo;
 import org.smallbox.faraway.core.path.graph.ParcelConnection;
 import org.smallbox.faraway.core.world.model.MapObjectModel;
 import org.smallbox.faraway.core.world.model.NetworkItem;
-import org.smallbox.faraway.game.structure.StructureItem;
 import org.smallbox.faraway.game.area.AreaModel;
 import org.smallbox.faraway.game.consumable.Consumable;
 import org.smallbox.faraway.game.room.model.RoomModel;
+import org.smallbox.faraway.game.structure.StructureItem;
 
 import java.util.ArrayList;
 import java.util.Collection;

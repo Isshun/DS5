@@ -1,4 +1,4 @@
-package org.smallbox.faraway.core.dependencyInjector.annotationEvent;
+package org.smallbox.faraway.core.dependencyInjector.annotation.callback.gameEvent;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -7,5 +7,5 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
-public @interface OnGameNewDay {
+public @interface OnGameStart {
 }

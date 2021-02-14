@@ -122,8 +122,6 @@ public class InputManager implements InputProcessor {
 
         if (gameManager.isLoaded()) {
             GameEvent event = new GameEvent(keycode);
-            Application.notifyClient(observer -> observer.onKeyPressWithEvent(event, keycode));
-            Application.notifyClient(observer -> observer.onKeyEvent(GameEventListener.Action.RELEASED, keycode, _modifier));
         }
 
         // TODO: A deplacer dans ApplicationShortcutManage
@@ -249,8 +247,6 @@ public class InputManager implements InputProcessor {
         if (gameEventManager.onMouseMove(x, y, false)) {
             return false;
         }
-
-        Application.notifyClient(observer -> observer.onMouseMove(x, y, -1));
 
         return false;
     }

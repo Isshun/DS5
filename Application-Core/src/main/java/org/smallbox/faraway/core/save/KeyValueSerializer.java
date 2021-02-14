@@ -7,12 +7,12 @@ import org.apache.commons.lang3.StringUtils;
 import org.smallbox.faraway.client.renderer.MapRenderer;
 import org.smallbox.faraway.client.renderer.Viewport;
 import org.smallbox.faraway.client.renderer.WorldCameraManager;
-import org.smallbox.faraway.core.game.GameTime;
-import org.smallbox.faraway.util.GameException;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.game.DataManager;
 import org.smallbox.faraway.core.game.Game;
+import org.smallbox.faraway.core.game.GameTime;
+import org.smallbox.faraway.util.GameException;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;

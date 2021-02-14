@@ -12,7 +12,7 @@ import org.smallbox.faraway.client.ui.event.UIEventManager;
 import org.smallbox.faraway.client.ui.widgets.*;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
-import org.smallbox.faraway.core.dependencyInjector.annotationEvent.AfterGameLayerInit;
+import org.smallbox.faraway.core.dependencyInjector.annotation.callback.gameEvent.OnGameLayerComplete;
 import org.smallbox.faraway.core.game.DataManager;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.game.item.ItemModule;
@@ -44,7 +44,7 @@ public class BuildController extends LuaController {
     private ItemInfo _currentItem;
     private Map<String, List<ItemInfo>> itemsByCategory;
 
-    @AfterGameLayerInit
+    @OnGameLayerComplete
     public void afterGameLayerInit() {
         List<String> categories = List.of("structure", "furniture", "kitchen", "power", "industrial", "production", "other", "plant");
 

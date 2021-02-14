@@ -7,7 +7,7 @@ import org.smallbox.faraway.client.ui.widgets.CompositeView;
 import org.smallbox.faraway.client.ui.widgets.UILabel;
 import org.smallbox.faraway.client.ui.widgets.UIList;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
-import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnGameLayerInit;
+import org.smallbox.faraway.core.dependencyInjector.annotation.callback.gameEvent.OnGameLayerBegin;
 
 import static org.smallbox.faraway.client.notification.NotificationLevel.*;
 
@@ -21,7 +21,7 @@ public class NotificationController extends LuaController {
 
     @BindLua private UIList listNotification;
 
-    @OnGameLayerInit
+    @OnGameLayerBegin
     private void test() {
         addNotification(CRITICAL, "Starvation");
         addNotification(CRITICAL, "Suffocating");

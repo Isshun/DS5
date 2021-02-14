@@ -2,8 +2,8 @@ package org.smallbox.faraway.client.lua.extend.impl;
 
 import org.luaj.vm2.LuaValue;
 import org.smallbox.faraway.client.lua.extend.LuaUICompositeExtend;
-import org.smallbox.faraway.client.ui.widgets.View;
 import org.smallbox.faraway.client.ui.widgets.UIDropDown;
+import org.smallbox.faraway.client.ui.widgets.View;
 import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject;
 import org.smallbox.faraway.core.module.ModuleBase;
 

@@ -1,12 +1,12 @@
 package org.smallbox.faraway.game.area;
 
 import org.smallbox.faraway.client.gameAction.OnSelectParcelListener;
+import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.game.world.ObjectModel;
-import org.smallbox.faraway.util.UUIDUtils;
+import org.smallbox.faraway.game.world.Parcel;
 import org.smallbox.faraway.game.world.SurroundedPattern;
 import org.smallbox.faraway.game.world.WorldHelper;
-import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
-import org.smallbox.faraway.game.world.Parcel;
+import org.smallbox.faraway.util.UUIDUtils;
 
 import java.util.ArrayList;
 import java.util.Collection;

@@ -2,10 +2,10 @@ package org.smallbox.faraway.client.asset.sound;
 
 import com.badlogic.gdx.audio.Sound;
 import org.smallbox.faraway.client.asset.AssetManager;
+import org.smallbox.faraway.core.config.ApplicationConfig;
 import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
-import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnInit;
-import org.smallbox.faraway.core.config.ApplicationConfig;
+import org.smallbox.faraway.core.dependencyInjector.annotation.callback.applicationEvent.OnInit;
 
 @ApplicationObject
 public class SoundManager {

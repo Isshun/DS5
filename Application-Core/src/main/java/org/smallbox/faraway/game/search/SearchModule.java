@@ -2,7 +2,7 @@ package org.smallbox.faraway.game.search;
 
 import org.smallbox.faraway.client.notification.NotificationManager;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
-import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnGameLongUpdate;
+import org.smallbox.faraway.core.dependencyInjector.annotation.callback.gameEvent.OnGameLongUpdate;
 import org.smallbox.faraway.core.module.ModuleBase;
 
 public class SearchModule extends ModuleBase {

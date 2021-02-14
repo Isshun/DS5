@@ -8,7 +8,7 @@ import org.smallbox.faraway.client.ui.widgets.*;
 import org.smallbox.faraway.core.config.ApplicationConfig;
 import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
-import org.smallbox.faraway.core.dependencyInjector.annotationEvent.AfterApplicationLayerInit;
+import org.smallbox.faraway.core.dependencyInjector.annotation.callback.applicationEvent.OnApplicationLayerComplete;
 import org.smallbox.faraway.core.game.DataManager;
 import org.smallbox.faraway.core.game.GameFactory;
 import org.smallbox.faraway.core.game.GameManager;
@@ -35,7 +35,7 @@ public class MenuPlanetController extends LuaController {
 
     private PlanetInfo planet;
 
-    @AfterApplicationLayerInit
+    @OnApplicationLayerComplete
     private void afterApplicationLayerInit() {
         dataManager.planets.forEach(planet -> {
             CompositeView viewPlanet = listPlanets.createFromTemplate(CompositeView.class);

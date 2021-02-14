@@ -1,13 +1,12 @@
 package org.smallbox.faraway.core.module;
 
 import org.smallbox.faraway.game.world.ObjectModel;
-import org.smallbox.faraway.core.game.GameObserver;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
-public abstract class SuperGameModule<T_MODEL extends ObjectModel, T_OBSERVER extends ModuleObserver> extends GenericGameModule<T_MODEL> implements GameObserver {
+public abstract class SuperGameModule<T_MODEL extends ObjectModel, T_OBSERVER extends ModuleObserver> extends GenericGameModule<T_MODEL> {
 
     private final List<T_OBSERVER> _observers = new ArrayList<>();
 

@@ -4,8 +4,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 import org.smallbox.faraway.client.renderer.BaseRenderer;
-import org.smallbox.faraway.core.module.ModuleBase;
 import org.smallbox.faraway.core.game.modelInfo.GraphicInfo;
+import org.smallbox.faraway.core.module.ModuleBase;
 
 public class UIImage extends View {
     protected int _textureX;

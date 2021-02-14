@@ -2,19 +2,17 @@ package org.smallbox.faraway.client.ui.widgets;
 
 import com.badlogic.gdx.Gdx;
 import org.smallbox.faraway.client.asset.IconManager;
-import org.smallbox.faraway.client.asset.SpriteManager;
 import org.smallbox.faraway.client.asset.animation.RotateAnimation;
 import org.smallbox.faraway.client.asset.font.FontManager;
 import org.smallbox.faraway.client.controller.LuaController;
 import org.smallbox.faraway.client.renderer.BaseRenderer;
-import org.smallbox.faraway.client.renderer.UIRenderer;
 import org.smallbox.faraway.client.ui.UIManager;
 import org.smallbox.faraway.client.ui.event.UIEventManager;
 import org.smallbox.faraway.client.ui.extra.*;
 import org.smallbox.faraway.core.config.ApplicationConfig;
 import org.smallbox.faraway.core.dependencyInjector.DependencyManager;
-import org.smallbox.faraway.core.module.ModuleBase;
 import org.smallbox.faraway.core.game.DataManager;
+import org.smallbox.faraway.core.module.ModuleBase;
 
 public abstract class View implements Comparable<View> {
     public final static int FILL = -2;

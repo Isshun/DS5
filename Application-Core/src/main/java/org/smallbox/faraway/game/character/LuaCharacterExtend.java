@@ -3,11 +3,11 @@ package org.smallbox.faraway.game.character;
 import org.luaj.vm2.Globals;
 import org.luaj.vm2.LuaValue;
 import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject;
+import org.smallbox.faraway.core.game.DataManager;
 import org.smallbox.faraway.core.game.modelInfo.GraphicInfo;
-import org.smallbox.faraway.core.module.ModuleBase;
 import org.smallbox.faraway.core.lua.data.DataExtendException;
 import org.smallbox.faraway.core.lua.data.LuaExtend;
-import org.smallbox.faraway.core.game.DataManager;
+import org.smallbox.faraway.core.module.ModuleBase;
 
 import java.io.File;
 

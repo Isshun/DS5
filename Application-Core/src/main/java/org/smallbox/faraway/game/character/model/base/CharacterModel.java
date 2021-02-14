@@ -1,14 +1,14 @@
 package org.smallbox.faraway.game.character.model.base;
 
 import org.smallbox.faraway.GameTask;
-import org.smallbox.faraway.core.game.modelInfo.GraphicInfo;
-import org.smallbox.faraway.game.character.CharacterPositionCommon;
-import org.smallbox.faraway.util.GameException;
 import org.smallbox.faraway.core.game.model.MovableModel;
+import org.smallbox.faraway.core.game.modelInfo.GraphicInfo;
 import org.smallbox.faraway.game.character.CharacterInfo;
-import org.smallbox.faraway.game.world.Parcel;
+import org.smallbox.faraway.game.character.CharacterPositionCommon;
 import org.smallbox.faraway.game.character.model.PathModel;
 import org.smallbox.faraway.game.job.JobModel;
+import org.smallbox.faraway.game.world.Parcel;
+import org.smallbox.faraway.util.GameException;
 import org.smallbox.faraway.util.MoveListener;
 import org.smallbox.faraway.util.log.Log;
 

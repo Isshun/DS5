@@ -1,6 +1,4 @@
-package org.smallbox.faraway.core.dependencyInjector.gameAction;
-
-import org.smallbox.faraway.game.world.ObjectModel;
+package org.smallbox.faraway.core.dependencyInjector.annotation.callback.applicationEvent;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -9,6 +7,5 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
-public @interface OnGameSelectAction {
-    Class<? extends ObjectModel> value();
+public @interface OnApplicationLayerBegin {
 }

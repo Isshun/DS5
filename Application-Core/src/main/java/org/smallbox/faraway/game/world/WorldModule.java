@@ -3,7 +3,7 @@ package org.smallbox.faraway.game.world;
 import org.smallbox.faraway.core.dependencyInjector.DependencyManager;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
-import org.smallbox.faraway.core.dependencyInjector.gameAction.OnGameMapChange;
+import org.smallbox.faraway.core.dependencyInjector.annotation.callback.gameAction.OnGameMapChange;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.model.MovableModel.Direction;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
@@ -11,7 +11,6 @@ import org.smallbox.faraway.core.module.GenericGameModule;
 import org.smallbox.faraway.game.item.ItemModule;
 import org.smallbox.faraway.game.weather.WeatherModule;
 import org.smallbox.faraway.game.weather.WorldTemperatureModule;
-import org.smallbox.faraway.util.Constant;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -91,7 +90,7 @@ public class WorldModule extends GenericGameModule<Parcel> {
             Parcel parcelBottom = WorldHelper.getParcel(parcel.x, parcel.y, parcel.z - 1);
             if (parcelBottom != null && !parcelBottom.hasRock()) {
                 parcel.setGroundInfo(groundInfo);
-                dependencyManager.callMethodAnnotatedBy(OnGameMapChange.class);
+                dependencyManager.notify(OnGameMapChange.class);
             }
         }
     }

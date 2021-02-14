@@ -11,10 +11,9 @@ import org.smallbox.faraway.client.renderer.Viewport;
 import org.smallbox.faraway.client.renderer.WorldCameraManager;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
-import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnGameLongUpdate;
-import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnGameUpdate;
-import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnInit;
-import org.smallbox.faraway.core.game.GameObserver;
+import org.smallbox.faraway.core.dependencyInjector.annotation.callback.applicationEvent.OnInit;
+import org.smallbox.faraway.core.dependencyInjector.annotation.callback.gameEvent.OnGameLongUpdate;
+import org.smallbox.faraway.core.dependencyInjector.annotation.callback.gameEvent.OnGameUpdate;
 import org.smallbox.faraway.core.game.GameTime;
 import org.smallbox.faraway.game.item.ItemModule;
 import org.smallbox.faraway.game.item.UsableItem;
@@ -25,7 +24,7 @@ import java.util.ArrayList;
 
 @GameObject
 @GameLayer(level = LayerLevel.LIGHT_LAYER_LEVEL, visible = true)
-public class LightLayer extends BaseLayer implements GameObserver {
+public class LightLayer extends BaseLayer {
     private final static float SECONDS_IN_DAY = 24 * 60 * 60;
 
     @Inject protected WorldCameraManager worldCameraManager;

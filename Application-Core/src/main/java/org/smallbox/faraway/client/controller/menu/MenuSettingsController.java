@@ -12,8 +12,8 @@ import org.smallbox.faraway.core.config.ApplicationConfig;
 import org.smallbox.faraway.core.dependencyInjector.DependencyManager;
 import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
-import org.smallbox.faraway.core.dependencyInjector.annotationEvent.AfterApplicationLayerInit;
-import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnSettingsUpdate;
+import org.smallbox.faraway.core.dependencyInjector.annotation.callback.applicationEvent.OnApplicationLayerComplete;
+import org.smallbox.faraway.core.dependencyInjector.annotation.callback.applicationEvent.OnSettingsUpdate;
 
 @ApplicationObject
 public class MenuSettingsController extends LuaController {
@@ -40,7 +40,7 @@ public class MenuSettingsController extends LuaController {
 
     private String screenMode;
 
-    @AfterApplicationLayerInit
+    @OnApplicationLayerComplete
     public void onInit() {
         sliderMusic.setValue(applicationConfig.musicVolume);
 
@@ -94,7 +94,7 @@ public class MenuSettingsController extends LuaController {
         applicationConfig.musicVolume = sliderMusic.getValue();
         applicationConfig.screen.mode = screenMode;
 
-        dependencyManager.callMethodAnnotatedBy(OnSettingsUpdate.class);
+        dependencyManager.notify(OnSettingsUpdate.class);
     }
 
     @BindLuaAction

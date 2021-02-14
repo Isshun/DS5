@@ -9,7 +9,7 @@ import org.smallbox.faraway.client.renderer.BaseRenderer;
 import org.smallbox.faraway.client.renderer.Viewport;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
-import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnGameLayerInit;
+import org.smallbox.faraway.core.dependencyInjector.annotation.callback.gameEvent.OnGameLayerBegin;
 import org.smallbox.faraway.game.storage.StorageModule;
 
 import static org.smallbox.faraway.util.Constant.TILE_SIZE;
@@ -23,7 +23,7 @@ public class StorageLayer extends BaseMapLayer {
     private TextureRegion[] _regions;
     private TextureRegion[] _regionsSelected;
 
-    @OnGameLayerInit
+    @OnGameLayerBegin
     public void onGameLayerInit() {
         _regions = new TextureRegion[5];
         _regions[0] = new TextureRegion(spriteManager.getTexture("data/res/bg_area.png"), 0, 0, TILE_SIZE, TILE_SIZE);

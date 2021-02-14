@@ -7,8 +7,8 @@ import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.game.DataManager;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
-import org.smallbox.faraway.game.world.Parcel;
 import org.smallbox.faraway.game.world.FastNoise;
+import org.smallbox.faraway.game.world.Parcel;
 import org.smallbox.faraway.game.world.WorldModule;
 import org.smallbox.faraway.game.world.factory.old.MapFactoryConfig;
 

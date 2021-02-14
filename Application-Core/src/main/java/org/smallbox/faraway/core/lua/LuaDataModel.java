@@ -1,10 +1,10 @@
 package org.smallbox.faraway.core.lua;
 
 import org.smallbox.faraway.core.game.DataManager;
-import org.smallbox.faraway.game.planet.PlanetInfo;
 import org.smallbox.faraway.core.game.modelInfo.CategoryInfo;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.game.modelInfo.NetworkInfo;
+import org.smallbox.faraway.game.planet.PlanetInfo;
 
 import java.util.List;
 

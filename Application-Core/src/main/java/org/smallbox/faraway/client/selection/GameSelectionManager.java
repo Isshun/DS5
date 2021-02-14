@@ -6,11 +6,12 @@ import org.smallbox.faraway.client.controller.LuaController;
 import org.smallbox.faraway.client.controller.MainPanelController;
 import org.smallbox.faraway.client.gameAction.GameActionManager;
 import org.smallbox.faraway.client.layer.LayerManager;
+import org.smallbox.faraway.client.renderer.Viewport;
 import org.smallbox.faraway.core.dependencyInjector.DependencyManager;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
-import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnInit;
-import org.smallbox.faraway.core.dependencyInjector.gameAction.OnGameSelectAction;
+import org.smallbox.faraway.core.dependencyInjector.annotation.callback.applicationEvent.OnInit;
+import org.smallbox.faraway.core.dependencyInjector.annotation.callback.gameAction.OnGameSelectAction;
 import org.smallbox.faraway.core.game.GameManager;
 import org.smallbox.faraway.game.area.AreaModuleBase;
 import org.smallbox.faraway.game.character.CharacterModule;
@@ -39,6 +40,7 @@ public class GameSelectionManager extends GameManager {
     @Inject private PlantModule plantModule;
     @Inject private DependencyManager dependencyManager;
     @Inject private MainPanelController mainPanelController;
+    @Inject private Viewport viewport;
 
 //    private Collection<SelectionParcelListener> selectionParcelListeners = new ConcurrentLinkedQueue<>();
     private final Collection<SelectionAreaListener> selectionAreaListeners = new ConcurrentLinkedQueue<>();
@@ -145,7 +147,7 @@ public class GameSelectionManager extends GameManager {
 
     // Square selection
     public void select(int fromMapX, int fromMapY, int toMapX, int toMapY) {
-        List<Parcel> parcelList = WorldHelper.getParcelInRect(fromMapX, fromMapY, toMapX, toMapY, layerManager.getViewport().getFloor());
+        List<Parcel> parcelList = WorldHelper.getParcelInRect(fromMapX, fromMapY, toMapX, toMapY, viewport.getFloor());
         Log.info("Click on map for parcels: %s", parcelList);
 
         List<ObjectModel> objects = new ArrayList<>();
@@ -184,45 +186,45 @@ public class GameSelectionManager extends GameManager {
         }
     }
 
-    private void doSelectionUnique(Parcel parcel) {
-        if (_selectionPreController != null) {
-            _selectionPreController.setVisible(true);
-        }
-
-        // Click sur nouvelle parcel
-        if (_lastParcel != parcel) {
-            _lastParcel = parcel;
-
-            _lastControllers.clear();
-            _infoControllers.stream()
-                    .filter(controller -> controller.getObjectOnParcel(parcel) != null)
-                    .forEach(_lastControllers::add);
-
-            if (CollectionUtils.isNotEmpty(_lastControllers)) {
-                displayController(_lastControllers.peek(), Collections.singletonList(parcel));
-            }
-        }
-
-        // Click sur la même parcel que précédement
-        else {
-            if (CollectionUtils.isNotEmpty(_lastControllers)) {
-                _lastControllers.add(_lastControllers.poll());
-                displayController(_lastControllers.peek(), Collections.singletonList(parcel));
-            }
-        }
-
-    }
-
-    private void doSelectionMultiple(List<Parcel> parcelList) {
-        if (_selectionPreController != null) {
-            _selectionPreController.setVisible(true);
-        }
-
-        _infoControllers.stream()
-                .filter(controller -> parcelList.stream().anyMatch(parcel -> controller.getObjectOnParcel(parcel) != null))
-                .findFirst()
-                .ifPresent(controller -> displayController(controller, parcelList));
-    }
+//    private void doSelectionUnique(Parcel parcel) {
+//        if (_selectionPreController != null) {
+//            _selectionPreController.setVisible(true);
+//        }
+//
+//        // Click sur nouvelle parcel
+//        if (_lastParcel != parcel) {
+//            _lastParcel = parcel;
+//
+//            _lastControllers.clear();
+//            _infoControllers.stream()
+//                    .filter(controller -> controller.getObjectOnParcel(parcel) != null)
+//                    .forEach(_lastControllers::add);
+//
+//            if (CollectionUtils.isNotEmpty(_lastControllers)) {
+//                displayController(_lastControllers.peek(), Collections.singletonList(parcel));
+//            }
+//        }
+//
+//        // Click sur la même parcel que précédement
+//        else {
+//            if (CollectionUtils.isNotEmpty(_lastControllers)) {
+//                _lastControllers.add(_lastControllers.poll());
+//                displayController(_lastControllers.peek(), Collections.singletonList(parcel));
+//            }
+//        }
+//
+//    }
+//
+//    private void doSelectionMultiple(List<Parcel> parcelList) {
+//        if (_selectionPreController != null) {
+//            _selectionPreController.setVisible(true);
+//        }
+//
+//        _infoControllers.stream()
+//                .filter(controller -> parcelList.stream().anyMatch(parcel -> controller.getObjectOnParcel(parcel) != null))
+//                .findFirst()
+//                .ifPresent(controller -> displayController(controller, parcelList));
+//    }
 
     private void displayController(AbsInfoLuaController<?> controller, Collection<Parcel> parcels) {
 

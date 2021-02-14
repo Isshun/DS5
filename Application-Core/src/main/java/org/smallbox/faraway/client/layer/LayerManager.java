@@ -12,8 +12,8 @@ import org.smallbox.faraway.core.config.ApplicationConfig;
 import org.smallbox.faraway.core.dependencyInjector.DependencyManager;
 import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
-import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnGameLayerInit;
-import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnGameStart;
+import org.smallbox.faraway.core.dependencyInjector.annotation.callback.gameEvent.OnGameLayerBegin;
+import org.smallbox.faraway.core.dependencyInjector.annotation.callback.gameEvent.OnGameStart;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameManager;
 
@@ -28,56 +28,30 @@ public class LayerManager implements GameClientObserver {
     @Inject private LayerManager layerManager;
     @Inject private InputManager inputManager;
     @Inject private UIManager uiManager;
-    @Inject private Viewport viewport;
     @Inject private GameManager gameManager;
     @Inject private MapRenderer mapRenderer;
     @Inject private UIRenderer UIRenderer;
     @Inject private WorldInputManager worldInputManager;
     @Inject private DependencyManager dependencyManager;
     @Inject private ApplicationConfig applicationConfig;
+    @Inject private Viewport viewport;
     @Inject private Game game;
 
     private long _renderTime;
+    private double _animationProgress;
+    private Collection<BaseLayer> _layers;
     private int _frame;
 
-    // Render
-    private double _animationProgress;
-
-    private Collection<BaseLayer> _layers;
-
-    public Viewport getViewport() {
-        return viewport;
-    }
-
-    @OnGameLayerInit
+    @OnGameLayerBegin
     public void onGameInitLayers() {
-        // Find GameLayer annotated class
         _layers = dependencyManager.getSubTypesOf(BaseLayer.class).stream()
-//                new Reflections("org.smallbox.faraway").getSubTypesOf(BaseLayer.class).stream()
-//                .filter(cls -> !Modifier.isAbstract(cls.getModifiers()))
-//                .map(cls -> {
-//                    Log.info("Find game layer: " + cls.getSimpleName());
-//
-//                    BaseLayer layer = ;
-//                    Application.addObserver(layer);
-//                    return layer;
-//
-//                })
-//                .filter(Objects::nonNull)
                 .sorted(Comparator.comparingInt(BaseLayer::getLevel))
                 .collect(Collectors.toList());
-
-        // Create viewport
-        //_viewport.setPosition(0, 0, gameManager.getGame().getInfo().groundFloor);
-        //DependencyInjector.getInstance().register(_viewport);
     }
 
     @OnGameStart
     public void onGameStart() {
         _frame = 0;
-
-        // Call gameStart on each layer
-        _layers.forEach(render -> render.gameStart(game));
     }
 
     public void render(Game game) {
@@ -132,14 +106,6 @@ public class LayerManager implements GameClientObserver {
 
     public Collection<BaseLayer> getLayers() {
         return _layers;
-    }
-
-    public void toggleRender(BaseLayer render) {
-        if (render.isLoaded()) {
-            render.unload();
-        } else {
-            render.gameStart(game);
-        }
     }
 
     @GameShortcut("map/floor_up")

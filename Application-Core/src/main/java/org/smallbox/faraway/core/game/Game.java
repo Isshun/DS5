@@ -4,7 +4,7 @@ import org.smallbox.faraway.core.config.ApplicationConfig;
 import org.smallbox.faraway.core.dependencyInjector.DependencyManager;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
-import org.smallbox.faraway.core.dependencyInjector.annotationEvent.*;
+import org.smallbox.faraway.core.dependencyInjector.annotation.callback.gameEvent.*;
 import org.smallbox.faraway.core.save.GameInfo;
 import org.smallbox.faraway.game.planet.PlanetInfo;
 import org.smallbox.faraway.game.planet.PlanetModel;
@@ -61,15 +61,15 @@ public class Game {
 
         if (gameTime.getMonth() > month) {
             currentMonth = _regionInfo.months.stream().filter(m -> m.index == gameTime.getMonth()).findFirst().orElse(null);
-            dependencyManager.callMethodAnnotatedBy(OnGameNewMonth.class);
+            dependencyManager.notify(OnGameNewMonth.class);
         }
 
         if (gameTime.getDay() > day) {
-            dependencyManager.callMethodAnnotatedBy(OnGameNewDay.class);
+            dependencyManager.notify(OnGameNewDay.class);
         }
 
         if (gameTime.getHour() > hour) {
-            dependencyManager.callMethodAnnotatedBy(OnGameNewHour.class);
+            dependencyManager.notify(OnGameNewHour.class);
         }
     }
 

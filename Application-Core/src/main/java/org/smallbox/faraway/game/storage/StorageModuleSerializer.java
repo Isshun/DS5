@@ -8,10 +8,10 @@ import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.game.DataManager;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameSerializer;
-import org.smallbox.faraway.game.world.WorldHelper;
 import org.smallbox.faraway.core.save.SQLManager;
 import org.smallbox.faraway.game.area.AreaModel;
 import org.smallbox.faraway.game.area.AreaModule;
+import org.smallbox.faraway.game.world.WorldHelper;
 import org.smallbox.faraway.util.log.Log;
 
 import java.util.ArrayList;

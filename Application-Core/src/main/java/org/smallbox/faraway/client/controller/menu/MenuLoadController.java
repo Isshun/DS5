@@ -9,7 +9,7 @@ import org.smallbox.faraway.client.ui.widgets.*;
 import org.smallbox.faraway.core.config.ApplicationConfig;
 import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
-import org.smallbox.faraway.core.dependencyInjector.annotationEvent.AfterApplicationLayerInit;
+import org.smallbox.faraway.core.dependencyInjector.annotation.callback.applicationEvent.OnApplicationLayerComplete;
 import org.smallbox.faraway.core.game.DataManager;
 import org.smallbox.faraway.core.game.GameFactory;
 import org.smallbox.faraway.core.game.GameManager;
@@ -53,7 +53,7 @@ public class MenuLoadController extends LuaController {
     private GameInfo gameInfo;
     private GameSaveInfo saveInfo;
 
-    @AfterApplicationLayerInit
+    @OnApplicationLayerComplete
     private void afterApplicationLayerInit() {
         gameFileManager.buildGameList().stream().sorted((o1, o2) -> o2.date.compareTo(o1.date)).forEach(gameInfo -> {
             CompositeView viewPlanet = listGames.createFromTemplate(CompositeView.class);

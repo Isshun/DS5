@@ -10,7 +10,6 @@ import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.dependencyInjector.DependencyManager;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.game.DataManager;
-import org.smallbox.faraway.core.game.GameObserver;
 import org.smallbox.faraway.core.lua.data.DataExtendException;
 import org.smallbox.faraway.core.lua.data.LuaExtend;
 import org.smallbox.faraway.core.module.ModuleBase;
@@ -30,7 +29,7 @@ import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
-public abstract class LuaModuleManager implements GameObserver {
+public abstract class LuaModuleManager {
     private final Collection<LuaEventListener> _luaEventListeners = new LinkedBlockingQueue<>();
     private final Collection<LuaEventListener> _luaEventInGameListeners = new LinkedBlockingQueue<>();
     private final Collection<LuaRefreshListener> _luaRefreshListeners = new LinkedBlockingQueue<>();
@@ -44,45 +43,6 @@ public abstract class LuaModuleManager implements GameObserver {
     @Inject private DataManager dataManager;
 
     private Globals globals;
-
-    public LuaModuleManager() {
-        Application.addObserver(new GameObserver() {
-//            public void onSelectArea(AreaModel area) { broadcastToLuaModules(LuaEventsModel.on_area_selected, area); }
-//            public boolean onSelectCharacter(CharacterModel character) { broadcastToLuaModules(LuaEventsModel.on_character_selected, character); return true; }
-//            public boolean onSelectParcel(ParcelModel parcel) { broadcastToLuaModules(LuaEventsModel.on_parcel_selected, parcel); return true; }
-//            public void onSelectRock(ItemInfo rockInfo) { broadcastToLuaModules(LuaEventsModel.on_rock_selected, rockInfo); }
-//            public void onSelectPlant(PlantItem plant) { broadcastToLuaModules(LuaEventsModel.on_plant_selected, plant); }
-//            public void onSelectConsumable(ConsumableItem consumable) { broadcastToLuaModules(LuaEventsModel.on_consumable_selected, consumable); }
-//            public void onSelectStructure(StructureItem structure) { broadcastToLuaModules(LuaEventsModel.on_structure_selected, structure); }
-//            public void onSelectNetwork(NetworkItem network) { broadcastToLuaModules(LuaEventsModel.on_network_selected, network); }
-//            public void onSelectReceipt(ReceiptGroupInfo receipt) { broadcastToLuaModules(LuaEventsModel.on_receipt_select, receipt); }
-//            public void onOverParcel(ParcelModel parcel) { broadcastToLuaModules(LuaEventsModel.on_parcel_over, parcel); }
-//            public void onDeselect() { broadcastToLuaModules(LuaEventsModel.on_deselect, null); }
-//            public void onRefreshUI(int frame) { _luaRefreshListeners.forEach(listener -> listener.onRefresh(frame)); }
-//            public boolean onKeyPress(int key) { broadcastToLuaModules(LuaEventsModel.on_key_press, key.name()); return false; }
-//            public void onWeatherChange(WeatherInfo weather) { broadcastToLuaModules(LuaEventsModel.on_weather_change, weather);}
-//            public void onTemperatureChange(double temperature) { broadcastToLuaModules(LuaEventsModel.on_temperature_change, temperature);}
-//            public void onLightChange(double light, long color) { broadcastToLuaModules(LuaEventsModel.on_light_change, light, color);}
-//            public void onDayTimeChange(PlanetInfo.DayTime daytime) { broadcastToLuaModules(LuaEventsModel.on_day_time_change, daytime);}
-//            public void onHourChange(int hour) { broadcastToLuaModules(LuaEventsModel.on_hour_change, hour);}
-//            public void onDayChange(int day) { broadcastToLuaModules(LuaEventsModel.on_day_change, day);}
-//            public void onSpeedChange(int speed) { broadcastToLuaModules(LuaEventsModel.on_speed_change, speed);}
-//            public void onBindingPress(BindingInfo binding) { broadcastToLuaModules(LuaEventsModel.on_binding, binding);}
-//            public void onGamePaused() { broadcastToLuaModules(LuaEventsModel.on_game_paused);}
-//            public void onGameResume() {
-//                //broadcastToLuaModules(LuaEventsModel.on_game_resume);
-//            }
-//            public void onFloorChange(int floor) {broadcastToLuaModules(LuaEventsModel.on_floor_change, floor); }
-//            public void onDisplayChange(String displayName, boolean isVisible) {broadcastToLuaModules(LuaEventsModel.on_display_change, displayName, isVisible); }
-//            public void onLog(String tag, String message) { broadcastToLuaModules(LuaEventsModel.on_log, message); }
-//            public void onJobCreate(JobModel job) { broadcastToLuaModules(LuaEventsModel.on_job_create, job);}
-//            public void onCustomEvent(String tag, Object object) {
-//                LuaValue luaTag = CoerceJavaToLua.coerce(tag);
-//                LuaValue luaValue = CoerceJavaToLua.coerce(object);
-//                _luaEventListeners.forEach(listener -> listener.onEvent(LuaEventsModel.on_custom_event, luaTag, luaValue));
-//            }
-        });
-    }
 
     public Collection<LuaModule> getModules() {
         return _luaModules;

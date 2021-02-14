@@ -2,7 +2,6 @@ package org.smallbox.faraway.core.game;
 
 import com.google.gson.Gson;
 import org.smallbox.faraway.client.renderer.Viewport;
-import org.smallbox.faraway.util.GameException;
 import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.save.GameInfoFactory;
@@ -12,6 +11,7 @@ import org.smallbox.faraway.game.consumable.ConsumableModule;
 import org.smallbox.faraway.game.item.ItemModule;
 import org.smallbox.faraway.game.plant.PlantModule;
 import org.smallbox.faraway.game.world.WorldModule;
+import org.smallbox.faraway.util.GameException;
 
 import java.io.FileReader;
 import java.util.Optional;

@@ -8,7 +8,7 @@ import org.smallbox.faraway.client.renderer.BaseRenderer;
 import org.smallbox.faraway.client.renderer.Viewport;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
-import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnGameStart;
+import org.smallbox.faraway.core.dependencyInjector.annotation.callback.gameEvent.OnGameStart;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.world.model.MapObjectModel;
 import org.smallbox.faraway.game.structure.StructureModule;

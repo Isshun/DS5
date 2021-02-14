@@ -9,9 +9,8 @@ import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
-import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnInit;
-import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnSettingsUpdate;
-import org.smallbox.faraway.core.game.GameObserver;
+import org.smallbox.faraway.core.dependencyInjector.annotation.callback.applicationEvent.OnInit;
+import org.smallbox.faraway.core.dependencyInjector.annotation.callback.applicationEvent.OnSettingsUpdate;
 import org.smallbox.faraway.core.game.ThreadManager;
 import org.smallbox.faraway.game.world.ObjectModel;
 import org.smallbox.faraway.util.GameException;
@@ -75,10 +74,6 @@ public class DependencyManager {
             T object = getDependency(cls);
             if (Objects.isNull(object)) {
                 object = cls.getConstructor().newInstance();
-            }
-
-            if (object instanceof GameObserver) {
-                Application.addObserver((GameObserver) object);
             }
 
             register(object);
@@ -298,7 +293,7 @@ public class DependencyManager {
         callMethodAnnotatedBy(model, OnInit.class);
     }
 
-    public void callMethodAnnotatedBy(Class<? extends Annotation> annotationClass) {
+    public void notify(Class<? extends Annotation> annotationClass) {
         _applicationObjectPoolByClass.values().forEach(dependencyInfo -> callMethodAnnotatedBy(dependencyInfo.dependency, annotationClass));
         _gameObjectPoolByClass.values().forEach(dependencyInfo -> callMethodAnnotatedBy(dependencyInfo.dependency, annotationClass));
     }

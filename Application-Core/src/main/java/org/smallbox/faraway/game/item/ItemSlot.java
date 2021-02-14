@@ -1,7 +1,7 @@
 package org.smallbox.faraway.game.item;
 
-import org.smallbox.faraway.game.world.Parcel;
 import org.smallbox.faraway.game.job.JobModel;
+import org.smallbox.faraway.game.world.Parcel;
 
 public class ItemSlot {
     private final Parcel _parcel;

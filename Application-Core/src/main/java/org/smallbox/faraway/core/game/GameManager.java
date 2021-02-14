@@ -6,10 +6,10 @@ import org.smallbox.faraway.core.config.ApplicationConfig;
 import org.smallbox.faraway.core.dependencyInjector.DependencyManager;
 import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
-import org.smallbox.faraway.core.dependencyInjector.annotationEvent.AfterGameLayerInit;
-import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnGameLayerInit;
-import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnGameStart;
-import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnGameStop;
+import org.smallbox.faraway.core.dependencyInjector.annotation.callback.gameEvent.OnGameLayerBegin;
+import org.smallbox.faraway.core.dependencyInjector.annotation.callback.gameEvent.OnGameLayerComplete;
+import org.smallbox.faraway.core.dependencyInjector.annotation.callback.gameEvent.OnGameStart;
+import org.smallbox.faraway.core.dependencyInjector.annotation.callback.gameEvent.OnGameStop;
 import org.smallbox.faraway.core.save.*;
 import org.smallbox.faraway.game.world.factory.WorldFactory;
 import org.smallbox.faraway.util.FileUtils;
@@ -19,7 +19,7 @@ import java.io.File;
 import java.util.Optional;
 
 @ApplicationObject
-public class GameManager implements GameObserver {
+public class GameManager {
     @Inject private ApplicationConfig applicationConfig;
     @Inject private DependencyManager dependencyManager;
     @Inject private GameFileManager gameFileManager;
@@ -44,7 +44,7 @@ public class GameManager implements GameObserver {
 
             Optional.ofNullable(listener).ifPresent(Runnable::run);
 
-            dependencyManager.callMethodAnnotatedBy(OnGameStart.class);
+            dependencyManager.notify(OnGameStart.class);
 
             Log.info("New game (" + (System.currentTimeMillis() - time) + "ms)");
         });
@@ -60,7 +60,7 @@ public class GameManager implements GameObserver {
                 gameLoadManager.load(FileUtils.getSaveDirectory(gameInfo.name), gameSaveInfo.filename, () -> {
                     Optional.ofNullable(listener).ifPresent(Runnable::run);
 
-                    dependencyManager.callMethodAnnotatedBy(OnGameStart.class);
+                    dependencyManager.notify(OnGameStart.class);
 
                     Log.info("Load game (" + (System.currentTimeMillis() - time) + "ms)");
                 });
@@ -79,12 +79,12 @@ public class GameManager implements GameObserver {
         // Inject GameObjects
         dependencyManager.destroyNonBindControllers();
         dependencyManager.injectGameDependencies();
-        dependencyManager.callMethodAnnotatedBy(OnGameLayerInit.class);
-        dependencyManager.callMethodAnnotatedBy(AfterGameLayerInit.class);
+        dependencyManager.notify(OnGameLayerBegin.class);
+        dependencyManager.notify(OnGameLayerComplete.class);
     }
 
     public void destroyGame() {
-        dependencyManager.callMethodAnnotatedBy(OnGameStop.class);
+        dependencyManager.notify(OnGameStop.class);
         dependencyManager.destroyGameObjects();
     }
 

@@ -14,7 +14,7 @@ import org.smallbox.faraway.client.renderer.extra.TextStyleBuilder;
 import org.smallbox.faraway.client.ui.widgets.UILabel;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
-import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnGameStart;
+import org.smallbox.faraway.core.dependencyInjector.annotation.callback.gameEvent.OnGameStart;
 import org.smallbox.faraway.game.consumable.Consumable;
 import org.smallbox.faraway.game.consumable.ConsumableModule;
 import org.smallbox.faraway.game.consumable.ConsumableModuleObserver;

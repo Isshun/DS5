@@ -11,10 +11,9 @@ import org.smallbox.faraway.client.ui.widgets.View;
 import org.smallbox.faraway.core.dependencyInjector.DependencyManager;
 import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
-import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnApplicationLayerInit;
-import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnGameLayerInit;
-import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnGameUpdate;
-import org.smallbox.faraway.core.game.GameObserver;
+import org.smallbox.faraway.core.dependencyInjector.annotation.callback.applicationEvent.OnApplicationLayerBegin;
+import org.smallbox.faraway.core.dependencyInjector.annotation.callback.gameEvent.OnGameLayerBegin;
+import org.smallbox.faraway.core.dependencyInjector.annotation.callback.gameEvent.OnGameUpdate;
 import org.smallbox.faraway.util.GameException;
 import org.smallbox.faraway.util.log.Log;
 
@@ -28,7 +27,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @ApplicationObject
-public class LuaControllerManager implements GameObserver {
+public class LuaControllerManager {
     @Inject private DependencyManager dependencyManager;
 
     private final Map<String, CompositeView> _viewByControllerName = new HashMap<>();
@@ -49,8 +48,8 @@ public class LuaControllerManager implements GameObserver {
         return _viewByControllerName.get(controllerName);
     }
 
-    @OnGameLayerInit
-    @OnApplicationLayerInit
+    @OnGameLayerBegin
+    @OnApplicationLayerBegin
     public void onGameInitLayers() {
         _controllers = dependencyManager.getSubTypesOf(LuaController.class).stream().collect(Collectors.toConcurrentMap(LuaController::getCanonicalName, o -> o));
         _controllers.values().forEach(this::initController);

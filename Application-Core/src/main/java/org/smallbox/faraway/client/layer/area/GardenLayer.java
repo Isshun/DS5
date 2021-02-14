@@ -9,7 +9,7 @@ import org.smallbox.faraway.client.renderer.BaseRenderer;
 import org.smallbox.faraway.client.renderer.Viewport;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
-import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnGameLayerInit;
+import org.smallbox.faraway.core.dependencyInjector.annotation.callback.gameEvent.OnGameLayerBegin;
 import org.smallbox.faraway.game.plant.GardenModule;
 import org.smallbox.faraway.util.Constant;
 
@@ -21,7 +21,7 @@ public class GardenLayer extends BaseMapLayer {
 
     private TextureRegion[] _regions;
 
-    @OnGameLayerInit
+    @OnGameLayerBegin
     public void onGameLayerInit() {
         _regions = new TextureRegion[5];
         _regions[0] = new TextureRegion(spriteManager.getTexture("data/graphics/plants/garden.png"), 0, Constant.TILE_SIZE, Constant.TILE_SIZE, Constant.TILE_SIZE);

@@ -4,11 +4,11 @@ import com.badlogic.gdx.graphics.Color;
 import org.luaj.vm2.Globals;
 import org.luaj.vm2.LuaValue;
 import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject;
+import org.smallbox.faraway.core.game.DataManager;
 import org.smallbox.faraway.core.game.modelInfo.*;
-import org.smallbox.faraway.core.module.ModuleBase;
 import org.smallbox.faraway.core.lua.data.DataExtendException;
 import org.smallbox.faraway.core.lua.data.LuaExtend;
-import org.smallbox.faraway.core.game.DataManager;
+import org.smallbox.faraway.core.module.ModuleBase;
 import org.smallbox.faraway.util.Constant;
 import org.smallbox.faraway.util.log.Log;
 

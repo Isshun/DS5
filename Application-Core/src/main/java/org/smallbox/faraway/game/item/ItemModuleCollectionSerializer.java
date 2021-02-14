@@ -7,9 +7,9 @@ import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.game.DataManager;
 import org.smallbox.faraway.core.game.GameSerializerPriority;
+import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.save.GenericGameCollectionSerializer;
 import org.smallbox.faraway.game.world.WorldHelper;
-import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 
 import java.util.Collection;
 

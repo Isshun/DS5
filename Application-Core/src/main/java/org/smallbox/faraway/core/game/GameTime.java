@@ -1,10 +1,10 @@
 package org.smallbox.faraway.core.game;
 
-import org.smallbox.faraway.util.GameException;
+import org.smallbox.faraway.core.config.ApplicationConfig;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
-import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnInit;
-import org.smallbox.faraway.core.config.ApplicationConfig;
+import org.smallbox.faraway.core.dependencyInjector.annotation.callback.applicationEvent.OnInit;
+import org.smallbox.faraway.util.GameException;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;

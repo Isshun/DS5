@@ -1,8 +1,8 @@
 package org.smallbox.faraway.game.storage;
 
 import org.smallbox.faraway.game.consumable.Consumable;
-import org.smallbox.faraway.game.world.Parcel;
 import org.smallbox.faraway.game.job.JobModel;
+import org.smallbox.faraway.game.world.Parcel;
 
 public class StoreJob extends JobModel {
     public Consumable sourceConsumable;

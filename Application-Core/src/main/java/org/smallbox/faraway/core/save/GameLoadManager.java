@@ -5,11 +5,12 @@ import org.apache.commons.compress.archivers.ArchiveException;
 import org.apache.commons.compress.archivers.ArchiveInputStream;
 import org.apache.commons.compress.archivers.ArchiveStreamFactory;
 import org.apache.commons.compress.utils.IOUtils;
-import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.ApplicationException;
 import org.smallbox.faraway.core.dependencyInjector.DependencyManager;
 import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
+import org.smallbox.faraway.core.dependencyInjector.annotation.callback.applicationEvent.OnLoadBegin;
+import org.smallbox.faraway.core.dependencyInjector.annotation.callback.applicationEvent.OnLoadComplete;
 import org.smallbox.faraway.core.game.DataManager;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameSerializer;
@@ -28,7 +29,7 @@ public class GameLoadManager {
     public void load(File gameDirectory, String prefixName, GameSerializerInterface listener) throws ApplicationException {
         Log.info("============ LOAD GAME ============");
 
-        Application.notify(observer -> observer.onCustomEvent("load_game.begin", null));
+        dependencyManager.notify(OnLoadBegin.class);
         long time = System.currentTimeMillis();
 
         try {
@@ -39,7 +40,7 @@ public class GameLoadManager {
                 System.gc();
                 listener.onSerializerComplete();
                 deleteFiles(gameDirectory, prefixName);
-                Application.notify(observer -> observer.onCustomEvent("load_game.complete", null));
+                dependencyManager.notify(OnLoadComplete.class);
                 Log.info("Load game completed " + (System.currentTimeMillis() - time));
             });
         } catch (IOException | ArchiveException e) {

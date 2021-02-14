@@ -12,7 +12,7 @@ import org.smallbox.faraway.client.renderer.Viewport;
 import org.smallbox.faraway.core.config.ApplicationConfig;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
-import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnGameLongUpdate;
+import org.smallbox.faraway.core.dependencyInjector.annotation.callback.gameEvent.OnGameLongUpdate;
 import org.smallbox.faraway.game.world.Parcel;
 import org.smallbox.faraway.game.world.WorldModule;
 import org.smallbox.faraway.util.Constant;

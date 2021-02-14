@@ -7,9 +7,9 @@ import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.game.DataManager;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameSerializer;
-import org.smallbox.faraway.game.world.WorldHelper;
 import org.smallbox.faraway.core.save.SQLManager;
 import org.smallbox.faraway.game.storage.StorageArea;
+import org.smallbox.faraway.game.world.WorldHelper;
 
 @GameObject
 public class AreaSerializer extends GameSerializer {

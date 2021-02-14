@@ -2,8 +2,8 @@ package org.smallbox.faraway.game.structure;
 
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
-import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnGameUpdate;
-import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnInit;
+import org.smallbox.faraway.core.dependencyInjector.annotation.callback.applicationEvent.OnInit;
+import org.smallbox.faraway.core.dependencyInjector.annotation.callback.gameEvent.OnGameUpdate;
 import org.smallbox.faraway.core.game.DataManager;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.module.SuperGameModule;
@@ -91,7 +91,6 @@ public class StructureModule extends SuperGameModule<StructureItem, StructureMod
         }
     }
 
-    @Override
     public void onCancelJobs(Parcel parcel, Object object) {
         StructureItem structure = parcel.getItem(StructureItem.class);
         if (structure != null && !structure.isComplete() && (object == null || object instanceof StructureItem)) {

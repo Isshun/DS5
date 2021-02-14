@@ -1,7 +1,7 @@
 package org.smallbox.faraway.game.characterBuff;
 
-import org.smallbox.faraway.game.world.ObjectModel;
 import org.smallbox.faraway.game.character.model.base.CharacterModel;
+import org.smallbox.faraway.game.world.ObjectModel;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;

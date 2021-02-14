@@ -3,7 +3,6 @@ package org.smallbox.faraway.core.save;
 import com.almworks.sqlite4java.SQLiteConnection;
 import com.almworks.sqlite4java.SQLiteException;
 import org.smallbox.faraway.core.game.GameSerializer;
-import org.smallbox.faraway.core.save.SQLManager;
 
 public abstract class GenericGameSerializer extends GameSerializer {
     public abstract void onCreateTable(SQLiteConnection db) throws SQLiteException;

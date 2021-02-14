@@ -1,12 +1,12 @@
 package org.smallbox.faraway.game.character.model;
 
 import org.smallbox.faraway.core.save.GameSerializer;
-import org.smallbox.faraway.game.character.CharacterSerializer;
 import org.smallbox.faraway.game.character.CharacterInfo;
-import org.smallbox.faraway.game.world.Parcel;
+import org.smallbox.faraway.game.character.CharacterSerializer;
 import org.smallbox.faraway.game.character.CharacterTimetableExtra;
 import org.smallbox.faraway.game.character.model.base.CharacterName;
 import org.smallbox.faraway.game.character.model.base.*;
+import org.smallbox.faraway.game.world.Parcel;
 
 @CharacterInfoAnnotation("base.character.human")
 @GameSerializer(CharacterSerializer.class)

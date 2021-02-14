@@ -1,7 +1,7 @@
 package org.smallbox.faraway.game.planet;
 
-import org.smallbox.faraway.util.GameException;
 import org.smallbox.faraway.util.Constant;
+import org.smallbox.faraway.util.GameException;
 
 import java.util.Collection;
 import java.util.HashMap;

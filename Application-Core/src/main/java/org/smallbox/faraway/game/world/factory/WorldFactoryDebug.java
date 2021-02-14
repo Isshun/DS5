@@ -3,14 +3,14 @@ package org.smallbox.faraway.game.world.factory;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import org.smallbox.faraway.client.asset.AssetManager;
-import org.smallbox.faraway.client.renderer.BaseRenderer;
-import org.smallbox.faraway.client.renderer.Viewport;
 import org.smallbox.faraway.client.layer.BaseLayer;
 import org.smallbox.faraway.client.layer.GameLayer;
+import org.smallbox.faraway.client.renderer.BaseRenderer;
+import org.smallbox.faraway.client.renderer.Viewport;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
-import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnGameLayerInit;
-import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnGameStop;
+import org.smallbox.faraway.core.dependencyInjector.annotation.callback.gameEvent.OnGameLayerBegin;
+import org.smallbox.faraway.core.dependencyInjector.annotation.callback.gameEvent.OnGameStop;
 
 @GameObject
 @GameLayer(level = 999, visible = true)
@@ -22,7 +22,7 @@ public class WorldFactoryDebug extends BaseLayer {
     private Pixmap pixmap;
     private int offset;
 
-    @OnGameLayerInit
+    @OnGameLayerBegin
     private void init() {
         pixmap = assetManager.createPixmap(50 * 10, 100 * 10, Pixmap.Format.RGBA8888);
     }

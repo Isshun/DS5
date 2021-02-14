@@ -3,9 +3,9 @@ package org.smallbox.faraway.core.game;
 import org.smallbox.faraway.core.dependencyInjector.DependencyManager;
 import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
-import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnGameLongUpdate;
-import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnGameUpdate;
-import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnInit;
+import org.smallbox.faraway.core.dependencyInjector.annotation.callback.applicationEvent.OnInit;
+import org.smallbox.faraway.core.dependencyInjector.annotation.callback.gameEvent.OnGameLongUpdate;
+import org.smallbox.faraway.core.dependencyInjector.annotation.callback.gameEvent.OnGameUpdate;
 
 import java.lang.annotation.Annotation;
 import java.util.Map;
@@ -44,7 +44,7 @@ public class ThreadManager {
 
     private void callGameMethod(Class<? extends Annotation> cls) {
         if (game != null && game.getStatus() == GameStatus.STARTED) {
-            dependencyManager.callMethodAnnotatedBy(cls);
+            dependencyManager.notify(cls);
         }
     }
 

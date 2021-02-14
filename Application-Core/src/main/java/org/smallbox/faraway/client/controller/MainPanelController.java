@@ -12,7 +12,7 @@ import org.smallbox.faraway.client.ui.widgets.View;
 import org.smallbox.faraway.client.ui.widgets.UILabel;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
-import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnGameLayerInit;
+import org.smallbox.faraway.core.dependencyInjector.annotation.callback.gameEvent.OnGameLayerBegin;
 import org.smallbox.faraway.core.game.Game;
 
 @GameObject
@@ -50,7 +50,7 @@ public class MainPanelController extends LuaController {
 
     private enum Pane {CREW, BUILD, AREA, JOBS}
 
-    @OnGameLayerInit
+    @OnGameLayerBegin
     public void layerInit() {
         openCrew();
     }

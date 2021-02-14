@@ -4,7 +4,7 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.smallbox.faraway.core.config.ApplicationConfig;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
-import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnGameUpdate;
+import org.smallbox.faraway.core.dependencyInjector.annotation.callback.gameEvent.OnGameUpdate;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameTime;
 import org.smallbox.faraway.core.game.ThreadManager;
@@ -139,7 +139,6 @@ public class JobModule extends SuperGameModule<JobModel, JobModuleObserver> {
     }
 
     // TODO: utile ?
-    @Override
     public void onCancelJobs(Parcel parcel, Object object) {
         modelList.stream().filter(JobModel::isOpen).forEach(job -> {
             if (object == null && job.getTargetParcel() == parcel) {

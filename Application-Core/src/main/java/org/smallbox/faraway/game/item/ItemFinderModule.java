@@ -1,16 +1,15 @@
 package org.smallbox.faraway.game.item;
 
+import org.smallbox.faraway.core.config.ApplicationConfig;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.module.SuperGameModule;
-import org.smallbox.faraway.core.game.Game;
-import org.smallbox.faraway.core.config.ApplicationConfig;
 import org.smallbox.faraway.core.path.PathManager;
 import org.smallbox.faraway.core.world.model.ItemFilter;
 import org.smallbox.faraway.core.world.model.MapObjectModel;
-import org.smallbox.faraway.game.world.Parcel;
 import org.smallbox.faraway.game.character.model.PathModel;
 import org.smallbox.faraway.game.character.model.base.CharacterModel;
+import org.smallbox.faraway.game.world.Parcel;
 
 import java.util.ArrayList;
 import java.util.HashMap;

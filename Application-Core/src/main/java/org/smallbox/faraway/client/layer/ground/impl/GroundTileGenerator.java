@@ -6,7 +6,7 @@ import org.smallbox.faraway.client.asset.AssetManager;
 import org.smallbox.faraway.client.asset.terrain.TerrainManager;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
-import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnGameStop;
+import org.smallbox.faraway.core.dependencyInjector.annotation.callback.gameEvent.OnGameStop;
 import org.smallbox.faraway.game.world.Parcel;
 
 import java.util.HashMap;

@@ -18,7 +18,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 /**
  * Move consumable to storage area
  */
-public class StoreJob extends JobModel implements GameObserver {
+public class StoreJob extends JobModel {
     private enum Mode {MOVE_TO_CONSUMABLE, MOVE_TO_STORAGE}
 
     private Queue<ConsumableItem>  _consumables = new LinkedBlockingQueue<>();

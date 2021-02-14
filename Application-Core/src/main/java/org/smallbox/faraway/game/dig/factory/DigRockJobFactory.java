@@ -3,7 +3,7 @@ package org.smallbox.faraway.game.dig.factory;
 import org.smallbox.faraway.core.dependencyInjector.DependencyManager;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
-import org.smallbox.faraway.core.dependencyInjector.gameAction.OnGameMapChange;
+import org.smallbox.faraway.core.dependencyInjector.annotation.callback.gameAction.OnGameMapChange;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.path.PathManager;
 import org.smallbox.faraway.game.consumable.ConsumableModule;
@@ -31,7 +31,7 @@ public class DigRockJobFactory extends DigJobFactory {
 //                pathManager.refreshConnections(parcel);
 //            });
 
-            dependencyManager.callMethodAnnotatedBy(OnGameMapChange.class);
+            dependencyManager.notify(OnGameMapChange.class);
         }
     }
 }

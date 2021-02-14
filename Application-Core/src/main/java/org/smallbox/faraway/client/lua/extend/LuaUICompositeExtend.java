@@ -4,8 +4,8 @@ import org.luaj.vm2.Globals;
 import org.luaj.vm2.LuaValue;
 import org.smallbox.faraway.client.ui.widgets.CompositeView;
 import org.smallbox.faraway.client.ui.widgets.UIFrame;
-import org.smallbox.faraway.client.ui.widgets.View;
 import org.smallbox.faraway.client.ui.widgets.UIList;
+import org.smallbox.faraway.client.ui.widgets.View;
 import org.smallbox.faraway.core.module.ModuleBase;
 
 import java.util.ArrayList;

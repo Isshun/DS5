@@ -1,9 +1,9 @@
 package org.smallbox.faraway.client.lua.extend.impl;
 
 import org.luaj.vm2.LuaValue;
+import org.smallbox.faraway.client.layer.ui.MinimapLayer;
 import org.smallbox.faraway.client.lua.extend.LuaUIExtend;
 import org.smallbox.faraway.client.renderer.BaseRenderer;
-import org.smallbox.faraway.client.layer.ui.MinimapLayer;
 import org.smallbox.faraway.client.ui.widgets.View;
 import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;

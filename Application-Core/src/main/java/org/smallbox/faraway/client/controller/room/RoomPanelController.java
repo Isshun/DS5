@@ -8,7 +8,7 @@ import org.smallbox.faraway.client.ui.event.UIEventManager;
 import org.smallbox.faraway.client.ui.widgets.UIList;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
-import org.smallbox.faraway.core.dependencyInjector.annotationEvent.AfterGameLayerInit;
+import org.smallbox.faraway.core.dependencyInjector.annotation.callback.gameEvent.OnGameLayerComplete;
 import org.smallbox.faraway.game.room.RoomModule;
 
 @GameObject
@@ -21,7 +21,7 @@ public class RoomPanelController extends LuaController {
     @BindLua private UIList listRoomsAdd;
     @BindLua private UIList listRoomsSub;
 
-    @AfterGameLayerInit
+    @OnGameLayerComplete
     public void afterGameLayerInit() {
 //        roomModule.getRoomClasses().stream()
 //                .sorted(Comparator.comparing(o -> o.getAnnotation(RoomTypeInfo.class).label()))

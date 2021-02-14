@@ -14,7 +14,7 @@ import org.smallbox.faraway.client.ui.widgets.UIList;
 import org.smallbox.faraway.core.dependencyInjector.DependencyManager;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
-import org.smallbox.faraway.core.dependencyInjector.annotationEvent.AfterGameLayerInit;
+import org.smallbox.faraway.core.dependencyInjector.annotation.callback.gameEvent.OnGameLayerComplete;
 import org.smallbox.faraway.game.area.AreaModel;
 import org.smallbox.faraway.game.area.AreaModule;
 import org.smallbox.faraway.game.area.AreaTypeInfo;
@@ -35,7 +35,7 @@ public class AreaPanelController extends LuaController {
     @BindLua private UIList listAreasAdd;
     @BindLua private UIList listAreasSub;
 
-    @AfterGameLayerInit
+    @OnGameLayerComplete
     public void afterGameLayerInit() {
         dependencyManager.getGameDependencies().stream()
                 .map(dependencyInfo -> dependencyInfo.dependency)

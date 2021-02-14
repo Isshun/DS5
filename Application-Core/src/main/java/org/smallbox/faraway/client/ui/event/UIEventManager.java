@@ -4,6 +4,7 @@ import com.badlogic.gdx.Input;
 import org.smallbox.faraway.client.input.EventManager;
 import org.smallbox.faraway.client.input.InputManager;
 import org.smallbox.faraway.client.layer.LayerManager;
+import org.smallbox.faraway.client.renderer.Viewport;
 import org.smallbox.faraway.client.selection.GameSelectionManager;
 import org.smallbox.faraway.client.ui.UIManager;
 import org.smallbox.faraway.client.ui.widgets.UIDropDown;
@@ -23,6 +24,7 @@ public class UIEventManager implements EventManager {
     @Inject private InputManager inputManager;
     @Inject private UIManager uiManager;
     @Inject private GameManager gameManager;
+    @Inject private Viewport viewport;
 
     private final Map<View, OnDragListener>       _onDragListeners;
     private final Map<View, OnClickListener>      _onClickListeners;
@@ -180,10 +182,10 @@ public class UIEventManager implements EventManager {
 
         // Click on map
         if (gameManager.isRunning()) {
-            int fromX = layerManager.getViewport().getWorldPosX(inputManager.getTouchDownX());
-            int fromY = layerManager.getViewport().getWorldPosY(inputManager.getTouchDownY());
-            int toX = layerManager.getViewport().getWorldPosX(inputManager.getTouchDragX());
-            int toY = layerManager.getViewport().getWorldPosY(inputManager.getTouchDragY());
+            int fromX = viewport.getWorldPosX(inputManager.getTouchDownX());
+            int fromY = viewport.getWorldPosY(inputManager.getTouchDownY());
+            int toX = viewport.getWorldPosX(inputManager.getTouchDragX());
+            int toY = viewport.getWorldPosY(inputManager.getTouchDragY());
             if (fromX != toX || fromY != toY) {
                 gameSelectionManager.select(fromX, fromY, toX, toY);
             } else {

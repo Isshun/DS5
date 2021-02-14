@@ -1,12 +1,12 @@
 package org.smallbox.faraway.client.renderer;
 
 import org.smallbox.faraway.core.Application;
+import org.smallbox.faraway.core.config.ApplicationConfig;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
-import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnInit;
+import org.smallbox.faraway.core.dependencyInjector.annotation.callback.applicationEvent.OnInit;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameManager;
-import org.smallbox.faraway.core.config.ApplicationConfig;
 import org.smallbox.faraway.game.world.Parcel;
 import org.smallbox.faraway.util.Constant;
 import org.smallbox.faraway.util.log.Log;
@@ -124,7 +124,6 @@ public class Viewport {
         if (gameManager.isRunning()) {
             if (floor >= 0 && floor < game.getInfo().worldFloors) {
                 _floor = floor;
-                Application.notifyClient(gameObserver -> gameObserver.onFloorChange(_floor));
             }
         }
     }

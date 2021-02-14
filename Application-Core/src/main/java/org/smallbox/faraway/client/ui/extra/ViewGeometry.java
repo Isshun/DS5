@@ -1,8 +1,8 @@
 package org.smallbox.faraway.client.ui.extra;
 
 import org.smallbox.faraway.client.ui.widgets.View;
-import org.smallbox.faraway.core.dependencyInjector.DependencyManager;
 import org.smallbox.faraway.core.config.ApplicationConfig;
+import org.smallbox.faraway.core.dependencyInjector.DependencyManager;
 
 public class ViewGeometry {
     private final View view;

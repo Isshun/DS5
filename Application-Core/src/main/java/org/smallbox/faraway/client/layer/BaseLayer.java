@@ -1,32 +1,28 @@
 package org.smallbox.faraway.client.layer;
 
 import com.badlogic.gdx.graphics.Color;
-import org.smallbox.faraway.client.input.GameClientObserver;
 import org.smallbox.faraway.client.asset.SpriteManager;
+import org.smallbox.faraway.client.input.GameClientObserver;
 import org.smallbox.faraway.client.renderer.BaseRenderer;
 import org.smallbox.faraway.client.renderer.Viewport;
 import org.smallbox.faraway.client.selection.GameSelectionManager;
-import org.smallbox.faraway.game.world.ObjectModel;
-import org.smallbox.faraway.util.GameException;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.game.Game;
-import org.smallbox.faraway.core.game.GameObserver;
+import org.smallbox.faraway.game.world.ObjectModel;
 import org.smallbox.faraway.util.Constant;
+import org.smallbox.faraway.util.GameException;
 import org.smallbox.faraway.util.log.Log;
 
-public abstract class BaseLayer implements GameObserver, GameClientObserver {
+public abstract class BaseLayer implements GameClientObserver {
     @Inject private GameSelectionManager gameSelectionManager;
+    @Inject private Game game;
 
     private final boolean       _isThirdParty;
     private long                _totalDrawDelay;
     private long                _lastDrawDelay;
     private int                 _nbDraw;
-    private boolean             _isLoaded;
     private boolean             _isVisible = true;
 
-    private int                 _width;
-    private int                 _height;
-    private int                 _floor;
     protected int                 _fromX;
     protected int                 _fromY;
     protected int                 _toX;
@@ -111,11 +107,10 @@ public abstract class BaseLayer implements GameObserver, GameClientObserver {
             long time = System.currentTimeMillis();
 
             _frame++;
-            _floor = viewport.getFloor();
             _fromX = (int) Math.max(0, (-viewport.getPosX() / Constant.TILE_SIZE) * viewport.getScale());
             _fromY = (int) Math.max(0, (-viewport.getPosY() / Constant.TILE_SIZE) * viewport.getScale());
-            _toX = Math.min(_width, _fromX + 50);
-            _toY = Math.min(_height, _fromY + 40);
+            _toX = Math.min(game.getInfo().worldWidth, _fromX + 50);
+            _toY = Math.min(game.getInfo().worldHeight, _fromY + 40);
 
             onDraw(renderer, viewport, animProgress, frame);
 
@@ -137,33 +132,11 @@ public abstract class BaseLayer implements GameObserver, GameClientObserver {
         }
     }
 
-    public boolean isLoaded() {
-        return _isLoaded;
-    }
     public long getTotalDrawDelay() { return _totalDrawDelay; }
     public long getLastDrawDelay() { return _lastDrawDelay; }
 
-    public final void gameStart(Game game) {
-        Log.debug(getClass(), "start renderer");
-
-        _width = game.getInfo().worldWidth;
-        _height = game.getInfo().worldHeight;
-
-        _isLoaded = true;
-    }
-
-    public void unload() {
-        Log.info("[BaseRender] unload " + getClass().getSimpleName());
-        _isLoaded = false;
-    }
-
     public boolean isMandatory() {
         return false;
-    }
-
-    @Override
-    public void onFloorChange(int floor) {
-        _floor = floor;
     }
 
     @Override

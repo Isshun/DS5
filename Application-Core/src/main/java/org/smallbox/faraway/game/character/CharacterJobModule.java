@@ -2,14 +2,13 @@ package org.smallbox.faraway.game.character;
 
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
-import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnGameUpdate;
+import org.smallbox.faraway.core.dependencyInjector.annotation.callback.gameEvent.OnGameUpdate;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameTime;
 import org.smallbox.faraway.core.game.ThreadManager;
 import org.smallbox.faraway.core.module.SuperGameModule2;
 import org.smallbox.faraway.game.character.model.base.CharacterModel;
 import org.smallbox.faraway.game.job.*;
-import org.smallbox.faraway.util.Constant;
 import org.smallbox.faraway.util.GameException;
 import org.smallbox.faraway.util.log.Log;
 

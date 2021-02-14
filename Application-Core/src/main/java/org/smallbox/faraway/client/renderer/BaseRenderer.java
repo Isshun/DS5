@@ -232,7 +232,7 @@ public abstract class BaseRenderer {
             Gdx.gl.glEnable(GL20.GL_BLEND);
 
             Matrix4 matrix = new Matrix4();
-            matrix.translate(x * layerManager.getViewport().getScale(), y * layerManager.getViewport().getScale(), 0);
+            matrix.translate(x * viewport.getScale(), y * viewport.getScale(), 0);
 //            matrix.scale(Application.gameManager.getGame().getViewport().getScale(), Application.gameManager.getGame().getViewport().getScale(), 1f);
 
             cache.setProjectionMatrix(getCombinedProjection());

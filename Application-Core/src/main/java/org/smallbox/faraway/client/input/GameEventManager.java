@@ -2,13 +2,11 @@ package org.smallbox.faraway.client.input;
 
 import com.badlogic.gdx.Input;
 import org.smallbox.faraway.client.gameAction.GameActionManager;
-import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 
 @ApplicationObject
 public class GameEventManager implements EventManager {
-
     @Inject private GameActionManager gameActionManager;
 
     private boolean _mousePressed;
@@ -75,8 +73,6 @@ public class GameEventManager implements EventManager {
         if (button == Input.Buttons.RIGHT) {
             gameActionManager.clearAction();
         }
-
-        Application.notifyClient(obs -> obs.onMouseRelease(x, y, button));
 
         return false;
     }

@@ -1,12 +1,11 @@
 package org.smallbox.faraway.client.input;
 
 import org.smallbox.faraway.client.ui.event.GameEvent;
-import org.smallbox.faraway.core.game.GameObserver;
 import org.smallbox.faraway.game.world.Parcel;
 
 import java.util.List;
 
-public interface GameClientObserver extends GameObserver {
+public interface GameClientObserver {
     default void onReloadUI(){}
     default void onRefreshUI(int frame){}
     default void onDeselect() {}

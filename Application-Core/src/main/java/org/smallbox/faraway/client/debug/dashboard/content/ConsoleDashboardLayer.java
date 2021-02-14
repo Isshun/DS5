@@ -6,9 +6,9 @@ import org.smallbox.faraway.client.debug.DebugService;
 import org.smallbox.faraway.client.debug.dashboard.DashboardLayerBase;
 import org.smallbox.faraway.client.debug.interpreter.DebugCommandInterpreterService;
 import org.smallbox.faraway.client.renderer.BaseRenderer;
+import org.smallbox.faraway.core.config.ApplicationConfig;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
-import org.smallbox.faraway.core.config.ApplicationConfig;
 import org.smallbox.faraway.util.log.Log;
 
 import java.util.ArrayList;

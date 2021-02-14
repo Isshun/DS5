@@ -3,8 +3,8 @@ package org.smallbox.faraway.game.area;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
-import org.smallbox.faraway.game.world.Parcel;
 import org.smallbox.faraway.game.job.JobModule;
+import org.smallbox.faraway.game.world.Parcel;
 
 @GameObject
 @AreaTypeInfo(label = "Remove job", color = 0xa8a8a8ff)

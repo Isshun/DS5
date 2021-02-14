@@ -2,12 +2,11 @@ package org.smallbox.faraway.game.weather;
 
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
-import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnGameNewDay;
-import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnGameNewHour;
-import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnGameNewMonth;
-import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnGameUpdate;
+import org.smallbox.faraway.core.dependencyInjector.annotation.callback.gameEvent.OnGameNewDay;
+import org.smallbox.faraway.core.dependencyInjector.annotation.callback.gameEvent.OnGameNewHour;
+import org.smallbox.faraway.core.dependencyInjector.annotation.callback.gameEvent.OnGameNewMonth;
+import org.smallbox.faraway.core.dependencyInjector.annotation.callback.gameEvent.OnGameUpdate;
 import org.smallbox.faraway.core.game.Game;
-import org.smallbox.faraway.core.game.GameObserver;
 import org.smallbox.faraway.core.game.GameTime;
 import org.smallbox.faraway.core.module.SuperGameModule2;
 import org.smallbox.faraway.util.Random;
@@ -17,7 +16,7 @@ import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
 @GameObject
-public class WorldTemperatureModule extends SuperGameModule2<WeatherModuleObserver> implements GameObserver {
+public class WorldTemperatureModule extends SuperGameModule2<WeatherModuleObserver> {
     @Inject private WeatherModule weatherModule;
     @Inject private GameTime gameTime;
     @Inject private Game game;

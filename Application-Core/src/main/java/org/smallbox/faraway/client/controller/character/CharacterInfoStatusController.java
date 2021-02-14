@@ -9,8 +9,8 @@ import org.smallbox.faraway.client.ui.widgets.View;
 import org.smallbox.faraway.client.ui.widgets.*;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
-import org.smallbox.faraway.core.dependencyInjector.annotationEvent.AfterGameLayerInit;
-import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnGameLayerInit;
+import org.smallbox.faraway.core.dependencyInjector.annotation.callback.gameEvent.OnGameLayerComplete;
+import org.smallbox.faraway.core.dependencyInjector.annotation.callback.gameEvent.OnGameLayerBegin;
 import org.smallbox.faraway.game.character.model.base.CharacterModel;
 import org.smallbox.faraway.game.character.model.base.CharacterNeedsExtra;
 import org.smallbox.faraway.game.character.model.base.NeedEntry;
@@ -41,7 +41,7 @@ public class CharacterInfoStatusController extends LuaController {
     private CharacterModel _selected;
     private List<UIFrame> needs;
 
-    @OnGameLayerInit
+    @OnGameLayerBegin
     public void init() {
         gridNeeds.getViews().clear();
         needs = Stream
@@ -54,7 +54,7 @@ public class CharacterInfoStatusController extends LuaController {
                 .collect(Collectors.toList());
     }
 
-    @AfterGameLayerInit
+    @OnGameLayerComplete
     public void initUI() {
         needs.forEach(frame -> gridNeeds.addView(frame));
     }

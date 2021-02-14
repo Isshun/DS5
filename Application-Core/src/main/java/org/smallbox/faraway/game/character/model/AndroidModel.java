@@ -1,10 +1,10 @@
 package org.smallbox.faraway.game.character.model;
 
 import org.smallbox.faraway.game.character.CharacterInfo;
-import org.smallbox.faraway.game.world.Parcel;
 import org.smallbox.faraway.game.character.model.base.CharacterModel;
 import org.smallbox.faraway.game.character.model.base.CharacterStatsExtra;
 import org.smallbox.faraway.game.job.freeTimeJobs.BasicAndroidSelfCheckJob;
+import org.smallbox.faraway.game.world.Parcel;
 
 @CharacterInfoAnnotation("base.character.android")
 public class AndroidModel extends CharacterModel {
