@@ -12,17 +12,17 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 @ApplicationObject
 public class SQLManager {
-    private final Queue<DBRunnable>   _queue = new LinkedBlockingQueue<>();
-    private SQLiteConnection    _db;
+    private final Queue<DBRunnable> queue = new LinkedBlockingQueue<>();
+    private SQLiteConnection db;
 
     public void post(DBRunnable runnable) {
-        _queue.add(runnable);
+        queue.add(runnable);
     }
 
     public void update() {
         try {
-            while (!_queue.isEmpty()) {
-                _queue.poll().run(_db);
+            while (!queue.isEmpty()) {
+                queue.poll().run(db);
             }
         } catch (Exception e) {
             Log.error(e);
@@ -30,18 +30,20 @@ public class SQLManager {
     }
 
     public void openDB(final File file) {
-        _queue.add(db -> {
-            assert _db == null;
-            _db = new SQLiteConnection(file);
-            try { _db.open(true); } catch (SQLiteException e) { e.printStackTrace(); }
+        queue.add(db -> {
+            try {
+                this.db = new SQLiteConnection(file);
+                this.db.open(true);
+            } catch (SQLiteException e) {
+                Log.error(e);
+            }
         });
     }
 
     public void closeDB() {
-        _queue.add(db -> {
-            assert _db != null;
-            _db.dispose();
-            _db = null;
+        queue.add(db -> {
+            this.db.dispose();
+            this.db = null;
         });
     }
 }

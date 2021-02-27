@@ -3,6 +3,7 @@ package org.smallbox.faraway.core.save;
 import com.almworks.sqlite4java.SQLiteException;
 import com.almworks.sqlite4java.SQLiteStatement;
 import org.smallbox.faraway.core.game.GameSerializer;
+import org.smallbox.faraway.util.log.Log;
 
 import java.util.Collection;
 
@@ -19,6 +20,23 @@ public abstract class GenericGameCollectionSerializer<T> extends GameSerializer 
         this.createTableCmd = createTableCmd;
         this.insertCommand = insertCommand;
         this.selectCommand = selectCommand;
+    }
+
+    public void onLoad(SQLManager sqlManager) {
+        sqlManager.post(db -> {
+            try {
+                SQLiteStatement statement = db.prepare(selectCommand);
+                try {
+                    while (statement.step()) {
+                        onLoadEntry(statement);
+                    }
+                } finally {
+                    statement.dispose();
+                }
+            } catch (SQLiteException e) {
+                Log.error(e);
+            }
+        });
     }
 
     public void onSave(SQLManager sqlManager) {
@@ -39,7 +57,7 @@ public abstract class GenericGameCollectionSerializer<T> extends GameSerializer 
 
                             db.exec("end transaction");
                         } catch (SQLiteException e) {
-                            e.printStackTrace();
+                            Log.error(e);
                         }
                     });
                 } finally {
@@ -47,24 +65,7 @@ public abstract class GenericGameCollectionSerializer<T> extends GameSerializer 
                 }
 
             } catch (Exception e) {
-                e.printStackTrace();
-            }
-        });
-    }
-
-    public void onLoad(SQLManager sqlManager) {
-        sqlManager.post(db -> {
-            try {
-                SQLiteStatement statement = db.prepare(selectCommand);
-                try {
-                    while (statement.step()) {
-                        onLoadEntry(statement);
-                    }
-                } finally {
-                    statement.dispose();
-                }
-            } catch (SQLiteException e) {
-                e.printStackTrace();
+                Log.error(e);
             }
         });
     }
