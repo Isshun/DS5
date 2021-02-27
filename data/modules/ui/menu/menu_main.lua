@@ -14,6 +14,8 @@ ui:extend({
             { type = "label", text = "Continue", style = "menu_entry", action = "onActionContinue" },
             { type = "view", background = blue_dark_5, size = {280, 2}},
             { type = "label", text = "New game", style = "menu_entry", action = "onActionNewGame" },
+            { type = "label", text = "New game - test 1", style = "menu_entry", action = "onActionNewGameTest1" },
+            { type = "label", text = "New game - test 2", style = "menu_entry", action = "onActionNewGameTest2" },
             { type = "label", text = "Load game", style = "menu_entry", action = "onActionLoad" },
             { type = "label", text = "Settings", style = "menu_entry", action = "onActionSettings" },
             { type = "label", text = "Exit", style = "menu_entry", action = "onActionExit" },

@@ -2,6 +2,7 @@ package org.smallbox.faraway.util;
 
 import org.apache.commons.io.IOUtils;
 import org.json.JSONObject;
+import org.smallbox.faraway.core.game.Game;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -39,5 +40,11 @@ public class Utils {
 
     public static long second(int value) {
         return value * 1000;
+    }
+
+    public static void requireNonNull(Object object, Class<?> cls, String message) {
+        if (object == null) {
+            throw new GameException(cls, message);
+        }
     }
 }

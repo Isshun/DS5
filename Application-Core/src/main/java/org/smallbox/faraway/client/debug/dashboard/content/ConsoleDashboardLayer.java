@@ -57,12 +57,12 @@ public class ConsoleDashboardLayer extends DashboardLayerBase {
                 color = Color.GRAY;
             }
 
-            renderer.drawText(10, posY - 3, text, color, fontSize, false, "sui", 1);
+            renderer.drawText(10, posY - 3, text, color, fontSize, false, "monoMMM_5", 1);
 
             _index++;
         });
 
-        renderer.drawText(10, resolutionHeight - 23, "> " + ObjectUtils.firstNonNull(debugCommandInterpreterService.getCommandInput(), "") + prefix, Color.WHITE, fontSize, false, "sui", 1);
+        renderer.drawText(10, resolutionHeight - 23, "> " + ObjectUtils.firstNonNull(debugCommandInterpreterService.getCommandInput(), "") + prefix, Color.WHITE, fontSize, false, "monoMMM_5", 1);
     }
 
 }

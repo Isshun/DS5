@@ -1,5 +1,6 @@
 package org.smallbox.faraway.core.save;
 
+import org.smallbox.faraway.core.game.GameScenario;
 import org.smallbox.faraway.game.planet.PlanetInfo;
 import org.smallbox.faraway.game.planet.RegionInfo;
 

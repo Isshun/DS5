@@ -8,6 +8,7 @@ import org.smallbox.faraway.util.GameException;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.concurrent.TimeUnit;
 
 @GameObject
@@ -74,11 +75,14 @@ public class GameTime {
         return value;
     }
 
-    public LocalDateTime plus(int value, TimeUnit timeUnit) {
+    public LocalDateTime plus(long value, TimeUnit timeUnit) {
         return plus(localDateTime, value, timeUnit);
     }
 
-    public static LocalDateTime plus(LocalDateTime localDateTime, int value, TimeUnit timeUnit) {
+    public static LocalDateTime plus(LocalDateTime localDateTime, long value, TimeUnit timeUnit) {
+        if (timeUnit == TimeUnit.MILLISECONDS) {
+            return localDateTime.plus(value, ChronoUnit.MILLIS);
+        }
         if (timeUnit == TimeUnit.SECONDS) {
             return localDateTime.plusSeconds(value);
         }

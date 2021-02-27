@@ -6,7 +6,6 @@ import org.smallbox.faraway.client.asset.AssetManager;
 import org.smallbox.faraway.client.asset.terrain.TerrainManager;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
-import org.smallbox.faraway.core.dependencyInjector.annotation.callback.gameEvent.OnGameStop;
 import org.smallbox.faraway.game.world.Parcel;
 
 import java.util.HashMap;
@@ -49,11 +48,11 @@ public class GroundTileGenerator {
 //            pixmapOut.drawPixmap(pixmap, 0, 0, new Random().nextInt(4) * 128, new Random().nextInt(4) * 128, 128, 128);
 //        });
     }
-
-    @OnGameStop
-    private void gameStop() {
-        cachedTextures.values().forEach(Texture::dispose);
-    }
+//
+//    @OnGameStop
+//    private void gameStop() {
+//        cachedTextures.values().forEach(Texture::dispose);
+//    }
 
     private int computeNeighborhood(Parcel parcel) {
         int neighborhood = 0;

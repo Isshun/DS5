@@ -16,10 +16,9 @@ import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.config.ApplicationConfig;
 import org.smallbox.faraway.core.dependencyInjector.DependencyManager;
 import org.smallbox.faraway.core.dependencyInjector.DependencyNotifier;
-import org.smallbox.faraway.core.dependencyInjector.annotation.callback.applicationEvent.OnApplicationLayerComplete;
 import org.smallbox.faraway.core.dependencyInjector.annotation.callback.applicationEvent.OnApplicationLayerBegin;
+import org.smallbox.faraway.core.dependencyInjector.annotation.callback.applicationEvent.OnApplicationLayerComplete;
 import org.smallbox.faraway.core.lua.ServerLuaModuleManager;
-import org.smallbox.faraway.core.save.SQLManager;
 import org.smallbox.faraway.core.task.TaskManager;
 
 public class GameApplication extends ApplicationAdapter {
@@ -43,25 +42,27 @@ public class GameApplication extends ApplicationAdapter {
         di.findAndCreateApplicationObjects();
 
         TaskManager taskManager = di.getDependency(TaskManager.class);
-        taskManager.addLoadTask("Calling dependency injector", false, di::injectApplicationDependencies);
+        taskManager.addLoadTask("Calling dependency injector", true, di::createApplicationDependencies);
         taskManager.addLoadTask("Generate fonts", true, () -> di.getDependency(FontManager.class).generateFonts());
+        taskManager.addLoadTask("Load server lua modules", false, () -> di.getDependency(ServerLuaModuleManager.class).init(true));
+        taskManager.addLoadTask("Load client lua modules", false, () -> di.getDependency(ClientLuaModuleManager.class).init(true));
         taskManager.addLoadTask("Init GDXRenderer", true, () -> di.getDependency(GDXRenderer.class).init());
         taskManager.addLoadTask("Init MapRenderer", true, () -> di.getDependency(MapRenderer.class).init());
         taskManager.addLoadTask("Init UIRenderer", true, () -> di.getDependency(UIRenderer.class).init());
-        taskManager.addLoadTask("Launch DB thread", false, () -> taskManager.launchBackgroundThread(di.getDependency(SQLManager.class)::update, 16));
+        //taskManager.addLoadTask("Launch DB thread", true, () -> taskManager.launchBackgroundThread(di.getDependency(SQLManager.class)::update, 16));
 //        taskManager.addLoadTask("Load modules", false, () -> di.getDependency(ModuleManager.class).loadModules(null));
-        taskManager.addLoadTask("Load server lua modules", false, () -> di.getDependency(ServerLuaModuleManager.class).init(true));
-        taskManager.addLoadTask("Load sprites", false, () -> di.getDependency(SpriteManager.class).init());
-        taskManager.addLoadTask("Load terrains", false, () -> di.getDependency(TerrainManager.class).init());
-        taskManager.addWaitTask("Loading sprites", false, () -> di.getDependency(AssetManager.class).update(16), () -> di.getDependency(AssetManager.class).getProgress());
-        taskManager.addLoadTask("Set textures filter", false, () -> di.getDependency(SpriteManager.class).setTexturesFilter());
-        taskManager.addLoadTask("Load client lua modules", false, () -> di.getDependency(ClientLuaModuleManager.class).init(true));
-        taskManager.addLoadTask("Destroy useless controller", false, di::destroyNonBindControllers);
-        taskManager.addLoadTask("Calling OnApplicationLayerInit", false, () -> di.getDependency(DependencyNotifier.class).notify(OnApplicationLayerBegin.class));
-        taskManager.addLoadTask("Calling AfterApplicationLayerInit", false, () -> di.getDependency(DependencyNotifier.class).notify(OnApplicationLayerComplete.class));
+        taskManager.addLoadTask("Load sprites", true, () -> di.getDependency(SpriteManager.class).init());
+        taskManager.addLoadTask("Load terrains", true, () -> di.getDependency(TerrainManager.class).init());
+        taskManager.addWaitTask("Loading sprites", true, () -> di.getDependency(AssetManager.class).update(16), di.getDependency(AssetManager.class));
+        taskManager.addLoadTask("Set textures filter", true, () -> di.getDependency(SpriteManager.class).setTexturesFilter());
+        taskManager.addLoadTask("Destroy useless controller", true, di::destroyNonBindControllers);
+        taskManager.addLoadTask("Calling OnApplicationLayerInit", true, () -> di.getDependency(DependencyNotifier.class).notify(OnApplicationLayerBegin.class));
+        taskManager.addLoadTask("Calling AfterApplicationLayerInit", true, () -> di.getDependency(DependencyNotifier.class).notify(OnApplicationLayerComplete.class));
         taskManager.addLoadTask("Background music", true, () -> di.getDependency(BackgroundMusicManager.class).start());
-        taskManager.addLoadTask("Application ready", false, () -> Application.isLoaded = true);
-        taskManager.addLoadTask("(debug) Resume game", false, GameApplication::onCreateCompleted);
+        taskManager.addLoadTask("Application ready", true, () -> Application.isLoaded = true);
+        taskManager.addWaitTask("Waiting for background tasks", true, taskManager::allBackgroundTaskCompleted, null);
+        taskManager.addLoadTask("Resolve futures", true, () -> di.getDependency(FontManager.class).resolveFutures());
+        taskManager.addLoadTask("(debug) Resume game", true, GameApplication::onCreateCompleted);
 
         mainRender = di.getDependency(MainRender.class);
     }

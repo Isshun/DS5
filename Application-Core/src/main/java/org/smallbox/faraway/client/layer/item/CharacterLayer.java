@@ -23,7 +23,6 @@ import org.smallbox.faraway.core.dependencyInjector.annotation.callback.gameEven
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameManager;
 import org.smallbox.faraway.core.game.model.MovableModel;
-import org.smallbox.faraway.game.character.CharacterCommon;
 import org.smallbox.faraway.game.character.CharacterModule;
 import org.smallbox.faraway.game.character.CharacterPositionCommon;
 import org.smallbox.faraway.game.character.model.CharacterInventoryExtra;
@@ -59,19 +58,6 @@ public class CharacterLayer extends BaseMapLayer {
     public void init() {
 //        animationManager.init("player", "data/graphics/player/ball.atlas", "skeleton-animation", 0.045f, Animation.PlayMode.LOOP);
         animationManager.init("player", "data/graphics/player/player.atlas", "hero_walk", 0.045f, Animation.PlayMode.LOOP);
-    }
-
-    @Override
-    public void onUpdate(Object object) {
-
-        if (object instanceof CharacterPositionCommon) {
-
-        }
-
-        if (object instanceof CharacterCommon) {
-
-        }
-
     }
 
     @Override
@@ -123,7 +109,6 @@ public class CharacterLayer extends BaseMapLayer {
     private void doDraw(BaseRenderer renderer, CharacterModel character, int posX, int posY, MovableModel.Direction dout) {
         drawCharacter(renderer, character, posX, posY, dout);
         drawLabel(renderer, character, posX, posY);
-        drawSelection(renderer, spriteManager, character, posX, posY, Constant.TILE_SIZE, (int) (Constant.TILE_SIZE * 1.25), 0, 0);
         drawInventory(renderer, character, posX, posY);
         drawJob(renderer, character, posX, posY);
     }

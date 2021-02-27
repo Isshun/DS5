@@ -2,8 +2,10 @@ package org.smallbox.faraway.core.path.graph;
 
 import com.badlogic.gdx.ai.pfa.Heuristic;
 import com.badlogic.gdx.math.Vector2;
+import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.game.world.Parcel;
 
+@GameObject
 public class ParcelHeuristic implements Heuristic<Parcel> {
 
     @Override

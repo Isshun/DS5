@@ -15,10 +15,14 @@ import org.smallbox.faraway.game.world.Parcel;
 import org.smallbox.faraway.game.world.WorldModule;
 
 import java.util.Map;
+import java.util.Queue;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 @GameObject
 public class TemperatureModule extends SuperGameModule {
+    private final static int ELEMENTS_BY_UPDATE = 100000;
+
     @Inject private WorldTemperatureModule worldTemperatureModule;
     @Inject private WorldModule worldModule;
     @Inject private WeatherModule weatherModule;
@@ -26,6 +30,7 @@ public class TemperatureModule extends SuperGameModule {
     @Inject private ItemModule itemModule;
 
     private Map<Parcel, Double> temperatureByParcel = new ConcurrentHashMap<>();
+    private Queue<Parcel> parcelQueue = new ConcurrentLinkedQueue<>();
 
     @OnInit
     public void onInit() {
@@ -38,7 +43,15 @@ public class TemperatureModule extends SuperGameModule {
 
     @OnGameLongUpdate
     public void onGameLongUpdate() {
-        worldModule.getAll().forEach(parcel -> temperatureByParcel.put(parcel, worldTemperatureModule.getTemperature()));
+        if (parcelQueue.isEmpty()) {
+            parcelQueue.addAll(worldModule.getAll());
+        }
+
+        for (int i = 0; i < ELEMENTS_BY_UPDATE; i++) {
+            if (!parcelQueue.isEmpty()) {
+                temperatureByParcel.put(parcelQueue.poll(), worldTemperatureModule.getTemperature());
+            }
+        }
     }
 
     public double getTemperature(Parcel parcel) {

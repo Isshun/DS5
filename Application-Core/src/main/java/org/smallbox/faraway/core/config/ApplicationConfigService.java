@@ -24,7 +24,7 @@ public class ApplicationConfigService {
 
     @OnInit
     public void onInit() {
-        Log.info("Load application applicationConfig");
+        Log.debug("Load application applicationConfig");
 
         FileUtils.createRoamingDirectory();
 

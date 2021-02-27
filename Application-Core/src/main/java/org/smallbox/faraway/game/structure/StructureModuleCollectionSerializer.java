@@ -1,6 +1,5 @@
 package org.smallbox.faraway.game.structure;
 
-import com.almworks.sqlite4java.SQLiteConnection;
 import com.almworks.sqlite4java.SQLiteException;
 import com.almworks.sqlite4java.SQLiteStatement;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
@@ -13,48 +12,41 @@ import java.util.Collection;
 
 @GameObject
 public class StructureModuleCollectionSerializer extends GenericGameCollectionSerializer<StructureItem> {
+    private final static String CREATE_TABLE_CMD = "CREATE TABLE WorldModule_structure (_id INTEGER, x INTEGER, y INTEGER, z INTEGER, name TEXT, buildProgress INTEGER)";
+    private final static String INSERT_CMD = "INSERT INTO WorldModule_structure (_id, x, y, z, name, buildProgress) VALUES (?, ?, ?, ?, ?, ?)";
+    private final static String SELECT_CMD = "SELECT _id, x, y, z, name, buildProgress FROM WorldModule_structure";
+
     @Inject private StructureModule structureModule;
     @Inject private DataManager dataManager;
 
-    @Override
-    public GameSerializerPriority getPriority() { return GameSerializerPriority.MODULE_ITEM_PRIORITY; }
-
-    @Override
-    public void onCreateTable(SQLiteConnection db) throws SQLiteException {
-        db.exec("CREATE TABLE WorldModule_structure (_id INTEGER, x INTEGER, y INTEGER, z INTEGER, name TEXT, buildProgress INTEGER)");
+    public StructureModuleCollectionSerializer() {
+        super(CREATE_TABLE_CMD, INSERT_CMD, SELECT_CMD);
     }
 
     @Override
-    public void onSaveEntry(SQLiteConnection db, StructureItem structure) throws SQLiteException {
-        SQLiteStatement stItem = db.prepare("INSERT INTO WorldModule_structure (_id, x, y, z, name, buildProgress) VALUES (?, ?, ?, ?, ?, ?)");
-        try {
-            if (structure.getParcel() != null) {
-                stItem.bind(1, structure.getId());
-                stItem.bind(2, structure.getParcel().x);
-                stItem.bind(3, structure.getParcel().y);
-                stItem.bind(4, structure.getParcel().z);
-                stItem.bind(5, structure.getInfo().name);
-                stItem.bind(6, structure.getBuildValue());
-                stItem.step();
-                stItem.reset(false);
-            }
-        } finally {
-            stItem.dispose();
+    public GameSerializerPriority getPriority() {
+        return GameSerializerPriority.MODULE_ITEM_PRIORITY;
+    }
+
+    @Override
+    public void onSaveEntry(SQLiteStatement statement, StructureItem structure) throws SQLiteException {
+        if (structure.getParcel() != null) {
+            statement.bind(1, structure.getId());
+            statement.bind(2, structure.getParcel().x);
+            statement.bind(3, structure.getParcel().y);
+            statement.bind(4, structure.getParcel().z);
+            statement.bind(5, structure.getInfo().name);
+            statement.bind(6, structure.getBuildValue());
+            statement.step();
+            statement.reset(false);
         }
     }
 
     @Override
-    public void onLoadEntry(SQLiteConnection db) throws SQLiteException {
-        SQLiteStatement stItem = db.prepare("SELECT _id, x, y, z, name, buildProgress FROM WorldModule_structure");
-        try {
-            while (stItem.step()) {
-                StructureItem structure = new StructureItem(dataManager.getItemInfo(stItem.columnString(4)), stItem.columnInt(0));
-                structure.setBuildProgress(stItem.columnInt(5));
-                structureModule.addStructure(structure, stItem.columnInt(1), stItem.columnInt(2), stItem.columnInt(3));
-            }
-        } finally {
-            stItem.dispose();
-        }
+    public void onLoadEntry(SQLiteStatement statement) throws SQLiteException {
+        StructureItem structure = new StructureItem(dataManager.getItemInfo(statement.columnString(4)), statement.columnInt(0));
+        structure.setBuildProgress(statement.columnInt(5));
+        structureModule.addStructure(structure, statement.columnInt(1), statement.columnInt(2), statement.columnInt(3));
     }
 
     @Override

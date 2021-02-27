@@ -128,7 +128,7 @@ public class MenuLoadController extends LuaController {
     private void onActionLoad(View view) {
         if (gameInfo != null && saveInfo != null) {
             setVisible(false);
-            gameManager.loadGame(gameInfo, saveInfo, null);
+            gameManager.loadGame(gameInfo, saveInfo);
         }
     }
 

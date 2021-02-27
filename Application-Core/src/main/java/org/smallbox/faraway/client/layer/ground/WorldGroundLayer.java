@@ -8,7 +8,6 @@ import org.smallbox.faraway.client.layer.GameLayer;
 import org.smallbox.faraway.client.layer.ground.impl.GroundTileGenerator;
 import org.smallbox.faraway.client.layer.ground.impl.RockTileGenerator;
 import org.smallbox.faraway.client.renderer.BaseRenderer;
-import org.smallbox.faraway.client.renderer.Viewport;
 import org.smallbox.faraway.core.config.ApplicationConfig;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
@@ -38,39 +37,22 @@ public class WorldGroundLayer extends BaseMapLayer {
     }
 
     @Override
-    public void onDraw(BaseRenderer renderer, Viewport viewport, double animProgress, int frame) {
-        int fromX = Math.max(viewport.getWorldPosX(0) - 1, 0);
-        int fromY = Math.max(viewport.getWorldPosY(0) - 1, 0);
-        int toX = Math.min(viewport.getWorldPosX(applicationConfig.getResolutionWidth()) + 2, worldModule.getWidth());
-        int toY = Math.min(viewport.getWorldPosY(applicationConfig.getResolutionHeight()) + 2, worldModule.getWidth());
-
-        for (int x = fromX; x < toX; x++) {
-            for (int y = fromY; y < toY; y++) {
-                Parcel parcel = worldModule.getParcel(x, y, viewport.getFloor());
-
-                if (parcel != null) {
-
-                    // Draw ground
-                    if (parcel.hasGround()) {
-                        renderer.drawTextureOnMap(parcel, cachedGrounds.computeIfAbsent(parcel, p -> groundTileGenerator.getTexture(p)));
-                    } else {
-                        drawDeepParcels(renderer, parcel);
-                    }
-
-                    // Draw rock
-                    if (parcel.hasRock()) {
-                        if (parcel.getRampDirection() != null) {
-                            renderer.drawTextOnMap(parcel, "RAMP", Color.BLACK, 32, 0, 0);
-                        } else {
-                            renderer.drawTextureOnMap(parcel, cachedRocks.computeIfAbsent(parcel, p -> rockTileGenerator.getTexture(p)));
-                        }
-                    }
-
-                }
-
-            }
+    protected void onDrawParcel(BaseRenderer renderer, Parcel parcel) {
+        // Draw ground
+        if (parcel.hasGround()) {
+            renderer.drawTextureOnMap(parcel, cachedGrounds.computeIfAbsent(parcel, p -> groundTileGenerator.getTexture(p)));
+        } else {
+            drawDeepParcels(renderer, parcel);
         }
 
+        // Draw rock
+        if (parcel.hasRock()) {
+            if (parcel.getRampDirection() != null) {
+                renderer.drawTextOnMap(parcel, "RAMP", Color.BLACK, 32, 0, 0);
+            } else {
+                renderer.drawTextureOnMap(parcel, cachedRocks.computeIfAbsent(parcel, p -> rockTileGenerator.getTexture(p)));
+            }
+        }
     }
 
     private void drawDeepParcels(BaseRenderer renderer, Parcel parcel) {
@@ -84,7 +66,7 @@ public class WorldGroundLayer extends BaseMapLayer {
                 }
 
                 // Draw shadow
-                renderer.drawRectangleOnMap(parcel, Constant.TILE_SIZE, Constant.TILE_SIZE, new Color((int)((1 - Math.exp(z * -0.5)) * 255)), 0, 0);
+                renderer.drawRectangleOnMap(parcel, Constant.TILE_SIZE, Constant.TILE_SIZE, new Color((int) ((1 - Math.exp(z * -0.5)) * 255)), 0, 0);
 
                 break;
             }

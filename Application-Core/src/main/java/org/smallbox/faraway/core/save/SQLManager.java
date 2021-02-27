@@ -21,7 +21,7 @@ public class SQLManager {
 
     public void update() {
         try {
-            if (!_queue.isEmpty()) {
+            while (!_queue.isEmpty()) {
                 _queue.poll().run(_db);
             }
         } catch (Exception e) {

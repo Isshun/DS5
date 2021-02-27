@@ -293,6 +293,16 @@ public abstract class View implements Comparable<View> {
         return this;
     }
 
+    public View setPositionX(float x) {
+        geometry.setPositionX((int) x);
+        return this;
+    }
+
+    public View setPositionY(float y) {
+        geometry.setPositionY((int) y);
+        return this;
+    }
+
     public Object getData() {
         return _data;
     }

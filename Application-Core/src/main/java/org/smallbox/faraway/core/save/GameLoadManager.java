@@ -10,11 +10,15 @@ import org.smallbox.faraway.core.dependencyInjector.DependencyManager;
 import org.smallbox.faraway.core.dependencyInjector.DependencyNotifier;
 import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
+import org.smallbox.faraway.core.dependencyInjector.annotation.callback.applicationEvent.OnApplicationLoadGame;
 import org.smallbox.faraway.core.dependencyInjector.annotation.callback.applicationEvent.OnLoadBegin;
 import org.smallbox.faraway.core.dependencyInjector.annotation.callback.applicationEvent.OnLoadComplete;
+import org.smallbox.faraway.core.dependencyInjector.annotation.callback.gameEvent.OnGameStart;
 import org.smallbox.faraway.core.game.DataManager;
 import org.smallbox.faraway.core.game.Game;
+import org.smallbox.faraway.core.game.GameManager;
 import org.smallbox.faraway.core.game.GameSerializer;
+import org.smallbox.faraway.util.FileUtils;
 import org.smallbox.faraway.util.log.Log;
 
 import java.io.*;
@@ -24,15 +28,21 @@ import java.util.Comparator;
 public class GameLoadManager {
     @Inject private DependencyManager dependencyManager;
     @Inject private DependencyNotifier dependencyNotifier;
+    @Inject private GameFileManager gameFileManager;
+    @Inject private GameManager gameManager;
     @Inject private SQLManager sqlManager;
     @Inject private DataManager dataManager;
     @Inject private Game game;
 
-    public void load(File gameDirectory, String prefixName, GameSerializerInterface listener) throws ApplicationException {
+    @OnApplicationLoadGame
+    public void onLoadGame(GameSaveInfo saveInfo) throws ApplicationException {
+        long time = System.currentTimeMillis();
+        File gameDirectory = FileUtils.getSaveDirectory(game.getInfo().name);
+        String prefixName = saveInfo.filename;
+
         Log.info("============ LOAD GAME ============");
 
         dependencyNotifier.notify(OnLoadBegin.class);
-        long time = System.currentTimeMillis();
 
         try {
             extractArchive(gameDirectory, prefixName);
@@ -40,14 +50,24 @@ public class GameLoadManager {
 
             sqlManager.post(db -> {
                 System.gc();
-                listener.onSerializerComplete();
                 deleteFiles(gameDirectory, prefixName);
                 dependencyNotifier.notify(OnLoadComplete.class);
+                dependencyNotifier.notify(OnGameStart.class);
                 Log.info("Load game completed " + (System.currentTimeMillis() - time));
             });
         } catch (IOException | ArchiveException e) {
             throw new ApplicationException(e, "Cannot load save " + gameDirectory + " / " + prefixName);
         }
+    }
+
+    public void loadLastGame() {
+        gameFileManager.buildGameList().stream()
+                .flatMap(gameInfo -> gameInfo.saveFiles.stream())
+                .min((o1, o2) -> o2.date.compareTo(o1.date))
+                .ifPresent(saveInfo -> {
+                    Log.info("Load save: " + saveInfo);
+                    gameManager.loadGame(saveInfo.game, saveInfo);
+                });
     }
 
     private void loadDatabaseFile(File gameDirectory, String prefixName) {

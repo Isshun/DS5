@@ -1,5 +1,6 @@
 package org.smallbox.faraway.util.log;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 import org.smallbox.faraway.core.config.ApplicationConfig;
@@ -15,8 +16,9 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
 
 public class Log {
-    private final static DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+    private final static DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss SSS");
     private final static LogLevel level = LogLevel.INFO;
+    private static final int COMPONENT_PAD = 20;
     public static Queue<String> _historyDebug = new ConcurrentLinkedQueue<>();
     public static Queue<String> _history = new ConcurrentLinkedQueue<>();
     public static String _lastErrorMessage;
@@ -46,7 +48,7 @@ public class Log {
             if (level == LogLevel.DEBUG) {
                 _historyDebug.add(message);
             } else {
-                _history.add(date + " [" + level.name() + "] " + message);
+                _history.add(String.format("%s %-9s %s", date, "[" + level.name() + "]", message));
             }
         }
 
@@ -126,7 +128,7 @@ public class Log {
     public static void info(String component, String message, Object... args) {
         if (LogLevel.INFO.ordinal() >= level.ordinal()) {
             if (inPackageList(debugPackages) || inPackageList(infoPackages)) {
-                print(LogLevel.INFO, "[" + component + "] " + String.format(message, args));
+                print(LogLevel.INFO, StringUtils.rightPad("[" + component + "] ", COMPONENT_PAD) + String.format(message, args));
             }
         }
     }
@@ -134,7 +136,7 @@ public class Log {
     public static void info(Class cls, String message, Object... args) {
         if (LogLevel.INFO.ordinal() >= level.ordinal()) {
             if (inPackageList(debugPackages) || inPackageList(infoPackages)) {
-                print(LogLevel.INFO, "[" + cls.getSimpleName() + "] " + String.format(message, args));
+                print(LogLevel.INFO, StringUtils.rightPad("[" + cls.getSimpleName() + "] ", COMPONENT_PAD) + String.format(message, args));
             }
         }
     }
@@ -143,7 +145,7 @@ public class Log {
         if (LogLevel.INFO.ordinal() >= level.ordinal()) {
             if (inPackageList(debugPackages) || inPackageList(infoPackages)) {
                 String className = Thread.currentThread().getStackTrace()[2].getClassName();
-                print(LogLevel.INFO, "[" + className.substring(className.lastIndexOf('.') + 1) + "] " + String.format(message, args));
+                print(LogLevel.INFO, StringUtils.rightPad("[" + className.substring(className.lastIndexOf('.') + 1) + "] ", COMPONENT_PAD) + String.format(message, args));
             }
         }
     }

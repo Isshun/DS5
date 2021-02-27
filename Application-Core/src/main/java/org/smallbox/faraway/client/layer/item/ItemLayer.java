@@ -56,10 +56,7 @@ public class ItemLayer extends BaseMapLayer {
                     if (!item.isComplete()) {
                         renderer.drawTextOnMap(parcel, "to build", Color.CHARTREUSE, 14, 0, 0);
                     }
-
-                    drawSelectionOnMap(renderer, spriteManager, viewport, item, item.getParcel().x, item.getParcel().y, item.getWidth() * 32, item.getHeight() * 32, 0, 0);
                 });
-
     }
 
 }

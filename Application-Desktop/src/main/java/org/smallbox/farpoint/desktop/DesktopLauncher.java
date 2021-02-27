@@ -9,6 +9,7 @@ import java.util.Optional;
 public class DesktopLauncher {
 
     public static void main(String[] arg) {
+//        new LwjglApplication(new TestApplication());
 //        new LwjglApplication(new TestLightApplication());
         Optional.of(DependencyManager.getInstance().createAndInit(LwjglConfig.class)).ifPresent(lwjglConfig ->
                 new LwjglApplication(new GameApplication(lwjglConfig::applyConfig), lwjglConfig.getLwjglConfig()));

@@ -2,6 +2,7 @@ package org.smallbox.faraway.client.asset;
 
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
+import org.smallbox.faraway.client.ProgressCallback;
 import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject;
 import org.smallbox.faraway.util.log.Log;
 
@@ -10,7 +11,7 @@ import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 @ApplicationObject
-public class AssetManager extends com.badlogic.gdx.assets.AssetManager {
+public class AssetManager extends com.badlogic.gdx.assets.AssetManager implements ProgressCallback {
 
     public <T> T lazyLoad(String key, Class<T> cls) {
         return lazyLoad(key, cls, null);
@@ -23,7 +24,7 @@ public class AssetManager extends com.badlogic.gdx.assets.AssetManager {
             if (initializationSupplier != null) {
                 initializationSupplier.accept(get(key));
             }
-            Log.warning("Lazy load: " + key);
+            Log.debug("Lazy load: " + key);
         }
 
         return get(key);
@@ -109,4 +110,13 @@ public class AssetManager extends com.badlogic.gdx.assets.AssetManager {
         pixmap.dispose();
     }
 
+    @Override
+    public int getCurrent() {
+        return getLoadedAssets();
+    }
+
+    @Override
+    public int getTotal() {
+        return getLoadedAssets() + getQueuedAssets();
+    }
 }

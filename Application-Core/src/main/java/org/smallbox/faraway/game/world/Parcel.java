@@ -20,10 +20,6 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class Parcel extends ParcelCommon {
-//    public final int                        x;
-//    public final int                        y;
-//    public final int                        z;
-
     private int                             _environmentScore;
     private ParcelEnvironment _environment;
     private RoomModel                       _room;

@@ -116,7 +116,7 @@ public class WeatherModule extends SuperGameModule2<WeatherModuleObserver> {
     }
 
     public void loadDayTime(PlanetInfo.DayTime dayTime) {
-        Log.info("Set daytime to " + dayTime);
+        Log.info("Set daytime: " + dayTime);
         ambientLightTransition = new ColorTransition(currentDayTime.color, dayTime.color);
         ambientLightTransition.setInterval(gameTime.now(), gameTime.plus(1, TimeUnit.HOURS));
         currentDayTime = dayTime;

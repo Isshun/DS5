@@ -14,12 +14,12 @@ public abstract class GameSerializer {
     }
 
     public void save(SQLManager sqlManager) {
-        Log.info("Call onSave on " + getClass().getSimpleName());
+        Log.debug("Call onSave on " + getClass().getSimpleName());
         onSave(sqlManager);
     }
 
     public void load(SQLManager sqlManager) {
-        Log.info("Call onLoadModule on " + getClass().getSimpleName());
+        Log.debug("Call onLoadModule on " + getClass().getSimpleName());
         onLoad(sqlManager);
     }
 

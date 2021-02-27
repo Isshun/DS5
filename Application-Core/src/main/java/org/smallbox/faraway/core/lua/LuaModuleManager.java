@@ -6,7 +6,6 @@ import org.luaj.vm2.LuaValue;
 import org.smallbox.faraway.client.ui.UIManager;
 import org.smallbox.faraway.client.ui.widgets.CompositeView;
 import org.smallbox.faraway.client.ui.widgets.View;
-import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.dependencyInjector.DependencyManager;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.game.DataManager;
@@ -94,36 +93,12 @@ public abstract class LuaModuleManager {
                 .filter(file -> file.getName().endsWith(".lua"))
                 .forEach(this::doLoadFile);
 
-//        org.apache.commons.io.FileUtils.listFilesAndDirs(new File("."), null, TrueFileFilter.TRUE).stream()
-//                .filter(file -> )
-
-//        // TODO
-//        // Load lua from java modules
-//        org.apache.commons.io.FileUtils.listFiles(new File("."), new String[] {"lua"}, true)
-//                .forEach(f -> {
-//                    try {
-//                        Log.info("Load lua file: %s", f.getAbsolutePath());
-//                        globals.load(new FileReader(f), f.getName()).call();
-//                    } catch (FileNotFoundException | LuaError e) {
-//                        e.printStackTrace();
-//                    }
-////                    try {
-////                        File dataDirectory = new File(moduleDirectory.getCanonicalPath(), "src/main/resources/");
-////                        if (dataDirectory.exists()) {
-////                            loadLuaFiles(null, dataDirectory);
-////                        }
-////                    } catch (IOException e) {
-////                        throw new GameException(e);
-////                    }
-//                });
-
         _runAfterList.forEach(Runnable::run);
 
         fixUISize();
 
         dataManager.fix();
 
-        Log.info("LOAD LUA !!!");
         _luaLoadListeners.forEach(LuaLoadListener::onLoad);
     }
 
@@ -250,6 +225,8 @@ public abstract class LuaModuleManager {
             } catch (DataExtendException e) {
                 if (!value.get("name").isnil()) {
                     Log.info("Error during extend " + value.get("name").toString());
+                } else if (!value.get("id").isnil()) {
+                    Log.info("Error during extend " + value.get("id").toString());
                 }
                 e.printStackTrace();
             }
@@ -265,7 +242,7 @@ public abstract class LuaModuleManager {
             Log.info("Unable to onLoadModule lua module: " + info.id + " (" + info.name + ")");
             return;
         }
-        Log.info("Load lua module: " + info.id + " (" + info.name + ")");
+        Log.debug("Load lua module: " + info.id + " (" + info.name + ")");
 
         loadLuaFiles(luaModule, luaModule.getDirectory(), globals);
 

@@ -15,7 +15,6 @@ import java.util.Random;
 
 @ApplicationObject
 public class CaveGenerator {
-
     @Inject private WorldFactoryDebug worldFactoryDebug;
     @Inject private WorldFactory worldFactory;
     @Inject private AssetManager assetManager;

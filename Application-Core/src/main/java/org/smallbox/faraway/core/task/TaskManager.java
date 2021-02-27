@@ -1,6 +1,7 @@
 package org.smallbox.faraway.core.task;
 
 import com.badlogic.gdx.Gdx;
+import org.smallbox.faraway.client.ProgressCallback;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject;
 import org.smallbox.faraway.util.GameException;
@@ -27,40 +28,43 @@ public class TaskManager {
     public TaskManager() {
         launchBackgroundThread(() -> {
             for (Task task : tasks) {
-                if (task.state == State.NONE || task.state == State.BLOCKING || (task instanceof WaitTask && task.state == State.WAITING)) {
-                    if (task instanceof LoadTask) {
-                        task.state = State.WAITING;
+                if (running) {
+                    if (task.state == State.NONE || task.state == State.BLOCKING) {
+                        runTask(task);
+                        return;
                     }
-                    startTask(task);
-                    return;
+                    if (task.state == State.RUNNING) {
+                        return;
+                    }
                 }
             }
         }, 10);
     }
 
-    private void startTask(Task task) {
-//        if (task.onMainThread) {
-//            _loadExecutor.submit(() -> Application.runOnMainThread(() -> runLoadTask(task)));
-//        } else {
-//            _loadExecutor.submit(() -> runLoadTask(task));
-//        }
-
-        // TODO: no bg thread during early dev
-        Gdx.app.postRunnable(() -> runTask(task));
+    public Boolean allBackgroundTaskCompleted() {
+        return tasks.stream().noneMatch(task -> task.state == State.RUNNING_BACKGROUND);
     }
 
     private void runTask(Task task) {
-        if (running) {
-            Log.info("Run load task:" + task.getLabel());
-            if (task instanceof WaitTask) {
+        if (task.onMainThread) {
+            task.state = State.RUNNING;
+            Gdx.app.postRunnable(() -> doRunTask(task));
+        } else {
+            task.state = State.RUNNING_BACKGROUND;
+            backgroundExecutor.execute(() -> doRunTask(task));
+        }
+    }
+
+    private void doRunTask(Task task) {
+        if (task.state != State.COMPLETE) {
+
+            if ((task.state == State.RUNNING || task.state == State.RUNNING_BACKGROUND) && task.run()) {
+                Log.info("Run task: " + task.getLabel());
+                task.state = State.COMPLETE;
+            } else if (task instanceof WaitTask) {
                 task.state = State.BLOCKING;
             }
-            if (task instanceof LoadTask) {
-                task.state = State.RUNNING;
-            }
-            if (task.state != State.COMPLETE && task.run()) {
-                task.state = State.COMPLETE;
-            }
+
             if (task.throwable != null) {
                 System.out.println("Run load task:" + task.label + " has throw an exception");
                 System.out.println(task.throwable.getMessage());
@@ -107,7 +111,7 @@ public class TaskManager {
     }
 
     public void addLoadTask(String label, boolean onMainThread, Runnable runnable) {
-        tasks.add(new LoadTask(label, true) {
+        tasks.add(new LoadTask(label, onMainThread) {
             @Override
             protected void onRun() {
                 runnable.run();
@@ -115,7 +119,7 @@ public class TaskManager {
         });
     }
 
-    public void addWaitTask(String label, boolean onMainThread, Supplier<Boolean> runnable, Supplier<Float> progressSupplier) {
+    public void addWaitTask(String label, boolean onMainThread, Supplier<Boolean> runnable, ProgressCallback progressSupplier) {
         tasks.add(new WaitTask(label, true, progressSupplier) {
             @Override
             protected boolean onRun() {

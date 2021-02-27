@@ -11,10 +11,12 @@ import org.smallbox.faraway.core.game.GameSerializer;
 import org.smallbox.faraway.core.save.SQLManager;
 import org.smallbox.faraway.game.area.AreaModel;
 import org.smallbox.faraway.game.area.AreaModule;
+import org.smallbox.faraway.game.world.Parcel;
 import org.smallbox.faraway.game.world.WorldHelper;
 import org.smallbox.faraway.util.log.Log;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 @GameObject
@@ -27,7 +29,7 @@ public class StorageModuleSerializer extends GameSerializer {
 
     @Override
     public void onSave(SQLManager sqlManager) {
-        sqlManager.post(db -> {
+        sqlManager. post(db -> {
             try {
                 db.exec("CREATE TABLE area_storage_parcel (x INTEGER, y INTEGER, z INTEGER, area_id INTEGER)");
                 db.exec("CREATE TABLE area_storage_item (item TEXT, area_id INTEGER, priority INTEGER)");

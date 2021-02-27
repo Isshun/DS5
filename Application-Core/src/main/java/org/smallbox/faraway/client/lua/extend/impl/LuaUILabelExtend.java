@@ -38,9 +38,11 @@ public class LuaUILabelExtend extends LuaUIExtend {
         readString(style, value, "text", label::setText);
 
         readLua(style, value, "size", v -> view.setSize(v.get(1).toint(), v.get(2).toint()), v -> {
-            GlyphLayout glyphLayout = new GlyphLayout();
-            glyphLayout.setText(fontManager.getFont(label.getFont(), label.getTextSize()), "text");
-            view.setSize(View.FILL, (int) glyphLayout.height);
+            fontManager.futureFont(label.getFont(), label.getTextSize(), bitmapFont -> {
+                GlyphLayout glyphLayout = new GlyphLayout();
+                glyphLayout.setText(fontManager.getFont(label.getFont(), label.getTextSize()), "text");
+                view.setSize(View.FILL, (int) glyphLayout.height);
+            });
         });
         readLua(style, value, "size", v -> view.getGeometry().setFixedSize(v.get(1).toint(), v.get(2).toint()));
     }

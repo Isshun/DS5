@@ -197,7 +197,7 @@ public class UILabel extends View {
 
     public UILabel setTextSize(int size) {
         _textSize = size;
-        lineHeight = (int) fontManager.getFont(_textSize).getLineHeight();
+        fontManager.futureFont(null, _textSize, font -> lineHeight = (int) font.getLineHeight());
         return this;
     }
 

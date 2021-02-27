@@ -1,12 +1,4 @@
 data:extend({
-    { label = "Wall",
-        id = "base.wall",
-        type = "structure_group",
-        category = "structure",
-        glue = true,
-        is_wall = true,
-        walkable = false
-    },
     { label = "Wood wall",
         id = "base.wood_wall",
         parent = "base.wall",
@@ -48,7 +40,7 @@ data:extend({
         health = 500,
         glue = true,
         graphics = {path = "[data]/graphics/structures/walls/wall_128.png", type = "wall", width = 128, height = 128},
-        receipts = {label = "Granite", icon = "[base]/graphics/icons/material/granite.png", components = {} }
+        receipts = {label = "Granite", icon = "[base]/graphics/icons/material/granite.png"}
     },
     { label = "Iron wall",
         id = "base.metal_wall",

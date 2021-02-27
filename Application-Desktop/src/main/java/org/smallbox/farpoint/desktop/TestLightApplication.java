@@ -1,4 +1,4 @@
-package org.smallbox.faraway.client;
+package org.smallbox.farpoint.desktop;
 
 import box2dLight.*;
 import com.badlogic.gdx.ApplicationListener;

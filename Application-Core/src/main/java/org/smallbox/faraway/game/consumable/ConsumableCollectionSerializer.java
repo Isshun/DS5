@@ -1,6 +1,5 @@
 package org.smallbox.faraway.game.consumable;
 
-import com.almworks.sqlite4java.SQLiteConnection;
 import com.almworks.sqlite4java.SQLiteException;
 import com.almworks.sqlite4java.SQLiteStatement;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
@@ -15,49 +14,37 @@ import java.util.Collection;
 
 @GameObject
 public class ConsumableCollectionSerializer extends GenericGameCollectionSerializer<Consumable> {
+    private final static String CREATE_TABLE_CMD = "CREATE TABLE WorldModule_consumable (_id INTEGER, x INTEGER, y INTEGER, z INTEGER, name TEXT, quantity INTEGER, position INTEGER)";
+    private final static String SELECT_CONSUMABLE_CMD = "SELECT _id, x, y, z, name, quantity, position FROM WorldModule_consumable";
+    private final static String INSERT_CONSUMABLE_CMD = "INSERT INTO WorldModule_consumable (_id, x, y, z, name, quantity, position) VALUES (?, ?, ?, ?, ?, ?, ?)";
+
     @Inject private Game game;
     @Inject private DataManager dataManager;
     @Inject private ConsumableModule consumableModule;
+
+    public ConsumableCollectionSerializer() {
+        super(CREATE_TABLE_CMD, INSERT_CONSUMABLE_CMD, SELECT_CONSUMABLE_CMD);
+    }
 
     @Override
     public GameSerializerPriority getPriority() { return GameSerializerPriority.MODULE_ITEM_PRIORITY; }
 
     @Override
-    public void onCreateTable(SQLiteConnection db) throws SQLiteException {
-        db.exec("CREATE TABLE WorldModule_consumable (_id INTEGER, x INTEGER, y INTEGER, z INTEGER, name TEXT, quantity INTEGER, position INTEGER)");
+    public void onSaveEntry(SQLiteStatement statement, Consumable consumable) throws SQLiteException {
+        statement.bind(1, consumable.getId());
+        statement.bind(2, consumable.getParcel().x);
+        statement.bind(3, consumable.getParcel().y);
+        statement.bind(4, consumable.getParcel().z);
+        statement.bind(5, consumable.getInfo().name);
+        statement.bind(6, consumable.getActualQuantity());
+        statement.bind(7, consumable.getGridPosition());
     }
 
     @Override
-    public void onSaveEntry(SQLiteConnection db, Consumable consumable) throws SQLiteException {
-        SQLiteStatement stItem = db.prepare("INSERT INTO WorldModule_consumable (_id, x, y, z, name, quantity, position) VALUES (?, ?, ?, ?, ?, ?, ?)");
-        try {
-            if (consumable.getParcel() != null) {
-                stItem.bind(1, consumable.getId());
-                stItem.bind(2, consumable.getParcel().x);
-                stItem.bind(3, consumable.getParcel().y);
-                stItem.bind(4, consumable.getParcel().z);
-                stItem.bind(5, consumable.getInfo().name);
-                stItem.bind(6, consumable.getActualQuantity());
-                stItem.bind(7, consumable.getGridPosition());
-                stItem.step();
-            }
-        } finally {
-            stItem.dispose();
-        }
-    }
-
-    @Override
-    public void onLoadEntry(SQLiteConnection db) throws SQLiteException {
-        SQLiteStatement stItem = db.prepare("SELECT _id, x, y, z, name, quantity, position FROM WorldModule_consumable");
-        try {
-            while (stItem.step()) {
-                ItemInfo itemInfo = dataManager.getItemInfo(stItem.columnString(4));
-                if (itemInfo != null) {
-                    consumableModule.create(itemInfo, stItem.columnInt(5), stItem.columnInt(1), stItem.columnInt(2), stItem.columnInt(3), stItem.columnInt(6));
-                }
-            }
-        } finally {
-            stItem.dispose();
+    public void onLoadEntry(SQLiteStatement statement) throws SQLiteException {
+        ItemInfo itemInfo = dataManager.getItemInfo(statement.columnString(4));
+        if (itemInfo != null) {
+            consumableModule.create(itemInfo, statement.columnInt(5), statement.columnInt(1), statement.columnInt(2), statement.columnInt(3), statement.columnInt(6));
         }
     }
 

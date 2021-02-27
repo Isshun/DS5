@@ -21,7 +21,6 @@ public class PathModel {
     private final Parcel _lastParcelCharacter;
     public Path<Vector2> myCatmull;
     private long _startTime;
-    public boolean minusOne;
     private float moveSpeed;
 
     public void setStartTime(long startTime) {
@@ -52,20 +51,12 @@ public class PathModel {
     public GraphPath<Parcel> graphPath;
     private final Queue<PathSection> _smooth = new ConcurrentLinkedQueue<>();
 
-    public static PathModel create(GraphPath<Parcel> graphPath, boolean minusOne) {
-        if (graphPath != null) {
-            return new PathModel(graphPath, minusOne);
-        }
-        return null;
-    }
-
     public Queue<PathSection> getSections() {
         return _smooth;
     }
 
-    private PathModel(GraphPath<Parcel> graphPath, boolean minusOne) {
+    public PathModel(GraphPath<Parcel> graphPath) {
         this.graphPath = graphPath;
-        this.minusOne = minusOne;
 
         List<Vector3> vector3List = new ArrayList<>();
         graphPath.forEach(parcel -> vector3List.add(new Vector3(parcel.x, parcel.y, 0)));
@@ -109,7 +100,7 @@ public class PathModel {
         _currentParcel = graphPath.getCount() > 0 ? graphPath.get(0) : null;
         _firstParcel = graphPath.getCount() > 0 ? graphPath.get(0) : null;
         _lastParcel = graphPath.getCount() > 0 ? graphPath.get(graphPath.getCount() - 1) : null;
-        _lastParcelCharacter = graphPath.getCount() > 0 ? graphPath.get(Math.max(graphPath.getCount() - (minusOne ? 2 : 1), 0)) : null;
+        _lastParcelCharacter = graphPath.getCount() > 0 ? graphPath.get(Math.max(graphPath.getCount() - 1, 0)) : null;
         _length = graphPath.getCount();
         _index = 0;
 
@@ -199,7 +190,7 @@ public class PathModel {
     }
 
     public boolean next() {
-        if (++_index < _length - (minusOne ? 1 : 0)) {
+        if (++_index < _length) {
             _currentParcel = graphPath.get(_index);
             return true;
         }

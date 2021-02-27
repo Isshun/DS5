@@ -11,7 +11,9 @@ import org.json.JSONObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.game.Game;
+import org.smallbox.faraway.core.game.GameFactory;
 import org.smallbox.faraway.util.FileUtils;
+import org.smallbox.faraway.util.GameException;
 import org.smallbox.faraway.util.log.Log;
 
 import java.io.File;
@@ -82,7 +84,7 @@ public class GameFileManager {
                     File file = new File(gameDirectory, "game.json");
                     if (file.exists()) {
                         try {
-                            Log.info("Load game directory: " + gameDirectory.getName());
+                            Log.debug("Load game directory: " + gameDirectory.getName());
                             return gameInfoFactory.fromJSON(new JSONObject(Files.readString(file.toPath(), StandardCharsets.UTF_8)));
                         } catch (IOException e) {
                             Log.warning("Cannot load gameInfo for: " + file.getAbsolutePath());
@@ -94,4 +96,10 @@ public class GameFileManager {
                 .collect(Collectors.toList());
     }
 
+    public void createSaveDirectory(GameInfo gameInfo) {
+        File gameDirectory = FileUtils.getSaveDirectory(gameInfo.name);
+        if (!gameDirectory.mkdirs()) {
+            throw new GameException(GameFactory.class, "Unable to save repository: " + gameDirectory.getAbsolutePath());
+        }
+    }
 }

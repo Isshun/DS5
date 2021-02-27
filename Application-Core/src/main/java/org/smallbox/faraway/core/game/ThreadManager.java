@@ -7,6 +7,7 @@ import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.callback.applicationEvent.OnInit;
 import org.smallbox.faraway.core.dependencyInjector.annotation.callback.gameEvent.OnGameLongUpdate;
 import org.smallbox.faraway.core.dependencyInjector.annotation.callback.gameEvent.OnGameUpdate;
+import org.smallbox.faraway.core.save.SQLManager;
 
 import java.lang.annotation.Annotation;
 import java.util.Map;
@@ -22,9 +23,11 @@ import static java.util.concurrent.TimeUnit.MILLISECONDS;
 public class ThreadManager {
     private final static int GAME_UPDATE_DELAY = 40;
     private final static int GAME_LONG_UPDATE_DELAY = 1000;
+    private final static int DB_UPDATE_DELAY = 100;
 
     @Inject private DependencyManager dependencyManager;
     @Inject private DependencyNotifier dependencyNotifier;
+    @Inject private SQLManager sqlManager;
     @Inject private GameTime gameTime;
     @Inject private Game game;
 
@@ -41,6 +44,7 @@ public class ThreadManager {
     public void onInit() {
         moduleScheduler.scheduleAtFixedRate(() -> callGameMethod(OnGameUpdate.class), 0, GAME_UPDATE_DELAY, MILLISECONDS);
         moduleScheduler.scheduleAtFixedRate(() -> callGameMethod(OnGameLongUpdate.class), 0, GAME_LONG_UPDATE_DELAY, MILLISECONDS);
+        moduleScheduler.scheduleAtFixedRate(() -> sqlManager.update(), 0, DB_UPDATE_DELAY, MILLISECONDS);
     }
 
     private void callGameMethod(Class<? extends Annotation> cls) {

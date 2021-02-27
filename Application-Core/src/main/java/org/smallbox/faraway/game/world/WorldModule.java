@@ -33,7 +33,6 @@ public class WorldModule extends GenericGameModule<Parcel> {
     private int _width;
     private int _height;
     private int _floors;
-    private double _light;
 
     public void init(List<Parcel> parcelList) {
         _width = game.getInfo().worldWidth;
@@ -63,10 +62,6 @@ public class WorldModule extends GenericGameModule<Parcel> {
         getParcelListener.onGetParcel(parcels);
     }
 
-    public double getLight() {
-        return _light;
-    }
-
     public int getWidth() {
         return _width;
     }
@@ -81,10 +76,6 @@ public class WorldModule extends GenericGameModule<Parcel> {
 
     public Parcel getParcel(int x, int y, int z) {
         return (x < 0 || x >= _width || y < 0 || y >= _height || z < 0 || z >= _floors) ? null : _parcels[x][y][z];
-    }
-
-    public void setLight(double light) {
-        _light = light;
     }
 
     public void replaceGround(Parcel parcel, ItemInfo groundInfo) {
@@ -127,10 +118,6 @@ public class WorldModule extends GenericGameModule<Parcel> {
         return weatherModule.getLight();
     }
 
-    public Optional<Parcel> getOptional(int x, int y, int z) {
-        return Optional.ofNullable(WorldHelper.getParcel(x, y, z));
-    }
-
     public Parcel getParcel(Parcel parcel, Direction direction) {
         return switch (direction) {
             case NONE -> parcel;
@@ -145,10 +132,6 @@ public class WorldModule extends GenericGameModule<Parcel> {
             case UNDER -> WorldHelper.getParcel(parcel.x, parcel.y, parcel.z - 1);
             case OVER -> WorldHelper.getParcel(parcel.x, parcel.y, parcel.z + 1);
         };
-    }
-
-    public Optional<Parcel> getOptional(Parcel parcel, Direction direction) {
-        return Optional.ofNullable(getParcel(parcel, direction));
     }
 
     public boolean check(Parcel parcel, Predicate<Parcel> predicate, Direction... directions) {

@@ -15,7 +15,9 @@ import org.smallbox.faraway.game.temperature.TemperatureModule;
 import org.smallbox.faraway.game.world.WorldModule;
 import org.smallbox.faraway.util.transition.ColorTransition;
 
+import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
 
 @GameObject
 @GameLayer(level = LayerLevel.INFO_POPUP_LEVEL, visible = false)
@@ -25,10 +27,12 @@ public class InfoTemperaturePopupLayer extends BaseMapLayer {
     @Inject private InputManager inputManager;
     @Inject private UIRenderer uiRenderer;
 
+    private final Map<Integer, Color> cache = new ConcurrentHashMap<>();
+
     public void onDraw(BaseRenderer renderer, Viewport viewport, double animProgress, int frame) {
         Optional.ofNullable(worldModule.getParcel(viewport.getWorldPosX(inputManager.getMouseX()), viewport.getWorldPosY(inputManager.getMouseY()), viewport.getFloor())).ifPresent(parcel -> {
-            Color color = buildColor((int) temperatureModule.getTemperature(parcel));
-            Color color2 = buildColor((int) temperatureModule.getTemperature(parcel));
+            Color color = getColor((int) temperatureModule.getTemperature(parcel));
+            Color color2 = getColor((int) temperatureModule.getTemperature(parcel));
             color2.a = 0.25f;
             uiRenderer.drawRectangle(inputManager.getMouseX() + 10, inputManager.getMouseY() - 10, 100, 50, color2);
             uiRenderer.drawCadre(inputManager.getMouseX() + 10, inputManager.getMouseY() - 10, 100, 50, color, 4);
@@ -36,12 +40,14 @@ public class InfoTemperaturePopupLayer extends BaseMapLayer {
         });
     }
 
-    private Color buildColor(Integer temperature) {
-        if (temperature < 20) {
-            return new Color(new ColorTransition(0x0000ff80, 0x00ff0080).getValue((temperature + 80) / 100f));
-        } else {
-            return new Color(new ColorTransition(0x00ff0080, 0xff000080).getValue((temperature - 20) / 100f));
-        }
+    private Color getColor(Integer temperature) {
+        return cache.computeIfAbsent(temperature, value -> {
+            if (value < 20) {
+                return new Color(new ColorTransition(0x0000ff60, 0x00ff0060).getValue((value + 80) / 100f));
+            } else {
+                return new Color(new ColorTransition(0x00ff0060, 0xff000060).getValue((value - 20) / 100f));
+            }
+        });
     }
 
     @GameShortcut("info/temperature")

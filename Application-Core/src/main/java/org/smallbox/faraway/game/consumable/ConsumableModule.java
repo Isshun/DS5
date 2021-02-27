@@ -327,7 +327,7 @@ public class ConsumableModule extends SuperGameModule<Consumable, ConsumableModu
         for (int i = 0; i < length; i++) {
             MapObjectModel mapObject = list.get((i + start) % length);
             if (mapObject.matchFilter(filter)) {
-                PathModel path = pathManager.getPath(fromParcel, mapObject.getParcel(), false, false, true);
+                PathModel path = pathManager.getPath(fromParcel, mapObject.getParcel());
                 if (path != null) {
                     ObjectsMatchingFilter.put(mapObject, path.getLength());
                     if (bestDistance > path.getLength()) {

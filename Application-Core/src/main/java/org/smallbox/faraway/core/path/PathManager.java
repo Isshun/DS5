@@ -6,62 +6,25 @@ import com.badlogic.gdx.ai.pfa.GraphPath;
 import com.badlogic.gdx.ai.pfa.indexed.IndexedAStarPathFinder;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
-import org.smallbox.faraway.core.dependencyInjector.annotation.callback.gameEvent.OnGameStart;
-import org.smallbox.faraway.core.dependencyInjector.annotation.callback.gameEvent.OnGameUpdate;
-import org.smallbox.faraway.core.game.Game;
-import org.smallbox.faraway.core.module.SuperGameModule;
 import org.smallbox.faraway.core.path.graph.ParcelGraph;
 import org.smallbox.faraway.core.path.graph.ParcelHeuristic;
 import org.smallbox.faraway.game.character.model.PathModel;
 import org.smallbox.faraway.game.world.Parcel;
 import org.smallbox.faraway.game.world.SurroundedPattern;
 import org.smallbox.faraway.game.world.WorldHelper;
-import org.smallbox.faraway.game.world.WorldModule;
-import org.smallbox.faraway.util.GameException;
+import org.smallbox.faraway.util.Utils;
 import org.smallbox.faraway.util.log.Log;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Map;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 @GameObject
-public class PathManager extends SuperGameModule {
-    private static final int THREAD_POOL_SIZE = 1;
-    @Inject private WorldModule worldModule;
-    @Inject private Game game;
-
-    final private ArrayList<Runnable> _runnable;
-    final private ExecutorService _threadPool;
-    final private ParcelHeuristic parcelHeuristic = new ParcelHeuristic();
-    private IndexedAStarPathFinder<Parcel> _finder;
-    private Map<Long, PathModel> _cache;
-    private ParcelGraph parcelGraph;
-
-    public PathManager() {
-        _threadPool = Executors.newFixedThreadPool(THREAD_POOL_SIZE);
-        _runnable = new ArrayList<>();
-    }
-
-    @OnGameStart
-    public void initParcels() {
-        parcelGraph = new ParcelGraph(worldModule.getAll());
-    }
-
-    @OnGameUpdate
-    private void onGameUpdate() {
-        _runnable.forEach(java.lang.Runnable::run);
-        _runnable.clear();
-    }
-
-    public void close() {
-        _threadPool.shutdownNow();
-    }
+public class PathManager {
+    @Inject private ParcelHeuristic parcelHeuristic;
+    @Inject private ParcelGraph parcelGraph;
 
     public PathModel getPath(Parcel fromParcel, Collection<Parcel> toParcels) {
         for (Parcel toParcel: toParcels) {
-            PathModel path = getPath(fromParcel, toParcel, false, false, false);
+            PathModel path = getPath(fromParcel, toParcel);
             if (path != null) {
                 return path;
             }
@@ -69,53 +32,22 @@ public class PathManager extends SuperGameModule {
         return null;
     }
 
-    public PathModel getPath(Parcel fromParcel, Parcel toParcel, boolean horizontalApprox, boolean verticalApprox, boolean minusOne) {
-        return getPath(fromParcel, toParcel, minusOne);
-    }
+    public PathModel getPath(Parcel fromParcel, Parcel toParcel) {
+        Utils.requireNonNull(fromParcel, PathManager.class, "fromParcel is null");
+        Utils.requireNonNull(toParcel, PathManager.class, "toParcel is null");
 
-    private PathModel getPath(Parcel fromParcel, Parcel toParcel, boolean minusOne) {
-        if (fromParcel == null) {
-            throw new GameException(PathManager.class, "fromParcel is null");
-        }
+        Log.debug(PathManager.class, "GetPath (from: " + fromParcel + " to: " + toParcel + ")");
 
-        if (toParcel == null) {
-            throw new GameException(PathManager.class, "toParcel is null");
-        }
-
-        Log.debug(PathManager.class, "GetPath (from: " + fromParcel.x + "x" + fromParcel.y + " to: " + toParcel.x + "x" + toParcel.y + ")");
-
-        // Non walkable origin
-        if (!fromParcel.isWalkable()) {
+        // Non walkable source or target
+        if (!fromParcel.isWalkable() || !toParcel.isWalkable()) {
             return null;
         }
 
-        // Empty path
-        if (fromParcel == toParcel) {
-            DefaultGraphPath<Parcel> nodes = new DefaultGraphPath<>();
-            nodes.add(toParcel);
-            return PathModel.create(nodes, minusOne);
-        }
-
-        // Get path from cache
-//        long cacheId = getSum(fromParcel, toParcel);
-//        PathModel path = _cache.get(cacheId);
-//        if (path != null && path.isValid()) {
-//            return path;
-//        }
-
         // Looking for new path
         try {
-            PathModel path = PathModel.create(findPath(fromParcel, toParcel), minusOne);
-//        _cache.put(cacheId, path);
-
-            // Non walkable last parcel
-            if (!path.getLastParcelCharacter().isWalkable()) {
-                return null;
-            }
-
-            return path;
+            return new PathModel(findPath(fromParcel, toParcel));
         } catch (Exception e) {
-            Log.warning("Unable to find path");
+            Log.debug(PathManager.class, "Unable to find path");
         }
 
         return null;
@@ -123,7 +55,11 @@ public class PathManager extends SuperGameModule {
 
     private GraphPath<Parcel> findPath(Parcel fromParcel, Parcel toParcel) {
         GraphPath<Parcel> path = new DefaultGraphPath<>();
-        new IndexedAStarPathFinder<>(parcelGraph).searchNodePath(fromParcel, toParcel, parcelHeuristic, path);
+        if (fromParcel == toParcel) {
+            path.add(toParcel);
+        } else {
+            new IndexedAStarPathFinder<>(parcelGraph).searchNodePath(fromParcel, toParcel, parcelHeuristic, path);
+        }
         return path;
     }
 

@@ -39,7 +39,7 @@ public class ShortcutManager {
         shortcutStrategies.stream()
                 .filter(strategy -> strategy.key == key)
                 .forEach(strategy -> {
-                    Log.info("Press shortcut (key: %s, label: %s)", strategy.key, strategy.label);
+                    Log.debug("Press shortcut (key: %s, label: %s)", strategy.key, strategy.label);
                     strategy.runnable.run();
                 });
 

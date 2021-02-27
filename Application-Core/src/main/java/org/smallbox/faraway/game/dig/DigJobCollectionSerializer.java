@@ -1,6 +1,5 @@
 package org.smallbox.faraway.game.dig;
 
-import com.almworks.sqlite4java.SQLiteConnection;
 import com.almworks.sqlite4java.SQLiteException;
 import com.almworks.sqlite4java.SQLiteStatement;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
@@ -16,8 +15,16 @@ import java.util.stream.Collectors;
 
 @GameObject
 public class DigJobCollectionSerializer extends GenericGameCollectionSerializer<DigJob> {
+    private final static String CREATE_TABLE_CMD = "CREATE TABLE jobs_dig (id INTEGER, x INTEGER, y INTEGER, z INTEGER)";
+    private final static String INSERT_CMD = "INSERT INTO jobs_dig (id, x, y, z) VALUES (?, ?, ?, ?)";
+    private final static String SELECT_CMD = "SELECT id, x, y, z FROM jobs_dig";
+
     @Inject private DigRockJobFactory digRockJobFactory;
     @Inject private JobModule jobModule;
+
+    public DigJobCollectionSerializer() {
+        super(CREATE_TABLE_CMD, INSERT_CMD, SELECT_CMD);
+    }
 
     @Override
     public Collection<DigJob> getEntries() {
@@ -25,35 +32,18 @@ public class DigJobCollectionSerializer extends GenericGameCollectionSerializer<
     }
 
     @Override
-    public void onCreateTable(SQLiteConnection db) throws SQLiteException {
-        db.exec("CREATE TABLE jobs_dig (id INTEGER, x INTEGER, y INTEGER, z INTEGER)");
+    public void onSaveEntry(SQLiteStatement statement, DigJob digJob) throws SQLiteException {
+        statement.bind(1, digJob.getId());
+        statement.bind(2, digJob.getTargetParcel().x);
+        statement.bind(3, digJob.getTargetParcel().y);
+        statement.bind(4, digJob.getTargetParcel().z);
+        statement.step();
     }
 
     @Override
-    public void onSaveEntry(SQLiteConnection db, DigJob digJob) throws SQLiteException {
-        SQLiteStatement insertStatement = db.prepare("INSERT INTO jobs_dig (id, x, y, z) VALUES (?, ?, ?, ?)");
-        try {
-            insertStatement.bind(1, digJob.getId());
-            insertStatement.bind(2, digJob.getTargetParcel().x);
-            insertStatement.bind(3, digJob.getTargetParcel().y);
-            insertStatement.bind(4, digJob.getTargetParcel().z);
-            insertStatement.step();
-        } finally {
-            insertStatement.dispose();
-        }
-    }
-
-    @Override
-    public void onLoadEntry(SQLiteConnection db) throws SQLiteException {
-        SQLiteStatement selectStatement = db.prepare("SELECT id, x, y, z FROM jobs_dig");
-        try {
-            while (selectStatement.step()) {
-                Optional.ofNullable(WorldHelper.getParcel(selectStatement.columnInt(1), selectStatement.columnInt(2), selectStatement.columnInt(3)))
-                        .ifPresent(parcel -> jobModule.add(digRockJobFactory.createJob(parcel)));
-            }
-        } finally {
-            selectStatement.dispose();
-        }
+    public void onLoadEntry(SQLiteStatement statement) throws SQLiteException {
+        Optional.ofNullable(WorldHelper.getParcel(statement.columnInt(1), statement.columnInt(2), statement.columnInt(3)))
+                .ifPresent(parcel -> jobModule.add(digRockJobFactory.createJob(parcel)));
     }
 
 }

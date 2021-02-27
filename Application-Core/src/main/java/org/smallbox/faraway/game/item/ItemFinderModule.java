@@ -30,7 +30,7 @@ public class ItemFinderModule extends SuperGameModule {
             UsableItem bestItem = null;
             for (UsableItem item: itemModule.getAll()) {
                 if (item.matchFilter(filter)) {
-                    PathModel path = pathManager.getPath(character.getParcel(), item.getParcel(), true, false, true);
+                    PathModel path = pathManager.getPath(character.getParcel(), item.getParcel());
                     if (path != null && path.getLength() < bestDistance) {
                         bestDistance = path.getLength();
                         bestItem = item;
@@ -78,7 +78,7 @@ public class ItemFinderModule extends SuperGameModule {
         for (int i = 0; i < length; i++) {
             MapObjectModel mapObject = list.get((i + start) % length);
             if (mapObject.matchFilter(filter)) {
-                PathModel path = pathManager.getPath(fromParcel, mapObject.getParcel(), false, false, true);
+                PathModel path = pathManager.getPath(fromParcel, mapObject.getParcel());
                 if (path != null) {
                     ObjectsMatchingFilter.put(mapObject, path.getLength());
                     if (bestDistance > path.getLength()) {

@@ -4,24 +4,30 @@ import com.badlogic.gdx.ai.pfa.Connection;
 import com.badlogic.gdx.ai.pfa.indexed.IndexedGraph;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectMap;
+import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
+import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
+import org.smallbox.faraway.core.dependencyInjector.annotation.callback.gameEvent.OnGameStart;
 import org.smallbox.faraway.game.world.Parcel;
 import org.smallbox.faraway.game.world.SurroundedPattern;
 import org.smallbox.faraway.game.world.WorldHelper;
+import org.smallbox.faraway.game.world.WorldModule;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 /**
  * Graph containing connections between parcels
  */
+@GameObject
 public class ParcelGraph implements IndexedGraph<Parcel> {
-    private final ObjectMap<Parcel, Array<Connection<Parcel>>> connections = new ObjectMap<>();
-    private final int nodeCount;
+    @Inject private WorldModule worldModule;
 
-    public ParcelGraph(Collection<Parcel> parcels) {
-        nodeCount = parcels.size();
-        parcels.forEach(parcel -> {
+    private final ObjectMap<Parcel, Array<Connection<Parcel>>> connections = new ObjectMap<>();
+    private int nodeCount;
+
+    @OnGameStart
+    public void onGameStart() {
+        worldModule.getAll().forEach(parcel -> {
 
             // Create empty connections
             connections.put(parcel, new Array<>());
@@ -34,6 +40,7 @@ public class ParcelGraph implements IndexedGraph<Parcel> {
             // Refresh connections
             refreshConnections(parcel);
         });
+        nodeCount = connections.size;
     }
 
     @Override
@@ -43,7 +50,7 @@ public class ParcelGraph implements IndexedGraph<Parcel> {
 
     @Override
     public int getIndex(Parcel node) {
-        return node.getId();
+        return node.getIndex();
     }
 
     @Override

@@ -115,7 +115,7 @@ public class JobOrchestratorModule extends SuperGameModule<JobModel, JobModuleOb
 
     private boolean hasPath(JobModel job, CharacterModel character) {
         for (Parcel acceptedParcel: job.getAcceptedParcels()) {
-            PathModel path = pathManager.getPath(character.getParcel(), acceptedParcel, false, false, false);
+            PathModel path = pathManager.getPath(character.getParcel(), acceptedParcel);
             if (path != null) {
                 return true;
             }

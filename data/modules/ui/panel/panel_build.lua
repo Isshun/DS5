@@ -1,3 +1,5 @@
+local window_pos = 346
+local button_height = 52
 local button_size = 51
 local button_inner_size = 48
 local button_padding = (button_size - button_inner_size) / 2
@@ -12,8 +14,9 @@ ui:extend({
     parent = "base.ui.right_panel.sub_controller",
     controller = "org.smallbox.faraway.client.controller.BuildController",
     visible = false,
+    background = blue,
     views = {
-        { type = "view", views = {
+        { type = "view", size = {panel_width - 8, application.screen_height - window_pos - button_height - 10 - 8}, position = {4, 4}, background = blue_dark_4, views = {
 
             -- Top panel
             { type = "grid", id = "list_categories", columns = grid_cols, column_width = button_size + 12, row_height = button_size + 12, position = {13, 13}, template = {

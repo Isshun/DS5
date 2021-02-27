@@ -5,7 +5,6 @@ import org.smallbox.faraway.client.LayerLevel;
 import org.smallbox.faraway.client.layer.BaseMapLayer;
 import org.smallbox.faraway.client.layer.GameLayer;
 import org.smallbox.faraway.client.renderer.BaseRenderer;
-import org.smallbox.faraway.client.renderer.Viewport;
 import org.smallbox.faraway.client.shortcut.GameShortcut;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
@@ -28,10 +27,8 @@ public class InfoTemperatureLayer extends BaseMapLayer {
 
     private final Map<Integer, Color> cache = new ConcurrentHashMap<>();
 
-    public void onDraw(BaseRenderer renderer, Viewport viewport, double animProgress, int frame) {
-        worldModule.getAll().stream()
-                .filter(parcel -> parcel.z == viewport.getFloor())
-                .forEach(parcel -> renderer.drawRectangleOnMap(parcel, TILE_SIZE, TILE_SIZE, getColor(parcel), 0, 0));
+    protected void onDrawParcel(BaseRenderer renderer, Parcel parcel) {
+        renderer.drawRectangleOnMap(parcel, TILE_SIZE, TILE_SIZE, getColor(parcel), 0, 0);
     }
 
     private Color getColor(Parcel parcel) {

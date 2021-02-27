@@ -540,7 +540,7 @@ public class WorldHelper {
      * @param callback condition d'arret
      */
     public static Parcel move(int x0, int y0, int z0, GetParcelCallback callback) {
-        Log.info(WorldHelper.class, "Search parcel (initial: %d x %d x %d)", x0, y0, z0);
+        Log.debug(WorldHelper.class, "Search parcel (initial: %d x %d x %d)", x0, y0, z0);
 
         // directions possibles: G=(-1,0) H=(0,-1) D=(1,0) B=(0,1)
         int[] dx = new int[]{1, 0, -1, 0};
@@ -568,14 +568,14 @@ public class WorldHelper {
                     // condition de sortie
                     Parcel parcel = getParcel(x, y, z0);
                     if (parcel != null && callback.onParcel(parcel)) {
-                        Log.info(WorldHelper.class, "Search parcel: found (final: %d x %d x %d)", x, y, z0);
+                        Log.debug(WorldHelper.class, "Search parcel: found (final: %d x %d x %d)", x, y, z0);
                         return parcel;
                     }
 
                     // condition de sortie
                     distance++;
                     if (distance > distanceMax) {
-                        Log.info(WorldHelper.class, "Search parcel: unable to found parcel");
+                        Log.debug(WorldHelper.class, "Search parcel: unable to found parcel");
                         return null;
                     }
 

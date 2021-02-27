@@ -53,12 +53,12 @@ public class WorldCameraManager {
 
     public void zoomOut() {
         _camera.zoom = Math.min(_camera.zoom + ZOOM_INTERVAL, MAX_ZOOM_OUT);
-        Log.info("Set zoom: " + _camera.zoom);
+        Log.debug("Set zoom: " + _camera.zoom);
     }
 
     public void zoomIn() {
         _camera.zoom = Math.max(_camera.zoom - ZOOM_INTERVAL, MAX_ZOOM_IN);
-        Log.info("Set zoom: " + _camera.zoom);
+        Log.debug("Set zoom: " + _camera.zoom);
     }
 
     public OrthographicCamera getCamera() {

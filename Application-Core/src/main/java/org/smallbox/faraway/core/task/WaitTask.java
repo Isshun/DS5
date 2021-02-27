@@ -1,20 +1,22 @@
 package org.smallbox.faraway.core.task;
 
+import org.smallbox.faraway.client.ProgressCallback;
 import org.smallbox.faraway.util.GameException;
 
-import java.util.function.Supplier;
+import java.util.Optional;
 
 public abstract class WaitTask extends Task {
 
-    private final Supplier<Float> progressSupplier;
+    private final ProgressCallback progressSupplier;
 
-    public WaitTask(String label, boolean onMainThread, Supplier<Float> progressSupplier) {
+    public WaitTask(String label, boolean onMainThread, ProgressCallback progressSupplier) {
         super(label, onMainThread);
         this.progressSupplier = progressSupplier;
     }
 
     public String getLabel() {
-        return label + " " + (int)(progressSupplier.get() * 100);
+        return label + Optional.ofNullable(progressSupplier).map(callback -> " " + callback.getCurrent() + "/" + callback.getTotal()).orElse("");
+//        return label + " " + (int)(progressSupplier.getProgress() * 100);
     }
 
     @Override

@@ -9,25 +9,24 @@ import org.smallbox.faraway.client.renderer.BaseRenderer;
 import org.smallbox.faraway.client.renderer.Viewport;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
-import org.smallbox.faraway.core.dependencyInjector.annotation.callback.gameEvent.OnGameLayerBegin;
-import org.smallbox.faraway.core.dependencyInjector.annotation.callback.gameEvent.OnGameStop;
+import org.smallbox.faraway.core.dependencyInjector.annotation.callback.applicationEvent.OnDestroy;
+import org.smallbox.faraway.core.dependencyInjector.annotation.callback.applicationEvent.OnInit;
 
 @GameObject
 @GameLayer(level = 999, visible = true)
 public class WorldFactoryDebug extends BaseLayer {
-
     @Inject private AssetManager assetManager;
 
     private Texture texture;
     private Pixmap pixmap;
     private int offset;
 
-    @OnGameLayerBegin
+    @OnInit
     private void init() {
         pixmap = assetManager.createPixmap(50 * 10, 100 * 10, Pixmap.Format.RGBA8888);
     }
 
-    @OnGameStop
+    @OnDestroy
     private void gameStop() {
         pixmap.dispose();
     }

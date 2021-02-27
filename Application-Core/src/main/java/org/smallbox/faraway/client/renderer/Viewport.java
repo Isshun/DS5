@@ -1,6 +1,7 @@
 package org.smallbox.faraway.client.renderer;
 
-import org.smallbox.faraway.core.Application;
+import org.smallbox.faraway.client.input.CameraMoveInputManager;
+import org.smallbox.faraway.client.shortcut.GameShortcut;
 import org.smallbox.faraway.core.config.ApplicationConfig;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
@@ -13,6 +14,9 @@ import org.smallbox.faraway.util.log.Log;
 
 @GameObject
 public class Viewport {
+    public static final int MOVE_OFFSET = 30;
+
+    @Inject private CameraMoveInputManager cameraMoveInputManager;
     @Inject private WorldCameraManager worldCameraManager;
     @Inject private ApplicationConfig applicationConfig;
     @Inject private GameManager gameManager;
@@ -112,6 +116,23 @@ public class Viewport {
         return ZOOM_LEVELS[_zoom];
     }
 
+    public void move() {
+        if (game.isRunning()) {
+            if (cameraMoveInputManager.isMovingLeft()) {
+                move((int) (MOVE_OFFSET * worldCameraManager.getZoom()), 0);
+            }
+            if (cameraMoveInputManager.isMovingUp()) {
+                move(0, (int) (MOVE_OFFSET * worldCameraManager.getZoom()));
+            }
+            if (cameraMoveInputManager.isMovingRight()) {
+                move((int) (-MOVE_OFFSET * worldCameraManager.getZoom()), 0);
+            }
+            if (cameraMoveInputManager.isMovingDown()) {
+                move(0, (int) (-MOVE_OFFSET * worldCameraManager.getZoom()));
+            }
+        }
+    }
+
     public void move(int x, int y) {
         setPosition(_posX + (int) ((x * (1 + (1 - 0.5))) * 1), _posY + (int) ((y * (1 + (1 - 0.5))) * 1));
     }
@@ -135,4 +156,15 @@ public class Viewport {
 //                && parcel.x >= _worldX && parcel.x <= _worldX + 50
 //                && parcel.y >= _worldY && parcel.y <= _worldY + 50;
     }
+
+    @GameShortcut("map/floor_up")
+    public void onFloorUp() {
+        setFloor(_floor + 1);
+    }
+
+    @GameShortcut("map/floor_down")
+    public void onFloorDown() {
+        setFloor(_floor - 1);
+    }
+
 }

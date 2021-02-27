@@ -1,6 +1,5 @@
 package org.smallbox.faraway.client.controller.gameMenu;
 
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import org.smallbox.faraway.client.controller.LuaController;
 import org.smallbox.faraway.client.controller.annotation.BindLua;
@@ -70,7 +69,7 @@ public class GameMenuLoadController extends LuaController {
     public void onActionLoad(View view) {
         if (gameSaveInfo != null) {
             setVisible(false);
-            gameManager.loadGame(game.getInfo(), gameSaveInfo, null);
+            gameManager.loadGame(game.getInfo(), gameSaveInfo);
         }
     }
 

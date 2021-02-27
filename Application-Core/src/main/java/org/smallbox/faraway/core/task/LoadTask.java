@@ -10,7 +10,7 @@ public abstract class LoadTask extends Task {
 
     @Override
     public boolean run() {
-        if (state == State.RUNNING) {
+        if (state == State.RUNNING || state == State.RUNNING_BACKGROUND) {
             try {
                 onRun();
             } catch (Throwable t) {

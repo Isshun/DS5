@@ -30,7 +30,7 @@ public class LoadGameModule extends ApplicationModule {
             File file = new File(gameDirectory, "game.json");
             if (file.exists()) {
                 try {
-                    Log.info("Load game directory: " + gameDirectory.getName());
+                    Log.debug("Load game directory: " + gameDirectory.getName());
                     GameInfo info = GameInfo.fromJSON(new JSONObject(new String(Files.readAllBytes(file.toPath()), StandardCharsets.UTF_8)));
                     if (info != null) {
                         _games.add(info);
